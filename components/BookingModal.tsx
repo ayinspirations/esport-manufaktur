@@ -66,37 +66,37 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
             onClick={onClose}
           />
           
-          <motion.div
+            <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-[800px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-[90vh]"
+            className="relative w-full max-w-[800px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-[92vh] md:h-[90vh]"
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-6 border-b border-slate-100 shrink-0 bg-white z-10">
+            <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 shrink-0 bg-white z-10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
-                  <Calendar className="w-5 h-5" />
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
+                  <Calendar className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h3 className="font-black uppercase tracking-tight text-slate-900 leading-none">Termin buchen</h3>
-                  <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mt-1">Kostenloses Kennenlernen</p>
+                  <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-slate-900 leading-none">Termin buchen</h3>
+                  <p className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-slate-400 mt-1">Kostenloses Kennenlernen</p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="w-10 h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
+                className="w-8 h-8 md:w-10 md:h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto relative bg-slate-50 min-h-[500px]">
+            <div className="flex-1 overflow-y-auto relative bg-slate-50 min-h-0 overscroll-contain">
               {!isSuccess ? (
-                <div className="w-full h-full min-h-[600px] flex flex-col">
+                <div className="w-full min-h-full flex flex-col p-2 md:p-0">
                   <div 
-                    className="meetings-iframe-container flex-1" 
+                    className="meetings-iframe-container w-full h-[1200px] md:h-full" 
                     data-src="https://esport-manufaktur.com/meetings/gianluca-crepaldi/kennenlernen?embed=true"
                   ></div>
                 </div>
