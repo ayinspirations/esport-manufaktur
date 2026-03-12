@@ -58,11 +58,13 @@ if (typeof window !== 'undefined') {
 
 export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     let isMounted = true;
     const timer = setInterval(() => {
       if (!isMounted) return;
+      setDirection(1);
       setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
     }, 2000);
     return () => { isMounted = false; clearInterval(timer); };
