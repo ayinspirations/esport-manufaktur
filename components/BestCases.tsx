@@ -36,7 +36,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             >
               <div
                 className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('tsystems')}
+                onClick={() => {
+                  console.log('click tsystems');
+                  onNavigate?.('tsystems');
+                }}
               >
                 <video
                   autoPlay
@@ -44,18 +47,18 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                   loop
                   playsInline
                   preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 >
                   <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 {/* Hover Schleier */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                   <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Employer Branding
