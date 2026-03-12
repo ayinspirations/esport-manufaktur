@@ -51,6 +51,7 @@ export default function App() {
   }, []);
 
   const navigateTo = (page: Page) => {
+    document.querySelectorAll('video').forEach(v => v.pause());
     setActivePage(page);
     window.scrollTo(0, 0);
     window.history.pushState(null, '', `#${page}`);
