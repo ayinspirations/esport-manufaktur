@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Zap, Target, Trophy, ArrowRight } from 'lucide-react';
 
 const notifications = [
@@ -58,49 +58,16 @@ if (typeof window !== 'undefined') {
 
 export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) => {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDirection(1);
       setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
     }, 2000);
     return () => clearInterval(timer);
   }, []);
 
-  const nextSlide = () => {
-    setDirection(1);
-    setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setCurrentImgIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-      opacity: 1
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-      opacity: 0
-    })
-  };
-
-  const springConfig = {
-    type: "spring" as const,
-    stiffness: 50,
-    damping: 22,
-    mass: 1.2
-  };
+  const nextSlide = () => setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
+  const prevSlide = () => setCurrentImgIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
 
   return (
     <section className="relative w-full flex items-center justify-center p-3 md:p-5 lg:p-6 pb-0">
@@ -162,39 +129,21 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
                 {/* Mobile-only slider position */}
                 <div className="lg:hidden w-full">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative aspect-video w-full rounded-[2rem] overflow-hidden group shadow-2xl touch-pan-y"
+                    className="relative aspect-video w-full rounded-[2rem] overflow-hidden group shadow-2xl"
                   >
-                    <AnimatePresence initial={false} custom={direction}>
-                      <motion.img
-                        key={currentImgIndex}
-                        src={heroImages[currentImgIndex]}
-                        custom={direction}
-                        variants={variants}
-                        initial="enter"
-                        animate="center"
-                        exit="exit"
-                        transition={{
-                          x: { type: "tween", duration: 0.4, ease: "easeInOut" },
-                          opacity: { duration: 0.3 }
-                        }}
-                        drag="x"
-                        dragConstraints={{ left: 0, right: 0 }}
-                        dragElastic={0.2}
-                        onDragEnd={(e, { offset, velocity }) => {
-                          const swipe = Math.abs(offset.x) > 50 || Math.abs(velocity.x) > 500;
-                          if (swipe && offset.x > 0) {
-                            prevSlide();
-                          } else if (swipe && offset.x < 0) {
-                            nextSlide();
-                          }
-                        }}
-                        className="absolute inset-0 w-full h-full object-cover cursor-grab active:cursor-grabbing"
+                    {heroImages.map((src, i) => (
+                      <img
+                        key={i}
+                        src={src}
+                        alt={`Hero ${i + 1}`}
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                        style={{ opacity: i === currentImgIndex ? 1 : 0 }}
                       />
-                    </AnimatePresence>
+                    ))}
                   </motion.div>
                 </div>
 
@@ -238,22 +187,15 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
                 transition={{ duration: 1.2, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
                 className="relative aspect-square w-full rounded-[4rem] overflow-hidden group shadow-2xl"
               >
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.img
-                    key={currentImgIndex}
-                    src={heroImages[currentImgIndex]}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      x: { type: "tween", duration: 0.4, ease: "easeInOut" },
-                      opacity: { duration: 0.3 }
-                    }}
-                    className="absolute inset-0 w-full h-full object-cover"
+                {heroImages.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`Hero ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                    style={{ opacity: i === currentImgIndex ? 1 : 0 }}
                   />
-                </AnimatePresence>
+                ))}
 
                 {/* Slider Controls */}
                 <div className="absolute inset-0 flex items-center justify-between p-8 opacity-0 group-hover:opacity-100 transition-opacity z-20">
@@ -280,10 +222,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
                   {heroImages.map((_, i) => (
                     <button
                       key={i}
-                      onClick={() => {
-                        setDirection(i > currentImgIndex ? 1 : -1);
-                        setCurrentImgIndex(i);
-                      }}
+                      onClick={() => setCurrentImgIndex(i)}
                       className={`h-1.5 rounded-full transition-all duration-300 ${
                         i === currentImgIndex ? 'w-10 bg-white' : 'w-2 bg-white/30'
                       }`}

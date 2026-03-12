@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
 
 interface CaseDetailProps {
@@ -145,31 +145,16 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <div className="absolute inset-0 bg-[#d1dbd2]">
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.div
-                    key={currentIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ 
-                      x: { type: "spring", stiffness: 300, damping: 30 },
-                    }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={handleDragEnd}
-                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-                  >
-                    <img
-                      src={images[currentIndex]}
-                      alt={`Slide ${currentIndex + 1}`}
-                      className="w-full h-full object-cover pointer-events-none"
-                    />
-                  </motion.div>
-                </AnimatePresence>
+              <div className="absolute inset-0">
+                {images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`Slide ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                    style={{ opacity: i === currentIndex ? 1 : 0 }}
+                  />
+                ))}
               </div>
 
               {/* Navigation Arrows */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface BayernZocktDetailProps {
@@ -124,34 +124,19 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
-              <div className="absolute inset-0 bg-[#d1dbd2]">
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.div
-                    key={currentIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ 
-                      x: { type: "spring", stiffness: 300, damping: 30 },
+              <div className="absolute inset-0">
+                {images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`Slide ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover object-[center_20%] transition-opacity duration-500"
+                    style={{ opacity: i === currentIndex ? 1 : 0 }}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
                     }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={handleDragEnd}
-                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-                  >
-                    <img
-                      src={images[currentIndex]}
-                      alt={`Slide ${currentIndex + 1}`}
-                      className="w-full h-full object-cover object-[center_20%] pointer-events-none"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                  />
+                ))}
               </div>
 
               <button 
