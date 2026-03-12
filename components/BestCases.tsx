@@ -34,7 +34,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <button onClick={() => onNavigate?.('tsystems')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
                 <video
                   autoPlay
                   muted
@@ -59,7 +59,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     </h3>
                   </div>
                 </div>
-              </div>
+              </button>
             </motion.div>
           </div>
 
@@ -71,7 +71,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <button onClick={() => onNavigate?.('hagebau')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
                 <video
                   autoPlay
                   muted
@@ -96,7 +96,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     </h3>
                   </div>
                 </div>
-              </div>
+              </button>
             </motion.div>
           </div>
 
@@ -107,8 +107,9 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full"
+              className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
             >
+              <button onClick={() => onNavigate?.('gaming-in-bayern')} className="absolute inset-0 z-20 cursor-pointer" />
                 <video
                   autoPlay
                   muted
@@ -145,7 +146,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <button onClick={() => onNavigate?.('bayern-zockt')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
                 <video
                   autoPlay
                   muted
@@ -170,7 +171,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     </h3>
                   </div>
                 </div>
-              </div>
+              </button>
             </motion.div>
           </div>
 

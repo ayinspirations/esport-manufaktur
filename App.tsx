@@ -22,7 +22,7 @@ import { BFVDetail } from './components/BFVDetail';
 import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
 
-type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv';
+type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'gaming-in-bayern';
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>('home');
@@ -34,7 +34,7 @@ export default function App() {
     
     const handleHashChange = () => {
       const currentHash = window.location.hash.replace('#', '');
-      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv'];
+      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'gaming-in-bayern'];
       
       if (validPages.includes(currentHash)) {
         setActivePage(currentHash as Page);
@@ -131,6 +131,7 @@ export default function App() {
         {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
         {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
         {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'gaming-in-bayern' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
       </main>

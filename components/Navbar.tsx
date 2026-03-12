@@ -4,9 +4,9 @@ import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'services' | 'tsystems' | 'hagebau' | 'bayern-zockt' | 'showdown-0711' | 'bfv') => void;
+  onNavigate: (page: 'home' | 'services') => void;
   scrollToSection: (id: string) => void;
-  activePage: 'home' | 'services' | 'tsystems' | 'hagebau' | 'bayern-zockt' | 'showdown-0711' | 'bfv';
+  activePage: 'home' | 'services';
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, activePage }) => {
@@ -60,33 +60,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-8 px-8">
+        <div className="hidden md:flex items-center gap-14 px-8">
           <button 
             onClick={(e) => handleLinkClick(e, 'home')}
             className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
           >
             Startseite
           </button>
-          <div className="relative group">
-            <button 
-              className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400 flex items-center gap-2"
-            >
-              Projekte
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
-            </button>
-            <div className="absolute left-0 mt-0 w-max rounded-xl bg-slate-900/95 border border-white/10 shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-3 z-50">
-              <button onClick={(e) => { handleLinkClick(e, 'tsystems' as any); }} className="block w-full px-6 py-2 text-left text-sm font-bold text-white/90 hover:text-emerald-400 hover:bg-white/5">T-Systems</button>
-              <button onClick={(e) => { handleLinkClick(e, 'hagebau' as any); }} className="block w-full px-6 py-2 text-left text-sm font-bold text-white/90 hover:text-emerald-400 hover:bg-white/5">Hagebau</button>
-              <button onClick={(e) => { handleLinkClick(e, 'bayern-zockt' as any); }} className="block w-full px-6 py-2 text-left text-sm font-bold text-white/90 hover:text-emerald-400 hover:bg-white/5">Bayern Zockt</button>
-              <button onClick={(e) => { handleLinkClick(e, 'showdown-0711' as any); }} className="block w-full px-6 py-2 text-left text-sm font-bold text-white/90 hover:text-emerald-400 hover:bg-white/5">0711 Showdown</button>
-              <button onClick={(e) => { handleLinkClick(e, 'bfv' as any); }} className="block w-full px-6 py-2 text-left text-sm font-bold text-white/90 hover:text-emerald-400 hover:bg-white/5">BFV</button>
-            </div>
-          </div>
           <button 
             onClick={(e) => handleLinkClick(e, 'competencies')}
             className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
           >
             Services
+          </button>
+          <button 
+            onClick={(e) => handleLinkClick(e, 'best-cases')}
+            className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
+          >
+            Best Cases
           </button>
         </div>
 
@@ -133,21 +124,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 >
                   Startseite
                 </button>
-                <div className="border-b border-white/10">
-                  <p className="text-xs font-black uppercase tracking-widest text-white/40 mb-3">Projekte</p>
-                  <div className="flex flex-col gap-4 pb-4">
-                    <button onClick={(e) => { handleLinkClick(e, 'tsystems' as any); }} className="text-white/90 hover:text-emerald-400 transition-all tracking-tighter">T-Systems</button>
-                    <button onClick={(e) => { handleLinkClick(e, 'hagebau' as any); }} className="text-white/90 hover:text-emerald-400 transition-all tracking-tighter">Hagebau</button>
-                    <button onClick={(e) => { handleLinkClick(e, 'bayern-zockt' as any); }} className="text-white/90 hover:text-emerald-400 transition-all tracking-tighter">Bayern Zockt</button>
-                    <button onClick={(e) => { handleLinkClick(e, 'showdown-0711' as any); }} className="text-white/90 hover:text-emerald-400 transition-all tracking-tighter">0711 Showdown</button>
-                    <button onClick={(e) => { handleLinkClick(e, 'bfv' as any); }} className="text-white/90 hover:text-emerald-400 transition-all tracking-tighter">BFV</button>
-                  </div>
-                </div>
                 <button 
                   onClick={(e) => handleLinkClick(e, 'competencies')} 
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
                 >
                   Services
+                </button>
+                <button 
+                  onClick={(e) => handleLinkClick(e, 'best-cases')} 
+                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                >
+                  Best Cases
                 </button>
                 <div className="h-px bg-white/10 w-1/3 mx-auto" />
                 <button 
