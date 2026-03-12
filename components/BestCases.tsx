@@ -34,7 +34,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <div
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('tsystems')}
+              >
                 <video
                   autoPlay
                   muted
@@ -46,7 +49,12 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                   <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
                 </video>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
-                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                {/* Hover Schleier */}
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
+                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
