@@ -142,7 +142,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
           <div className="lg:hidden relative overflow-visible">
             <div 
               ref={scrollContainerRef}
-              className="flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar px-2 -mx-2 touch-auto overscroll-x-contain"
+              className="relative flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar px-2 -mx-2 touch-auto overscroll-x-contain"
               style={{ 
                 scrollPaddingLeft: '8px', 
                 scrollPaddingRight: '8px',

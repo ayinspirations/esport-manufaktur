@@ -9,7 +9,6 @@ import { Competencies } from './components/Competencies';
 import { BestCases } from './components/BestCases';
 import { WhyUs } from './components/WhyUs';
 import { ContactForm } from './components/ContactForm';
-import { Analytics } from '@vercel/analytics/react';
 import { Footer } from './components/Footer';
 import { ServicesDetail } from './components/ServicesDetail';
 import { ScrollToCasesCTA } from './components/ScrollToCasesCTA';
@@ -142,7 +141,6 @@ export default function App() {
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />
       <CookiePopup />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-      <Analytics />
     </div>
   );
 }

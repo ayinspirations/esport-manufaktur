@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
@@ -78,20 +78,27 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <div
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('hagebau')}
+              >
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
                   preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 >
                   <source src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov" type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
-                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Recruiting
@@ -107,44 +114,53 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          {/* Row 2 - Full Width Gaming Arena */}
+          {/* Row 2 - Full Width 0711 Showdown */}
           <div className="col-span-1 lg:col-span-12 h-[400px] md:h-[600px] lg:h-[500px]">
             <motion.div 
+              className="h-full w-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full"
             >
+              <div
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('showdown-0711')}
+              >
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
                   preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
                 >
                   <source src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" type="video/mp4" />
                 </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
-              <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
-                <div className="flex justify-between items-start">
-                  <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                    Event Production
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-white text-[clamp(32px,5vw,64px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                    GAMING IN BAYERN
-                  </h3>
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                  <div className="flex justify-between items-start">
+                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                      Event Production
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white text-[clamp(32px,5vw,64px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      0711 Showdown
+                    </h3>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </div>
 
-          {/* Row 3 - Bayern Zockt and CTA */}
-          <div className="col-span-1 lg:col-span-8 h-[400px] lg:h-[500px]">
+          {/* Row 3 - Bayern Zockt, BFV, CTA */}
+          <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
               initial={{ opacity: 0, y: 30 }}
@@ -152,28 +168,74 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full">
+              <div
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('bayern-zockt')}
+              >
                 <video
                   autoPlay
                   muted
                   loop
                   playsInline
                   preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 >
                   <source src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov" type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
-                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       eSport Projekt
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       Bayern Zockt
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
+            <motion.div 
+              className="h-full w-full"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('bfv')}
+              >
+                <img
+                  src="/images/cases/bfv.jpg"
+                  alt="BFV eFootball"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
+                  <div className="flex justify-between items-start">
+                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                      eFootball
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      BFV eFootball
                     </h3>
                   </div>
                 </div>
@@ -187,7 +249,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
               className="relative group overflow-hidden rounded-[2.5rem] bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
             >
               <div 

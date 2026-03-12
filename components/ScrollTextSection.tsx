@@ -113,7 +113,7 @@ export const ScrollTextSection: React.FC = () => {
         <div className="w-full px-0 md:px-0 mt-auto relative overflow-visible">
           <div 
             ref={scrollContainerRef}
-            className="flex lg:grid lg:grid-cols-3 gap-6 md:gap-10 items-stretch overflow-x-auto lg:overflow-x-hidden pb-12 md:pb-0 no-scrollbar snap-x snap-mandatory px-6 md:px-0 touch-auto overscroll-x-contain"
+            className="relative flex lg:grid lg:grid-cols-3 gap-6 md:gap-10 items-stretch overflow-x-auto lg:overflow-x-hidden pb-12 md:pb-0 no-scrollbar snap-x snap-mandatory px-6 md:px-0 touch-auto overscroll-x-contain"
             style={{ 
               WebkitOverflowScrolling: 'touch',
               scrollSnapType: 'x mandatory'
