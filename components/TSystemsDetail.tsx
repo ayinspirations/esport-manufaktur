@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TSystemsDetailProps {
   onBack: () => void;
@@ -17,8 +17,6 @@ const images = [
 
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -28,56 +26,24 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
     };
   }, []);
 
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  }, []);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, []);
-
-  const handleDragEnd = (e: any, { offset, velocity }: any) => {
-    const swipeThreshold = 50;
-    const velocityThreshold = 500;
-    
-    if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
-      nextSlide();
-    } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
-      prevSlide();
-    }
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-    })
-  };
+  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
     <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-        <img 
-          src="/images/t-systems/hero.jpg" 
-          alt="T-Systems Gaming Platform" 
+        <img
+          src="/images/t-systems/hero.jpg"
+          alt="T-Systems Gaming Platform"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
-        
+
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <motion.h1 
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
@@ -86,14 +52,14 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 T-Systems <br /> <span className="text-white/40 italic">Gaming.</span>
               </motion.h1>
             </div>
-            
+
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
               className="flex flex-col items-end gap-3 w-full md:w-auto"
             >
-              <button 
+              <button
                 onClick={onBack}
                 className="flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full text-white text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
               >
@@ -121,62 +87,41 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
               </p>
             </section>
 
-            {/* Image Slider */}
-            <div 
-              className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <div className="absolute inset-0 bg-[#d1dbd2]">
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.div
-                    key={currentIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ 
-                      x: { type: "spring", stiffness: 300, damping: 30 },
+            {/* Image Slider — pure CSS, no AnimatePresence */}
+            <div className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl">
+              <div className="absolute inset-0">
+                {images.map((src, i) => (
+                  <img
+                    key={i}
+                    src={src}
+                    alt={`Slide ${i + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                    style={{ opacity: i === currentIndex ? 1 : 0 }}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
                     }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={handleDragEnd}
-                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
-                  >
-                    <img
-                      src={images[currentIndex]}
-                      alt={`Slide ${currentIndex + 1}`}
-                      className="w-full h-full object-cover pointer-events-none"
-                      onError={(e) => {
-                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+                  />
+                ))}
               </div>
 
-              {/* Navigation Arrows */}
-              <button 
-                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+              <button
+                onClick={prevSlide}
                 className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
-              <button 
-                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+              <button
+                onClick={nextSlide}
                 className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
 
-              {/* Dots */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
                 {images.map((_, i) => (
-                  <button 
-                    key={i} 
-                    onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
+                  <button
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
                     className={`h-2 rounded-full transition-all duration-300 ${
                       i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
                     }`}
@@ -208,18 +153,17 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 </div>
               ))}
             </div>
-            
-            {/* Desktop Logo positioning - outside the black box and below challenge/solution cards */}
+
             <div className="pt-12 flex justify-center">
-              <a 
-                href="https://www.t-systems.com/" 
+              <a
+                href="https://www.t-systems.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block hover:scale-105 transition-transform"
               >
-                <img 
-                  src="/logos/T-Systems_Logo_2024.svg.png" 
-                  alt="T-Systems Logo" 
+                <img
+                  src="/logos/T-Systems_Logo_2024.svg.png"
+                  alt="T-Systems Logo"
                   className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
                 />
               </a>
@@ -231,7 +175,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
             <div className="sticky top-32">
               <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl">
                 <div className="space-y-10">
-                  {/* Format Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
@@ -243,7 +186,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                     </div>
                   </section>
 
-                  {/* Leistungen Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
@@ -254,7 +196,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                         { title: 'Konzeption & Strategie', desc: 'Employer-Branding-Format speziell für Tech-Talente' },
                         { title: 'Plattform & Tech', desc: 'Eigene Gaming- & Turnierplattform inkl. Registrierung, Challenges & Tracking' },
                         { title: 'Content & Experience', desc: 'Gamifizierte Qualifikation, interaktive Touchpoints, Event-Inszenierung' },
-                        { title: 'Live-Event Umsetzung', desc: 'Setup, Technik, Screens, Spielstationen, Betreuung vor Ort' }
+                        { title: 'Live-Event Umsetzung', desc: 'Setup, Technik, Screens, Spielstationen, Betreuung vor Ort' },
                       ].map((item, i) => (
                         <li key={i}>
                           <h5 className="font-black uppercase tracking-widest text-[10px] text-emerald-400 mb-1">{item.title}</h5>
@@ -264,7 +206,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                     </ul>
                   </section>
 
-                  {/* Impact Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
@@ -286,7 +227,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                     </ul>
                   </section>
 
-                  {/* Ergebnis Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
@@ -298,7 +238,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                     </div>
                   </section>
 
-                  {/* Status Section */}
                   <div className="pt-10 border-t border-white/10">
                     <div className="flex items-center gap-4 mb-6">
                       <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/20">
