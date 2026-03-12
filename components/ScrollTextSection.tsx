@@ -51,6 +51,7 @@ export const ScrollTextSection: React.FC = () => {
   const { scrollXProgress } = useScroll({
     container: scrollContainerRef
   });
+  const scrollIndicatorScale = useTransform(scrollXProgress, [0, 1], [1, 3]);
 
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 100,
@@ -167,7 +168,7 @@ export const ScrollTextSection: React.FC = () => {
               <motion.div 
                 className="h-full bg-emerald-500 w-1/3"
                 style={{ 
-                  scaleX: useTransform(scrollXProgress, [0, 1], [1, 3]), 
+                  scaleX: scrollIndicatorScale, 
                   transformOrigin: "0% 50%" 
                 }}
               />
