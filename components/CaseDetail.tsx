@@ -76,9 +76,10 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="/images/hagebau/hero-hagebau.jpg" 
+          src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1920" 
           alt="Hagebau Bolay Gaming Day Recruiting Event" 
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         

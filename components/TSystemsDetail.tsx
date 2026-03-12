@@ -68,9 +68,10 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="/images/t-systems/hero.jpg" 
+          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1920" 
           alt="T-Systems Gaming Platform" 
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         

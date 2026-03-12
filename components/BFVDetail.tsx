@@ -81,9 +81,10 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="/images/cases/bfv.jpg" 
+          src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=1920" 
           alt="BFV eFootball" 
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         

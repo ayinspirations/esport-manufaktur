@@ -66,9 +66,10 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="/images/cases/0711.jpg" 
+          src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=1920" 
           alt="0711 Showdown" 
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         

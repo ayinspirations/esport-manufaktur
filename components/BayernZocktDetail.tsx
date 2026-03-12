@@ -66,9 +66,10 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
     <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="/images/bayern-zockt/hero.jpg" 
+          src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1920" 
           alt="Bayern Zockt Gaming Event" 
           className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         
