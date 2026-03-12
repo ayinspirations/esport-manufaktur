@@ -87,15 +87,23 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   useEffect(() => {
     if (!isInView || window.innerWidth < 1024) return;
 
+    let isMounted = true;
+    let interval: ReturnType<typeof setInterval> | null = null;
+
     const startDelay = setTimeout(() => {
+      if (!isMounted) return;
       setActiveIndex(0);
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
+        if (!isMounted) return;
         setActiveIndex((prev) => (prev + 1) % data.length);
       }, 4500);
-      return () => clearInterval(interval);
     }, 2000);
 
-    return () => clearTimeout(startDelay);
+    return () => {
+      isMounted = false;
+      clearTimeout(startDelay);
+      if (interval !== null) clearInterval(interval);
+    };
   }, [isInView, data.length]);
 
   // Sync scroll position with indicator for mobile

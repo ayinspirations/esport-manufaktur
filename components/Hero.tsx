@@ -60,10 +60,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   useEffect(() => {
+    let isMounted = true;
     const timer = setInterval(() => {
+      if (!isMounted) return;
       setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
     }, 2000);
-    return () => clearInterval(timer);
+    return () => { isMounted = false; clearInterval(timer); };
   }, []);
 
   const nextSlide = () => setCurrentImgIndex((prev) => (prev + 1) % heroImages.length);
