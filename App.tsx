@@ -22,6 +22,7 @@ import { BFVDetail } from './components/BFVDetail';
 import { GamingInBayernDetail } from './components/GamingInBayernDetail';
 import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'gaming-in-bayern';
 
@@ -126,15 +127,17 @@ export default function App() {
           </div>
         )}
 
-        {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
-        {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
-        {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'gaming-in-bayern' && <GamingInBayernDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'impressum' && <LegalPage type="impressum" />}
-        {activePage === 'privacy' && <LegalPage type="privacy" />}
+        <ErrorBoundary>
+          {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
+          {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
+          {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
+          {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
+          {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
+          {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
+          {activePage === 'gaming-in-bayern' && <GamingInBayernDetail onBack={() => navigateTo('home')} />}
+          {activePage === 'impressum' && <LegalPage type="impressum" />}
+          {activePage === 'privacy' && <LegalPage type="privacy" />}
+        </ErrorBoundary>
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />

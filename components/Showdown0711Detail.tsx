@@ -19,7 +19,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
   const nextSlide = useCallback(() => {
