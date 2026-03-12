@@ -19,10 +19,6 @@ export const GamingInBayernDetail: React.FC<GamingInBayernDetailProps> = ({ onBa
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   const nextSlide = useCallback(() => {

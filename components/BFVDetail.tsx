@@ -35,10 +35,6 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   const nextSlide = useCallback(() => {
