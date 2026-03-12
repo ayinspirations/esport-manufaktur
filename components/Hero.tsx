@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Target, Trophy, ArrowRight } from 'lucide-react';
+import { SafeVideo } from './SafeVideo';
 
 const notifications = [
   {
@@ -136,9 +137,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             }}
           />
 
-          <video autoPlay muted loop playsInline preload="auto" className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay">
-            <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
-          </video>
+          <SafeVideo src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" className="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay" />
         </div>
 
         <div className="relative z-10 flex-1 w-full px-6 sm:px-10 md:px-20 lg:px-28 py-20 lg:py-24 flex flex-col justify-center overflow-hidden">

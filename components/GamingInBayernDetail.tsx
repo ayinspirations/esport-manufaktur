@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { SafeVideo } from './SafeVideo';
 
 interface GamingInBayernDetailProps {
   onBack: () => void;
@@ -48,16 +49,7 @@ export const GamingInBayernDetail: React.FC<GamingInBayernDetailProps> = ({ onBa
   return (
     <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline 
-          preload="auto"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" type="video/mp4" />
-        </video>
+        <SafeVideo src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">

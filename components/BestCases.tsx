@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { SafeVideo } from './SafeVideo';
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
@@ -35,16 +36,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <button onClick={() => onNavigate?.('tsystems')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                >
-                  <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
-                </video>
+                <SafeVideo src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
@@ -72,16 +64,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             >
               <button onClick={() => onNavigate?.('hagebau')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                >
-                  <source src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov" type="video/mp4" />
-                </video>
+                <SafeVideo src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
@@ -110,16 +93,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
             >
               <button onClick={() => onNavigate?.('gaming-in-bayern')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                >
-                  <source src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" type="video/mp4" />
-                </video>
+                <SafeVideo src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
@@ -148,16 +122,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             >
               <button onClick={() => onNavigate?.('bayern-zockt')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                >
-                  <source src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov" type="video/mp4" />
-                </video>
+                <SafeVideo src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov" className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
                 <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                 <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
