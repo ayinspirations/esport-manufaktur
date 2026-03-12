@@ -1,7 +1,6 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import SafeVideo from './SafeVideo';
 
 interface BeautifulAppearProps {
   children: React.ReactNode;
@@ -133,8 +132,12 @@ export const ScrollTextSection: React.FC = () => {
                 className={`flex-shrink-0 w-[85vw] md:w-[400px] lg:w-full ${card.height} ${card.color} rounded-[3rem] p-10 md:p-12 flex flex-col justify-between relative overflow-hidden border border-black/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] group snap-center`}
               >
                 {card.video ? (
-                  <SafeVideo
+                  <video
                     src={card.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
                     className="absolute inset-0 w-full h-full object-cover brightness-75 transition-transform duration-1000 group-hover:scale-105"
                   />
                 ) : card.img && (

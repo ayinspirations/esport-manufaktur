@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import SafeVideo from './SafeVideo';
 import { Gamepad2, Trophy, Monitor, Cpu, PlayCircle, ArrowRight } from 'lucide-react';
 
 interface CardProps {
@@ -29,8 +28,13 @@ const CompetencyCard: React.FC<CardProps> = ({ title, icon, description, image, 
         {/* FRONT SIDE ONLY */}
         <div className="absolute inset-0 rounded-[2.5rem] overflow-hidden shadow-xl">
           {video ? (
-            <SafeVideo
+            <video
               src={video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
               className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (

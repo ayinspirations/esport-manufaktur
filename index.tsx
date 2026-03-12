@@ -54,17 +54,16 @@ if (typeof window !== 'undefined') {
 
   // Suppress from window error events
   window.addEventListener('error', (e) => {
-    if (isResizeObserverError(e.message) || isResizeObserverError(e.error) || !(e.error instanceof Error)) {
+    if (isResizeObserverError(e.message) || isResizeObserverError(e.error)) {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
     }
   }, true);
 
-  // Suppress from unhandled promise rejections — catches video play() rejections and Framer Motion non-Error throws
+  // Suppress from unhandled promise rejections
   window.addEventListener('unhandledrejection', (e) => {
-    console.warn('[ESM] unhandledrejection — type:', typeof e.reason, '| value:', String(e.reason));
-    if (isResizeObserverError(e.reason) || !(e.reason instanceof Error)) {
+    if (isResizeObserverError(e.reason)) {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();

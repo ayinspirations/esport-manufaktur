@@ -1,39 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { SimpleSlider } from './SimpleSlider';
-import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface TSystemsDetailProps {
   onBack: () => void;
 }
 
 const images = [
-  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
+  '/images/t-systems/slide-1.jpg',
+  '/images/t-systems/slide-2.jpg',
+  '/images/t-systems/slide-3.jpg',
+  '/images/t-systems/slide-4.jpg',
+  '/images/t-systems/slide-5.jpg',
+  '/images/t-systems/slide-6.jpg',
 ];
 
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
   }, []);
 
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  }, []);
 
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  }, []);
 
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    const swipeThreshold = 50;
+    const velocityThreshold = 500;
+    
+    if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
+      nextSlide();
+    } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
+      prevSlide();
+    }
+  };
+
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? '100%' : '-100%',
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+    },
+    exit: (direction: number) => ({
+      zIndex: 0,
+      x: direction < 0 ? '100%' : '-100%',
+    })
+  };
 
   return (
     <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
-          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1920" 
+          src="/images/t-systems/hero.jpg" 
           alt="T-Systems Gaming Platform" 
           className="absolute inset-0 w-full h-full object-cover"
-          onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1920'; }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
         
@@ -85,7 +122,68 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
             </section>
 
             {/* Image Slider */}
-            <SimpleSlider images={images} />
+            <div 
+              className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <div className="absolute inset-0 bg-[#d1dbd2]">
+                <AnimatePresence initial={false} custom={direction}>
+                  <motion.div
+                    key={currentIndex}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ 
+                      x: { type: "spring", stiffness: 300, damping: 30 },
+                    }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={1}
+                    onDragEnd={handleDragEnd}
+                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+                  >
+                    <img
+                      src={images[currentIndex]}
+                      alt={`Slide ${currentIndex + 1}`}
+                      className="w-full h-full object-cover pointer-events-none"
+                      onError={(e) => {
+                        e.currentTarget.src = 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200';
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Navigation Arrows */}
+              <button 
+                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
+                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
+                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+
+              {/* Dots */}
+              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
+                {images.map((_, i) => (
+                  <button 
+                    key={i} 
+                    onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
 
             <section className="space-y-8">
               <p className="text-lg md:text-xl text-slate-600 leading-relaxed">

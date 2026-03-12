@@ -19,12 +19,10 @@ import { TSystemsDetail } from './components/TSystemsDetail';
 import { BayernZocktDetail } from './components/BayernZocktDetail';
 import { Showdown0711Detail } from './components/Showdown0711Detail';
 import { BFVDetail } from './components/BFVDetail';
-import { GamingInBayernDetail } from './components/GamingInBayernDetail';
 import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
-import { ErrorBoundary } from './components/ErrorBoundary';
 
-type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'gaming-in-bayern';
+type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv';
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>('home');
@@ -36,7 +34,7 @@ export default function App() {
     
     const handleHashChange = () => {
       const currentHash = window.location.hash.replace('#', '');
-      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'gaming-in-bayern'];
+      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv'];
       
       if (validPages.includes(currentHash)) {
         setActivePage(currentHash as Page);
@@ -127,17 +125,14 @@ export default function App() {
           </div>
         )}
 
-        <ErrorBoundary>
-          {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
-          {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
-          {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
-          {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
-          {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
-          {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
-          {activePage === 'gaming-in-bayern' && <GamingInBayernDetail onBack={() => navigateTo('home')} />}
-          {activePage === 'impressum' && <LegalPage type="impressum" />}
-          {activePage === 'privacy' && <LegalPage type="privacy" />}
-        </ErrorBoundary>
+        {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
+        {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
+        {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'impressum' && <LegalPage type="impressum" />}
+        {activePage === 'privacy' && <LegalPage type="privacy" />}
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />
