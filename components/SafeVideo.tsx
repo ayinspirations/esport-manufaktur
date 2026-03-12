@@ -23,8 +23,10 @@ export const SafeVideo: React.FC<SafeVideoProps> = ({ src, className, style }) =
       playsInline
       preload="metadata"
       className={className}
-      style={style}
+      style={{ ...style, pointerEvents: 'none' }}
       onError={() => {}}
+      tabIndex={-1}
+      aria-hidden="true"
     >
       <source src={src} type="video/mp4" />
     </video>
