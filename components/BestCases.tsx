@@ -35,10 +35,37 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             >
               <div
-                className="relative h-full w-full rounded-[2.5rem] bg-red-500 cursor-pointer"
-                onClick={() => { console.log('CLICK OK'); onNavigate?.('tsystems'); }}
+                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('tsystems')}
               >
-                <span className="text-white font-black text-2xl absolute inset-0 flex items-center justify-center">T-Systems TEST</span>
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                >
+                  <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                  <div className="flex justify-between items-start">
+                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                      Employer Branding
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      T-Systems
+                    </h3>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
