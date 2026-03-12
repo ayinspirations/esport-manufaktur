@@ -103,13 +103,13 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           {/* Row 2 - Full Width Gaming Arena */}
           <div className="col-span-1 lg:col-span-12 h-[400px] md:h-[600px] lg:h-[500px]">
             <motion.div 
+              className="h-full w-full"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
             >
-              <button onClick={() => onNavigate?.('gaming-in-bayern')} className="absolute inset-0 z-20 cursor-pointer" />
+              <button onClick={() => onNavigate?.('gaming-in-bayern')} className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer text-left">
                 <video
                   autoPlay
                   muted
@@ -120,20 +120,21 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 >
                   <source src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" type="video/mp4" />
                 </video>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
-              <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
-                <div className="flex justify-between items-start">
-                  <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                    Event Production
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />
+                <div className="absolute inset-0 bg-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10">
+                  <div className="flex justify-between items-start">
+                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                      Event Production
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-white text-[clamp(32px,5vw,64px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      GAMING IN BAYERN
+                    </h3>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-white text-[clamp(32px,5vw,64px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                    GAMING IN BAYERN
-                  </h3>
-                </div>
-              </div>
+              </button>
             </motion.div>
           </div>
 
