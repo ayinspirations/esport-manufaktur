@@ -7,9 +7,9 @@ interface GamingInBayernDetailProps {
 }
 
 const images = [
-  '/images/gaming-in-bayern/1.jpg',
-  '/images/gaming-in-bayern/2.jpg',
-  '/images/gaming-in-bayern/3.jpg',
+  'https://images.unsplash.com/photo-1538481143235-c8f91f7a01e7?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1614614535308-eb5ec670a654?auto=format&fit=crop&q=80&w=1200',
 ];
 
 export const GamingInBayernDetail: React.FC<GamingInBayernDetailProps> = ({ onBack }) => {
