@@ -1,7 +1,8 @@
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { SimpleSlider } from './SimpleSlider';
+import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
 
 interface CaseDetailProps {
   onBack: () => void;
@@ -29,37 +30,13 @@ const videos = [
 ];
 
 export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  }, []);
 
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, []);
 
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-    })
-  };
 
   return (
     <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
@@ -126,61 +103,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
             </section>
 
             {/* Image Slider */}
-            <div 
-              className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <div className="absolute inset-0 bg-[#d1dbd2]">
-                <AnimatePresence initial={false} custom={direction}>
-                  <motion.div
-                    key={currentIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ 
-                      x: { type: "spring", stiffness: 300, damping: 30 },
-                    }}
-                    className="absolute inset-0 w-full h-full cursor-default"
-                  >
-                    <img
-                      src={images[currentIndex]}
-                      alt={`Slide ${currentIndex + 1}`}
-                      className="w-full h-full object-cover pointer-events-none"
-                    />
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* Navigation Arrows */}
-              <button 
-                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button 
-                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-
-              {/* Dots */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-                {images.map((_, i) => (
-                  <button 
-                    key={i} 
-                    onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+            <SimpleSlider images={images} />
 
             {/* YouTube Videos Section */}
             <section className="space-y-8 mt-16">
