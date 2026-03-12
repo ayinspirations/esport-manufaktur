@@ -7,12 +7,12 @@ interface TSystemsDetailProps {
 }
 
 const images = [
-  '/images/t-systems/slide-1.jpg',
-  '/images/t-systems/slide-2.jpg',
-  '/images/t-systems/slide-3.jpg',
-  '/images/t-systems/slide-4.jpg',
-  '/images/t-systems/slide-5.jpg',
-  '/images/t-systems/slide-6.jpg',
+  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1200',
 ];
 
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {

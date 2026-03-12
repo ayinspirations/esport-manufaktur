@@ -8,8 +8,7 @@ interface CaseDetailProps {
 }
 
 const images = [
-  '/images/cases/0711.jpg',
-  // Placeholder images for now since user didn't provide specific gallery images
+  'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=1200',
   'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
   'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200',
 ];

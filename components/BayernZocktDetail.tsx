@@ -7,11 +7,11 @@ interface BayernZocktDetailProps {
 }
 
 const images = [
-  '/images/bayern-zockt/Bayern-zockt-Finale-FOKUS-Robi-080823.jpg',
-  '/images/bayern-zockt/Bayern-zockt-Mehring-Kern-150724 - Copy.jpg',
-  '/images/bayern-zockt/1721048106661.jpeg',
-  '/images/bayern-zockt/1721048106955.jpeg',
-  '/images/bayern-zockt/1721378807857.jpeg',
+  'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1538481143235-c8f91f7a01e7?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1552820728-8ac41f1ce891?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1614614535308-eb5ec670a654?auto=format&fit=crop&q=80&w=1200',
 ];
 
 export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) => {

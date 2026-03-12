@@ -8,12 +8,12 @@ interface CaseDetailProps {
 }
 
 const images = [
-  '/images/hagebau/slide-3.jpg',
-  '/images/hagebau/slide-1.jpg',
-  '/images/hagebau/slide-2.jpg',
-  '/images/hagebau/slide-4.jpg',
-  '/images/hagebau/slide-5.jpg',
-  '/images/hagebau/slide-6.jpg',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1493857671505-72967e2e2760?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1540575467063-178f50002c4b?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200',
+  'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1200',
 ];
 
 export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {

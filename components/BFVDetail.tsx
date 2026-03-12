@@ -8,7 +8,7 @@ interface CaseDetailProps {
 }
 
 const images = [
-  '/images/cases/bfv.jpg',
+  'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=1200',
   'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=1200',
   'https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&q=80&w=1200',
 ];
