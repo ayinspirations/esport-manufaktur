@@ -52,9 +52,8 @@ export default function App() {
 
   const navigateTo = (page: Page) => {
     document.querySelectorAll('video').forEach(v => {
-      const p = v.play();
-      if (p !== undefined) { p.then(() => v.pause()).catch(() => { v.pause(); }); }
-      else { v.pause(); }
+      v.pause();
+      v.currentTime = 0;
     });
     setActivePage(page);
     window.scrollTo(0, 0);
