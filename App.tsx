@@ -19,6 +19,7 @@ import { TSystemsDetail } from './components/TSystemsDetail';
 import { BayernZocktDetail } from './components/BayernZocktDetail';
 import { Showdown0711Detail } from './components/Showdown0711Detail';
 import { BFVDetail } from './components/BFVDetail';
+import { GamingInBayernDetail } from './components/GamingInBayernDetail';
 import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
 
@@ -131,7 +132,7 @@ export default function App() {
         {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
         {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
         {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'gaming-in-bayern' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
+        {activePage === 'gaming-in-bayern' && <GamingInBayernDetail onBack={() => navigateTo('home')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
       </main>
