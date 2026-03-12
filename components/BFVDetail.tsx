@@ -47,17 +47,6 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   }, []);
 
-  const handleDragEnd = (e: any, { offset, velocity }: any) => {
-    const swipeThreshold = 50;
-    const velocityThreshold = 500;
-    
-    if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
-      nextSlide();
-    } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
-      prevSlide();
-    }
-  };
-
   const variants = {
     enter: (direction: number) => ({
       x: direction > 0 ? '100%' : '-100%',
@@ -154,11 +143,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     transition={{ 
                       x: { type: "spring", stiffness: 300, damping: 30 },
                     }}
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    dragElastic={1}
-                    onDragEnd={handleDragEnd}
-                    className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
+                    className="absolute inset-0 w-full h-full cursor-default"
                   >
                     <img
                       src={images[currentIndex]}
