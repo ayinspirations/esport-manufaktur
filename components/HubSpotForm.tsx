@@ -176,7 +176,7 @@ export const HubSpotForm: React.FC = () => {
   return (
     <div ref={wrapperRef} className="relative min-h-[400px] w-full">
       <AnimatePresence mode="wait">
-        {status === 'loading' && (
+        {(status === 'idle' || status === 'loading') && (
           <motion.div 
             key="loading"
             initial={{ opacity: 0 }} 
@@ -184,8 +184,8 @@ export const HubSpotForm: React.FC = () => {
             exit={{ opacity: 0 }}
             className="absolute inset-0 flex flex-col items-center justify-center py-20"
           >
-            <Loader2 className="w-12 h-12 text-emerald-600 animate-spin mb-4" />
-            <p className="text-slate-900 font-black uppercase tracking-widest text-xs">Lade Formular...</p>
+            <Loader2 className="w-12 h-12 text-emerald-400 animate-spin mb-4" />
+            <p className="text-white/60 font-black uppercase tracking-widest text-xs">Lade Formular...</p>
           </motion.div>
         )}
 
