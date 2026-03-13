@@ -58,6 +58,13 @@ if (typeof window !== 'undefined') {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
+      return;
+    }
+    // Suppress synchronous throws of non-Error values from external scripts (HubSpot, etc.)
+    if (e.error !== null && e.error !== undefined && !(e.error instanceof Error)) {
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
     }
   }, true);
 

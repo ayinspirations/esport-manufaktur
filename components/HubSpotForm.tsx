@@ -10,9 +10,10 @@ declare global {
 }
 
 export const HubSpotForm: React.FC = () => {
-  const [status, setStatus] = useState<'loading' | 'ready' | 'error' | 'submitted'>('loading');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error' | 'submitted'>('idle');
   const initializedRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const loadHubSpotScript = () => {
     return new Promise((resolve, reject) => {
@@ -104,8 +105,9 @@ export const HubSpotForm: React.FC = () => {
 
   useEffect(() => {
     let isMounted = true;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
 
-    const safeSetStatus = (s: 'loading' | 'ready' | 'error' | 'submitted') => {
+    const safeSetStatus = (s: 'idle' | 'loading' | 'ready' | 'error' | 'submitted') => {
       if (isMounted) setStatus(s);
     };
 
@@ -137,7 +139,11 @@ export const HubSpotForm: React.FC = () => {
       }
     };
 
-    const init = async () => {
+    const startLoading = async () => {
+      safeSetStatus('loading');
+      timeout = setTimeout(() => {
+        safeSetStatus('error');
+      }, 10000);
       try {
         await loadHubSpotScript();
         if (isMounted) setTimeout(createFormSafe, 100);
@@ -145,20 +151,30 @@ export const HubSpotForm: React.FC = () => {
         safeSetStatus('error');
       }
     };
-    
-    const timeout = setTimeout(() => {
-      if (status === 'loading') safeSetStatus('error');
-    }, 10000);
 
-    init();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !initializedRef.current) {
+          observer.disconnect();
+          startLoading();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (wrapperRef.current) {
+      observer.observe(wrapperRef.current);
+    }
+
     return () => {
       isMounted = false;
-      clearTimeout(timeout);
+      observer.disconnect();
+      if (timeout) clearTimeout(timeout);
     };
   }, []);
 
   return (
-    <div className="relative min-h-[400px] w-full">
+    <div ref={wrapperRef} className="relative min-h-[400px] w-full">
       <AnimatePresence mode="wait">
         {status === 'loading' && (
           <motion.div 
