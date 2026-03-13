@@ -67,6 +67,14 @@ if (typeof window !== 'undefined') {
       e.stopImmediatePropagation();
       e.stopPropagation();
       e.preventDefault();
+      return;
+    }
+    // Suppress non-Error rejections from external scripts (HubSpot, Framer Motion cancel, etc.)
+    // Real app errors always use `new Error(...)`, so non-Error rejections are safe to suppress.
+    if (!(e.reason instanceof Error)) {
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+      e.preventDefault();
     }
   }, true);
 }
@@ -77,8 +85,4 @@ if (!rootElement) {
 }
 
 const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render(<App />);

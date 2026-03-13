@@ -33,34 +33,6 @@ export const HubSpotForm: React.FC = () => {
     });
   };
 
-  const createForm = () => {
-    if (!window.hbspt || initializedRef.current) return;
-    
-    try {
-      initializedRef.current = true;
-      window.hbspt.forms.create({
-        region: "eu1",
-        portalId: "144588019",
-        formId: "1100960a-23d3-4104-9ba4-03dcd952f909",
-        target: '#hs_form_target',
-        css: '',
-        inlineMessage: "Vielen Dank!",
-        onFormReady: () => {
-          setStatus('ready');
-          injectCustomStyles();
-        },
-        onFormSubmitted: () => {
-          setStatus('submitted');
-          // Smooth scroll to success message
-          window.scrollTo({ top: document.getElementById('contact')?.offsetTop || 0, behavior: 'smooth' });
-        },
-      });
-    } catch (err) {
-      console.warn('HubSpot could not be initialized (likely AdBlock)');
-      setStatus('error');
-    }
-  };
-
   const injectCustomStyles = () => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -132,17 +104,50 @@ export const HubSpotForm: React.FC = () => {
 
   useEffect(() => {
     let isMounted = true;
+
+    const safeSetStatus = (s: 'loading' | 'ready' | 'error' | 'submitted') => {
+      if (isMounted) setStatus(s);
+    };
+
+    const createFormSafe = () => {
+      if (!window.hbspt || initializedRef.current) return;
+      try {
+        initializedRef.current = true;
+        window.hbspt.forms.create({
+          region: "eu1",
+          portalId: "144588019",
+          formId: "1100960a-23d3-4104-9ba4-03dcd952f909",
+          target: '#hs_form_target',
+          css: '',
+          inlineMessage: "Vielen Dank!",
+          onFormReady: () => {
+            safeSetStatus('ready');
+            if (isMounted) injectCustomStyles();
+          },
+          onFormSubmitted: () => {
+            safeSetStatus('submitted');
+            if (isMounted) {
+              window.scrollTo({ top: document.getElementById('contact')?.offsetTop || 0, behavior: 'smooth' });
+            }
+          },
+        });
+      } catch (err) {
+        console.warn('HubSpot could not be initialized (likely AdBlock)');
+        safeSetStatus('error');
+      }
+    };
+
     const init = async () => {
       try {
         await loadHubSpotScript();
-        if (isMounted) setTimeout(createForm, 100);
+        if (isMounted) setTimeout(createFormSafe, 100);
       } catch (err) {
-        if (isMounted) setStatus('error');
+        safeSetStatus('error');
       }
     };
     
     const timeout = setTimeout(() => {
-      if (status === 'loading' && isMounted) setStatus('error');
+      if (status === 'loading') safeSetStatus('error');
     }, 10000);
 
     init();
