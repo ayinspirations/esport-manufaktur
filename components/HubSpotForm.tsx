@@ -1,6 +1,5 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
 declare global {
@@ -16,9 +15,9 @@ export const HubSpotForm: React.FC = () => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const loadHubSpotScript = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       if (window.hbspt) {
-        resolve(window.hbspt);
+        resolve();
         return;
       }
       const script = document.createElement('script');
@@ -26,7 +25,7 @@ export const HubSpotForm: React.FC = () => {
       script.type = 'text/javascript';
       script.async = true;
       script.onload = () => {
-        if (window.hbspt) resolve(window.hbspt);
+        if (window.hbspt) resolve();
         else reject(new Error('hbspt not found'));
       };
       script.onerror = () => reject(new Error('Script blocked'));
@@ -76,12 +75,7 @@ export const HubSpotForm: React.FC = () => {
         border-width: 0 2px 2px 0 !important;
         transform: rotate(45deg) !important;
       }
-      /* Ensure error messages are visible if needed, but HubSpot usually handles validation */
       .hs-error-msgs {
-        display: block !important;
-      }
-      .hs-form .hs-input:invalid:not(:placeholder-shown) + .hs-error-msgs,
-      .hs-form .hs-input:invalid:placeholder-shown + .hs-error-msgs {
         display: block !important;
       }
       .hs-form input, 
@@ -95,7 +89,6 @@ export const HubSpotForm: React.FC = () => {
       try {
         iframe.contentDocument?.head.appendChild(style);
       } catch (e) {
-        // If cross-origin, append to main document as fallback (HubSpot embeds often allow this)
         document.head.appendChild(style);
       }
     } else {
@@ -116,12 +109,12 @@ export const HubSpotForm: React.FC = () => {
       try {
         initializedRef.current = true;
         window.hbspt.forms.create({
-          region: "eu1",
-          portalId: "144588019",
-          formId: "1100960a-23d3-4104-9ba4-03dcd952f909",
+          region: 'eu1',
+          portalId: '144588019',
+          formId: '1100960a-23d3-4104-9ba4-03dcd952f909',
           target: '#hs_form_target',
           css: '',
-          inlineMessage: "Vielen Dank!",
+          inlineMessage: 'Vielen Dank!',
           onFormReady: () => {
             safeSetStatus('ready');
             if (isMounted) injectCustomStyles();
@@ -141,9 +134,7 @@ export const HubSpotForm: React.FC = () => {
 
     const startLoading = async () => {
       safeSetStatus('loading');
-      timeout = setTimeout(() => {
-        safeSetStatus('error');
-      }, 10000);
+      timeout = setTimeout(() => safeSetStatus('error'), 10000);
       try {
         await loadHubSpotScript();
         if (isMounted) setTimeout(createFormSafe, 100);
@@ -162,9 +153,7 @@ export const HubSpotForm: React.FC = () => {
       { threshold: 0.1 }
     );
 
-    if (wrapperRef.current) {
-      observer.observe(wrapperRef.current);
-    }
+    if (wrapperRef.current) observer.observe(wrapperRef.current);
 
     return () => {
       isMounted = false;
@@ -173,42 +162,31 @@ export const HubSpotForm: React.FC = () => {
     };
   }, []);
 
+  const showSpinner = status === 'idle' || status === 'loading';
+  const showSuccess = status === 'submitted';
+  const showForm = status === 'ready' || status === 'error';
+
   return (
     <div ref={wrapperRef} className="relative min-h-[400px] w-full">
-      <AnimatePresence mode="wait">
-        {(status === 'idle' || status === 'loading') && (
-          <motion.div 
-            key="loading"
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }}
-            className="absolute inset-0 flex flex-col items-center justify-center py-20"
-          >
-            <Loader2 className="w-12 h-12 text-emerald-400 animate-spin mb-4" />
-            <p className="text-white/60 font-black uppercase tracking-widest text-xs">Lade Formular...</p>
-          </motion.div>
-        )}
+      {showSpinner && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center py-20">
+          <Loader2 className="w-12 h-12 text-emerald-400 animate-spin mb-4" />
+          <p className="text-white/60 font-black uppercase tracking-widest text-xs">Lade Formular...</p>
+        </div>
+      )}
 
-        {status === 'submitted' && (
-          <motion.div 
-            key="success"
-            initial={{ opacity: 0, scale: 0.9 }} 
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center py-20"
-          >
-            <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
-              <CheckCircle2 className="w-12 h-12 text-white" />
-            </div>
-            <h3 className="text-4xl font-black mb-4 text-white tracking-tighter">Vielen Dank!</h3>
-            <p className="text-white/80 font-bold text-xl">Wir melden uns in Kürze.</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showSuccess && (
+        <div className="text-center py-20">
+          <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
+            <CheckCircle2 className="w-12 h-12 text-white" />
+          </div>
+          <h3 className="text-4xl font-black mb-4 text-white tracking-tighter">Vielen Dank!</h3>
+          <p className="text-white/80 font-bold text-xl">Wir melden uns in Kürze.</p>
+        </div>
+      )}
 
-      <div 
-        className={`hs-form-wrapper ${status === 'ready' || status === 'error' ? 'opacity-100 h-auto' : 'opacity-0 h-0 overflow-hidden'}`}
-      >
-        <div id="hs_form_target" ref={containerRef} className="w-full"></div>
+      <div className={`hs-form-wrapper ${showForm ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
+        <div id="hs_form_target" ref={containerRef} className="w-full" />
       </div>
     </div>
   );
