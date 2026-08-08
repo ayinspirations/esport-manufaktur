@@ -2,23 +2,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { HERO_REVEAL_EASE, HERO_NAV_CTA_DELAY, HERO_NAV_CTA_DURATION } from './heroIntro';
 
 interface HeroProps {
   scrollToSection?: (id: string) => void;
   onOpenBooking?: () => void;
 }
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-const WORD_DURATION = 0.45;
-const WORD_STEP = 0.1;
-const WORDS_START = 0.5;
-const SWEEP_DURATION = 0.55;
+const WORD_DURATION = 0.55;
+const WORD_STEP = 0.15;
+const WORDS_START = 0.4;
+const SWEEP_DURATION = 0.6;
 
 const Word: React.FC<{ children: string; delay: number }> = ({ children, delay }) => (
   <motion.span
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 16 }}
     animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: WORD_DURATION, delay, ease: EASE }}
+    transition={{ duration: WORD_DURATION, delay, ease: HERO_REVEAL_EASE }}
     className="inline-block"
   >
     {children}
@@ -29,7 +29,6 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
   const menschenDelay = WORDS_START + 2 * WORD_STEP;
   const sweepDelay = menschenDelay + WORD_DURATION;
   const subtextDelay = sweepDelay + SWEEP_DURATION;
-  const buttonsDelay = subtextDelay + 0.15;
 
   return (
     <section className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center">
@@ -37,9 +36,9 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         <div className="absolute inset-0 bg-[#020617]" />
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.45, delay: 0.15, ease: 'easeOut' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           className="absolute -top-[10%] -left-[5%] w-[60%] h-[70%] opacity-60 md:w-[75%] md:h-[85%] md:opacity-70 lg:w-[90%] lg:h-[100%] lg:opacity-85"
           style={{
             background: 'radial-gradient(circle at 20% 20%, #00818d 0%, transparent 70%)',
@@ -91,9 +90,9 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         </h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: subtextDelay, ease: EASE }}
+          transition={{ duration: 0.5, delay: subtextDelay, ease: HERO_REVEAL_EASE }}
           className="mt-6 md:mt-8 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90"
         >
           Live. Digital. Kreativ. Gamifiziert. <br />
@@ -101,9 +100,9 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: buttonsDelay, ease: EASE }}
+          transition={{ duration: HERO_NAV_CTA_DURATION, delay: HERO_NAV_CTA_DELAY, ease: HERO_REVEAL_EASE }}
           className="flex items-center justify-center gap-6 sm:gap-8 pt-8 md:pt-10"
         >
           <button
