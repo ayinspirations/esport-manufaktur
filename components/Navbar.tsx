@@ -44,7 +44,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-14 py-6 md:py-8 pointer-events-none">
       <div 
-        className={`max-w-[1440px] mx-auto glass rounded-full px-5 md:px-10 py-3 md:py-4 flex items-center justify-between pointer-events-auto transition-all duration-700 ease-in-out backdrop-blur-3xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] border border-white/10 ${
+        className={`max-w-[1440px] mx-auto glass rounded-full px-5 md:px-10 py-3 md:py-4 flex items-center justify-between md:grid md:grid-cols-[auto_1fr_auto] pointer-events-auto transition-all duration-700 ease-in-out backdrop-blur-3xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] border border-white/10 ${
           scrolled 
           ? 'bg-black/60 border-white/20 scale-[0.98]' 
           : 'bg-black/40 border-white/10'
@@ -60,7 +60,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-14 px-8">
+        <div className="hidden md:flex items-center justify-center gap-14 px-8">
           <button 
             onClick={(e) => handleLinkClick(e, 'home')}
             className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
