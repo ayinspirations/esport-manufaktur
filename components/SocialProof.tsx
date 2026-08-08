@@ -37,7 +37,7 @@ interface SocialProofProps {
 
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
   return (
-    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-between select-none bg-[#d1dbd2] overflow-hidden pt-32 md:pt-40 pb-16 md:pb-20">
+    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-10 md:gap-14 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
       <style>{`
         @keyframes marquee-scroll {
           from { transform: translate3d(0, 0, 0); }
