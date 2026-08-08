@@ -21,7 +21,7 @@
 @layer base {
   body {
     font-family: 'Inter', sans-serif;
-    background-color: #d1dbd2;
+    background-color: #020617;
     color: #000000;
     overflow-x: hidden;
     width: 100%;
@@ -32,6 +32,7 @@
 html {
   overflow-x: hidden;
   width: 100%;
+  background-color: #020617;
 }
 
 
