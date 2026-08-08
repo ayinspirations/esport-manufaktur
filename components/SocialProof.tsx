@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 
 const logos = [
   { name: 'DAZN', url: '/logos/DAZN_Logo_Master.svg.png', link: 'https://www.dazn.com/de-DE/welcome' },
@@ -30,11 +31,13 @@ const logos = [
   { name: 'Logo HHN', url: '/logos/Logo_HHN.png' }
 ];
 
-export const SocialProof: React.FC = () => {
-  const marqueeLogos = [...logos, ...logos];
+interface SocialProofProps {
+  scrollToSection?: (id: string) => void;
+}
 
+export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
   return (
-    <div className="w-full overflow-hidden select-none bg-[#d1dbd2]">
+    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-between select-none bg-[#d1dbd2] overflow-hidden pt-32 md:pt-40 pb-16 md:pb-20">
       <style>{`
         @keyframes marquee-scroll {
           from { transform: translate3d(0, 0, 0); }
@@ -52,11 +55,11 @@ export const SocialProof: React.FC = () => {
           animation-play-state: paused;
         }
       `}</style>
-      
-      {/* Apple-inspired Headline Section - Centered */}
-      <div className="pb-16 md:pb-24 px-6 md:px-14">
+
+      {/* Block 1: Headline */}
+      <div className="px-6 md:px-14">
         <div className="max-w-[1440px] mx-auto text-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -70,9 +73,9 @@ export const SocialProof: React.FC = () => {
         </div>
       </div>
 
-      {/* Infinite Logo Band */}
-      <div className="relative flex overflow-hidden group py-0 z-20">
-        <motion.div 
+      {/* Block 2: Infinite Logo Band */}
+      <div className="relative flex w-full overflow-hidden group py-0 z-20">
+        <motion.div
           initial={{ x: "100%" }}
           whileInView={{ x: "0%" }}
           viewport={{ once: true, margin: "0px" }}
@@ -81,20 +84,20 @@ export const SocialProof: React.FC = () => {
         >
           <div className="flex items-center gap-16 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
             {logos.map((logo: any, i) => (
-              <a 
-                key={`${logo.name}-1-${i}`} 
+              <a
+                key={`${logo.name}-1-${i}`}
                 href={logo.link || '#'}
                 target={logo.link ? "_blank" : undefined}
                 rel={logo.link ? "noopener noreferrer" : undefined}
                 className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
                 onClick={(e) => !logo.link && e.preventDefault()}
               >
-                <img 
-                  src={logo.url} 
-                  alt={logo.name} 
+                <img
+                  src={logo.url}
+                  alt={logo.name}
                   className={`w-auto object-contain ${
-                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz' 
-                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]' 
+                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
+                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
                       : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
                   }`}
                   loading="eager"
@@ -105,20 +108,20 @@ export const SocialProof: React.FC = () => {
           </div>
           <div className="flex items-center gap-16 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
             {logos.map((logo: any, i) => (
-              <a 
-                key={`${logo.name}-2-${i}`} 
+              <a
+                key={`${logo.name}-2-${i}`}
                 href={logo.link || '#'}
                 target={logo.link ? "_blank" : undefined}
                 rel={logo.link ? "noopener noreferrer" : undefined}
                 className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
                 onClick={(e) => !logo.link && e.preventDefault()}
               >
-                <img 
-                  src={logo.url} 
-                  alt={logo.name} 
+                <img
+                  src={logo.url}
+                  alt={logo.name}
                   className={`w-auto object-contain ${
-                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz' 
-                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]' 
+                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
+                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
                       : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
                   }`}
                   loading="eager"
@@ -133,6 +136,9 @@ export const SocialProof: React.FC = () => {
         <div className="absolute inset-y-0 left-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-r from-[#d1dbd2] via-[#d1dbd2]/80 to-transparent z-10 pointer-events-none" />
         <div className="absolute inset-y-0 right-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-l from-[#d1dbd2] via-[#d1dbd2]/80 to-transparent z-10 pointer-events-none" />
       </div>
-    </div>
+
+      {/* Block 3: CTA to Best Cases */}
+      <ScrollToCasesCTA onScroll={scrollToSection} />
+    </section>
   );
 };
