@@ -12,7 +12,7 @@ interface HeroProps {
 const WORD_DURATION = 0.55;
 const WORD_STEP = 0.15;
 const WORDS_START = 0.15;
-const PULSE_DURATION = 0.8;
+const BEGEISTERN_DURATION = 0.8;
 
 const Word: React.FC<{ children: string; delay: number }> = ({ children, delay }) => (
   <motion.span
@@ -29,8 +29,7 @@ const Word: React.FC<{ children: string; delay: number }> = ({ children, delay }
 export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) => {
   const menschenDelay = WORDS_START + 2 * WORD_STEP;
   const begeisternDelay = menschenDelay + WORD_DURATION;
-  const pulseDelay = begeisternDelay + WORD_DURATION;
-  const subtextDelay = pulseDelay + PULSE_DURATION;
+  const subtextDelay = begeisternDelay + BEGEISTERN_DURATION;
 
   return (
     <section className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center">
@@ -46,7 +45,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle at 20% 18%, rgba(0,129,141,0.9) 0%, rgba(0,129,141,0.45) 28%, rgba(0,129,141,0.12) 50%, transparent 68%)'
+            background: 'radial-gradient(circle at 20% 18%, rgba(0,129,141,0.55) 0%, rgba(0,129,141,0.28) 30%, rgba(0,129,141,0.08) 52%, transparent 70%)'
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
@@ -75,12 +74,8 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           <br />
           <motion.span
             initial={{ opacity: 0, y: 16, scale: 1 }}
-            animate={{ opacity: 1, y: 0, scale: [1, 1.07, 1] }}
-            transition={{
-              opacity: { duration: WORD_DURATION, delay: begeisternDelay, ease: HERO_REVEAL_EASE },
-              y: { duration: WORD_DURATION, delay: begeisternDelay, ease: HERO_REVEAL_EASE },
-              scale: { duration: PULSE_DURATION, delay: pulseDelay, times: [0, 0.5, 1], ease: 'easeInOut' }
-            }}
+            animate={{ opacity: 1, y: 0, scale: [1, 1.08, 1] }}
+            transition={{ duration: BEGEISTERN_DURATION, delay: begeisternDelay, ease: 'easeInOut' }}
             style={{ willChange: 'opacity, transform' }}
             className="inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
           >
