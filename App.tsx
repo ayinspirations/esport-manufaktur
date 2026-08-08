@@ -3,15 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
-import { ProblemSolution } from './components/ProblemSolution';
-import { ScrollTextSection } from './components/ScrollTextSection';
 import { Competencies } from './components/Competencies';
 import { BestCases } from './components/BestCases';
 import { WhyUs } from './components/WhyUs';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { ServicesDetail } from './components/ServicesDetail';
-import { ScrollToCasesCTA } from './components/ScrollToCasesCTA';
 import { LegalPage } from './components/LegalPage';
 import { CaseDetail } from './components/CaseDetail';
 import { TSystemsDetail } from './components/TSystemsDetail';
@@ -95,22 +92,8 @@ export default function App() {
         {activePage === 'home' && (
           <div className="flex flex-col">
             <Hero onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={() => setIsBookingOpen(true)} />
-            
-            <div className="pt-16 md:pt-24">
-              <SocialProof />
-            </div>
 
-            <div className="pt-16 md:pt-24">
-              <ScrollToCasesCTA onScroll={scrollToSection} />
-            </div>
-
-            <div className="pt-16 md:pt-24">
-              <ProblemSolution onNavigate={navigateTo} scrollToSection={scrollToSection} />
-            </div>
-
-            <div className="pt-16 md:pt-24">
-              <ScrollTextSection />
-            </div>
+            <SocialProof scrollToSection={scrollToSection} />
 
             <div className="pt-16 md:pt-24">
               <Competencies onNavigate={navigateTo} />
