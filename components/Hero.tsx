@@ -41,26 +41,30 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             comes purely from the gradient's own stops, not from sizing the box smaller
             than the section. No filter:blur() here on purpose -- blurring a large element
             is expensive to rasterize and was causing a visible flicker/pop on first paint
-            on mobile Safari; the extra gradient stop below gives an equally soft edge. */}
+            on mobile Safari; the extra gradient stops below give an equally soft edge. */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle at 20% 18%, rgba(0,129,141,0.55) 0%, rgba(0,129,141,0.28) 30%, rgba(0,129,141,0.08) 52%, transparent 70%)'
+            background: 'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.42) 0%, rgba(0,129,141,0.20) 26%, rgba(0,129,141,0.06) 46%, transparent 64%)'
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
 
-        {/* Diagonal line pattern -- single horizontal mask only (fades in from the left
-            edge of this box), so it stays fully visible top-to-bottom at any hero height.
-            Uses white-based alpha stops: gradients between black/transparent can render
-            as a luminance mask in some browsers (black ~= invisible), which was cutting
-            the pattern off well before the bottom of the section. */}
+        {/* Diagonal line pattern -- masked on both axes: fades in vertically (invisible at
+            the very top/bottom, fully visible through the middle band) and horizontally
+            (fades out toward the left edge of this box). Uses white-based alpha stops on
+            purpose: a gradient between black and transparent can render as a luminance
+            mask in some browsers (black ~= invisible regardless of alpha), which previously
+            wiped the pattern out entirely instead of giving a controlled fade. White reads
+            correctly as "visible" under both luminance and alpha mask semantics. */}
         <div
           className="absolute top-0 right-0 w-[75%] h-full opacity-60"
           style={{
             backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`,
-            maskImage: 'linear-gradient(to left, white 0%, white 60%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to left, white 0%, white 60%, transparent 100%)'
+            maskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
+            maskComposite: 'intersect',
+            WebkitMaskComposite: 'source-in'
           }}
         />
       </div>
