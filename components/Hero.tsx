@@ -11,7 +11,7 @@ interface HeroProps {
 
 const WORD_DURATION = 0.55;
 const WORD_STEP = 0.15;
-const WORDS_START = 0.4;
+const WORDS_START = 0.15;
 const SWEEP_DURATION = 0.6;
 
 const Word: React.FC<{ children: string; delay: number }> = ({ children, delay }) => (
@@ -35,11 +35,8 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#020617]" />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-          className="absolute -top-[10%] -left-[5%] w-[60%] h-[70%] opacity-60 md:w-[75%] md:h-[85%] md:opacity-70 lg:w-[90%] lg:h-[100%] lg:opacity-85"
+        <div
+          className="absolute -top-[10%] -left-[5%] w-[65%] h-[85%] opacity-60 md:w-[75%] md:h-[85%] md:opacity-70 lg:w-[90%] lg:h-[100%] lg:opacity-85"
           style={{
             background: 'radial-gradient(circle at 20% 20%, #00818d 0%, transparent 70%)',
             filter: 'blur(40px)'
@@ -47,14 +44,17 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         />
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
 
+        {/* Diagonal line pattern -- single horizontal mask only (fades in from the left
+            edge of this box), so it stays fully visible top-to-bottom at any hero height.
+            Uses white-based alpha stops: gradients between black/transparent can render
+            as a luminance mask in some browsers (black ~= invisible), which was cutting
+            the pattern off well before the bottom of the section. */}
         <div
           className="absolute top-0 right-0 w-[75%] h-full opacity-60"
           style={{
             backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`,
-            maskImage: 'linear-gradient(to bottom, transparent 0%, black 100%), linear-gradient(to left, black 0%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 100%), linear-gradient(to left, black 0%, transparent 100%)',
-            maskComposite: 'intersect',
-            WebkitMaskComposite: 'source-in'
+            maskImage: 'linear-gradient(to left, white 0%, white 60%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to left, white 0%, white 60%, transparent 100%)'
           }}
         />
       </div>

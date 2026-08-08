@@ -79,7 +79,7 @@ export default function App() {
   };
 
   if (!isMounted) {
-    return <div className="min-h-screen bg-[#d1dbd2]" />;
+    return <div className="min-h-screen bg-[#020617]" />;
   }
 
   const baseTransition = "pt-16 md:pt-24";
