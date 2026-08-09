@@ -104,7 +104,7 @@ interface CompetenciesProps {
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   return (
     <div className="w-full flex items-center justify-center" id="competencies">
-      <section className="w-full py-24 md:py-32 lg:py-40 bg-transparent relative overflow-hidden">
+      <section className="w-full py-16 md:py-24 lg:py-28 bg-transparent relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-14">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

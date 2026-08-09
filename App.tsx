@@ -129,19 +129,13 @@ export default function App() {
 
             <SocialProof scrollToSection={scrollToSection} />
 
-            <div className="pt-8 md:pt-12">
-              <Competencies onNavigate={navigateTo} />
-            </div>
+            <Competencies onNavigate={navigateTo} />
 
-            <div className="pt-16 md:pt-24" id="best-cases-container">
-              <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
-            </div>
+            <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
 
-            <div className="pt-16 md:pt-24">
-              <BlogSection onOpenPost={openBlogPost} />
-            </div>
+            <BlogSection onOpenPost={openBlogPost} />
 
-            <div className="pt-16 md:pt-24" id="contact-section">
+            <div id="contact-section">
               <ContactForm />
             </div>
           </div>
