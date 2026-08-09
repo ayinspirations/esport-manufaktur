@@ -49,10 +49,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
       animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
       transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
       style={{ willChange: 'opacity, transform, filter' }}
-      className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-14 py-6 md:py-8 pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[100] md:px-14 md:py-8 pointer-events-none"
     >
+      {/* Desktop bar -- unchanged pill/blur chrome */}
       <div
-        className={`relative max-w-[1440px] mx-auto flex items-center justify-between pointer-events-auto h-[56px] md:h-[62px] px-5 md:px-8 rounded-[28px] transition-all duration-500 ease-in-out ${
+        className={`hidden md:flex relative max-w-[1440px] mx-auto items-center justify-between pointer-events-auto h-[62px] px-8 rounded-[28px] transition-all duration-500 ease-in-out ${
           scrolled ? 'scale-[0.99]' : 'scale-100'
         }`}
         style={{
@@ -68,12 +69,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className="flex items-center gap-2.5 text-white group"
             aria-label="eSport Manufaktur"
           >
-            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-6 md:h-7 w-auto object-contain" />
+            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-7 w-auto object-contain" />
           </button>
         </div>
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
-        <div className="hidden md:flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
@@ -100,7 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           </button>
         </div>
 
-        <div className="hidden md:flex items-center shrink-0">
+        <div className="flex items-center shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'contact')}
             className="bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50 px-5 h-9 rounded-full text-xs font-semibold tracking-tight transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
@@ -108,35 +109,46 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             Kontakt
           </button>
         </div>
-
-        <button
-          className="md:hidden text-white p-1.5 rounded-full hover:bg-white/10 transition-colors pointer-events-auto"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle Mobile Menu"
-        >
-          {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
       </div>
 
-      {/* Mobile Menu Popup */}
-      <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsOpen(false)}
-              className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
-            />
-            
+      {/* Mobile header -- no bar chrome at rest, just logo + menu button. When
+          opened, this same block (not a separate floating card) grows a dark
+          panel flush with the top edge, so the nav visibly emerges from the
+          burger button instead of popping up elsewhere. The toggle button
+          never moves -- it just swaps icon -- so it doubles as the close (X)
+          button in the exact top-right spot where it always sits. */}
+      <div
+        className={`md:hidden pointer-events-auto transition-colors duration-300 ${
+          isOpen ? 'tile-gradient rounded-b-[2rem] border-b border-x border-white/10 shadow-2xl' : ''
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 py-5">
+          <button
+            onClick={(e) => handleLinkClick(e, 'home')}
+            className="flex items-center text-white"
+            aria-label="eSport Manufaktur"
+          >
+            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-9 w-auto object-contain" />
+          </button>
+          <button
+            className="text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle Mobile Menu"
+          >
+            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        <AnimatePresence initial={false}>
+          {isOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="md:hidden absolute top-24 left-4 right-4 tile-gradient rounded-[2rem] p-8 border border-white/10 shadow-2xl backdrop-blur-3xl pointer-events-auto"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="overflow-hidden"
             >
-              <div className="flex flex-col gap-8 text-lg font-bold text-white text-center">
+              <div className="flex flex-col gap-7 text-lg font-bold text-white text-center px-8 pt-2 pb-8">
                 <button
                   onClick={(e) => handleLinkClick(e, 'home')}
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
@@ -170,7 +182,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 </button>
               </div>
             </motion.div>
-          </>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Dim backdrop behind the open mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsOpen(false)}
+            className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
+          />
         )}
       </AnimatePresence>
     </motion.nav>
