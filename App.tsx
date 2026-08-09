@@ -9,6 +9,9 @@ import { WhyUs } from './components/WhyUs';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { ServicesDetail } from './components/ServicesDetail';
+import { BlogSection } from './components/BlogSection';
+import { BlogDetail } from './components/BlogDetail';
+import { blogPosts } from './components/blogPosts';
 import { LegalPage } from './components/LegalPage';
 import { CaseDetail } from './components/CaseDetail';
 import { TSystemsDetail } from './components/TSystemsDetail';
@@ -18,7 +21,11 @@ import { BFVDetail } from './components/BFVDetail';
 import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
 
-type Page = 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv';
+type Page =
+  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
+  | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand';
+
+const blogSlugs = blogPosts.map((post) => post.slug);
 
 export default function App() {
   const [activePage, setActivePage] = useState<Page>('home');
@@ -30,7 +37,7 @@ export default function App() {
     
     const handleHashChange = () => {
       const currentHash = window.location.hash.replace('#', '');
-      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv'];
+      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', ...blogSlugs];
       
       if (validPages.includes(currentHash)) {
         setActivePage(currentHash as Page);
@@ -55,6 +62,8 @@ export default function App() {
     window.scrollTo(0, 0);
     window.history.pushState(null, '', `#${page}`);
   };
+
+  const openBlogPost = (slug: string) => navigateTo(slug as Page);
 
   const scrollToSection = (id: string) => {
     if (activePage !== 'home') {
@@ -105,6 +114,10 @@ export default function App() {
               <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
             </div>
 
+            <div className="pt-16 md:pt-24">
+              <BlogSection onOpenPost={openBlogPost} />
+            </div>
+
             <div className="pt-16 md:pt-24" id="contact-section">
               <ContactForm />
             </div>
@@ -119,6 +132,9 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
+        {blogSlugs.includes(activePage) && (
+          <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
+        )}
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />

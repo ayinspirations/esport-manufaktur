@@ -1,176 +1,94 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Clock, Calendar, ArrowUpRight } from 'lucide-react';
-
-const posts = [
-  { 
-    id: 1, 
-    category: "Technologie", 
-    title: "Die Zukunft der Arena: Wie VR und AR eSports revolutionieren.", 
-    date: "12. Okt 2025", 
-    readTime: "8 min", 
-    image: "/images/blog/blog-1.jpg",
-    excerpt: "Virtuelle Welten verschmelzen mit der physischen Realität. Wir blicken hinter die Kulissen der nächsten Event-Generation."
-  },
-  { 
-    id: 2, 
-    category: "Marketing", 
-    title: "Smarte Lead-Generierung am Messestand.", 
-    date: "28. Sep 2025", 
-    readTime: "5 min", 
-    image: "/images/blog/blog-2.jpg" 
-  },
-  { 
-    id: 3, 
-    category: "Events", 
-    title: "Hybrid-Events: Die Brücke zwischen Online & Offline.", 
-    date: "15. Sep 2025", 
-    readTime: "6 min", 
-    image: "/images/blog/blog-3.jpg" 
-  },
-  { 
-    id: 4, 
-    category: "Gaming", 
-    title: "Warum Mobile Gaming die Event-Branche dominiert.", 
-    date: "02. Sep 2025", 
-    readTime: "4 min", 
-    image: "/images/blog/blog-4.jpg" 
-  }
-];
+import { ArrowUpRight } from 'lucide-react';
+import { blogPosts } from './blogPosts';
 
 interface BlogSectionProps {
-  onNavigate: (page: 'home' | 'services') => void;
+  onOpenPost: (slug: string) => void;
 }
 
-export const BlogSection: React.FC<BlogSectionProps> = ({ onNavigate }) => {
-  if (!posts || posts.length === 0) {
-    return (
-      <section className="w-full h-screen bg-white flex items-center justify-center p-10">
-        <p className="text-slate-400 font-bold uppercase tracking-widest">Keine aktuellen Beiträge verfügbar.</p>
-      </section>
-    );
-  }
-
-  const featuredPost = posts[0];
-  const galleryPosts = posts.slice(1);
-
+export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
   return (
-    <div className="w-full flex items-center justify-center p-0 md:p-4">
-      <section className="w-full h-screen bg-white rounded-none md:rounded-[3.2rem] border-y md:border border-[#d1dbd2] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] overflow-hidden relative flex flex-col py-8 md:py-12 lg:py-16 px-6 md:px-14 lg:px-20" id="blog">
-        
-        <div className="flex flex-row items-end justify-between mb-8 md:mb-12 gap-8 shrink-0">
-          <div className="max-w-2xl">
-            <div className="text-emerald-600 font-black tracking-[0.4em] uppercase text-[9px] md:text-[10px] mb-3 md:mb-4">
-              Insights & Know-How
-            </div>
-            <h2 className="text-[clamp(36px,6vh,96px)] font-black tracking-tighter text-slate-900 leading-[0.85]">
-              Blog.
-            </h2>
-          </div>
-          <div className="flex items-center gap-6 mb-1">
-            <p className="text-slate-400 font-bold text-sm max-w-[180px] leading-tight tracking-tight hidden lg:block">
-              Exklusive Einblicke in die eSports-Welt.
-            </p>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => onNavigate('services')}
-              className="bg-slate-950 text-white px-6 py-3 md:px-8 md:py-4 rounded-2xl font-black text-[10px] md:text-xs uppercase tracking-widest shadow-xl flex items-center gap-2.5 group"
-            >
-              Alle Artikel
-              <ArrowUpRight className="w-4 h-4 group-hover:rotate-45 transition-transform" />
-            </motion.button>
-          </div>
+    <div className="w-full flex items-center justify-center px-4 sm:px-6 md:px-14 py-16 md:py-24" id="blog">
+      <section className="relative w-full max-w-[1440px] mx-auto rounded-[3rem] md:rounded-[3.2rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <div className="absolute inset-0 bg-[#020617]" />
+          <div
+            className="absolute inset-0"
+            style={{
+              background: 'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.42) 0%, rgba(0,129,141,0.20) 26%, rgba(0,129,141,0.06) 46%, transparent 64%)'
+            }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
+          <div
+            className="absolute top-0 right-0 w-[75%] h-full opacity-60"
+            style={{
+              backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`,
+              maskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
         </div>
 
-        <div className="flex flex-col lg:grid lg:grid-cols-12 gap-8 lg:gap-16 flex-1 overflow-hidden">
-          {featuredPost && (
-            <motion.div 
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="lg:col-span-7 h-[50vh] lg:h-full flex flex-col group cursor-pointer"
-            >
-              <div className="relative flex-1 rounded-[2rem] md:rounded-[3rem] overflow-hidden mb-5 md:mb-8 shadow-2xl bg-slate-100">
-                <img 
-                  src={featuredPost.image} 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
-                  alt={featuredPost.title} 
-                  onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/1200x800?text=Blog+Image'; }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70" />
-                <div className="absolute top-5 left-5 md:top-8 md:left-8 flex gap-2">
-                  <div className="px-4 py-1.5 rounded-full bg-emerald-400 text-[9px] font-black uppercase text-slate-900 shadow-lg">
-                    Top Beitrag
+        <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
+          <div className="mb-16 md:mb-20">
+            <div className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
+              Insights
+            </div>
+            <h2 className="text-[clamp(38px,6.5vw,90px)] font-black text-white leading-[0.9] tracking-tighter uppercase">
+              Blog <br /> <span className="text-white/40 italic">&amp; Wissen.</span>
+            </h2>
+            <p className="text-white/60 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
+              Praxiswissen zu Gaming, eSport-Events und digitaler Markenaktivierung.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {blogPosts.map((post, i) => (
+              <motion.button
+                key={post.slug}
+                onClick={() => onOpenPost(post.slug)}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                className="group text-left flex flex-col rounded-[2rem] overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden shrink-0">
+                  <img
+                    src={post.image}
+                    alt={post.imageAlt}
+                    loading="lazy"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+                </div>
+
+                <div className="flex flex-col flex-1 p-6">
+                  <div className="flex items-center gap-2.5 text-white/40 text-[10px] font-black uppercase tracking-widest mb-3">
+                    <span>{post.date}</span>
+                    <span className="w-1 h-1 bg-white/20 rounded-full" />
+                    <span>{post.readTime}</span>
+                  </div>
+                  <h3 className="text-white text-lg font-black tracking-tight leading-snug mb-2.5 group-hover:text-emerald-300 transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-white/50 text-sm font-medium leading-snug line-clamp-2 mb-5">
+                    {post.excerpt}
+                  </p>
+                  <div className="mt-auto flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-widest">
+                    Weiterlesen
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </div>
                 </div>
-                <div className="absolute bottom-6 left-6 right-6 md:bottom-10 md:left-10 md:right-10">
-                   <div className="flex items-center gap-3 text-white/70 text-[9px] font-black uppercase tracking-widest mb-3">
-                     <span>{featuredPost.date}</span>
-                     <span className="w-1 h-1 bg-white/20 rounded-full" />
-                     <span>{featuredPost.readTime}</span>
-                   </div>
-                   <h3 className="text-white text-[clamp(22px,3vh,48px)] font-black tracking-tighter leading-[0.95] group-hover:text-emerald-300 transition-colors">
-                     {featuredPost.title}
-                   </h3>
-                </div>
-              </div>
-              <p className="hidden lg:block text-slate-500 text-lg font-medium leading-relaxed mb-8 max-w-xl line-clamp-2">
-                {featuredPost.excerpt}
-              </p>
-            </motion.div>
-          )}
-
-          <div className="lg:col-span-5 flex flex-col h-full overflow-hidden">
-            <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100 shrink-0">
-              <h4 className="text-[10px] md:text-[11px] font-black uppercase tracking-[0.25em] text-slate-900">Aktuelle News</h4>
-              <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest hidden md:block">Scrollen</span>
-            </div>
-
-            <div className="flex-1 overflow-x-auto lg:overflow-y-auto no-scrollbar flex lg:flex-col gap-5 pb-6 lg:pb-0 snap-x snap-mandatory px-2 -mx-2 lg:px-0 lg:mx-0">
-              {galleryPosts.map((post, i) => (
-                <motion.div 
-                  key={post.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="min-w-[80vw] lg:min-w-0 flex flex-row items-center gap-5 p-4 rounded-[2rem] bg-slate-50 lg:bg-transparent lg:hover:bg-slate-50 transition-all border border-slate-100 lg:border-transparent lg:hover:border-slate-100 group cursor-pointer snap-center"
-                >
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden shrink-0 shadow-lg bg-slate-200">
-                    <img 
-                      src={post.image} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
-                      alt={post.title} 
-                      onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/300x300?text=News'; }}
-                    />
-                  </div>
-                  <div className="flex flex-col justify-center flex-1 min-w-0">
-                    <div className="flex items-center gap-2.5 mb-2">
-                      <span className="text-[8px] font-black text-emerald-500 uppercase tracking-widest">{post.category}</span>
-                      <span className="w-1 h-1 bg-slate-300 rounded-full" />
-                      <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{post.date}</span>
-                    </div>
-                    <h4 className="text-slate-900 text-sm md:text-base font-black tracking-tight leading-tight group-hover:text-emerald-600 transition-colors line-clamp-2">
-                      {post.title}
-                    </h4>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white to-transparent pointer-events-none z-20 hidden lg:block" />
+              </motion.button>
+            ))}
           </div>
         </div>
       </section>
-      <style>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; } 
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        @media (min-width: 1024px) {
-          .flex-1.overflow-y-auto::-webkit-scrollbar { width: 3px; }
-          .flex-1.overflow-y-auto::-webkit-scrollbar-thumb { background: #f1f5f9; border-radius: 10px; }
-        }
-      `}</style>
     </div>
   );
 };
