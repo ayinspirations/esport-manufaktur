@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HERO_REVEAL_EASE, HERO_NAV_CTA_DELAY, HERO_NAV_CTA_DURATION } from './heroIntro';
+import { HERO_REVEAL_EASE, HERO_NAV_DELAY, HERO_NAV_DURATION } from './heroIntro';
 
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services') => void;
@@ -44,10 +44,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: HERO_NAV_CTA_DURATION, delay: HERO_NAV_CTA_DELAY, ease: HERO_REVEAL_EASE }}
-      style={{ willChange: 'opacity, transform' }}
+      initial={{ opacity: 0, y: -10, scale: 0.985, filter: 'blur(8px)' }}
+      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      transition={{ duration: HERO_NAV_DURATION, delay: HERO_NAV_DELAY, ease: HERO_REVEAL_EASE }}
+      style={{ willChange: 'opacity, transform, filter' }}
       className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-14 py-6 md:py-8 pointer-events-none"
     >
       <div
