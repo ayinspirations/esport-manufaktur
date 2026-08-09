@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { blogPosts } from './blogPosts';
+import { SECTION_PADDING } from './spacing';
 
 interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
@@ -10,7 +11,7 @@ interface BlogSectionProps {
 
 export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
   return (
-    <div className="w-full flex items-center justify-center px-4 sm:px-6 md:px-14 py-16 md:py-24" id="blog">
+    <div className={`w-full flex items-center justify-center px-4 sm:px-6 md:px-14 ${SECTION_PADDING}`} id="blog">
       <section className="relative w-full max-w-[1440px] mx-auto rounded-[3rem] md:rounded-[3.2rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-[#020617]" />
