@@ -35,16 +35,53 @@ interface SocialProofProps {
   scrollToSection?: (id: string) => void;
 }
 
+// A few logos from the end of the list, prepended so the strip already has
+// content to the left of DAZN at rest instead of a hard, empty start edge.
+const leadIn = logos.slice(-4);
+const trackLogos = [...leadIn, ...logos];
+
+const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({ logo, copyKey }) => (
+  <a
+    key={copyKey}
+    href={logo.link || '#'}
+    target={logo.link ? '_blank' : undefined}
+    rel={logo.link ? 'noopener noreferrer' : undefined}
+    className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
+    onClick={(e) => !logo.link && e.preventDefault()}
+  >
+    <img
+      src={logo.url}
+      alt={logo.name}
+      className={`w-auto object-contain ${
+        logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
+          ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
+          : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
+      }`}
+      loading="eager"
+      decoding="async"
+    />
+  </a>
+);
+
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
   return (
     <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
       <style>{`
+        .marquee-track {
+          --marquee-start: -236px;
+        }
+        @media (min-width: 768px) {
+          .marquee-track { --marquee-start: -472px; }
+        }
+        @media (min-width: 1024px) {
+          .marquee-track { --marquee-start: -290px; }
+        }
         @keyframes marquee-scroll {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(-50%, 0, 0); }
+          from { transform: translate3d(var(--marquee-start), 0, 0); }
+          to { transform: translate3d(calc(var(--marquee-start) - 50%), 0, 0); }
         }
         .animate-marquee-scroll {
-          animation: marquee-scroll 40s linear infinite;
+          animation: marquee-scroll 22s linear infinite;
           display: flex;
           width: fit-content;
           will-change: transform;
@@ -75,62 +112,18 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
 
       {/* Block 2: Infinite Logo Band */}
       <div className="relative flex w-full overflow-hidden group py-0 z-20">
-        <motion.div
-          initial={{ x: "100%" }}
-          whileInView={{ x: "0%" }}
-          viewport={{ once: true, margin: "0px" }}
-          transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-          className="animate-marquee-scroll flex items-center whitespace-nowrap px-0 py-4"
-        >
-          <div className="flex items-center gap-16 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
-            {logos.map((logo: any, i) => (
-              <a
-                key={`${logo.name}-1-${i}`}
-                href={logo.link || '#'}
-                target={logo.link ? "_blank" : undefined}
-                rel={logo.link ? "noopener noreferrer" : undefined}
-                className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
-                onClick={(e) => !logo.link && e.preventDefault()}
-              >
-                <img
-                  src={logo.url}
-                  alt={logo.name}
-                  className={`w-auto object-contain ${
-                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
-                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
-                      : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
-                  }`}
-                  loading="eager"
-                  decoding="async"
-                />
-              </a>
+        <div className="marquee-track animate-marquee-scroll flex items-center whitespace-nowrap px-0 py-4">
+          <div className="flex items-center gap-9 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
+            {trackLogos.map((logo, i) => (
+              <LogoItem key={`copy-1-${logo.name}-${i}`} logo={logo} copyKey={`copy-1-${logo.name}-${i}`} />
             ))}
           </div>
-          <div className="flex items-center gap-16 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
-            {logos.map((logo: any, i) => (
-              <a
-                key={`${logo.name}-2-${i}`}
-                href={logo.link || '#'}
-                target={logo.link ? "_blank" : undefined}
-                rel={logo.link ? "noopener noreferrer" : undefined}
-                className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
-                onClick={(e) => !logo.link && e.preventDefault()}
-              >
-                <img
-                  src={logo.url}
-                  alt={logo.name}
-                  className={`w-auto object-contain ${
-                    logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
-                      ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
-                      : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
-                  }`}
-                  loading="eager"
-                  decoding="async"
-                />
-              </a>
+          <div className="flex items-center gap-9 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0" aria-hidden="true">
+            {trackLogos.map((logo, i) => (
+              <LogoItem key={`copy-2-${logo.name}-${i}`} logo={logo} copyKey={`copy-2-${logo.name}-${i}`} />
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Linear-inspired Gradient Fades */}
         <div className="absolute inset-y-0 left-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-r from-[#d1dbd2] via-[#d1dbd2]/80 to-transparent z-10 pointer-events-none" />
