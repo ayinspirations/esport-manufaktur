@@ -1,70 +1,21 @@
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, ChevronLeft } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 
-interface CardProps {
+interface ServiceItem {
   title: string;
   description: string;
   image: string;
   imageAlt: string;
   video?: string;
   page: string;
-  onNavigate?: (page: any) => void;
 }
 
 const titleFontSize = "text-[clamp(20px,5vw,28px)] lg:text-[clamp(17px,1.4vw,22px)]";
 
-const ServiceCard: React.FC<CardProps> = ({ title, description, image, imageAlt, video, page, onNavigate }) => {
-  return (
-    <div
-      role="link"
-      tabIndex={0}
-      onClick={() => onNavigate?.(page)}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(page)}
-      className="group relative w-full h-full select-none rounded-[2.5rem] overflow-hidden shadow-xl cursor-pointer"
-    >
-      {video ? (
-        <video
-          src={video}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          poster={image}
-          aria-label={imageAlt}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      ) : (
-        <img
-          src={image}
-          alt={imageAlt}
-          loading="lazy"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      )}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/25 to-transparent" />
-
-      <div className="absolute bottom-8 left-7 right-20 lg:bottom-10 lg:left-8 lg:right-24">
-        <h3 className={`${titleFontSize} font-black text-white tracking-tight uppercase leading-[1.1] mb-2.5`}>
-          {title}
-        </h3>
-        <p className="text-white/70 text-sm lg:text-[15px] font-medium leading-snug max-w-[38ch]">
-          {description}
-        </p>
-      </div>
-
-      {/* Hover arrow -- bottom right, animates on hover and leads to the service subpage */}
-      <div className="absolute bottom-7 right-7 lg:bottom-9 lg:right-8 w-11 h-11 lg:w-12 lg:h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-300 group-hover:bg-emerald-400 group-hover:border-emerald-400 group-hover:scale-110">
-        <ArrowUpRight className="w-5 h-5 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-slate-950" />
-      </div>
-    </div>
-  );
-};
-
-const data: (Omit<CardProps, 'onNavigate'>)[] = [
+const data: ServiceItem[] = [
   {
     title: "Strategie & Konzeption",
     image: "/Strategie.jpg",
@@ -98,6 +49,159 @@ const data: (Omit<CardProps, 'onNavigate'>)[] = [
   }
 ];
 
+// -- Desktop: diagonal, seamless image band -------------------------------
+// Segments are equal-width flex children pulled into each other with a
+// negative left margin equal to the shared --skew custom property, while
+// clip-path cuts each one along the same angle -- the clipped-away wedge of
+// segment N is exactly what segment N+1 slides underneath, so the seam lines
+// up with no gap and no double-covered pixels. Only the bottom-left corner
+// stays unclipped on every segment (first/middle/last alike), which is why
+// text and the arrow button both anchor there instead of bottom-right.
+const DiagonalSegment: React.FC<{ item: ServiceItem; index: number; total: number; onNavigate?: (page: any) => void }> = ({ item, index, total, onNavigate }) => {
+  const isFirst = index === 0;
+  const isLast = index === total - 1;
+  const clipPath = isFirst
+    ? 'polygon(0% 0%, 100% 0%, calc(100% - var(--skew)) 100%, 0% 100%)'
+    : isLast
+    ? 'polygon(var(--skew) 0%, 100% 0%, 100% 100%, 0% 100%)'
+    : 'polygon(var(--skew) 0%, 100% 0%, calc(100% - var(--skew)) 100%, 0% 100%)';
+
+  return (
+    <div
+      role="link"
+      tabIndex={0}
+      onClick={() => onNavigate?.(item.page)}
+      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page)}
+      className="group relative flex-1 h-full select-none cursor-pointer"
+      style={{ clipPath, marginLeft: isFirst ? 0 : 'calc(var(--skew) * -1)' }}
+    >
+      {item.video ? (
+        <video
+          src={item.video}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          poster={item.image}
+          aria-label={item.imageAlt}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      ) : (
+        <img
+          src={item.image}
+          alt={item.imageAlt}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/30 to-transparent" />
+
+      <div className="absolute left-10 lg:left-12 bottom-16 lg:bottom-24 right-28 lg:right-40">
+        <h3 className="text-white font-black text-[13px] lg:text-[15px] tracking-tight uppercase leading-[1.15] mb-1.5">
+          {item.title}
+        </h3>
+        <p className="text-white/70 text-[11px] lg:text-xs font-medium leading-snug">
+          {item.description}
+        </p>
+      </div>
+
+      <div className="absolute bottom-5 left-5 lg:bottom-6 lg:left-6 w-10 h-10 lg:w-11 lg:h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-300 group-hover:bg-emerald-400 group-hover:border-emerald-400 group-hover:scale-110">
+        <ArrowUpRight className="w-4 h-4 lg:w-[18px] lg:h-[18px] transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-slate-950" />
+      </div>
+    </div>
+  );
+};
+
+// -- Mobile: Apple-style horizontal scroll-snap carousel ------------------
+const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
+
+  const updateEdges = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  useEffect(() => {
+    updateEdges();
+    const el = trackRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateEdges, { passive: true });
+    window.addEventListener('resize', updateEdges);
+    return () => {
+      el.removeEventListener('scroll', updateEdges);
+      window.removeEventListener('resize', updateEdges);
+    };
+  }, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = trackRef.current;
+    if (!el) return;
+    const firstCard = el.firstElementChild as HTMLElement | null;
+    const gap = parseFloat(window.getComputedStyle(el).columnGap || '0') || 0;
+    const step = firstCard ? firstCard.getBoundingClientRect().width + gap : el.clientWidth * 0.9;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="relative">
+      <style>{`.services-carousel-track::-webkit-scrollbar{display:none}`}</style>
+      <div
+        ref={trackRef}
+        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-6"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {children}
+      </div>
+      <div className="flex items-center gap-3 mt-8">
+        <button onClick={() => scrollByCard(-1)} disabled={!canLeft} aria-label="Zurück"
+          className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          <ChevronLeft className="w-4 h-4" />
+        </button>
+        <button onClick={() => scrollByCard(1)} disabled={!canRight} aria-label="Weiter"
+          className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center text-white transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const MobileCard: React.FC<{ item: ServiceItem; onNavigate?: (page: any) => void }> = ({ item, onNavigate }) => (
+  <div
+    role="link"
+    tabIndex={0}
+    onClick={() => onNavigate?.(item.page)}
+    onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page)}
+    className="group relative shrink-0 snap-start w-[80%] sm:w-[52%] aspect-[3/4] rounded-2xl overflow-hidden shadow-xl cursor-pointer select-none"
+  >
+    <img
+      src={item.image}
+      alt={item.imageAlt}
+      loading="lazy"
+      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+    />
+    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/25 to-transparent" />
+
+    <div className="absolute bottom-8 left-6 right-16">
+      <h3 className={`${titleFontSize} font-black text-white tracking-tight uppercase leading-[1.1] mb-2.5`}>
+        {item.title}
+      </h3>
+      <p className="text-white/70 text-sm font-medium leading-snug">
+        {item.description}
+      </p>
+    </div>
+
+    <div className="absolute bottom-7 right-6 w-11 h-11 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white transition-all duration-300 group-hover:bg-emerald-400 group-hover:border-emerald-400 group-hover:scale-110">
+      <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-slate-950" />
+    </div>
+  </div>
+);
+
 interface CompetenciesProps {
   onNavigate?: (page: any) => void;
 }
@@ -105,39 +209,74 @@ interface CompetenciesProps {
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   return (
     <div className="w-full flex items-center justify-center" id="competencies">
-      <section className={`w-full ${SECTION_PADDING} bg-transparent relative overflow-hidden`}>
-        <div className="max-w-[1440px] mx-auto px-6 md:px-14">
+      <section className={`w-full ${SECTION_PADDING} tile-gradient relative overflow-hidden`}>
+        <style>{`
+          .services-band { --skew: 100px; }
+          @media (min-width: 1024px) {
+            .services-band { --skew: 140px; }
+          }
+        `}</style>
+
+        {/* Subtle diagonal-line background pattern, matching the site's dark-section motif */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.08]"
+          style={{
+            backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`
+          }}
+        />
+
+        <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16 md:mb-24 lg:mb-32"
+            className="mb-14 md:mb-16 lg:mb-20"
           >
-            <div className="max-w-3xl">
-              <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
-                Unsere <br /> <span className="text-slate-900/40 italic">Services.</span>
-              </h2>
-              <p className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
-                Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
-              </p>
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-emerald-400 font-black text-sm lg:text-base tracking-widest">01</span>
+              <span className="text-white/30 font-black text-sm lg:text-base">|</span>
+              <span className="text-white font-black text-sm lg:text-base tracking-[0.3em] uppercase">Services</span>
+            </div>
+            <div className="w-14 h-1 rounded-full bg-emerald-400 mb-7" />
+            <p className="text-white/60 font-bold text-base md:text-lg max-w-xl leading-tight tracking-tight">
+              Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
+            </p>
+          </motion.div>
+
+          {/* Desktop / tablet: diagonal continuous image band */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="services-band hidden md:block"
+          >
+            <div className="flex mb-6">
+              {data.map((item) => (
+                <div key={item.title} className="flex-1 pr-4 lg:pr-6">
+                  <h3 className="text-white/80 text-[11px] lg:text-xs font-black uppercase tracking-wide leading-tight min-h-[2.4em]">
+                    {item.title}
+                  </h3>
+                  <div className="w-px h-8 lg:h-12 bg-emerald-400/50 mt-3" />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex w-full h-[380px] lg:h-[520px]">
+              {data.map((item, i) => (
+                <DiagonalSegment key={item.title} item={item} index={i} total={data.length} onNavigate={onNavigate} />
+              ))}
             </div>
           </motion.div>
 
-          {/* 2x2 grid on desktop, single stacked column on mobile/tablet */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8 xl:gap-10">
-            {data.map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 1, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full aspect-[4/3] sm:aspect-[16/10] lg:min-h-[420px]"
-              >
-                <ServiceCard {...item} onNavigate={onNavigate} />
-              </motion.div>
-            ))}
+          {/* Mobile: Apple-style horizontally scrolling snap carousel */}
+          <div className="md:hidden">
+            <ServicesCarousel>
+              {data.map((item) => (
+                <MobileCard key={item.title} item={item} onNavigate={onNavigate} />
+              ))}
+            </ServicesCarousel>
           </div>
         </div>
       </section>
