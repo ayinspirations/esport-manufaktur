@@ -79,15 +79,14 @@ export const Competencies: React.FC = () => {
     <div className="w-full flex items-center justify-center" id="competencies">
       <section className="w-full py-24 md:py-32 lg:py-40 bg-transparent relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-14">
-          <div className="flex flex-col items-center text-center mb-16 md:mb-24 lg:mb-32">
+          <div className="mb-16 md:mb-24 lg:mb-32">
             <div className="max-w-3xl">
-              <div className="text-emerald-500 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-8">
-                Services
-              </div>
-              <h2 className="text-[clamp(34px,6vw,84px)] font-black text-slate-900 tracking-tighter leading-[0.95] mb-8">
-                Unsere Services.
+              <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
+                Unsere <br /> <span className="text-slate-900/40 italic">Services.</span>
               </h2>
-              <div className="h-1.5 w-20 bg-emerald-500 rounded-full mx-auto" />
+              <p className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
+                Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
+              </p>
             </div>
           </div>
 
