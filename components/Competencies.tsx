@@ -26,7 +26,7 @@ const data: ServiceItem[] = [
   {
     title: "Content & Streaming",
     video: "/videos/BestCase4.mov",
-    image: "https://images.unsplash.com/photo-1598550874175-4d0fe4a2c90b?auto=format&fit=crop&q=80&w=800",
+    image: "/REWExfckoln_1770162125933.jpg",
     imageAlt: "Professionelle Streaming-Produktion für Gaming-Content bei eSport Manufaktur",
     description: "Professionelle Live-Produktionen und Streaming-Formate, die eure Marke authentisch im Gaming-Umfeld positionieren.",
     page: "content-streaming"
@@ -73,9 +73,20 @@ const DiagonalSegment: React.FC<{ item: ServiceItem; index: number; total: numbe
       onClick={() => onNavigate?.(item.page)}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page)}
       className="group relative flex-1 h-full select-none cursor-pointer"
-      style={{ clipPath, marginLeft: isFirst ? 0 : 'calc(var(--skew) * -1)' }}
+      style={{
+        clipPath,
+        WebkitClipPath: clipPath,
+        marginLeft: isFirst ? 0 : 'calc(var(--skew) * -1)'
+      }}
     >
-      {item.video ? (
+      {/* CSS background-image on its own layer (rather than an <img>) so the
+          photo always shows even if the <video> on top of it fails to load --
+          a broken video never leaves the segment blank. */}
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+        style={{ backgroundImage: `url(${item.image})` }}
+      />
+      {item.video && (
         <video
           src={item.video}
           autoPlay
@@ -85,13 +96,6 @@ const DiagonalSegment: React.FC<{ item: ServiceItem; index: number; total: numbe
           preload="auto"
           poster={item.image}
           aria-label={item.imageAlt}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-      ) : (
-        <img
-          src={item.image}
-          alt={item.imageAlt}
-          loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
       )}
@@ -209,7 +213,7 @@ interface CompetenciesProps {
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   return (
     <div className="w-full flex items-center justify-center" id="competencies">
-      <section className={`w-full ${SECTION_PADDING} tile-gradient relative overflow-hidden`}>
+      <section className={`w-full ${SECTION_PADDING} bg-transparent relative overflow-hidden`}>
         <style>{`
           .services-band { --skew: 100px; }
           @media (min-width: 1024px) {
@@ -217,31 +221,22 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
           }
         `}</style>
 
-        {/* Subtle diagonal-line background pattern, matching the site's dark-section motif */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.08]"
-          style={{
-            backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`
-          }}
-        />
-
         <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-14 md:mb-16 lg:mb-20"
+            className="mb-16 md:mb-24 lg:mb-28"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-emerald-400 font-black text-sm lg:text-base tracking-widest">01</span>
-              <span className="text-white/30 font-black text-sm lg:text-base">|</span>
-              <span className="text-white font-black text-sm lg:text-base tracking-[0.3em] uppercase">Services</span>
+            <div className="max-w-3xl">
+              <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
+                Unsere <br /> <span className="text-slate-900/40 italic">Services.</span>
+              </h2>
+              <p className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
+                Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
+              </p>
             </div>
-            <div className="w-14 h-1 rounded-full bg-emerald-400 mb-7" />
-            <p className="text-white/60 font-bold text-base md:text-lg max-w-xl leading-tight tracking-tight">
-              Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
-            </p>
           </motion.div>
 
           {/* Desktop / tablet: diagonal continuous image band */}
@@ -250,15 +245,18 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="services-band hidden md:block"
+            className="services-band hidden md:block relative"
           >
-            <div className="flex mb-6">
+            {/* Small dot + connector line per tile, sitting right at the top
+                edge of the band -- a separate, unclipped overlay layer so it
+                is never cut off by a segment's own diagonal clip-path. */}
+            <div className="absolute top-0 left-0 right-0 z-20 flex pointer-events-none">
               {data.map((item) => (
-                <div key={item.title} className="flex-1 pr-4 lg:pr-6">
-                  <h3 className="text-white/80 text-[11px] lg:text-xs font-black uppercase tracking-wide leading-tight min-h-[2.4em]">
-                    {item.title}
-                  </h3>
-                  <div className="w-px h-8 lg:h-12 bg-emerald-400/50 mt-3" />
+                <div key={item.title} className="flex-1 flex justify-center">
+                  <div className="flex flex-col items-center -translate-y-1">
+                    <span className="w-2 h-2 rounded-full bg-white shadow-[0_0_0_4px_rgba(255,255,255,0.15)]" />
+                    <span className="w-px h-8 lg:h-10 bg-white/50" />
+                  </div>
                 </div>
               ))}
             </div>
