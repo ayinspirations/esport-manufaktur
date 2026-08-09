@@ -33,12 +33,13 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
           >
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 lg:gap-16 mb-24">
               <div className="col-span-2">
-                <a 
-                  href="#home" 
+                <a
+                  href="#home"
                   onClick={(e) => handleNav(e, 'home')}
-                  className="text-2xl md:text-3xl font-black tracking-tighter flex items-center gap-3 mb-8 text-slate-900 group"
+                  className="flex items-center gap-3 mb-8 group"
+                  aria-label="eSport Manufaktur"
                 >
-                  eSport Manufaktur
+                  <img src="/logos/Esport-Manufaktur_Logo-blau.png" alt="eSport Manufaktur" className="h-8 md:h-9 w-auto object-contain" />
                 </a>
                 <p className="text-slate-600 max-w-sm leading-relaxed mb-10 text-lg font-medium tracking-tight">
                   Wir entwickeln Erlebnisse, die Marken aktivieren und Zielgruppen einbinden – durch Gamification, Technik und Software.

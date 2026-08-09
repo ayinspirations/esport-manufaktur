@@ -100,7 +100,7 @@ const ServiceCard: React.FC<{ item: ServiceItem; onNavigate?: (page: any) => voi
       tabIndex={clickable ? 0 : undefined}
       onClick={clickable ? () => onNavigate?.(item.page) : undefined}
       onKeyDown={clickable ? (e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page) : undefined}
-      className={`group relative shrink-0 snap-center w-[80%] sm:w-[55%] md:w-[31%] lg:w-[23%] aspect-[3/4] rounded-[2rem] overflow-hidden select-none ${clickable ? 'cursor-pointer' : ''}`}
+      className={`group relative shrink-0 snap-center md:snap-start w-[80%] sm:w-[55%] md:w-[31%] lg:w-[23%] aspect-[3/4] rounded-[2rem] overflow-hidden select-none ${clickable ? 'cursor-pointer' : ''}`}
     >
       {item.placeholder ? (
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center gap-3 transition-transform duration-500 ease-out group-hover:scale-105">
@@ -195,7 +195,7 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
       <style>{`.services-carousel-track::-webkit-scrollbar{display:none}`}</style>
       <div
         ref={trackRef}
-        className="services-carousel-track flex gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 md:-mx-14 px-[10%] sm:px-[22.5%] md:px-[34.5%] lg:px-[38.5%]"
+        className="services-carousel-track flex gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 md:mx-0 px-[10%] sm:px-[22.5%] md:px-0"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {children}
