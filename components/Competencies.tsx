@@ -156,7 +156,7 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
       <style>{`.services-carousel-track::-webkit-scrollbar{display:none}`}</style>
       <div
         ref={trackRef}
-        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-6"
+        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-[10%] sm:px-[22.5%]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {children}
@@ -181,7 +181,7 @@ const MobileCard: React.FC<{ item: ServiceItem; onNavigate?: (page: any) => void
     tabIndex={0}
     onClick={() => onNavigate?.(item.page)}
     onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page)}
-    className="group relative shrink-0 snap-start w-[80%] sm:w-[52%] aspect-[3/4] rounded-2xl overflow-hidden shadow-xl cursor-pointer select-none"
+    className="group relative shrink-0 snap-center w-[80%] sm:w-[55%] aspect-[3/4] rounded-2xl overflow-hidden shadow-xl cursor-pointer select-none"
   >
     <img
       src={item.image}
