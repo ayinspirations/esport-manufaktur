@@ -64,6 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                 <h4 className="font-black text-slate-900 mb-8 uppercase text-[10px] tracking-[0.3em]">Links</h4>
                 <ul className="space-y-4 text-slate-600 text-base font-bold tracking-tight">
                   <li><a href="#home" onClick={(e) => handleNav(e, 'home')} className="hover:text-emerald-700 transition-colors">Startseite</a></li>
+                  <li><a href="#blog" onClick={(e) => { e.preventDefault(); scrollToSection('blog'); }} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>
               </div>
