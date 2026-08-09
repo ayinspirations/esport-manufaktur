@@ -1,15 +1,52 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
-import { blogPosts } from './blogPosts';
+import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { blogPosts, BlogPost } from './blogPosts';
 import { SECTION_PADDING } from './spacing';
 
 interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
 }
 
+const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => (
+  <button
+    onClick={() => onOpenPost(post.slug)}
+    className={`group text-left flex flex-col rounded-[2rem] overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
+  >
+    <div className="relative aspect-[4/3] overflow-hidden shrink-0">
+      <img
+        src={post.image}
+        alt={post.imageAlt}
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+    </div>
+
+    <div className="flex flex-col flex-1 p-6">
+      <div className="flex items-center gap-2.5 text-white/40 text-[10px] font-black uppercase tracking-widest mb-3">
+        <span>{post.date}</span>
+        <span className="w-1 h-1 bg-white/20 rounded-full" />
+        <span>{post.readTime}</span>
+      </div>
+      <h3 className="text-white text-lg font-black tracking-tight leading-snug mb-2.5 group-hover:text-emerald-300 transition-colors">
+        {post.title}
+      </h3>
+      <p className="text-white/50 text-sm font-medium leading-snug line-clamp-2 mb-5">
+        {post.excerpt}
+      </p>
+      <div className="mt-auto flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-widest">
+        Weiterlesen
+        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+      </div>
+    </div>
+  </button>
+);
+
 export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
+  const [showAllMobile, setShowAllMobile] = useState(false);
+
   return (
     <div className={`w-full flex items-center justify-center px-4 sm:px-6 md:px-14 ${SECTION_PADDING}`} id="blog">
       <section className="relative w-full max-w-[1440px] mx-auto rounded-[3rem] md:rounded-[3.2rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
@@ -53,46 +90,54 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Desktop / tablet: multi-column grid, unchanged */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {blogPosts.map((post, i) => (
-              <motion.button
+              <motion.div
                 key={post.slug}
-                onClick={() => onOpenPost(post.slug)}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                className="group text-left flex flex-col rounded-[2rem] overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500"
               >
-                <div className="relative aspect-[4/3] overflow-hidden shrink-0">
-                  <img
-                    src={post.image}
-                    alt={post.imageAlt}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                </div>
-
-                <div className="flex flex-col flex-1 p-6">
-                  <div className="flex items-center gap-2.5 text-white/40 text-[10px] font-black uppercase tracking-widest mb-3">
-                    <span>{post.date}</span>
-                    <span className="w-1 h-1 bg-white/20 rounded-full" />
-                    <span>{post.readTime}</span>
-                  </div>
-                  <h3 className="text-white text-lg font-black tracking-tight leading-snug mb-2.5 group-hover:text-emerald-300 transition-colors">
-                    {post.title}
-                  </h3>
-                  <p className="text-white/50 text-sm font-medium leading-snug line-clamp-2 mb-5">
-                    {post.excerpt}
-                  </p>
-                  <div className="mt-auto flex items-center gap-2 text-emerald-400 text-xs font-black uppercase tracking-widest">
-                    Weiterlesen
-                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </div>
-              </motion.button>
+                <BlogCard post={post} onOpenPost={onOpenPost} className="w-full h-full" />
+              </motion.div>
             ))}
+          </div>
+
+          {/* Mobile: centered horizontal swipe carousel, with a toggle to show
+              every post stacked in a single column instead. */}
+          <div className="sm:hidden">
+            {!showAllMobile ? (
+              <>
+                <style>{`.blog-carousel-track::-webkit-scrollbar{display:none}`}</style>
+                <div
+                  className="blog-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-[10%]"
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                  {blogPosts.map((post) => (
+                    <BlogCard key={post.slug} post={post} onOpenPost={onOpenPost} className="shrink-0 snap-center w-[80%]" />
+                  ))}
+                </div>
+              </>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {blogPosts.map((post) => (
+                  <BlogCard key={post.slug} post={post} onOpenPost={onOpenPost} />
+                ))}
+              </div>
+            )}
+
+            <button
+              onClick={() => setShowAllMobile((v) => !v)}
+              className="mt-8 w-full flex items-center justify-center gap-2 rounded-full border border-white/20 py-3.5 text-white text-xs font-black uppercase tracking-widest transition-colors duration-300 hover:bg-emerald-400 hover:border-emerald-400 hover:text-slate-950"
+            >
+              {showAllMobile ? (
+                <>Weniger anzeigen <ChevronUp className="w-4 h-4" /></>
+              ) : (
+                <>Alle Artikel anzeigen <ChevronDown className="w-4 h-4" /></>
+              )}
+            </button>
           </div>
         </div>
       </section>
