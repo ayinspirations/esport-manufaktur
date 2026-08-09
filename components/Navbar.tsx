@@ -64,9 +64,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="text-base md:text-lg font-black tracking-tighter flex items-center gap-2.5 text-white group"
+            className="flex items-center gap-2.5 text-white group"
+            aria-label="eSport Manufaktur"
           >
-            <span className="tracking-tighter font-bold">eSport Manufaktur</span>
+            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-6 md:h-7 w-auto object-contain" />
           </button>
         </div>
 
