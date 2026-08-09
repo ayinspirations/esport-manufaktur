@@ -3,10 +3,8 @@
 // the same choreographed sequence rather than a separate animation.
 export const HERO_REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
 
-// Nav arrives early -- Phase 2 of the intro, well before the headline lands.
-export const HERO_NAV_DELAY = 0.1;
-export const HERO_NAV_DURATION = 0.85;
-
-// Kept in sync with the CTA beat inside Hero.tsx's GSAP timeline.
-export const HERO_CTA_DELAY = 2.0;
-export const HERO_CTA_DURATION = 0.65;
+// Nav, subline, and both CTAs fade in together as one beat -- only once the
+// full headline (including BEGEISTERN) has landed. Kept in sync with the
+// group beat inside Hero.tsx's GSAP timeline.
+export const HERO_GROUP_DELAY = 1.85;
+export const HERO_GROUP_DURATION = 0.75;

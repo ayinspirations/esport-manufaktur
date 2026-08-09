@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight } from 'lucide-react';
-import { HERO_CTA_DELAY, HERO_CTA_DURATION } from './heroIntro';
+import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -28,7 +28,8 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
       // Reduced motion: skip the sequence entirely, land directly on the final state.
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        gsap.set('.hero-line-inner', { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)' });
+        gsap.set('.hero-line-1, .hero-line-2', { opacity: 1, y: 0 });
+        gsap.set('.hero-line-3 .hero-line-inner', { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)' });
         gsap.set('.hero-subtext, .hero-cta-btn, .hero-cta-link', { opacity: 1, y: 0, x: 0, scale: 1 });
         gsap.set([gridRef.current, glowRef.current], { opacity: 1, x: 0, y: 0, scale: 1 });
         gsap.set('.hero-sweep', { opacity: 0 });
@@ -41,45 +42,41 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         tl.from(gridRef.current, { opacity: 0, scale: 1.08, x: 22, y: -14, duration: 1.6, ease: 'power2.out' }, 0)
           .from(glowRef.current, { opacity: 0, scale: 1.12, duration: 1.9, ease: 'power2.out' }, 0)
 
-          // Phase 3 -- headline arrives as masked, overlapping lines (not per-letter).
-          .fromTo(
-            '.hero-line-1 .hero-line-inner',
-            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
-            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
-            0.55
-          )
-          .fromTo(
-            '.hero-line-2 .hero-line-inner',
-            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
-            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
-            0.68
-          )
+          // Phase 3 -- "Wir wollen" / "Menschen": one clean, restrained fade+lift, not
+          // a masked flip -- these two lines stay quiet so BEGEISTERN can stand out.
+          .from('.hero-line-1', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.4)
+          .from('.hero-line-2', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.55)
+
+          // Phase 4 -- BEGEISTERN animates on its own, independent beat (masked
+          // reveal + one-shot light sweep). Swap this block out for the reference
+          // animation once it's shared -- keep the gradient/colors as-is.
           .fromTo(
             '.hero-line-3 .hero-line-inner',
             { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
             { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
-            0.83
+            0.75
           )
-
-          // Phase 4 -- one light sweep travels across BEGEISTERN, once, then goes calm.
           .fromTo(
             '.hero-sweep',
             { backgroundPosition: '-150% 0', opacity: 0 },
             { backgroundPosition: '150% 0', opacity: 1, duration: 0.65, ease: 'power1.inOut' },
-            1.9
+            1.85
           )
-          .to('.hero-sweep', { opacity: 0, duration: 0.35, ease: 'power1.out' }, 2.4)
+          .to('.hero-sweep', { opacity: 0, duration: 0.35, ease: 'power1.out' }, 2.35)
 
-          // Phase 5 -- subline, restrained, clearly subordinate to the headline.
-          .from('.hero-subtext', { opacity: 0, y: 22, duration: 0.7, ease: 'power2.out' }, 1.7)
-
-          // Phase 6 -- CTAs.
+          // Phase 5 -- nav, subline, and both CTAs fade in together as one beat,
+          // only once the full headline has landed.
+          .from('.hero-subtext', { opacity: 0, y: 20, duration: HERO_GROUP_DURATION, ease: 'power2.out' }, HERO_GROUP_DELAY)
           .from(
             ctaBtnRef.current,
-            { opacity: 0, y: 18, scale: 0.96, duration: HERO_CTA_DURATION, ease: 'power3.out' },
-            HERO_CTA_DELAY
+            { opacity: 0, y: 20, scale: 0.96, duration: HERO_GROUP_DURATION, ease: 'power2.out' },
+            HERO_GROUP_DELAY
           )
-          .from('.hero-cta-link', { opacity: 0, x: -10, duration: 0.5, ease: 'power2.out' }, HERO_CTA_DELAY + 0.18);
+          .from(
+            '.hero-cta-link',
+            { opacity: 0, y: 20, duration: HERO_GROUP_DURATION, ease: 'power2.out' },
+            HERO_GROUP_DELAY
+          );
 
         // Phase 10 -- natural scroll parallax exit (no pinning, no scroll-jacking).
         gsap.timeline({
@@ -204,15 +201,11 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           aria-label="Wir wollen Menschen begeistern"
           className="text-[12vw] sm:text-[9vw] md:text-[7.5vw] lg:text-[82px] xl:text-[100px] font-black text-white leading-[0.95] tracking-tighter"
         >
-          <span className="hero-line hero-line-1 block overflow-hidden" style={{ perspective: 600 }}>
-            <span className="hero-line-inner block" aria-hidden="true">
-              WIR WOLLEN
-            </span>
+          <span className="hero-line-1 block" aria-hidden="true">
+            WIR WOLLEN
           </span>
-          <span className="hero-line hero-line-2 block overflow-hidden" style={{ perspective: 600 }}>
-            <span className="hero-line-inner block" aria-hidden="true">
-              MENSCHEN
-            </span>
+          <span className="hero-line-2 block" aria-hidden="true">
+            MENSCHEN
           </span>
           <span className="hero-line hero-line-3 block overflow-hidden" style={{ perspective: 600 }}>
             <span className="hero-line-inner block relative" aria-hidden="true">
