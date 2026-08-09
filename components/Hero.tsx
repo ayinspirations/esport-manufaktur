@@ -1,242 +1,272 @@
 
 import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight } from 'lucide-react';
-import { HERO_NAV_CTA_DELAY, HERO_NAV_CTA_DURATION } from './heroIntro';
+import { HERO_CTA_DELAY, HERO_CTA_DURATION } from './heroIntro';
+
+gsap.registerPlugin(ScrollTrigger);
 
 interface HeroProps {
   scrollToSection?: (id: string) => void;
   onOpenBooking?: () => void;
 }
 
-type LetterSpec = { char: string; shift?: boolean; scramble?: string };
-
-const buildWord = (
-  word: string,
-  opts?: { shiftIndices?: number[]; scrambleMap?: Record<number, string> }
-): LetterSpec[] =>
-  word.split('').map((char, i) => ({
-    char,
-    shift: opts?.shiftIndices?.includes(i),
-    scramble: opts?.scrambleMap?.[i]
-  }));
-
-// "MENSCHEN" gets two letters that do a brief, subtle shift once the word has
-// landed (Phase 3). "BEGEISTERN" gets two letters that briefly show a
-// placeholder glyph before resolving into the real character (Phase 5).
-const WIR = buildWord('WIR');
-const WOLLEN = buildWord('WOLLEN');
-const MENSCHEN = buildWord('MENSCHEN', { shiftIndices: [3, 6] });
-const BEGEISTERN = buildWord('BEGEISTERN', { scrambleMap: { 2: '◆', 7: '△' } });
-
-const WordLetters: React.FC<{ word: LetterSpec[]; wordClass: string; letterClassName?: string }> = ({
-  word,
-  wordClass,
-  letterClassName = ''
-}) => (
-  <span className={`hero-word ${wordClass} inline-block`}>
-    {word.map((letter, i) =>
-      letter.scramble ? (
-        <span key={i} className="hero-letter relative inline-block">
-          <span
-            className={`hero-real inline-block scale-0 ${letterClassName}`}
-            style={{ transformOrigin: '50% 50%' }}
-          >
-            {letter.char}
-          </span>
-          <span
-            className="hero-scramble absolute inset-0 flex items-center justify-center text-lime-300/80"
-            style={{ transformOrigin: '50% 50%' }}
-            aria-hidden="true"
-          >
-            {letter.scramble}
-          </span>
-        </span>
-      ) : (
-        <span
-          key={i}
-          className={`hero-letter inline-block ${letterClassName}${letter.shift ? ' hero-shift-letter' : ''}`}
-        >
-          {letter.char}
-        </span>
-      )
-    )}
-  </span>
-);
-
 export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) => {
   const heroRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+  const belowRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const ctaBtnRef = useRef<HTMLButtonElement>(null);
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       const mm = gsap.matchMedia();
 
       // Reduced motion: skip the sequence entirely, land directly on the final state.
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        gsap.set('.hero-letter, .hero-begeistern-word, .hero-subtext, .hero-cta', { opacity: 1, x: 0, y: 0 });
-        // Note: `scale` must not share a call with `clearProps` -- clearProps wipes the
-        // inline transform *after* applying the rest of that same call's properties, so
-        // combining them here would erase the scale:1 we just set and leave these letters
-        // back at their CSS-default scale-0 (invisible).
-        gsap.set('.hero-real', { scale: 1 });
-        gsap.set('.hero-scramble, .hero-accent-symbol', { opacity: 0, display: 'none' });
+        gsap.set('.hero-line-inner', { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)' });
+        gsap.set('.hero-subtext, .hero-cta-btn, .hero-cta-link', { opacity: 1, y: 0, x: 0, scale: 1 });
+        gsap.set([gridRef.current, glowRef.current], { opacity: 1, x: 0, y: 0, scale: 1 });
+        gsap.set('.hero-sweep', { opacity: 0 });
       });
 
       mm.add('(prefers-reduced-motion: no-preference)', () => {
-        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
 
-        // Phase 2 -- headline arrives word by word, letters staggered within each word.
-        tl.from('.word-wir .hero-letter', { opacity: 0, y: 40, duration: 0.9, stagger: 0.045 }, 0.15)
-          .from('.word-wollen .hero-letter', { opacity: 0, y: 40, duration: 0.9, stagger: 0.045 }, 0.45)
-          .from('.word-menschen .hero-letter', { opacity: 0, y: 40, duration: 0.9, stagger: 0.045 }, 0.8)
+        // Phase 1 -- atmosphere: grid + ambient glow settle into their final position.
+        tl.from(gridRef.current, { opacity: 0, scale: 1.08, x: 22, y: -14, duration: 1.6, ease: 'power2.out' }, 0)
+          .from(glowRef.current, { opacity: 0, scale: 1.12, duration: 1.9, ease: 'power2.out' }, 0)
 
-          // Phase 3 -- two letters in MENSCHEN drift slightly and settle back.
-          .to(
-            '.hero-shift-letter',
-            { x: -6, y: 6, opacity: 0.55, duration: 0.22, ease: 'power2.inOut', stagger: 0.06 },
-            2.05
-          )
-          .to(
-            '.hero-shift-letter',
-            { x: 0, y: 0, opacity: 1, duration: 0.3, ease: 'power2.inOut', stagger: 0.06 },
-            2.3
-
-          )
-
-          // Phase 4 -- a small accent mark flares in between the words, then recedes
-          // as BEGEISTERN takes over. Purely decorative, absolutely positioned so it
-          // never affects text layout.
+          // Phase 3 -- headline arrives as masked, overlapping lines (not per-letter).
           .fromTo(
-            '.hero-accent-symbol',
-            { opacity: 0, scale: 0.4, rotate: -25 },
-            { opacity: 1, scale: 1, rotate: 0, duration: 0.45, ease: 'expo.out' },
-            2.35
+            '.hero-line-1 .hero-line-inner',
+            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
+            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
+            0.55
           )
-          .to('.hero-accent-symbol', { opacity: 0, scale: 0.6, duration: 0.35, ease: 'power2.in' }, 2.85)
+          .fromTo(
+            '.hero-line-2 .hero-line-inner',
+            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
+            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
+            0.68
+          )
+          .fromTo(
+            '.hero-line-3 .hero-line-inner',
+            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
+            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
+            0.83
+          )
 
-          // Phase 5 -- BEGEISTERN assembles; two letters resolve from a placeholder
-          // glyph into their real character partway through.
-          //
-          // Note: each letter carries its own gradient/background-clip:text (rather
-          // than one shared gradient on a wrapper around many nested letter spans) --
-          // background-clip:text through several layers of animated inline-block
-          // descendants renders unreliably, so every letter self-clips its own slice
-          // of the same two-stop gradient instead. `.hero-begeistern-word` still gets
-          // one quick opacity fade as the overall "the word arrives" beat; individual
-          // letters only ever get transform-based motion (y / scale), never opacity,
-          // to stay clear of that same rendering pitfall.
-          .from('.hero-begeistern-word', { opacity: 0, duration: 0.6, ease: 'power2.out' }, 2.75)
+          // Phase 4 -- one light sweep travels across BEGEISTERN, once, then goes calm.
+          .fromTo(
+            '.hero-sweep',
+            { backgroundPosition: '-150% 0', opacity: 0 },
+            { backgroundPosition: '150% 0', opacity: 1, duration: 0.65, ease: 'power1.inOut' },
+            1.9
+          )
+          .to('.hero-sweep', { opacity: 0, duration: 0.35, ease: 'power1.out' }, 2.4)
+
+          // Phase 5 -- subline, restrained, clearly subordinate to the headline.
+          .from('.hero-subtext', { opacity: 0, y: 22, duration: 0.7, ease: 'power2.out' }, 1.7)
+
+          // Phase 6 -- CTAs.
           .from(
-            '.word-begeistern .hero-letter',
-            { y: 40, duration: 0.85, stagger: 0.05 },
-            2.75
+            ctaBtnRef.current,
+            { opacity: 0, y: 18, scale: 0.96, duration: HERO_CTA_DURATION, ease: 'power3.out' },
+            HERO_CTA_DELAY
           )
-          .to('.hero-scramble', { scale: 0, duration: 0.3, ease: 'power1.in', stagger: 0.08 }, 3.45)
-          .to('.hero-real', { scale: 1, duration: 0.3, ease: 'power1.out', stagger: 0.08 }, 3.45)
+          .from('.hero-cta-link', { opacity: 0, x: -10, duration: 0.5, ease: 'power2.out' }, HERO_CTA_DELAY + 0.18);
 
-          // Phase 6 -- subheadline and CTA follow, gently offset from one another.
-          .from('.hero-subtext', { opacity: 0, y: 30, duration: 0.9 }, 4.15)
-          .from('.hero-cta', { opacity: 0, y: 30, duration: HERO_NAV_CTA_DURATION }, HERO_NAV_CTA_DELAY);
+        // Phase 10 -- natural scroll parallax exit (no pinning, no scroll-jacking).
+        gsap.timeline({
+          scrollTrigger: { trigger: heroRef.current, start: 'top top', end: 'bottom top', scrub: 0.6 }
+        })
+          .to(headlineRef.current, { yPercent: -8, opacity: 0.85, ease: 'none' }, 0)
+          .to(gridRef.current, { yPercent: -14, ease: 'none' }, 0)
+          .to(glowRef.current, { yPercent: 6, opacity: 0.7, ease: 'none' }, 0)
+          .to(belowRef.current, { yPercent: -18, ease: 'none' }, 0);
+
+        // Phase 7 -- pointer parallax wakes up once the intro has landed, so it never
+        // fights the entrance tween for the same x/y transform on the same elements.
+        // Desktop, fine-pointer only -- touch devices skip this entirely.
+        if (window.matchMedia('(pointer: fine)').matches) {
+          tl.eventCallback('onComplete', () => {
+            const glowX = gsap.quickTo(glowRef.current, 'x', { duration: 1.1, ease: 'power3' });
+            const glowY = gsap.quickTo(glowRef.current, 'y', { duration: 1.1, ease: 'power3' });
+            const gridX = gsap.quickTo(gridRef.current, 'x', { duration: 0.9, ease: 'power3' });
+            const gridY = gsap.quickTo(gridRef.current, 'y', { duration: 0.9, ease: 'power3' });
+            const contentX = gsap.quickTo(contentRef.current, 'x', { duration: 0.7, ease: 'power3' });
+            const contentY = gsap.quickTo(contentRef.current, 'y', { duration: 0.7, ease: 'power3' });
+
+            const handlePointerMove = (e: PointerEvent) => {
+              const nx = (e.clientX / window.innerWidth) * 2 - 1;
+              const ny = (e.clientY / window.innerHeight) * 2 - 1;
+              glowX(nx * 10);
+              glowY(ny * 10);
+              gridX(nx * 5);
+              gridY(ny * 5);
+              contentX(nx * 2);
+              contentY(ny * 2);
+            };
+
+            window.addEventListener('pointermove', handlePointerMove);
+            // matchMedia cleanup: called automatically when this branch's query
+            // stops matching or the component unmounts.
+            return () => window.removeEventListener('pointermove', handlePointerMove);
+          });
+        }
       });
     },
     { scope: heroRef }
   );
 
-  return (
-    <section ref={heroRef} className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center">
-      <style>{`
-        .hero-letter, .hero-real, .hero-scramble, .hero-accent-symbol, .hero-begeistern-word, .hero-subtext, .hero-cta {
-          will-change: transform, opacity;
-        }
-      `}</style>
+  const handleCtaEnter = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType !== 'mouse' || !ctaBtnRef.current) return;
+    gsap.to(ctaBtnRef.current, { scale: 1.03, duration: 0.35, ease: 'power3.out' });
+  });
 
+  const handleCtaMove = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
+    if (e.pointerType !== 'mouse' || !ctaBtnRef.current) return;
+    const rect = ctaBtnRef.current.getBoundingClientRect();
+    const relX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+    const relY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+    gsap.to(ctaBtnRef.current, { x: relX * 5, y: relY * 5, duration: 0.4, ease: 'power3.out' });
+  });
+
+  const handleCtaLeave = contextSafe(() => {
+    if (!ctaBtnRef.current) return;
+    gsap.to(ctaBtnRef.current, { x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power3.out' });
+  });
+
+  return (
+    <section
+      ref={heroRef}
+      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center"
+    >
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-[#020617]" />
 
-        {/* Corner glow -- full-bleed div (inset-0) so it can never leave a hard-edged gap
-            at any breakpoint/height; the "concentrated in one corner, soft falloff" look
-            comes purely from the gradient's own stops, not from sizing the box smaller
-            than the section. No filter:blur() here on purpose -- blurring a large element
-            is expensive to rasterize and was causing a visible flicker/pop on first paint
-            on mobile Safari; the extra gradient stops below give an equally soft edge.
-            Left fully static (no entrance animation) for the same reason -- opacity/
-            filter transitions on this layer previously read as a flash/flicker. */}
+        {/* Ambient light -- large, low-opacity radial gradient, no filter:blur() (see
+            note below on grid) so it never triggers a first-paint flicker on mobile
+            Safari. Volumetric feel comes purely from the gradient's own soft stops. */}
         <div
+          ref={glowRef}
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.42) 0%, rgba(0,129,141,0.20) 26%, rgba(0,129,141,0.06) 46%, transparent 64%)'
+            background:
+              'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.36) 0%, rgba(0,129,141,0.17) 26%, rgba(0,129,141,0.05) 46%, transparent 64%)'
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
 
-        {/* Diagonal line pattern -- masked on both axes: fades in vertically (invisible at
-            the very top/bottom, fully visible through the middle band) and horizontally
-            (fades out toward the left edge of this box). Uses white-based alpha stops on
-            purpose: a gradient between black and transparent can render as a luminance
-            mask in some browsers (black ~= invisible regardless of alpha), which previously
-            wiped the pattern out entirely instead of giving a controlled fade. White reads
-            correctly as "visible" under both luminance and alpha mask semantics. */}
-        <div
-          className="absolute top-0 right-0 w-[75%] h-full opacity-60"
-          style={{
-            backgroundImage: `repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)`,
-            maskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 60%, transparent 100%)',
-            maskComposite: 'intersect',
-            WebkitMaskComposite: 'source-in'
-          }}
-        />
+        {/* Diagonal line pattern -- two layers at different spacing so it reads as
+            depth rather than a flat repeating wallpaper, each masked with a radial
+            (bright center-right, fading toward the edges) intersected with a vertical
+            fade. White-based mask stops on purpose: black-to-transparent gradients can
+            render as luminance masks in some browsers (black ~= invisible regardless
+            of alpha), wiping the pattern out instead of giving a controlled fade. */}
+        <div ref={gridRef} className="absolute inset-0">
+          <div
+            className="absolute top-0 right-0 w-[85%] h-full opacity-60"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(45, 212, 191, 0.55) 38px, rgba(45, 212, 191, 0.55) 40px)',
+              maskImage:
+                'radial-gradient(ellipse 70% 65% at 68% 45%, white 0%, white 35%, transparent 78%), linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%)',
+              WebkitMaskImage:
+                'radial-gradient(ellipse 70% 65% at 68% 45%, white 0%, white 35%, transparent 78%), linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%)',
+              maskComposite: 'intersect',
+              WebkitMaskComposite: 'source-in'
+            }}
+          />
+          <div
+            className="absolute top-0 right-0 w-[60%] h-full opacity-25"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(115deg, transparent, transparent 78px, rgba(132, 204, 22, 0.4) 78px, rgba(132, 204, 22, 0.4) 80px)',
+              maskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)'
+            }}
+          />
+        </div>
       </div>
 
-      <div className="relative z-10 w-full px-6 sm:px-10 md:px-16 flex flex-col items-center text-center">
+      <div
+        ref={contentRef}
+        className="relative z-10 w-full px-6 sm:px-10 md:px-16 flex flex-col items-center text-center"
+      >
         <h1
+          ref={headlineRef}
           aria-label="Wir wollen Menschen begeistern"
           className="text-[12vw] sm:text-[9vw] md:text-[7.5vw] lg:text-[82px] xl:text-[100px] font-black text-white leading-[0.95] tracking-tighter"
         >
-          <WordLetters word={WIR} wordClass="word-wir" />{' '}
-          <WordLetters word={WOLLEN} wordClass="word-wollen" />
-          <br />
-          <WordLetters word={MENSCHEN} wordClass="word-menschen" />
-          <br />
-          <span className="relative inline-block">
-            <span
-              className="hero-accent-symbol absolute -left-7 sm:-left-9 md:-left-11 top-1/2 -translate-y-1/2 text-2xl sm:text-3xl md:text-4xl text-lime-400 opacity-0 pointer-events-none select-none"
-              aria-hidden="true"
-            >
-              ✦
+          <span className="hero-line hero-line-1 block overflow-hidden" style={{ perspective: 600 }}>
+            <span className="hero-line-inner block" aria-hidden="true">
+              WIR WOLLEN
             </span>
-            <span className="hero-begeistern-word">
-              <WordLetters
-                word={BEGEISTERN}
-                wordClass="word-begeistern"
-                letterClassName="bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
-              />
+          </span>
+          <span className="hero-line hero-line-2 block overflow-hidden" style={{ perspective: 600 }}>
+            <span className="hero-line-inner block" aria-hidden="true">
+              MENSCHEN
+            </span>
+          </span>
+          <span className="hero-line hero-line-3 block overflow-hidden" style={{ perspective: 600 }}>
+            <span className="hero-line-inner block relative" aria-hidden="true">
+              <span className="bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent">
+                BEGEISTERN
+              </span>
+              {/* One-shot light sweep, clipped to the same text shape. Fully calm
+                  (opacity: 0) before and after its single pass -- no continuous shimmer. */}
+              <span
+                className="hero-sweep absolute inset-0 bg-clip-text text-transparent pointer-events-none select-none"
+                style={{
+                  backgroundImage: 'linear-gradient(75deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%)',
+                  backgroundSize: '250% 100%',
+                  backgroundPosition: '-150% 0',
+                  opacity: 0
+                }}
+              >
+                BEGEISTERN
+              </span>
             </span>
           </span>
         </h1>
 
-        <p
-          className="hero-subtext mt-6 md:mt-8 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90"
-        >
-          Live. Digital. Kreativ. Gamifiziert. <br />
-          Immer Authentisch.
-        </p>
+        <div ref={belowRef}>
+          <p className="hero-subtext mt-6 md:mt-8 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90">
+            Live. Digital. Kreativ. Gamifiziert. <br />
+            Immer Authentisch.
+          </p>
 
-        <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-8 md:pt-10">
-          <button
-            onClick={() => onOpenBooking?.()}
-            className="bg-emerald-400 hover:bg-emerald-300 text-slate-900 px-6 py-3.5 sm:px-8 sm:py-4 rounded-full font-black text-base sm:text-lg transition-all shadow-[0_0_50px_rgba(52,211,153,0.3)] md:shadow-[0_0_60px_rgba(52,211,153,0.4)] lg:shadow-[0_0_80px_rgba(52,211,153,0.45)] hover:scale-105 active:scale-95 tracking-tighter"
-          >
-            Termin vereinbaren
-          </button>
-          <button
-            onClick={() => scrollToSection?.('competencies')}
-            className="group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-all hover:translate-x-1 tracking-tighter"
-          >
-            Mehr erfahren
-            <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-          </button>
+          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-8 md:pt-10">
+            <button
+              ref={ctaBtnRef}
+              onPointerEnter={handleCtaEnter}
+              onPointerMove={handleCtaMove}
+              onPointerLeave={handleCtaLeave}
+              onClick={() => onOpenBooking?.()}
+              className="hero-cta-btn group relative overflow-hidden bg-emerald-400 text-slate-900 px-6 py-3.5 sm:px-8 sm:py-4 rounded-full font-black text-base sm:text-lg shadow-[0_0_50px_rgba(52,211,153,0.3)] md:shadow-[0_0_60px_rgba(52,211,153,0.4)] lg:shadow-[0_0_80px_rgba(52,211,153,0.45)] tracking-tighter"
+            >
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 -translate-x-full skew-x-[-20deg] bg-white/25 transition-transform duration-700 ease-out group-hover:translate-x-full"
+              />
+              <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-px">
+                Termin vereinbaren
+              </span>
+            </button>
+            <button
+              onClick={() => scrollToSection?.('competencies')}
+              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-300 tracking-tighter"
+            >
+              Mehr erfahren
+              <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+            </button>
+          </div>
         </div>
       </div>
     </section>
