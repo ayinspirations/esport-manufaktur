@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HERO_REVEAL_EASE, HERO_NAV_DELAY, HERO_NAV_DURATION } from './heroIntro';
+import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services') => void;
@@ -46,21 +46,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
     <motion.nav
       initial={{ opacity: 0, y: -10, scale: 0.985, filter: 'blur(8px)' }}
       animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-      transition={{ duration: HERO_NAV_DURATION, delay: HERO_NAV_DELAY, ease: HERO_REVEAL_EASE }}
+      transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
       style={{ willChange: 'opacity, transform, filter' }}
       className="fixed top-0 left-0 right-0 z-[100] px-4 md:px-14 py-6 md:py-8 pointer-events-none"
     >
       <div
-        className={`relative max-w-[1440px] mx-auto glass rounded-full px-5 md:px-10 py-3 md:py-4 flex items-center justify-between pointer-events-auto transition-[background-color,border-color,transform] duration-700 ease-in-out backdrop-blur-3xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.3)] border border-white/10 ${
-          scrolled
-          ? 'bg-black/60 border-white/20 scale-[0.98]'
-          : 'bg-black/40 border-white/10'
+        className={`relative max-w-[1440px] mx-auto flex items-center justify-between pointer-events-auto h-[56px] md:h-[62px] px-5 md:px-8 rounded-[28px] transition-all duration-500 ease-in-out ${
+          scrolled ? 'scale-[0.99]' : 'scale-100'
         }`}
+        style={{
+          background: scrolled ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.10)',
+          backdropFilter: 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: 'blur(16px) saturate(120%)',
+          border: `1px solid rgba(255,255,255,${scrolled ? 0.4 : 0.3})`,
+          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 24px -16px rgba(0,0,0,0.35)'
+        }}
       >
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="text-lg md:text-2xl font-black tracking-tighter flex items-center gap-2.5 text-white group"
+            className="text-base md:text-lg font-black tracking-tighter flex items-center gap-2.5 text-white group"
           >
             <span className="tracking-tighter font-bold">eSport Manufaktur</span>
           </button>
@@ -68,37 +73,37 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
         <div className="hidden md:flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <button 
+          <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
+            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Startseite
           </button>
-          <button 
+          <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
+            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Services
           </button>
-          <button 
+          <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className="text-sm font-bold tracking-tighter transition-all duration-300 text-white/90 hover:text-emerald-400"
+            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Best Cases
           </button>
         </div>
 
         <div className="hidden md:flex items-center shrink-0">
-          <button 
+          <button
             onClick={(e) => handleLinkClick(e, 'contact')}
-            className="bg-emerald-500 hover:bg-emerald-400 text-slate-900 px-9 py-3 rounded-full text-base font-bold tracking-tighter transition-all hover:scale-110 active:scale-95 shadow-xl shadow-emerald-500/20"
+            className="bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50 px-5 h-9 rounded-full text-xs font-semibold tracking-tight transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
           >
             Kontakt
           </button>
         </div>
 
-        <button 
-          className="md:hidden text-white p-1.5 rounded-full hover:bg-white/10 transition-colors pointer-events-auto" 
+        <button
+          className="md:hidden text-white p-1.5 rounded-full hover:bg-white/10 transition-colors pointer-events-auto"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle Mobile Menu"
         >
