@@ -21,15 +21,17 @@ import { CookiePopup } from './components/CookiePopup';
 import { BookingModal } from './components/BookingModal';
 import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { servicesContent, serviceSlugs } from './components/servicesContent';
+import { Purpose } from './components/Purpose';
+import { UeberUnsPage } from './components/UeberUnsPage';
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
   | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
-  | 'strategie-konzeption' | 'content-streaming' | 'messen-events' | 'digitale-loesungen';
+  | 'strategie-konzeption' | 'content-streaming' | 'messen-events' | 'digitale-loesungen' | 'ueber-uns';
 
 const blogSlugs = blogPosts.map((post) => post.slug);
-// These 4 pages use real pathnames (/services/<slug>) instead of the
-// #hash routing the rest of the site uses, so they get proper, distinct,
+// These pages use real pathnames (/services/<slug>, /ueber-uns) instead of
+// the #hash routing the rest of the site uses, so they get proper, distinct,
 // crawlable URLs for SEO. Everything else keeps working exactly as before.
 const servicePages = serviceSlugs as Page[];
 
@@ -50,6 +52,9 @@ export default function App() {
       const serviceMatch = path.match(/^\/services\/([a-z-]+)$/);
       if (serviceMatch && servicePages.includes(serviceMatch[1] as Page)) {
         return serviceMatch[1] as Page;
+      }
+      if (path === '/ueber-uns') {
+        return 'ueber-uns';
       }
 
       const currentHash = window.location.hash.replace('#', '');
@@ -83,6 +88,8 @@ export default function App() {
     window.scrollTo(0, 0);
     if (servicePages.includes(page)) {
       window.history.pushState(null, '', `/services/${page}`);
+    } else if (page === 'ueber-uns') {
+      window.history.pushState(null, '', '/ueber-uns');
     } else {
       window.history.pushState(null, '', `/#${page}`);
     }
@@ -131,6 +138,8 @@ export default function App() {
 
             <Competencies onNavigate={navigateTo} />
 
+            <Purpose onNavigate={navigateTo} />
+
             <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
 
             <BlogSection onOpenPost={openBlogPost} />
@@ -149,6 +158,7 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
+        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
         )}

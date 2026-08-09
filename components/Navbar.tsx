@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'services') => void;
+  onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
   scrollToSection: (id: string) => void;
   activePage: 'home' | 'services';
 }
@@ -25,7 +25,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   const handleLinkClick = (e: React.MouseEvent, target: string) => {
     e.preventDefault();
     setIsOpen(false);
-    if (target === 'home') {
+    // "ueber-uns" is a real page (own route), not an anchor on the homepage.
+    if (target === 'home' || target === 'ueber-uns') {
       onNavigate(target as any);
     } else {
       scrollToSection(target);
@@ -86,6 +87,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             Services
           </button>
           <button
+            onClick={(e) => handleLinkClick(e, 'ueber-uns')}
+            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+          >
+            Über uns
+          </button>
+          <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
             className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
@@ -141,6 +148,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
                 >
                   Services
+                </button>
+                <button
+                  onClick={(e) => handleLinkClick(e, 'ueber-uns')}
+                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                >
+                  Über uns
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
