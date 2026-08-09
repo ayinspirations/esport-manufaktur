@@ -96,7 +96,7 @@ export default function App() {
             <SocialProof scrollToSection={scrollToSection} />
 
             <div className="pt-16 md:pt-24">
-              <Competencies onNavigate={navigateTo} />
+              <Competencies />
             </div>
 
             <WhyUs />
