@@ -5,7 +5,6 @@ import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
 import { Competencies } from './components/Competencies';
 import { BestCases } from './components/BestCases';
-import { WhyUs } from './components/WhyUs';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { ServicesDetail } from './components/ServicesDetail';
@@ -130,12 +129,8 @@ export default function App() {
 
             <SocialProof scrollToSection={scrollToSection} />
 
-            <div className="pt-16 md:pt-24">
+            <div className="pt-8 md:pt-12">
               <Competencies onNavigate={navigateTo} />
-            </div>
-
-            <div className="pt-16 md:pt-24">
-              <WhyUs />
             </div>
 
             <div className="pt-16 md:pt-24" id="best-cases-container">

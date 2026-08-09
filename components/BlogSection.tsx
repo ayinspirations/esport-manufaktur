@@ -34,7 +34,13 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
         </div>
 
         <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
-          <div className="mb-16 md:mb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-16 md:mb-20"
+          >
             <div className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
               Insights
             </div>
@@ -44,7 +50,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             <p className="text-white/60 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
               Praxiswissen zu Gaming, eSport-Events und digitaler Markenaktivierung.
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {blogPosts.map((post, i) => (

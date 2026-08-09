@@ -91,7 +91,16 @@ const TileCarousel: React.FC<{ children: React.ReactNode }> = ({ children }) => 
   }, []);
 
   const scrollByCard = (dir: 1 | -1) => {
-    trackRef.current?.scrollBy({ left: dir * 336, behavior: 'smooth' });
+    const el = trackRef.current;
+    if (!el) return;
+    // Step by exactly one card's rendered width + gap (not a hardcoded px
+    // value) so it lands precisely on a snap point at every breakpoint --
+    // a fixed offset that doesn't match the actual mobile card width was
+    // what left cards partially cut off instead of fully in view.
+    const firstCard = el.firstElementChild as HTMLElement | null;
+    const gap = parseFloat(window.getComputedStyle(el).columnGap || '0') || 0;
+    const step = firstCard ? firstCard.getBoundingClientRect().width + gap : el.clientWidth * 0.9;
+    el.scrollBy({ left: dir * step, behavior: 'smooth' });
   };
 
   return (
@@ -210,15 +219,6 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
 
   return (
     <div className="w-full">
-      <style>{`
-        .tile-gradient {
-          background-color: #020617;
-          background-image:
-            radial-gradient(circle at 20% 16%, rgba(0,129,141,0.36) 0%, rgba(0,129,141,0.17) 26%, rgba(0,129,141,0.05) 46%, transparent 64%),
-            linear-gradient(to bottom right, transparent, rgba(6,18,38,0.4), #020617);
-        }
-      `}</style>
-
       {/* ============ 1. HERO -- full-bleed photo + dark overlay for legibility ============ */}
       <section className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-end overflow-hidden bg-[#020617]">
         <div className="absolute inset-0 z-0">
