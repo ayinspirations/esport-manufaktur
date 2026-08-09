@@ -217,8 +217,8 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
         <div ref={belowRef}>
           <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90">
-            Live. Digital. Kreativ. Gamifiziert. <br />
-            Immer authentisch.
+            Mit Gaming, eSport &amp; Gamification. <br />
+            Live. Digital. Messbar. Immer authentisch.
           </p>
 
           <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
