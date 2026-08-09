@@ -2,10 +2,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
+import { SECTION_PADDING } from './spacing';
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
-    <section id="best-cases" className="w-full bg-[#c5d0c6] py-16 md:py-24 lg:py-28 px-6 md:px-14 scroll-mt-24">
+    <section id="best-cases" className={`w-full bg-[#c5d0c6] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}

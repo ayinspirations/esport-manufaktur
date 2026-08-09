@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
+import { SECTION_PADDING } from './spacing';
 
 const logos = [
   { name: 'DAZN', url: '/logos/DAZN_Logo_Master.svg.png', link: 'https://www.dazn.com/de-DE/welcome' },
@@ -103,7 +104,7 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
   }, []);
 
   return (
-    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-28 md:pt-32 md:pb-32">
+    <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden ${SECTION_PADDING}`}>
       <style>{`
         .marquee-track {
           --marquee-start: -236px;
