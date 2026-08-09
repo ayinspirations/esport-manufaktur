@@ -13,6 +13,8 @@ interface HeroProps {
   onOpenBooking?: () => void;
 }
 
+const BEGEISTERN_CHARS = 'BEGEISTERN'.split('');
+
 export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) => {
   const heroRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -28,11 +30,9 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
       // Reduced motion: skip the sequence entirely, land directly on the final state.
       mm.add('(prefers-reduced-motion: reduce)', () => {
-        gsap.set('.hero-line-1, .hero-line-2', { opacity: 1, y: 0 });
-        gsap.set('.hero-line-3 .hero-line-inner', { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)' });
+        gsap.set('.hero-line-1, .hero-line-2, .hero-begeistern-char', { opacity: 1, y: 0 });
         gsap.set('.hero-subtext, .hero-cta-btn, .hero-cta-link', { opacity: 1, y: 0, x: 0, scale: 1 });
         gsap.set([gridRef.current, glowRef.current], { opacity: 1, x: 0, y: 0, scale: 1 });
-        gsap.set('.hero-sweep', { opacity: 0 });
       });
 
       mm.add('(prefers-reduced-motion: no-preference)', () => {
@@ -47,22 +47,14 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           .from('.hero-line-1', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.4)
           .from('.hero-line-2', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.55)
 
-          // Phase 4 -- BEGEISTERN animates on its own, independent beat (masked
-          // reveal + one-shot light sweep). Swap this block out for the reference
-          // animation once it's shared -- keep the gradient/colors as-is.
-          .fromTo(
-            '.hero-line-3 .hero-line-inner',
-            { yPercent: 115, rotateX: -12, skewY: 3, filter: 'blur(6px)' },
-            { yPercent: 0, rotateX: 0, skewY: 0, filter: 'blur(0px)', duration: 1.0 },
+          // Phase 4 -- BEGEISTERN animates on its own, independent beat: a plain
+          // per-character fade-in (opacity only, no follow-up), matching the
+          // reference exactly. Gradient/colors are untouched.
+          .from(
+            '.hero-begeistern-char',
+            { opacity: 0, duration: 0.5, stagger: 0.125, ease: 'power1.in' },
             0.75
           )
-          .fromTo(
-            '.hero-sweep',
-            { backgroundPosition: '-150% 0', opacity: 0 },
-            { backgroundPosition: '150% 0', opacity: 1, duration: 0.65, ease: 'power1.inOut' },
-            1.85
-          )
-          .to('.hero-sweep', { opacity: 0, duration: 0.35, ease: 'power1.out' }, 2.35)
 
           // Phase 5 -- nav, subline, and both CTAs fade in together as one beat,
           // only once the full headline has landed.
@@ -207,25 +199,19 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           <span className="hero-line-2 block" aria-hidden="true">
             MENSCHEN
           </span>
-          <span className="hero-line hero-line-3 block overflow-hidden" style={{ perspective: 600 }}>
-            <span className="hero-line-inner block relative" aria-hidden="true">
-              <span className="bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent">
-                BEGEISTERN
-              </span>
-              {/* One-shot light sweep, clipped to the same text shape. Fully calm
-                  (opacity: 0) before and after its single pass -- no continuous shimmer. */}
+          <span className="hero-line-3 block" aria-hidden="true">
+            {BEGEISTERN_CHARS.map((char, i) => (
               <span
-                className="hero-sweep absolute inset-0 bg-clip-text text-transparent pointer-events-none select-none"
+                key={i}
+                className="hero-begeistern-char inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
                 style={{
-                  backgroundImage: 'linear-gradient(75deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%)',
-                  backgroundSize: '250% 100%',
-                  backgroundPosition: '-150% 0',
-                  opacity: 0
+                  backgroundSize: `${BEGEISTERN_CHARS.length * 100}% 100%`,
+                  backgroundPosition: `${(i / (BEGEISTERN_CHARS.length - 1)) * 100}% 0`
                 }}
               >
-                BEGEISTERN
+                {char}
               </span>
-            </span>
+            ))}
           </span>
         </h1>
 
