@@ -65,7 +65,7 @@ const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({
 
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
   return (
-    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-16 md:pt-32 md:pb-20">
+    <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-28 md:pt-32 md:pb-32">
       <style>{`
         .marquee-track {
           --marquee-start: -236px;

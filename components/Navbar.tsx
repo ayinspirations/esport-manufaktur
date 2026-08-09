@@ -55,11 +55,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           scrolled ? 'scale-[0.99]' : 'scale-100'
         }`}
         style={{
-          background: scrolled ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.10)',
+          background: scrolled ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
           backdropFilter: 'blur(16px) saturate(120%)',
           WebkitBackdropFilter: 'blur(16px) saturate(120%)',
-          border: `1px solid rgba(255,255,255,${scrolled ? 0.4 : 0.3})`,
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.25), 0 8px 24px -16px rgba(0,0,0,0.35)'
+          boxShadow: scrolled ? '0 8px 24px -18px rgba(0,0,0,0.3)' : 'none'
         }}
       >
         <div className="flex items-center gap-3 shrink-0">

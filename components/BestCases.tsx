@@ -5,7 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
-    <section id="best-cases" className="w-full bg-[#d1dbd2] px-6 md:px-14 scroll-mt-24">
+    <section id="best-cases" className="w-full bg-white py-24 md:py-32 lg:py-40 px-6 md:px-14 scroll-mt-24">
       <motion.div 
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
