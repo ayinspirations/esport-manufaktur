@@ -216,19 +216,19 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         </h1>
 
         <div ref={belowRef}>
-          <p className="hero-subtext mt-6 md:mt-8 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90">
+          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90">
             Live. Digital. Kreativ. Gamifiziert. <br />
-            Immer Authentisch.
+            Immer authentisch.
           </p>
 
-          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-8 md:pt-10">
+          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
             <button
               ref={ctaBtnRef}
               onPointerEnter={handleCtaEnter}
               onPointerMove={handleCtaMove}
               onPointerLeave={handleCtaLeave}
               onClick={() => onOpenBooking?.()}
-              className="hero-cta-btn group relative overflow-hidden bg-emerald-400 text-slate-900 px-6 py-3.5 sm:px-8 sm:py-4 rounded-full font-black text-base sm:text-lg shadow-[0_0_50px_rgba(52,211,153,0.3)] md:shadow-[0_0_60px_rgba(52,211,153,0.4)] lg:shadow-[0_0_80px_rgba(52,211,153,0.45)] tracking-tighter"
+              className="hero-cta-btn group relative overflow-hidden bg-emerald-400 text-slate-900 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base shadow-[0_0_50px_rgba(52,211,153,0.3)] md:shadow-[0_0_60px_rgba(52,211,153,0.4)] lg:shadow-[0_0_80px_rgba(52,211,153,0.45)] tracking-tighter"
             >
               <span
                 aria-hidden="true"
