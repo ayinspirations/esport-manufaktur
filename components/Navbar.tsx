@@ -122,35 +122,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
             />
             
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              className="md:hidden absolute top-24 left-4 right-4 glass rounded-[2rem] p-8 border-white/20 shadow-2xl bg-slate-950/95 backdrop-blur-3xl pointer-events-auto"
+              className="md:hidden absolute top-24 left-4 right-4 tile-gradient rounded-[2rem] p-8 border border-white/10 shadow-2xl backdrop-blur-3xl pointer-events-auto"
             >
               <div className="flex flex-col gap-8 text-lg font-bold text-white text-center">
-                <button 
-                  onClick={(e) => handleLinkClick(e, 'home')} 
+                <button
+                  onClick={(e) => handleLinkClick(e, 'home')}
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
                 >
                   Startseite
                 </button>
-                <button 
-                  onClick={(e) => handleLinkClick(e, 'competencies')} 
+                <button
+                  onClick={(e) => handleLinkClick(e, 'competencies')}
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
                 >
                   Services
                 </button>
-                <button 
-                  onClick={(e) => handleLinkClick(e, 'best-cases')} 
+                <button
+                  onClick={(e) => handleLinkClick(e, 'best-cases')}
                   className="transition-all tracking-tighter text-white hover:text-emerald-400"
                 >
                   Best Cases
                 </button>
                 <div className="h-px bg-white/10 w-1/3 mx-auto" />
-                <button 
-                  onClick={(e) => handleLinkClick(e, 'contact')} 
-                  className="bg-emerald-400 text-slate-900 px-8 py-4 rounded-xl text-center font-bold tracking-tighter shadow-lg shadow-emerald-400/20"
+                <button
+                  onClick={(e) => handleLinkClick(e, 'contact')}
+                  className="mx-auto bg-emerald-400 text-slate-900 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base shadow-[0_0_50px_rgba(52,211,153,0.3)] tracking-tighter"
                 >
                   Kontakt aufnehmen
                 </button>

@@ -106,7 +106,13 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
     <div className="w-full flex items-center justify-center" id="competencies">
       <section className="w-full py-24 md:py-32 lg:py-40 bg-transparent relative overflow-hidden">
         <div className="max-w-[1440px] mx-auto px-6 md:px-14">
-          <div className="mb-16 md:mb-24 lg:mb-32">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-16 md:mb-24 lg:mb-32"
+          >
             <div className="max-w-3xl">
               <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
                 Unsere <br /> <span className="text-slate-900/40 italic">Services.</span>
@@ -115,7 +121,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
                 Wir realisieren Erlebnisse. Strategie, Technik, Software und Content greifen nahtlos ineinander.
               </p>
             </div>
-          </div>
+          </motion.div>
 
           {/* 2x2 grid on desktop, single stacked column on mobile/tablet */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8 xl:gap-10">
