@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight, ChevronLeft, Camera } from 'lucide-react';
-import { SECTION_PADDING } from './spacing';
 
 interface ServiceItem {
   title: string;
@@ -221,7 +220,7 @@ interface CompetenciesProps {
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   return (
     <div className="w-full flex items-center justify-center" id="competencies">
-      <section className={`w-full ${SECTION_PADDING} bg-transparent relative overflow-hidden`}>
+      <section className={`w-full pt-6 md:pt-8 lg:pt-10 pb-16 md:pb-24 lg:pb-28 bg-transparent relative overflow-hidden`}>
         <style>{`
           .card-desc-wrap { max-height: 0; opacity: 0; }
           @media (hover: hover) {
