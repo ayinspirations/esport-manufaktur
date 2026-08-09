@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 
@@ -46,7 +46,10 @@ const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({
     href={logo.link || '#'}
     target={logo.link ? '_blank' : undefined}
     rel={logo.link ? 'noopener noreferrer' : undefined}
-    className={`flex items-center justify-center transition-all duration-500 shrink-0 pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
+    // Fixed min-width + shrink-0 so a not-yet-loaded (0-intrinsic-size) image
+    // can never collapse the slot to nothing and get visually cut off --
+    // independent of load state, per the fixed-width requirement.
+    className={`flex items-center justify-center transition-colors duration-500 shrink-0 min-w-[56px] md:min-w-[72px] lg:min-w-[80px] pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
     onClick={(e) => !logo.link && e.preventDefault()}
   >
     <img
@@ -64,32 +67,80 @@ const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({
 );
 
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
+  // The marquee stays paused (frozen on its resting frame) until every logo
+  // has actually finished loading & decoding. Starting it earlier is what
+  // caused the "cut off / too tight / too fast" first-load bug -- the track's
+  // real width (and therefore how far a % translate needs to travel) was
+  // still shifting under it as each <img> resolved its intrinsic size.
+  const [marqueeReady, setMarqueeReady] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadOne = (src: string) =>
+      new Promise<void>((resolve) => {
+        const img = new Image();
+        img.src = src;
+        if (img.decode) {
+          img.decode().then(resolve).catch(resolve);
+        } else {
+          img.onload = () => resolve();
+          img.onerror = () => resolve();
+        }
+      });
+
+    Promise.all(logos.map((logo) => loadOne(logo.url))).then(() => {
+      if (cancelled) return;
+      // One extra frame so layout has settled before the track starts moving.
+      requestAnimationFrame(() => {
+        if (!cancelled) setMarqueeReady(true);
+      });
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden pt-28 pb-28 md:pt-32 md:pb-32">
       <style>{`
         .marquee-track {
           --marquee-start: -236px;
         }
-        @media (min-width: 768px) {
-          .marquee-track { --marquee-start: -472px; }
-        }
-        @media (min-width: 1024px) {
-          .marquee-track { --marquee-start: -290px; }
-        }
         @keyframes marquee-scroll {
           from { transform: translate3d(var(--marquee-start), 0, 0); }
           to { transform: translate3d(calc(var(--marquee-start) - 50%), 0, 0); }
         }
         .animate-marquee-scroll {
-          animation: marquee-scroll 22s linear infinite;
+          animation: marquee-scroll 40s linear infinite;
+          /* Stays paused (frozen on its resting frame) until the "is-ready"
+             class lands -- see the image-preload effect above. Pure CSS
+             animation, so a backgrounded/restored tab never causes a
+             JS-timestamp delta jump; the browser's own animation clock
+             just keeps correct time (or pauses) on its own. */
+          animation-play-state: paused;
           display: flex;
           width: fit-content;
           will-change: transform;
           backface-visibility: hidden;
           perspective: 1000px;
         }
-        .animate-marquee-scroll:hover {
+        .animate-marquee-scroll.is-ready {
+          animation-play-state: running;
+        }
+        .animate-marquee-scroll.is-ready:hover {
           animation-play-state: paused;
+        }
+        /* Breakpoint overrides come last in source order so they win the
+           cascade against the base rule above at equal specificity. */
+        @media (min-width: 768px) {
+          .marquee-track { --marquee-start: -472px; }
+          .animate-marquee-scroll { animation-duration: 46s; }
+        }
+        @media (min-width: 1024px) {
+          .marquee-track { --marquee-start: -290px; }
+          .animate-marquee-scroll { animation-duration: 52s; }
         }
       `}</style>
 
@@ -112,13 +163,13 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
 
       {/* Block 2: Infinite Logo Band */}
       <div className="relative flex w-full overflow-hidden group py-0 z-20">
-        <div className="marquee-track animate-marquee-scroll flex items-center whitespace-nowrap px-0 py-4">
-          <div className="flex items-center gap-9 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
+        <div className={`marquee-track animate-marquee-scroll flex items-center whitespace-nowrap px-0 py-4 ${marqueeReady ? 'is-ready' : ''}`}>
+          <div className="flex items-center gap-14 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
             {trackLogos.map((logo, i) => (
               <LogoItem key={`copy-1-${logo.name}-${i}`} logo={logo} copyKey={`copy-1-${logo.name}-${i}`} />
             ))}
           </div>
-          <div className="flex items-center gap-9 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0" aria-hidden="true">
+          <div className="flex items-center gap-14 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0" aria-hidden="true">
             {trackLogos.map((logo, i) => (
               <LogoItem key={`copy-2-${logo.name}-${i}`} logo={logo} copyKey={`copy-2-${logo.name}-${i}`} />
             ))}
