@@ -10,7 +10,9 @@ import { useDocumentHead } from '../hooks/useDocumentHead';
 // jump in contrast.
 const CANVAS_A = 'bg-[#d1dbd2]';
 const CANVAS_B = 'bg-[#c5d0c6]';
-const TILE = 'bg-slate-950 text-white';
+// Same glow + vignette gradient as the homepage Hero's dark background,
+// just without its diagonal grid lines -- richer than a flat slate fill.
+const TILE = 'tile-gradient text-white';
 
 const SECTION = 'py-20 md:py-28 lg:py-32';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
@@ -208,6 +210,15 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
 
   return (
     <div className="w-full">
+      <style>{`
+        .tile-gradient {
+          background-color: #020617;
+          background-image:
+            radial-gradient(circle at 20% 16%, rgba(0,129,141,0.36) 0%, rgba(0,129,141,0.17) 26%, rgba(0,129,141,0.05) 46%, transparent 64%),
+            linear-gradient(to bottom right, transparent, rgba(6,18,38,0.4), #020617);
+        }
+      `}</style>
+
       {/* ============ 1. HERO -- full-bleed photo + dark overlay for legibility ============ */}
       <section className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-end overflow-hidden bg-[#020617]">
         <div className="absolute inset-0 z-0">
