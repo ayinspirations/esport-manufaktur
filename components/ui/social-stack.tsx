@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Instagram, Linkedin, Youtube, Share2 } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION, HERO_REVEAL_EASE } from '../heroIntro';
@@ -47,17 +47,38 @@ const DRAG_THRESHOLD = 10; // px of movement before a touch counts as a drag, no
 export const SocialStack: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const [dragPos, setDragPos] = useState<{ left: number; top: number } | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const dragState = useRef({ dragging: false, moved: false, startX: 0, startY: 0, originLeft: 0, originTop: 0 });
   const justDraggedRef = useRef(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Both hover (desktop) and click/tap (mobile, and desktop pin) drive the
   // same boolean -- no CSS :hover is used, so there's no "stuck open" state
   // from mobile's sticky-hover simulation and no specificity race between a
   // group-hover utility and a plain one restarting the transition.
   const effectiveOpen = isOpen || isHovered;
+
+  // Glassy/dimmed while actively scrolling, on both web and mobile. Hover
+  // brings it back on desktop; on mobile (no hover) it recovers on its own
+  // once scrolling settles, via the debounce below. Opening or hovering
+  // always wins over the scroll state.
+  const isDimmed = isScrolling && !effectiveOpen;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolling(true);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => setIsScrolling(false), 400);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.pointerType !== 'touch' || !containerRef.current) return;
@@ -138,7 +159,11 @@ export const SocialStack: React.FC = () => {
       }
       className={`fixed z-[60] ${dragPos ? '' : 'bottom-6 right-6'} select-none`}
     >
-      <div className="relative h-14 w-14">
+      <div
+        className={`relative h-14 w-14 transition-[opacity,filter] duration-300 ease-out ${
+          isDimmed ? 'opacity-30 saturate-50 blur-[0.5px]' : 'opacity-100 saturate-100 blur-0'
+        }`}
+      >
         {SOCIAL_LINKS.map(({ href, label, Icon, closedClass, openClass, zClass }, i) => (
           <a
             key={label}
