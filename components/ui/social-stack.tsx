@@ -54,6 +54,7 @@ export const SocialStack: React.FC = () => {
   const dragState = useRef({ dragging: false, moved: false, startX: 0, startY: 0, originLeft: 0, originTop: 0 });
   const justDraggedRef = useRef(false);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverLeaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Both hover (desktop) and click/tap (mobile, and desktop pin) drive the
   // same boolean -- no CSS :hover is used, so there's no "stuck open" state
@@ -77,6 +78,7 @@ export const SocialStack: React.FC = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (hoverLeaveTimeoutRef.current) clearTimeout(hoverLeaveTimeoutRef.current);
     };
   }, []);
 
@@ -132,11 +134,26 @@ export const SocialStack: React.FC = () => {
   // else is touched, which permanently pinned isHovered (and therefore
   // effectiveOpen) true after the first tap and made the toggle button
   // impossible to close again on mobile.
+  //
+  // The fanned-out icons sit up to 192px above the 56px trigger button via
+  // a CSS transform, which doesn't grow the container's own hit-test box --
+  // there are real gaps between the button and each icon with no element
+  // underneath the cursor. Moving the mouse from the button toward an icon
+  // crosses one of those gaps, which used to fire pointerleave instantly
+  // and snap the stack shut before it could be reached. A short grace period
+  // on leave (cancelled by the next enter) absorbs that transit.
   const handlePointerEnter = (e: React.PointerEvent) => {
-    if (e.pointerType === 'mouse') setIsHovered(true);
+    if (e.pointerType !== 'mouse') return;
+    if (hoverLeaveTimeoutRef.current) {
+      clearTimeout(hoverLeaveTimeoutRef.current);
+      hoverLeaveTimeoutRef.current = null;
+    }
+    setIsHovered(true);
   };
   const handlePointerLeave = (e: React.PointerEvent) => {
-    if (e.pointerType === 'mouse') setIsHovered(false);
+    if (e.pointerType !== 'mouse') return;
+    if (hoverLeaveTimeoutRef.current) clearTimeout(hoverLeaveTimeoutRef.current);
+    hoverLeaveTimeoutRef.current = setTimeout(() => setIsHovered(false), 200);
   };
 
   return (
