@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Instagram, Linkedin, Youtube, Share2 } from 'lucide-react';
+import { HERO_GROUP_DELAY, HERO_GROUP_DURATION, HERO_REVEAL_EASE } from '../heroIntro';
 
 interface SocialStackLink {
   href: string;
@@ -7,7 +9,6 @@ interface SocialStackLink {
   Icon: React.ComponentType<{ className?: string }>;
   closedClass: string;
   openClass: string;
-  hoverClass: string;
   zClass: string;
 }
 
@@ -20,7 +21,6 @@ const SOCIAL_LINKS: SocialStackLink[] = [
     Icon: Instagram,
     closedClass: 'translate-y-1 scale-95',
     openClass: '-translate-y-16 scale-100',
-    hoverClass: 'group-hover:-translate-y-16 group-hover:scale-100',
     zClass: 'z-[3]'
   },
   {
@@ -29,7 +29,6 @@ const SOCIAL_LINKS: SocialStackLink[] = [
     Icon: Linkedin,
     closedClass: 'translate-y-2 scale-90',
     openClass: '-translate-y-32 scale-100',
-    hoverClass: 'group-hover:-translate-y-32 group-hover:scale-100',
     zClass: 'z-[2]'
   },
   {
@@ -38,27 +37,106 @@ const SOCIAL_LINKS: SocialStackLink[] = [
     Icon: Youtube,
     closedClass: 'translate-y-3 scale-[0.85]',
     openClass: '-translate-y-48 scale-100',
-    hoverClass: 'group-hover:-translate-y-48 group-hover:scale-100',
     zClass: 'z-[1]'
   }
 ];
 
+const WIDGET_SIZE = 56; // px, matches h-14/w-14
+const DRAG_THRESHOLD = 10; // px of movement before a touch counts as a drag, not a tap
+
 export const SocialStack: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [dragPos, setDragPos] = useState<{ left: number; top: number } | null>(null);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const dragState = useRef({ dragging: false, moved: false, startX: 0, startY: 0, originLeft: 0, originTop: 0 });
+  const justDraggedRef = useRef(false);
+
+  // Both hover (desktop) and click/tap (mobile, and desktop pin) drive the
+  // same boolean -- no CSS :hover is used, so there's no "stuck open" state
+  // from mobile's sticky-hover simulation and no specificity race between a
+  // group-hover utility and a plain one restarting the transition.
+  const effectiveOpen = isOpen || isHovered;
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (e.pointerType !== 'touch' || !containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    dragState.current = {
+      dragging: true,
+      moved: false,
+      startX: e.clientX,
+      startY: e.clientY,
+      originLeft: dragPos ? dragPos.left : rect.left,
+      originTop: dragPos ? dragPos.top : rect.top
+    };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    const state = dragState.current;
+    if (!state.dragging) return;
+    const dx = e.clientX - state.startX;
+    const dy = e.clientY - state.startY;
+
+    if (!state.moved && Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
+    state.moved = true;
+
+    const maxLeft = window.innerWidth - WIDGET_SIZE;
+    const maxTop = window.innerHeight - WIDGET_SIZE;
+    setDragPos({
+      left: Math.min(Math.max(state.originLeft + dx, 0), maxLeft),
+      top: Math.min(Math.max(state.originTop + dy, 0), maxTop)
+    });
+  };
+
+  const endDrag = () => {
+    const state = dragState.current;
+    if (state.dragging && state.moved) justDraggedRef.current = true;
+    state.dragging = false;
+  };
+
+  // Capture-phase guard: if the gesture that just ended was a drag, swallow
+  // the click it produces so it neither toggles the stack nor navigates a
+  // freshly-revealed link.
+  const handleClickCapture = (e: React.MouseEvent) => {
+    if (justDraggedRef.current) {
+      justDraggedRef.current = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
 
   return (
-    <div className="fixed bottom-6 right-6 z-[60] group">
+    <motion.div
+      ref={containerRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={endDrag}
+      onPointerCancel={endDrag}
+      onClickCapture={handleClickCapture}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={
+        dragPos
+          ? { left: dragPos.left, top: dragPos.top, touchAction: 'none' }
+          : { touchAction: 'none' }
+      }
+      className={`fixed z-[60] group ${dragPos ? '' : 'bottom-6 right-6'} select-none`}
+    >
       <div className="relative h-14 w-14">
-        {SOCIAL_LINKS.map(({ href, label, Icon, closedClass, openClass, hoverClass, zClass }, i) => (
+        {SOCIAL_LINKS.map(({ href, label, Icon, closedClass, openClass, zClass }, i) => (
           <a
             key={label}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            tabIndex={isOpen ? 0 : -1}
-            className={`absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 bg-[#020617] opacity-100 shadow-[0_0_24px_rgba(52,211,153,0.25)] transition-all duration-500 ease-out ${
-              isOpen ? openClass : `${closedClass} ${hoverClass}`
+            tabIndex={effectiveOpen ? 0 : -1}
+            className={`tile-gradient absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 shadow-[0_0_24px_rgba(52,211,153,0.25)] transition-transform duration-500 ease-out ${
+              effectiveOpen ? openClass : closedClass
             }`}
             style={{ transitionDelay: `${i * 80}ms` }}
           >
@@ -69,13 +147,13 @@ export const SocialStack: React.FC = () => {
         <button
           type="button"
           onClick={() => setIsOpen((v) => !v)}
-          aria-expanded={isOpen}
+          aria-expanded={effectiveOpen}
           aria-label="Social Media Links"
-          className="relative z-10 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 bg-[#020617] shadow-[0_0_28px_rgba(52,211,153,0.35)] transition-transform duration-300 group-hover:scale-105"
+          className="tile-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] transition-transform duration-300 group-hover:scale-105"
         >
           <Share2 className="h-5 w-5 text-emerald-400" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
