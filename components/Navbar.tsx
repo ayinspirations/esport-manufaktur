@@ -121,10 +121,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         className={`md:hidden pointer-events-auto transition-colors duration-300 ${
           isOpen ? 'bg-[#020617] rounded-[2rem] border border-white/10 overflow-hidden' : ''
         }`}
-        style={isOpen ? {
-          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-          maskImage: 'radial-gradient(white, black)'
-        } : undefined}
       >
         <div className="flex items-center justify-between px-6 py-5">
           <button
