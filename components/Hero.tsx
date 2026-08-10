@@ -1,10 +1,11 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
+import { TextShimmer } from './ui/shimmer-text';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -23,6 +24,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
   const glowRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const ctaBtnRef = useRef<HTMLButtonElement>(null);
+  const [begeisternDone, setBegeisternDone] = useState(false);
 
   const { contextSafe } = useGSAP(
     () => {
@@ -33,6 +35,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         gsap.set('.hero-line-1, .hero-line-2, .hero-begeistern-char', { opacity: 1, y: 0 });
         gsap.set('.hero-subtext, .hero-cta-btn, .hero-cta-link', { opacity: 1, y: 0, x: 0, scale: 1 });
         gsap.set([gridRef.current, glowRef.current], { opacity: 1, x: 0, y: 0, scale: 1 });
+        setBegeisternDone(true);
       });
 
       mm.add('(prefers-reduced-motion: no-preference)', () => {
@@ -52,7 +55,13 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           // reference exactly. Gradient/colors are untouched.
           .from(
             '.hero-begeistern-char',
-            { opacity: 0, duration: 0.5, stagger: 0.125, ease: 'power1.in' },
+            {
+              opacity: 0,
+              duration: 0.5,
+              stagger: 0.125,
+              ease: 'power1.in',
+              onComplete: () => setBegeisternDone(true)
+            },
             0.75
           )
 
@@ -200,18 +209,28 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             MENSCHEN
           </span>
           <span className="hero-line-3 block" aria-hidden="true">
-            {BEGEISTERN_CHARS.map((char, i) => (
-              <span
-                key={i}
-                className="hero-begeistern-char inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
-                style={{
-                  backgroundSize: `${BEGEISTERN_CHARS.length * 100}% 100%`,
-                  backgroundPosition: `${(i / (BEGEISTERN_CHARS.length - 1)) * 100}% 0`
-                }}
+            {begeisternDone ? (
+              <TextShimmer
+                as="span"
+                className="inline-block"
+                style={{ '--base-color': '#2dd4bf' } as React.CSSProperties}
               >
-                {char}
-              </span>
-            ))}
+                {BEGEISTERN_CHARS.join('')}
+              </TextShimmer>
+            ) : (
+              BEGEISTERN_CHARS.map((char, i) => (
+                <span
+                  key={i}
+                  className="hero-begeistern-char inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
+                  style={{
+                    backgroundSize: `${BEGEISTERN_CHARS.length * 100}% 100%`,
+                    backgroundPosition: `${(i / (BEGEISTERN_CHARS.length - 1)) * 100}% 0`
+                  }}
+                >
+                  {char}
+                </span>
+              ))
+            )}
           </span>
         </h1>
 
