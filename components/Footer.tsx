@@ -2,7 +2,6 @@
 import React from 'react';
 import { Youtube, Instagram, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { SocialStack } from './ui/social-stack';
 
 interface FooterProps {
   onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy') => void;
@@ -89,7 +88,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
           </motion.div>
         </footer>
       </div>
-      <SocialStack />
     </div>
   );
 };

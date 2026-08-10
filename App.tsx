@@ -23,6 +23,7 @@ import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { servicesContent, serviceSlugs } from './components/servicesContent';
 import { Purpose } from './components/Purpose';
 import { UeberUnsPage } from './components/UeberUnsPage';
+import { SocialStack } from './components/ui/social-stack';
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
@@ -173,6 +174,7 @@ export default function App() {
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />
+      {activePage === 'home' && <SocialStack />}
       <CookiePopup />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
