@@ -69,7 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className="flex items-center gap-2.5 text-white group"
             aria-label="eSport Manufaktur"
           >
-            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-7 w-auto object-contain" />
+            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-8 w-auto object-contain" />
           </button>
         </div>
 
