@@ -43,16 +43,18 @@ export const ContactForm: React.FC = () => {
             >
               Lass uns sprechen.
             </h2>
-            <p
-              className="text-slate-600 text-lg md:text-2xl font-bold max-w-2xl mx-auto tracking-tight leading-tight"
+            <div
+              className="text-slate-600 text-lg md:text-2xl font-bold max-w-2xl mx-auto tracking-tight leading-tight space-y-4"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? 'translateY(0)' : 'translateY(20px)',
                 transition: 'opacity 1s ease, transform 1s ease 0.3s',
               }}
             >
-              Wir helfen Ihnen, Zielgruppen zu aktivieren und Ihre Marke erlebbar zu machen.
-            </p>
+              <p>Du hast eine Idee, ein konkretes Projekt oder suchst nach dem richtigen Ansatz?</p>
+              <p>Erzähl uns kurz, was du vorhast. Gemeinsam schauen wir, wie wir deine Zielgruppe mit Gaming, eSport und Gamification erreichen und deine Marke digital wie physisch erlebbar machen können.</p>
+              <p>Unverbindlich. Persönlich. Auf dein Projekt zugeschnitten.</p>
+            </div>
           </div>
 
           <div className="relative rounded-[3rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">

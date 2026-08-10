@@ -186,15 +186,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </AnimatePresence>
       </div>
 
-      {/* Dim backdrop behind the open mobile menu */}
+      {/* Invisible click-outside-to-close catcher -- no dim/blur visual, since
+          any darkened backdrop shows through the menu panel's rounded corner
+          gaps and reads as a shadow around the card. */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
+            className="md:hidden fixed inset-0 z-[-1] pointer-events-auto"
           />
         )}
       </AnimatePresence>

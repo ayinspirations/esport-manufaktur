@@ -9,18 +9,9 @@ interface PurposeProps {
 }
 
 const blocks = [
-  {
-    statement: 'Von der Strategie bis zur Umsetzung — alles aus einer Hand.',
-    label: 'Strategie & Konzeption'
-  },
-  {
-    statement: 'Digitale und physische Formate, nahtlos verbunden.',
-    label: 'Digitale Lösungen & Events'
-  },
-  {
-    statement: 'Content, der aktiviert statt nur begleitet.',
-    label: 'Content, Creator & Recruiting'
-  }
+  'Unser Leistungsspektrum reicht von individuellen Gaming- und eSport-Konzepten, Turnieren und Eventformaten über digitale Messe- und Eventpässe, Games, Quests und interaktive Plattformlösungen',
+  'bis hin zu Content-Produktion, Streaming, Messebau, Eventtechnik, Creator-Aktivierung, Scouting sowie Recruiting- und Employer-Branding-Kampagnen.',
+  'Dabei entwickeln wir keine Standardlösungen, sondern Formate, die auf Zielgruppe, Marke und Kommunikationsziel zugeschnitten sind. Online und offline greifen dabei nahtlos ineinander.'
 ];
 
 export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
@@ -55,15 +46,10 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mt-16 md:mt-20 pt-12 md:pt-16 border-t border-white/10">
-            {blocks.map((block) => (
-              <div key={block.label}>
-                <p className="text-white font-black text-xl md:text-2xl leading-snug tracking-tight mb-4">
-                  {block.statement}
-                </p>
-                <p className="text-white/40 text-[11px] font-black uppercase tracking-widest">
-                  {block.label}
-                </p>
-              </div>
+            {blocks.map((text, i) => (
+              <p key={i} className="text-white/70 font-medium text-base md:text-lg leading-relaxed tracking-tight">
+                {text}
+              </p>
             ))}
           </div>
 
