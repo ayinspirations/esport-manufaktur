@@ -19,24 +19,24 @@ const SOCIAL_LINKS: SocialStackLink[] = [
     href: 'https://www.instagram.com/esport.manufaktur',
     label: 'Instagram',
     Icon: Instagram,
-    closedClass: 'translate-y-1 scale-95',
-    openClass: '-translate-y-16 scale-100',
+    closedClass: 'translate-y-0 scale-90 opacity-0 pointer-events-none',
+    openClass: '-translate-y-16 scale-100 opacity-100 pointer-events-auto',
     zClass: 'z-[3]'
   },
   {
     href: 'https://www.linkedin.com/company/esport-manufaktur-gmbh/',
     label: 'LinkedIn',
     Icon: Linkedin,
-    closedClass: 'translate-y-2 scale-90',
-    openClass: '-translate-y-32 scale-100',
+    closedClass: 'translate-y-0 scale-90 opacity-0 pointer-events-none',
+    openClass: '-translate-y-32 scale-100 opacity-100 pointer-events-auto',
     zClass: 'z-[2]'
   },
   {
     href: 'https://www.youtube.com/@eSport-Manufaktur',
     label: 'YouTube',
     Icon: Youtube,
-    closedClass: 'translate-y-3 scale-[0.85]',
-    openClass: '-translate-y-48 scale-100',
+    closedClass: 'translate-y-0 scale-90 opacity-0 pointer-events-none',
+    openClass: '-translate-y-48 scale-100 opacity-100 pointer-events-auto',
     zClass: 'z-[1]'
   }
 ];
@@ -106,6 +106,18 @@ export const SocialStack: React.FC = () => {
     }
   };
 
+  // Pointer (not mouse) events, gated to real mice: touch devices fire a
+  // synthetic "enter" on tap but never a matching "leave" until something
+  // else is touched, which permanently pinned isHovered (and therefore
+  // effectiveOpen) true after the first tap and made the toggle button
+  // impossible to close again on mobile.
+  const handlePointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') setIsHovered(true);
+  };
+  const handlePointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType === 'mouse') setIsHovered(false);
+  };
+
   return (
     <motion.div
       ref={containerRef}
@@ -117,14 +129,14 @@ export const SocialStack: React.FC = () => {
       onPointerUp={endDrag}
       onPointerCancel={endDrag}
       onClickCapture={handleClickCapture}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       style={
         dragPos
           ? { left: dragPos.left, top: dragPos.top, touchAction: 'none' }
           : { touchAction: 'none' }
       }
-      className={`fixed z-[60] group ${dragPos ? '' : 'bottom-6 right-6'} select-none`}
+      className={`fixed z-[60] ${dragPos ? '' : 'bottom-6 right-6'} select-none`}
     >
       <div className="relative h-14 w-14">
         {SOCIAL_LINKS.map(({ href, label, Icon, closedClass, openClass, zClass }, i) => (
@@ -135,7 +147,7 @@ export const SocialStack: React.FC = () => {
             rel="noopener noreferrer"
             aria-label={label}
             tabIndex={effectiveOpen ? 0 : -1}
-            className={`tile-gradient absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 shadow-[0_0_24px_rgba(52,211,153,0.25)] transition-transform duration-500 ease-out ${
+            className={`tile-gradient absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_24px_rgba(52,211,153,0.25)] transition-[transform,opacity] duration-500 ease-out ${
               effectiveOpen ? openClass : closedClass
             }`}
             style={{ transitionDelay: `${i * 80}ms` }}
@@ -149,7 +161,9 @@ export const SocialStack: React.FC = () => {
           onClick={() => setIsOpen((v) => !v)}
           aria-expanded={effectiveOpen}
           aria-label="Social Media Links"
-          className="tile-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] transition-transform duration-300 group-hover:scale-105"
+          className={`tile-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] transition-transform duration-300 ${
+            isHovered ? 'scale-105' : 'scale-100'
+          }`}
         >
           <Share2 className="h-5 w-5 text-emerald-400" />
         </button>
