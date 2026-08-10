@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Instagram, Linkedin, Youtube, Share2 } from 'lucide-react';
+import { HERO_GROUP_DELAY, HERO_GROUP_DURATION, HERO_REVEAL_EASE } from '../heroIntro';
 
 interface SocialStackLink {
   href: string;
@@ -105,8 +107,11 @@ export const SocialStack: React.FC = () => {
   };
 
   return (
-    <div
+    <motion.div
       ref={containerRef}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={endDrag}
@@ -149,6 +154,6 @@ export const SocialStack: React.FC = () => {
           <Share2 className="h-5 w-5 text-emerald-400" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
