@@ -119,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           button in the exact top-right spot where it always sits. */}
       <div
         className={`md:hidden pointer-events-auto transition-colors duration-300 ${
-          isOpen ? 'bg-[#020617] rounded-[2rem] border border-white/10 overflow-hidden' : ''
+          isOpen ? 'bg-[#020617] rounded-b-[2rem] border border-white/10 overflow-hidden' : ''
         }`}
       >
         <div className="flex items-center justify-between px-6 py-5">
