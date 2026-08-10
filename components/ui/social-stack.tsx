@@ -147,7 +147,7 @@ export const SocialStack: React.FC = () => {
             rel="noopener noreferrer"
             aria-label={label}
             tabIndex={effectiveOpen ? 0 : -1}
-            className={`tile-gradient absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_24px_rgba(52,211,153,0.25)] transition-[transform,opacity] duration-500 ease-out ${
+            className={`tile-gradient absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_24px_rgba(52,211,153,0.25)] hover:shadow-[0_0_50px_rgba(52,211,153,0.3)] transition-[transform,opacity,box-shadow] duration-500 ease-out ${
               effectiveOpen ? openClass : closedClass
             }`}
             style={{ transitionDelay: `${i * 80}ms` }}
@@ -161,9 +161,7 @@ export const SocialStack: React.FC = () => {
           onClick={() => setIsOpen((v) => !v)}
           aria-expanded={effectiveOpen}
           aria-label="Social Media Links"
-          className={`tile-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] transition-transform duration-300 ${
-            isHovered ? 'scale-105' : 'scale-100'
-          }`}
+          className="tile-gradient relative z-10 flex h-14 w-14 items-center justify-center rounded-[20px] border border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] hover:shadow-[0_0_50px_rgba(52,211,153,0.3)] transition-shadow duration-300"
         >
           <Share2 className="h-5 w-5 text-emerald-400" />
         </button>
