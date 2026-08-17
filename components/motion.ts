@@ -57,3 +57,55 @@ export const prefersReducedMotion = (): boolean =>
  * gimmick, not as craft.
  */
 export const VIEWPORT_ONCE = { once: true, margin: '-100px' } as const;
+
+/**
+ * Scrolls the window to `targetY` over a distance-aware duration.
+ *
+ * The browser's own `behavior: 'smooth'` runs for a fixed time no matter how
+ * far it has to travel. Jumping from the hero to Best Cases is ~4700px, which
+ * it covers in roughly half a second -- around 9000px/s, which reads as the
+ * page being fired at you rather than scrolled. Scaling the duration with the
+ * distance keeps short hops snappy and makes long ones legible.
+ *
+ * Returns immediately under prefers-reduced-motion, landing on the target.
+ */
+export function smoothScrollTo(targetY: number) {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+
+  if (prefersReducedMotion() || Math.abs(distance) < 8) {
+    window.scrollTo({ top: targetY, behavior: 'instant' as ScrollBehavior });
+    return;
+  }
+
+  // ~1.6px per ms, clamped so a short hop still animates and a full-page
+  // traverse never drags.
+  const duration = Math.min(1500, Math.max(420, Math.abs(distance) / 1.6));
+  // easeInOutCubic: symmetric acceleration and deceleration.
+  //
+  // Deliberately NOT the ease-out-expo used for reveals. That curve puts ~87%
+  // of the travel into the first 30% of its time, which on a 4700px jump is
+  // indistinguishable from the native behaviour this replaces -- the page
+  // still appears to be fired at you. Scrolling wants an even pace with a
+  // gentle start and a soft landing.
+  const ease = (t: number) =>
+    t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  let start: number | null = null;
+  const step = (now: number) => {
+    if (start === null) start = now;
+    const t = Math.min(1, (now - start) / duration);
+    window.scrollTo({ top: startY + distance * ease(t), behavior: 'instant' as ScrollBehavior });
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/**
+ * Scrolls an element into view, honouring its `scroll-margin-top` so the
+ * sticky navigation never lands on top of the thing you asked for.
+ */
+export function smoothScrollToElement(el: HTMLElement) {
+  const offset = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+  smoothScrollTo(el.getBoundingClientRect().top + window.scrollY - offset);
+}

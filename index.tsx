@@ -19,7 +19,7 @@ if (typeof window !== 'undefined') {
   if (window.history.scrollRestoration) {
     window.history.scrollRestoration = 'manual';
   }
-  window.scrollTo(0, 0);
+  window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
 
   // 1. Monkey-patch ResizeObserver to prevent the error at the source
   // This wraps the observer callback in requestAnimationFrame to decouple layout changes from the observation turn.
