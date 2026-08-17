@@ -250,7 +250,10 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
 const DESKTOP_TILES = [
   { start: 'lg:col-start-1',  span: 'lg:col-span-6', ratio: 'lg:aspect-[4/3]',   offset: '' },
   { start: 'lg:col-start-8',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-28' },
-  { start: 'lg:col-start-2',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-16' },
+  // "Digitale Lösungen" sits higher than the rest of its row on purpose --
+  // it fills the empty ground under the wide first tile instead of hanging
+  // below it. Raise or lower it here.
+  { start: 'lg:col-start-2',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:-mt-24' },
   { start: 'lg:col-start-7',  span: 'lg:col-span-6', ratio: 'lg:aspect-[16/10]', offset: 'lg:mt-40' },
   { start: 'lg:col-start-1',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-12' },
   { start: 'lg:col-start-8',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-32' },
@@ -267,11 +270,16 @@ const MD_TILES = [
   'md:col-span-5', 'md:col-span-7 md:mt-20',
 ];
 
+/** Services shown before "Mehr anzeigen" is pressed (desktop/tablet only). */
+const INITIAL_TILES = 4;
+
 interface CompetenciesProps {
   onNavigate?: (page: any) => void;
 }
 
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
+  const [showAll, setShowAll] = useState(false);
+
   return (
     // scroll-mt clears the sticky bar (56px pill + 32px top inset = 88px), so
     // jumping to this section never parks its heading or the first row of
@@ -326,25 +334,41 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
             </ServicesCarousel>
           </div>
 
-          {/* Desktop: no slider. Every service is visible at once, sized and
-              offset per DESKTOP_TILES, with generous empty ground between. */}
+          {/* Desktop: no slider. The first four services are shown; the rest
+              load on request, so the section opens as a composition rather
+              than a wall of ten tiles. */}
           <div className="hidden md:grid grid-cols-12 gap-x-6 gap-y-16 lg:gap-x-8 lg:gap-y-8 items-start">
-            {data.map((item, i) => {
+            {data.slice(0, showAll ? data.length : INITIAL_TILES).map((item, i) => {
               const lg = DESKTOP_TILES[i % DESKTOP_TILES.length];
               return (
                 <ServiceCard
                   key={item.title}
                   item={item}
                   onNavigate={onNavigate}
-                  // Stagger runs per row rather than per card: with ten tiles
-                  // a flat i * step would leave the last one waiting most of a
-                  // second after it is already on screen.
+                  // Stagger runs per row rather than per card: a flat i * step
+                  // would leave the last tile waiting most of a second after
+                  // it is already on screen.
                   delay={(i % 3) * STAGGER.card}
                   sizing={`aspect-[3/4] ${MD_TILES[i % MD_TILES.length]} ${lg.start} ${lg.span} ${lg.ratio} ${lg.offset}`}
                 />
               );
             })}
           </div>
+
+          {!showAll && (
+            <div className="hidden md:flex justify-center mt-20 lg:mt-28">
+              <button
+                onClick={() => setShowAll(true)}
+                className="spring inline-flex items-center gap-2.5 bg-emerald-400 text-slate-900 px-7 py-4 rounded-full font-black text-sm tracking-tighter"
+              >
+                Mehr anzeigen
+                <ArrowRight className="w-4 h-4" />
+                <span className="sr-only">
+                  {data.length - INITIAL_TILES} weitere Services
+                </span>
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </div>

@@ -5,20 +5,21 @@ import App from './App';
 
 // Global suppression and architectural fix for ResizeObserver loop errors
 if (typeof window !== 'undefined') {
-  // Force scroll to top on refresh
+  // Start a fresh visit at the top. scrollRestoration = 'manual' stops the
+  // browser restoring the previous scroll offset on reload, and the immediate
+  // scrollTo below applies while the page is still at its initial position.
+  //
+  // There used to be a second scrollTo(0, 0) on the window 'load' event. That
+  // event does not fire when the page becomes usable -- it waits for *every*
+  // subresource, including the case-study videos and the multi-megabyte
+  // photos. On a normal connection it lands several seconds in, by which time
+  // the visitor has already started reading, and it yanked them back to the
+  // top mid-scroll. Startup intent is fully covered by the two lines above,
+  // which run before anyone can scroll.
   if (window.history.scrollRestoration) {
     window.history.scrollRestoration = 'manual';
   }
   window.scrollTo(0, 0);
-  
-  window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
-  });
-
-  // Handle refresh at #home to force top scroll
-  if (window.location.hash === '#home' || window.location.hash === '') {
-    window.scrollTo(0, 0);
-  }
 
   // 1. Monkey-patch ResizeObserver to prevent the error at the source
   // This wraps the observer callback in requestAnimationFrame to decouple layout changes from the observation turn.
