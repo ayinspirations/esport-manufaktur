@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { STAGGER } from './motion';
+import { STAGGER, DUR } from './motion';
 
 interface CaseDetailProps {
   onBack: () => void;
@@ -87,14 +87,10 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto mb-2 md:mb-0">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl"
-              >
-                Hagebau <br /> <span className="text-white/40 italic">Bolay.</span>
-              </motion.h1>
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+                <RevealText as="span" by="word" text="Hagebau" delay={0.1} />
+                <RevealText as="span" by="word" text="Bolay." delay={0.24} className="text-white/40 italic" />
+              </h1>
             </div>
             
             <motion.div
@@ -137,12 +133,12 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
               <RevealText as="h2" by="word" text="Hagebau Bolay Case Study: Gaming Day 1.0 & 2.0" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+              <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Für Hagebau Bolay haben wir mit dem Gaming Day 1.0 und Gaming Day 2.0 ein einzigartiges Eventformat geschaffen, das Gaming, Esport und interaktives Entertainment zu einem unvergesslichen Erlebnis verschmelzen ließ.
-              </p>
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
+              </Reveal>
+              <Reveal as="p" delay={0.16} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
                 Ziel war es, eine Gaming-Welt zu erschaffen, in der Spaß, Teamgeist und Wettkampf sowohl für Neulinge als auch fortgeschrittene Spielende aufeinandertrafen.
-              </p>
+              </Reveal>
             </section>
 
             {/* Image Slider */}
@@ -198,9 +194,9 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
             </div>
 
             <section className="space-y-8">
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+              <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
                 Hochwertige Gaming-Setups, riesige Leinwände für Zuschauende und eine Atmosphäre voller Spannung – unser Team von der eSport Manufaktur setzte das Event mit höchster Präzision und Leidenschaft um. Wir konzipierten packende Turniere, installierten interaktive Gaming-Stationen und schufen eine professionelle Bühne für mitreißende Matches und unvergessliche Erlebnisse.
-              </p>
+              </Reveal>
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
@@ -238,7 +234,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
+              <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   {/* Format Section */}
                   <section>
@@ -314,7 +310,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
 
               {/* Removed Mobile Logo positioning - now handled by unified logo placement below sidebar */}
             </div>

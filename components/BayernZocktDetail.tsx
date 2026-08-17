@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { STAGGER } from './motion';
+import { STAGGER, DUR } from './motion';
 
 interface BayernZocktDetailProps {
   onBack: () => void;
@@ -77,14 +77,10 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl"
-              >
-                GAMING IN <br /> <span className="text-white italic">BAYERN</span>
-              </motion.h1>
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+                <RevealText as="span" by="word" text="GAMING IN" delay={0.1} />
+                <RevealText as="span" by="word" text="BAYERN" delay={0.24} className="text-white italic" />
+              </h1>
             </div>
             
             <motion.div
@@ -110,12 +106,12 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
               <RevealText as="h2" by="word" text="Über das Projekt" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+              <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Die Kooperation mit Bayern Zockt hat die Gaming-Community in Bayern zusammengebracht und das Gaming in der Region auf eine neue Ebene gehoben. Das Turnier adressierte neue Zielgruppen mit einer digitalen Plattform, in der diese mit verschiedenen Spielen ihr Können unter Beweis stellen konnten.
-              </p>
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
+              </Reveal>
+              <Reveal as="p" delay={0.16} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
                 Den Höhepunkt des Events stellte das spektakuläre, live ausgetragene Finale dar, das von interaktiven Spielstationen und hochmodernen Gaming-Setups begleitet wurde. Diese setzten nicht nur die Teilnehmenden ins Zentrum, sondern boten auch den Zuschauer:innen die Möglichkeit, direkt in die Action einzutauchen.
-              </p>
+              </Reveal>
             </section>
 
             {/* Image Slider */}
@@ -166,9 +162,9 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
             </div>
 
             <section className="space-y-8">
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+              <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
                 Die Verbindung von digitalen Turnieren und einem eindrucksvollen regionalen Finale trug maßgeblich zur Etablierung der Marke Bayern Zockt als dynamischer, zukunftsorientierter Akteur in der Gaming-Welt bei. 
-              </p>
+              </Reveal>
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
@@ -208,7 +204,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
+              <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   {/* Format Section */}
                   <section>
@@ -281,7 +277,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

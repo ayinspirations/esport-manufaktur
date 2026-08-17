@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { STAGGER } from './motion';
+import { STAGGER, DUR } from './motion';
 
 interface CaseDetailProps {
   onBack: () => void;
@@ -78,14 +78,10 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl"
-              >
-                0711 <br /> <span className="text-white/40 italic">Showdown.</span>
-              </motion.h1>
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+                <RevealText as="span" by="word" text="0711" delay={0.1} />
+                <RevealText as="span" by="word" text="Showdown." delay={0.24} className="text-white/40 italic" />
+              </h1>
             </div>
             
             <motion.div
@@ -113,15 +109,15 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
             <section>
               <RevealText as="h2" by="word" text="Innovatives Recruiting durch Gaming - Employer Branding für Tech-Talente" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <div className="space-y-6">
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Über 200 Bewerbungen, 64 Spieler:innen und 2.000 € Preisgeld für die besten Gamer. Wer junge Talente heute erreichen möchte, muss ihre Lebenswelt verstehen: Gaming, Gamification und persönliche Begegnung auf Augenhöhe.
-                </p>
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                </Reveal>
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Am 29. März 2025 haben wir mit dem 0711 Showdown in der CLUTCH23 eArena Fellbach gezeigt, wie innovatives Recruiting funktioniert: Über 100 Teilnehmende erwarteten ein professionell organisiertes EA FC25-Turnier, persönliche Gespräche mit Top-Arbeitgebern aus der Region und ein zielgerichtetes Gesundheitsangebot der Techniker Krankenkasse (TK).
-                </p>
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                </Reveal>
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Die Generation Z sucht nach Arbeitgeber:innen, die Haltung zeigen, flexibel agieren und mehr bieten als Floskeln und Flyer. Statt formeller Bewerbungsgespräche setzten wir auf echte Begegnung bei einem gemeinsamen Spiel oder im partnerschaftlichen Austausch am Spielfeldrand.
-                </p>
+                </Reveal>
               </div>
             </section>
 
@@ -205,7 +201,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
+              <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   {/* Format Section */}
                   <section>
@@ -278,7 +274,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { STAGGER } from './motion';
+import { STAGGER, DUR } from './motion';
 
 interface CaseDetailProps {
   onBack: () => void;
@@ -92,14 +92,10 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl"
-              >
-                BFV <br /> <span className="text-white/40 italic">eFootball.</span>
-              </motion.h1>
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+                <RevealText as="span" by="word" text="BFV" delay={0.1} />
+                <RevealText as="span" by="word" text="eFootball." delay={0.24} className="text-white/40 italic" />
+              </h1>
             </div>
             
             <motion.div
@@ -127,15 +123,15 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
             <section>
               <RevealText as="h2" by="word" text="BFV eFootball – Die digitale Fußballplattform in Bayern" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <div className="space-y-6">
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Seit über drei Jahren gestalten wir gemeinsam mit der BFV Service GmbH die Zukunft des digitalen Fußballs. Der BFV eFootball verbindet Tradition und Innovation: Als Teil des Bayerischen Fußball-Verbandes – dem größten Landesverband im DFB – bringt die Plattform Fußball und Gaming zusammen.
-                </p>
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                </Reveal>
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Mit über 5.000 registrierten Nutzern, mehr als 100 Online-Turnieren, eigener App für iOS & Android und wachsender Social-Media-Reichweite ist BFV eFootball heute eine der führenden eFootball-Plattformen in Deutschland.
-                </p>
-                <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                </Reveal>
+                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Neben Turnieren und digitalen Events bietet die Plattform auch Sponsoren attraktive Möglichkeiten zur Platzierung und übernimmt gesellschaftliche Verantwortung – etwa durch Aufklärung zu Medienkompetenz und Gaming-Sucht an Schulen und in Vereinen.
-                </p>
+                </Reveal>
               </div>
             </section>
 
@@ -244,7 +240,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
+              <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   <section>
                     <div className="flex items-center gap-3 mb-4">
@@ -313,7 +309,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>
