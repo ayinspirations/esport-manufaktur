@@ -12,7 +12,7 @@ interface BlogSectionProps {
 const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => (
   <button
     onClick={() => onOpenPost(post.slug)}
-    className={`group text-left flex flex-col rounded-[2rem] overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
+    className={`group text-left flex flex-col rounded-surface overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
       <img
@@ -49,7 +49,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
 
   return (
     <div className={`w-full flex items-center justify-center px-4 sm:px-6 md:px-14 ${SECTION_PADDING}`} id="blog">
-      <section className="relative w-full max-w-[1440px] mx-auto rounded-[3rem] md:rounded-[3.2rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
+      <section className="relative w-full max-w-[1440px] mx-auto rounded-shell md:rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-[#020617]" />
           <div

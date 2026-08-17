@@ -1,7 +1,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
 import { ArrowUpRight, ArrowRight, ChevronLeft, Camera } from 'lucide-react';
+import { Reveal, RevealText } from './Reveal';
+import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
+import { useInView } from '../hooks/useInView';
 
 interface ServiceItem {
   title: string;
@@ -91,15 +93,32 @@ const data: ServiceItem[] = [
 // underneath the title (which pushes the title upward since the text
 // column is bottom-anchored to the same row as the arrow). No shadow/
 // border on the card itself, only the bottom readability gradient.
-const ServiceCard: React.FC<{ item: ServiceItem; onNavigate?: (page: any) => void }> = ({ item, onNavigate }) => {
+const ServiceCard: React.FC<{
+  item: ServiceItem;
+  onNavigate?: (page: any) => void;
+  /** Stagger offset in seconds for the entry reveal. */
+  delay?: number;
+}> = ({ item, onNavigate, delay = 0 }) => {
   const clickable = Boolean(item.page);
+  // The reveal lives on the card's own root rather than in a wrapper element:
+  // these cards are direct children of a flex + scroll-snap track, and an
+  // extra box between the track and the card would break both the snap
+  // alignment and the per-card width basis.
+  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
   return (
     <div
+      ref={ref}
       role={clickable ? 'link' : undefined}
       tabIndex={clickable ? 0 : undefined}
       onClick={clickable ? () => onNavigate?.(item.page) : undefined}
       onKeyDown={clickable ? (e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page) : undefined}
-      className={`group relative shrink-0 snap-center md:snap-start w-[80%] sm:w-[55%] md:w-[31%] lg:w-[23%] aspect-[3/4] rounded-[2rem] overflow-hidden select-none ${clickable ? 'cursor-pointer' : ''}`}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? 'translateY(0)' : 'translateY(32px)',
+        transition: `opacity ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s, transform ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s`
+      }}
+      className={`group relative shrink-0 snap-center md:snap-start w-[80%] sm:w-[55%] md:w-[31%] lg:w-[23%] aspect-[3/4] rounded-surface overflow-hidden select-none ${clickable ? 'cursor-pointer' : ''}`}
     >
       {item.placeholder ? (
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center gap-3 transition-transform duration-500 ease-out group-hover:scale-105">
@@ -201,11 +220,11 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
       </div>
       <div className="flex items-center justify-end gap-3 mt-8">
         <button onClick={() => scrollByCard(-1)} disabled={!canLeft} aria-label="Zurück"
-          className="w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          className="spring w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button onClick={() => scrollByCard(1)} disabled={!canRight} aria-label="Weiter"
-          className="w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          className="spring w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
@@ -233,29 +252,36 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
         `}</style>
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16 md:mb-24 lg:mb-28"
-          >
+          {/* Section intro on the shared motion vocabulary: the headline
+              builds character by character, then the two support lines follow
+              as their own staggered beat -- one authored sequence rather than
+              the whole block fading in at once. */}
+          <div className="mb-16 md:mb-24 lg:mb-28">
             <div className="max-w-3xl">
               <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-slate-900 leading-[0.9] tracking-tighter uppercase">
-                Unsere <br /> <span className="text-slate-900/40 italic">Services.</span>
+                <RevealText as="span" by="char" text="Unsere" />
+                <RevealText as="span" by="char" text="Services." className="text-slate-900/40 italic" delay={0.16} />
               </h2>
-              <p className="text-slate-900 font-bold text-lg md:text-xl mt-5 max-w-xl leading-snug tracking-tight">
+              <Reveal as="p" delay={0.34} className="text-slate-900 font-bold text-lg md:text-xl mt-5 max-w-xl leading-snug tracking-tight">
                 Von der digitalen Experience bis zum physischen Erlebnis.
-              </p>
-              <p className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-xl leading-tight tracking-tight">
+              </Reveal>
+              <Reveal as="p" delay={0.42} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-xl leading-tight tracking-tight">
                 Wir verbinden Strategie, Kreation, Technologie und Content zu ganzheitlichen Gaming-, eSport- und Gamification-Lösungen – digital, vor Ort und nahtlos miteinander verknüpft.
-              </p>
+              </Reveal>
             </div>
-          </motion.div>
+          </div>
 
           <ServicesCarousel>
-            {data.map((item) => (
-              <ServiceCard key={item.title} item={item} onNavigate={onNavigate} />
+            {data.map((item, i) => (
+              // Cards enter as a staggered run rather than all at once. The
+              // delay is capped so the tail of a 10-card track doesn't sit
+              // invisible for most of a second waiting its turn.
+              <ServiceCard
+                key={item.title}
+                item={item}
+                onNavigate={onNavigate}
+                delay={Math.min(i, 5) * STAGGER.card}
+              />
             ))}
           </ServicesCarousel>
         </div>

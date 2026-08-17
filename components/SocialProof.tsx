@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 import { SECTION_PADDING } from './spacing';
+import { RevealText } from './Reveal';
 
 const logos = [
   { name: 'DAZN', url: '/logos/DAZN_Logo_Master.svg.png', link: 'https://www.dazn.com/de-DE/welcome' },
@@ -148,17 +149,13 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
       {/* Block 1: Headline */}
       <div className="px-6 md:px-14">
         <div className="max-w-[1440px] mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <h2 className="text-[clamp(44px,7.5vw,110px)] font-black leading-[0.85] tracking-tighter uppercase flex flex-col items-center">
-              <span className="text-slate-950">Brands we</span>
-              <span className="text-slate-400/90">leveling up.</span>
-            </h2>
-          </motion.div>
+          {/* "Brands we leveling up." was not grammatical, and it sat at
+              110px directly above the Mercedes-Benz, Indeed and Sparkasse
+              logos -- the exact moment the page asks to be taken seriously. */}
+          <h2 className="text-[clamp(44px,7.5vw,110px)] font-black leading-[0.85] tracking-tighter uppercase flex flex-col items-center">
+            <RevealText as="span" by="char" text="Brands we" className="text-slate-950" />
+            <RevealText as="span" by="char" text="level up." className="text-slate-400/90" delay={0.14} />
+          </h2>
         </div>
       </div>
 

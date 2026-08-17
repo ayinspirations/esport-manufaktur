@@ -37,7 +37,7 @@ export const UseCases: React.FC = () => {
               <motion.div
                 key={i} 
                 whileHover={{ y: -6, backgroundColor: "#fff", boxShadow: "0 15px 30px -10px rgba(0,0,0,0.05)" }}
-                className="w-full max-w-[160px] md:max-w-none bg-white/40 backdrop-blur-sm p-3.5 sm:p-5 rounded-[1.8rem] md:rounded-[2rem] flex flex-col items-center justify-center text-center gap-2.5 md:gap-3 border border-white/20 transition-all cursor-default group shadow-sm"
+                className="w-full max-w-[160px] md:max-w-none bg-white/40 backdrop-blur-sm p-3.5 sm:p-5 rounded-card md:rounded-surface flex flex-col items-center justify-center text-center gap-2.5 md:gap-3 border border-white/20 transition-all cursor-default group shadow-sm"
               >
                 <div className="w-8 h-8 md:w-9 md:h-9 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:bg-emerald-500 group-hover:text-white transition-all duration-300">
                   <item.icon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />

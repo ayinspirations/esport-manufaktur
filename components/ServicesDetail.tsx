@@ -168,7 +168,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                 <div className="lg:col-span-7">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {activeService.capabilities.map((cap, i) => (
-                      <div key={i} className="p-8 bg-slate-50 rounded-[2.5rem] border border-black/[0.03] group hover:bg-white hover:shadow-xl transition-all">
+                      <div key={i} className="p-8 bg-slate-50 rounded-shell border border-black/[0.03] group hover:bg-white hover:shadow-xl transition-all">
                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:bg-emerald-500 group-hover:text-white transition-all">
                           <CheckCircle2 className="w-5 h-5 opacity-30 group-hover:opacity-100" />
                         </div>
@@ -199,7 +199,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                    { title: "Red Carpet & Premieren", desc: "Perfekte Abläufe, klare Inszenierung, professionelle Technik.", icon: Zap },
                    { title: "Promotions & Activations", desc: "Marken greifbar machen – am POS, auf Messen oder im öffentlichen Raum.", icon: Target }
                  ].map((item, i) => (
-                    <div key={i} className="p-8 bg-white rounded-[2.5rem] border border-black/5 shadow-xl flex gap-6 items-center">
+                    <div key={i} className="p-8 bg-white rounded-shell border border-black/5 shadow-xl flex gap-6 items-center">
                       <div className="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shrink-0">
                         <item.icon className="w-6 h-6" />
                       </div>
@@ -215,7 +215,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
 
         {/* Section: Technology & Platforms */}
         <div className="mb-24">
-           <section className="bg-slate-950 rounded-[3.2rem] p-10 md:p-24 overflow-hidden relative">
+           <section className="bg-slate-950 rounded-shell p-10 md:p-24 overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
               <div className="relative z-10 flex flex-col lg:flex-row gap-20 items-center">
                  <div className="lg:w-1/2">
@@ -225,14 +225,14 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                      Unsere Plattformen haben jeweils eine eigene Website, um Zielgruppen klar anzusprechen. Wir liefern das digitale Rückgrat.
                    </p>
                    <div className="space-y-6">
-                      <div className="flex items-center gap-5 text-white/80 text-lg font-bold group cursor-pointer p-6 bg-white/5 rounded-[2rem] border border-white/5 hover:bg-white/10 transition-all">
+                      <div className="flex items-center gap-5 text-white/80 text-lg font-bold group cursor-pointer p-6 bg-white/5 rounded-surface border border-white/5 hover:bg-white/10 transition-all">
                         <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all">
                           <Globe className="w-6 h-6" />
                         </div>
                         <span>Community- & Turnierplattform</span>
                         <ExternalLink className="w-5 h-5 ml-auto opacity-20 group-hover:opacity-100" />
                       </div>
-                      <div className="flex items-center gap-5 text-white/80 text-lg font-bold group cursor-pointer p-6 bg-white/5 rounded-[2rem] border border-white/5 hover:bg-white/10 transition-all">
+                      <div className="flex items-center gap-5 text-white/80 text-lg font-bold group cursor-pointer p-6 bg-white/5 rounded-surface border border-white/5 hover:bg-white/10 transition-all">
                         <div className="w-12 h-12 bg-emerald-500/20 rounded-xl flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all">
                           <Layers className="w-6 h-6" />
                         </div>
@@ -245,10 +245,10 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                    </button>
                  </div>
                  <div className="lg:w-1/2 relative w-full">
-                    <div className="relative glass bg-white/5 border-white/10 p-5 rounded-[3rem] shadow-3xl">
+                    <div className="relative glass bg-white/5 border-white/10 p-5 rounded-shell shadow-3xl">
                        <img 
                         src="https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&q=80&w=1200" 
-                        className="w-full h-auto rounded-[2.5rem] shadow-2xl opacity-50" 
+                        className="w-full h-auto rounded-shell shadow-2xl opacity-50" 
                         alt="Software Platform" 
                       />
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center shadow-2xl">

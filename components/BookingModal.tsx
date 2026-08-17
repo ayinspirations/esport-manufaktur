@@ -70,7 +70,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-[800px] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col h-[92vh] md:h-[90vh]"
+            className="relative w-full max-w-[800px] bg-white rounded-shell shadow-2xl overflow-hidden flex flex-col h-[92vh] md:h-[90vh]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 shrink-0 bg-white z-10">

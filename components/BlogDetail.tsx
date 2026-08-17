@@ -75,7 +75,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
             {post.excerpt}
           </p>
 
-          <div className="relative w-full aspect-[16/9] rounded-[2.5rem] overflow-hidden shadow-2xl mb-16">
+          <div className="relative w-full aspect-[16/9] rounded-shell overflow-hidden shadow-2xl mb-16">
             <img src={post.image} alt={post.imageAlt} className="absolute inset-0 w-full h-full object-cover" />
           </div>
 

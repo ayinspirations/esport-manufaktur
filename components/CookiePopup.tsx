@@ -1,6 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Cookie, X, Check } from 'lucide-react';
+import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
+
+// The consent dialog used to open at 1.5s -- right in the middle of the hero's
+// character-by-character headline build, and behind a full-screen blur. First-
+// time visitors therefore never saw the intro at all. It now waits until the
+// hero timeline has finished and settled, so the animation lands first.
+const CONSENT_DELAY_MS = (HERO_GROUP_DELAY + HERO_GROUP_DURATION + 0.4) * 1000;
 
 export const CookiePopup: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -8,7 +15,7 @@ export const CookiePopup: React.FC = () => {
   useEffect(() => {
     const hasAccepted = localStorage.getItem('cookies-accepted');
     if (!hasAccepted) {
-      const timer = setTimeout(() => setIsVisible(true), 1500);
+      const timer = setTimeout(() => setIsVisible(true), CONSENT_DELAY_MS);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -48,17 +55,21 @@ export const CookiePopup: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-black/20 backdrop-blur-sm"
+            // No backdrop blur: the hero behind this dialog is the strongest
+            // asset on the page, and blurring it was throwing that away at the
+            // exact moment of first impression. A plain scrim gives the dialog
+            // the same separation without destroying what's underneath.
+            className="absolute inset-0 bg-black/40"
             onClick={() => setIsVisible(false)}
           />
 
-          <div className="relative overflow-hidden bg-white/90 backdrop-blur-2xl border border-white/40 rounded-[2.5rem] p-10 md:p-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] max-w-[500px] w-full">
+          <div className="relative overflow-hidden bg-white/90 backdrop-blur-2xl border border-white/40 rounded-shell p-10 md:p-12 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] max-w-[500px] w-full">
             {/* Background Glow */}
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 bg-[#00ff00]/10 blur-[80px] rounded-full" />
             
             <div className="relative z-10 text-center">
               <div className="flex flex-col items-center mb-8">
-                <div className="w-16 h-16 rounded-[1.5rem] bg-[#00ff00]/10 flex items-center justify-center border border-[#00ff00]/20 mb-6">
+                <div className="w-16 h-16 rounded-card bg-[#00ff00]/10 flex items-center justify-center border border-[#00ff00]/20 mb-6">
                   <Cookie className="w-8 h-8 text-[#00ff00]" />
                 </div>
                 <h3 className="text-slate-900 font-black uppercase tracking-wider text-xl mb-2">Cookie-Einstellungen</h3>

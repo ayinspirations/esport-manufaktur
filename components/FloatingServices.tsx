@@ -16,7 +16,7 @@ const ServiceCard = ({ title, content, icon: Icon, delay }: any) => {
       initial={{ y: 0 }}
       animate={{ y: [0, -10, 0] }}
       transition={{ y: { duration: 4, repeat: Infinity, ease: "easeInOut", delay } }}
-      className="glass rounded-[2.5rem] p-10 border border-[#d1dbd2] flex flex-col justify-between aspect-[1/1.4] relative group cursor-pointer bg-white/95 shadow-lg overflow-hidden shrink-0"
+      className="glass rounded-shell p-10 border border-[#d1dbd2] flex flex-col justify-between aspect-[1/1.4] relative group cursor-pointer bg-white/95 shadow-lg overflow-hidden shrink-0"
     >
       <div style={{ transform: "translateZ(30px)" }} className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity">
         <Icon className="w-36 h-36 text-emerald-500" />
@@ -47,7 +47,7 @@ interface FloatingServicesProps {
 export const FloatingServices: React.FC<FloatingServicesProps> = ({ onNavigate }) => {
   return (
     <div className="w-full flex items-center justify-center p-4">
-      <section className="w-full py-24 lg:py-40 glass rounded-[3.2rem] border border-[#d1dbd2] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden bg-white/40 relative">
+      <section className="w-full py-24 lg:py-40 glass rounded-shell border border-[#d1dbd2] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden bg-white/40 relative">
         <div className="max-w-7xl mx-auto px-10 relative z-10">
           <div className="flex flex-row items-end justify-between mb-20 gap-10">
             <div className="max-w-3xl">

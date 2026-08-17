@@ -141,7 +141,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
 
             {/* Image Slider */}
             <div 
-              className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
+              className="relative group rounded-shell overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >
@@ -195,7 +195,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     href={video.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative group rounded-[2.5rem] overflow-hidden aspect-video shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] block border-4 border-slate-950/10 hover:border-red-600/20 transition-all duration-500"
+                    className="relative group rounded-shell overflow-hidden aspect-video shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] block border-4 border-slate-950/10 hover:border-red-600/20 transition-all duration-500"
                   >
                     <img 
                       src={video.thumbnail} 
@@ -205,7 +205,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                     
                     {/* Authentic YouTube Play Button */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-20 h-14 bg-red-600 rounded-[1.2rem] flex items-center justify-center text-white shadow-2xl transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110">
+                      <div className="w-20 h-14 bg-red-600 rounded-card flex items-center justify-center text-white shadow-2xl transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110">
                         <Play className="w-8 h-8 fill-current translate-x-0.5" />
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                 { title: 'Sponsoring System', icon: <Target className="w-6 h-6" />, text: 'Effektive Integration zahlreicher Partner und Generierung zusätzlicher Einnahmen.' },
                 { title: 'Gesellschaftliche Begleitung', icon: <HeartHandshake className="w-6 h-6" />, text: 'Aufklärung über digitale Themen wie Gaming-Sucht und Medienkompetenz.' },
               ].map((item, i) => (
-                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-[2rem] border border-slate-900/5 shadow-sm">
+                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
@@ -244,7 +244,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl">
+              <div className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   <section>
                     <div className="flex items-center gap-3 mb-4">

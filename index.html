@@ -16,7 +16,10 @@
     <link rel="canonical" href="https://esport-manufaktur.de" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- 800/900 are required: the site sets font-black (900) on ~85 elements.
+         Without these cuts the browser synthesises a fake bold, which smears
+         the glyph edges on exactly the large display type the design leans on. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
       html, body {
         background-color: #020617;

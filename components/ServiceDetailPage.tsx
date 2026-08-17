@@ -143,7 +143,7 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
   const [active, setActive] = useState(0);
 
   return (
-    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center rounded-[28px] ${TILE} p-8 md:p-14`}>
+    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center rounded-surface ${TILE} p-8 md:p-14`}>
       <div className="flex flex-col">
         {steps.map((step, i) => {
           const isOpen = active === i;
@@ -174,7 +174,7 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
         })}
       </div>
 
-      <div className="relative aspect-[4/3] rounded-[20px] bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-[4/3] rounded-card bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent" />
         <div key={active} className="relative z-10 flex flex-col items-center text-center px-8" style={{ animation: 'processFade 0.4s ease-out' }}>
           <style>{`@keyframes processFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
@@ -303,7 +303,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
                     {group.cards.map((card, ci) => (
                       <div
                         key={ci}
-                        className={`snap-start shrink-0 w-[260px] sm:w-[300px] h-full p-7 md:p-8 rounded-[20px] ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)]`}
+                        className={`snap-start shrink-0 w-[260px] sm:w-[300px] h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)]`}
                       >
                         <div className="w-9 h-9 rounded-full bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-xs font-black mb-6">
                           {String(ci + 1).padStart(2, '0')}
@@ -376,7 +376,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             <Reveal delay={0.1} className="md:col-span-7">
               <div
                 onClick={goToBestCases}
-                className={`group cursor-pointer relative aspect-[16/10] rounded-[20px] overflow-hidden ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] flex items-center justify-center`}
+                className={`group cursor-pointer relative aspect-[16/10] rounded-card overflow-hidden ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] flex items-center justify-center`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
                 <span className="relative z-10 text-white/30 text-xs font-black uppercase tracking-[0.25em]">
@@ -400,7 +400,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
               const isOpen = openFaq === i;
               return (
                 <Reveal key={i} delay={i * 0.08}>
-                  <div className="rounded-[20px] bg-white border border-slate-900/10 overflow-hidden shadow-sm">
+                  <div className="rounded-card bg-white border border-slate-900/10 overflow-hidden shadow-sm">
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : i)}
                       className="w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"

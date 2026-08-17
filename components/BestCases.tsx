@@ -3,25 +3,39 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
+import { Reveal, RevealText } from './Reveal';
+import { DUR, EASE_REVEAL } from './motion';
+
+// The case tiles are the largest media surfaces on the site, so they get the
+// "sheet laying flat" entry: each one starts tipped back in 3D and below its
+// resting place, then rights itself onto the page. transformPerspective keeps
+// the projection on the tile itself, so no parent wrapper is needed and the
+// grid layout stays exactly as it was.
+//
+// Toned down from the reference (-60deg / 300px): six tiles at full strength,
+// one after another, is genuinely nauseating. -42deg / 110px keeps the
+// gesture and loses the motion sickness.
+const TILE_FROM = { opacity: 0, y: 110, rotateX: -42, transformPerspective: 1200 };
+const TILE_TO = { opacity: 1, y: 0, rotateX: 0, transformPerspective: 1200 };
+const TILE_VIEWPORT = { once: true, margin: '-80px' } as const;
+const TILE_STYLE = { transformOrigin: '50% 100%' } as const;
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
     <section id="best-cases" className={`w-full bg-[#c5d0c6] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
-      <motion.div 
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-[1440px] mx-auto"
-      >
+      {/* The section wrapper no longer animates: it used to fade the whole
+          block in while every tile inside was independently fading in too, so
+          the two passes ran over each other and muddied both. */}
+      <div className="max-w-[1440px] mx-auto">
         <div className="flex flex-col lg:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
           <div className="max-w-3xl">
             <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
-              Best <br /> <span className="text-slate-900/40 italic">Cases.</span>
+              <RevealText as="span" by="char" text="Best" />
+              <RevealText as="span" by="char" text="Cases." className="text-slate-900/40 italic" delay={0.14} />
             </h2>
-            <p className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
+            <Reveal as="p" delay={0.32} className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
               Bewegtbilder für echte Erlebnisse. Ausgewählte Projekte in voller Dynamik.
-            </p>
+            </Reveal>
           </div>
         </div>
 
@@ -30,13 +44,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.1, ease: EASE_REVEAL }}
             >
               <div
-                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('tsystems')}
               >
                 <video
@@ -74,13 +89,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.2, ease: EASE_REVEAL }}
             >
               <div
-                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('hagebau')}
               >
                 <video
@@ -119,13 +135,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-12 h-[400px] md:h-[600px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.3, ease: EASE_REVEAL }}
             >
               <div
-                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('showdown-0711')}
               >
                 <video
@@ -164,13 +181,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.4, ease: EASE_REVEAL }}
             >
               <div
-                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('bayern-zockt')}
               >
                 <video
@@ -208,13 +226,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.5, ease: EASE_REVEAL }}
             >
               <div
-                className="relative group overflow-hidden rounded-[2.5rem] bg-slate-900 h-full w-full cursor-pointer"
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('bfv')}
               >
                 <img
@@ -247,11 +266,12 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.button
               onClick={() => onScroll?.('contact-section')}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="relative group overflow-hidden rounded-[2.5rem] bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
+              initial={TILE_FROM}
+              whileInView={TILE_TO}
+              viewport={TILE_VIEWPORT}
+              style={TILE_STYLE}
+              transition={{ duration: DUR.slow, delay: 0.6, ease: EASE_REVEAL }}
+              className="relative group overflow-hidden rounded-shell bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
             >
               <div 
                 className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-700"
@@ -282,7 +302,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.button>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
