@@ -2,6 +2,7 @@
 import React from 'react';
 import { Youtube, Instagram, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
   onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy') => void;
@@ -75,6 +76,17 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                 <ul className="space-y-4 text-slate-600 text-base font-bold tracking-tight">
                   <li><a href="#impressum" onClick={(e) => handleNav(e, 'impressum')} className="hover:text-emerald-700 transition-colors">Impressum</a></li>
                   <li><a href="#privacy" onClick={(e) => handleNav(e, 'privacy')} className="hover:text-emerald-700 transition-colors">Datenschutz</a></li>
+                  {/* Consent has to be withdrawable, not just grantable --
+                      this clears the stored decision and reopens the dialog. */}
+                  <li>
+                    <button
+                      type="button"
+                      onClick={() => resetConsent()}
+                      className="hover:text-emerald-700 transition-colors text-left"
+                    >
+                      Cookie-Einstellungen
+                    </button>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -82,7 +94,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-900/10 text-[11px] md:text-xs text-slate-500 font-bold text-center md:text-left gap-6">
               <p>© 2025 eSport Manufaktur GmbH</p>
               <p className="md:text-right">
-                Webseite umgesetzt durch <a href="https://www.akiistudio.de" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-500 transition-colors">Akii Studio</a>
+                Designed by <a href="https://www.akiistudio.de" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-500 transition-colors">Akii Studio</a>
               </p>
             </div>
           </motion.div>

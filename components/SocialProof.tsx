@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 import { SECTION_PADDING } from './spacing';
 import { RevealText } from './Reveal';
+import { useInView } from '../hooks/useInView';
 
 const logos = [
   { name: 'DAZN', url: '/logos/DAZN_Logo_Master.svg.png', link: 'https://www.dazn.com/de-DE/welcome' },
@@ -69,12 +70,19 @@ const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({
 );
 
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
-  // The marquee stays paused (frozen on its resting frame) until every logo
-  // has actually finished loading & decoding. Starting it earlier is what
-  // caused the "cut off / too tight / too fast" first-load bug -- the track's
-  // real width (and therefore how far a % translate needs to travel) was
-  // still shifting under it as each <img> resolved its intrinsic size.
-  const [marqueeReady, setMarqueeReady] = useState(false);
+  // The marquee needs two things before it moves.
+  //
+  // 1. Every logo must have finished loading and decoding. Starting earlier is
+  //    what caused the "cut off / too tight / too fast" first-load bug -- the
+  //    track's real width (and so how far a % translate has to travel) was
+  //    still shifting under it as each <img> resolved its intrinsic size.
+  // 2. The strip must actually be on screen. Previously only (1) applied, so
+  //    on a fast connection the band had been running for a while by the time
+  //    anyone scrolled down to it, and it was caught mid-cycle. Now it holds
+  //    its resting frame and sets off when the visitor arrives.
+  const [imagesReady, setImagesReady] = useState(false);
+  const { ref: stripRef, inView: stripInView } = useInView<HTMLDivElement>({ threshold: 0.15 });
+  const marqueeReady = imagesReady && stripInView;
 
   useEffect(() => {
     let cancelled = false;
@@ -95,7 +103,7 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
       if (cancelled) return;
       // One extra frame so layout has settled before the track starts moving.
       requestAnimationFrame(() => {
-        if (!cancelled) setMarqueeReady(true);
+        if (!cancelled) setImagesReady(true);
       });
     });
 
@@ -160,7 +168,7 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
       </div>
 
       {/* Block 2: Infinite Logo Band */}
-      <div className="relative flex w-full overflow-hidden group py-0 z-20">
+      <div ref={stripRef} className="relative flex w-full overflow-hidden group py-0 z-20">
         <div className={`marquee-track animate-marquee-scroll flex items-center whitespace-nowrap px-0 py-4 ${marqueeReady ? 'is-ready' : ''}`}>
           <div className="flex items-center gap-14 md:gap-32 lg:gap-40 px-8 md:px-16 lg:px-20 shrink-0">
             {trackLogos.map((logo, i) => (
