@@ -46,8 +46,10 @@ export const Reveal: React.FC<RevealProps> = ({
       style: {
         opacity: inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : `translateY(${y}px)`,
-        transition: `opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s, transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s`,
-        willChange: 'transform, opacity'
+        transition: `opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s, transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s`
+        // No `will-change` -- see RevealText's inner span. This wraps text as
+        // often as it wraps boxes, and promoting text to its own compositing
+        // layer is what clips ink that falls outside the layer bounds.
       }
     },
     children
@@ -156,8 +158,19 @@ export const RevealText: React.FC<RevealTextProps> = ({
             // before the reveal starts.
             transform: inView ? 'translateY(0)' : 'translateY(130%)',
             opacity: inView ? 1 : 0,
-            transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${d}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${d}s`,
-            willChange: 'transform, opacity'
+            transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${d}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${d}s`
+            // Deliberately no `will-change` here.
+            //
+            // It promotes each word to its own compositing layer, and a
+            // composited layer is rasterised to its own bounds -- ink that
+            // falls outside them, which is exactly what an italic's slant
+            // produces at the end of a word, can be dropped. That artefact
+            // only appears on a GPU-composited browser, which is why the
+            // headings looked clipped in the real browser while rendering
+            // byte-identical here with and without the mask.
+            //
+            // These are a handful of short-lived transitions on text, so the
+            // hint bought nothing measurable to begin with.
           }}
         >
           {content}
