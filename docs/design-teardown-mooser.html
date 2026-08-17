@@ -1,0 +1,472 @@
+<title>Mooser vs Manufaktur</title>
+<style>
+  :root {
+    --ground: #F2EFE8;
+    --raised: #FAF8F4;
+    --fill:   #DED6CF;
+    --muted:  #BCAEA0;
+    --rule:   #D8CEC4;
+    --ink:    #5C443A;
+    --deep:   #3C3C38;
+    --soft:   #8A7365;
+    --alert:  #A6503C;
+    --warn:   #9C8677;
+    --ok:     #6E7A5E;
+
+    --serif: "Didot", "Bodoni MT", "Playfair Display", Georgia, "Times New Roman", serif;
+    --sans: "Avenir Next", "Futura", "Century Gothic", "Segoe UI", system-ui, sans-serif;
+
+    --r: 50px;
+    --measure: 66ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #2E2724;
+      --raised: #3A322E;
+      --fill:   #463C36;
+      --muted:  #8B7A6E;
+      --rule:   #4E433C;
+      --ink:    #EDE4DA;
+      --deep:   #FBF7F2;
+      --soft:   #B6A597;
+      --alert:  #D98A72;
+      --warn:   #C0A992;
+      --ok:     #A3B08E;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #2E2724;
+    --raised: #3A322E;
+    --fill:   #463C36;
+    --muted:  #8B7A6E;
+    --rule:   #4E433C;
+    --ink:    #EDE4DA;
+    --deep:   #FBF7F2;
+    --soft:   #B6A597;
+    --alert:  #D98A72;
+    --warn:   #C0A992;
+    --ok:     #A3B08E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 0 24px 96px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 940px; margin: 0 auto; }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--soft);
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* ---------- masthead ---------- */
+  header.mast { padding: 72px 0 40px; border-bottom: 1px solid var(--rule); }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(38px, 6.4vw, 72px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--deep);
+    margin: 18px 0 0;
+    text-wrap: balance;
+  }
+  h1 em { font-style: italic; color: var(--soft); }
+  .standfirst {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.3vw, 23px);
+    line-height: 1.5;
+    max-width: var(--measure);
+    margin: 24px 0 0;
+    color: var(--ink);
+  }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin-top: 32px; font-size: 12.5px; color: var(--soft);
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- sections ---------- */
+  section { padding: 60px 0 0; }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(27px, 3.6vw, 40px);
+    line-height: 1.12;
+    color: var(--deep);
+    margin: 14px 0 0;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .lede { max-width: var(--measure); margin: 16px 0 0; color: var(--ink); }
+
+  /* ---------- verdict ---------- */
+  .verdict {
+    margin-top: 40px;
+    background: var(--fill);
+    border-radius: var(--r);
+    padding: clamp(30px, 4.5vw, 52px);
+  }
+  .verdict p {
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.9vw, 30px);
+    line-height: 1.36;
+    margin: 12px 0 0;
+    color: var(--deep);
+    text-wrap: balance;
+  }
+  .verdict p + p { margin-top: 20px; font-size: clamp(16px,1.9vw,19px); font-family: var(--sans); line-height:1.55; color: var(--ink); }
+
+  /* ---------- comparison table ---------- */
+  .tablewrap { overflow-x: auto; margin-top: 30px; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; }
+  caption { text-align: left; font-size: 12.5px; color: var(--soft); padding-bottom: 12px; }
+  th, td {
+    text-align: left; vertical-align: top;
+    padding: 15px 18px 15px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 15px;
+  }
+  thead th {
+    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--soft); font-weight: 600; padding-bottom: 10px;
+  }
+  tbody th {
+    font-weight: 600; color: var(--deep); width: 20%;
+    font-size: 13px; letter-spacing: 0.02em;
+  }
+  td.them { color: var(--ink); width: 40%; }
+  td.you  { color: var(--ink); width: 40%; }
+  td.you b { color: var(--alert); font-weight: 600; }
+
+  /* ---------- swatches ---------- */
+  .swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .sw {
+    width: 30px; height: 30px; border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.14);
+  }
+
+  /* ---------- findings ---------- */
+  .findings { display: grid; gap: 14px; margin-top: 32px; }
+  .find {
+    background: var(--raised);
+    border-radius: var(--r);
+    padding: clamp(24px, 3.2vw, 36px);
+    border: 1px solid var(--rule);
+  }
+  .find-top { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .chip {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+    font-weight: 700; padding: 5px 12px; border-radius: 999px;
+    color: var(--ground); background: var(--warn); white-space: nowrap;
+  }
+  .chip.crit { background: var(--alert); }
+  .find h3 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.24; margin: 0; color: var(--deep); flex: 1 1 300px;
+    text-wrap: balance;
+  }
+  .find p { margin: 14px 0 0; max-width: var(--measure); }
+  .ev {
+    margin-top: 16px; padding: 14px 16px;
+    background: var(--fill); border-radius: 0;
+    border-left: 3px solid var(--muted);
+    font-size: 13.5px; line-height: 1.5; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .ev b { color: var(--deep); font-weight: 600; }
+  .fix {
+    margin-top: 14px; font-size: 15px; color: var(--ink);
+    padding-left: 18px; border-left: 3px solid var(--ok);
+  }
+  .fix b { color: var(--deep); font-weight: 600; }
+
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.87em;
+    background: var(--fill);
+    padding: 1px 5px;
+    color: var(--deep);
+  }
+  pre {
+    background: var(--fill); color: var(--ink);
+    padding: 22px; overflow-x: auto; margin: 22px 0 0;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 13px; line-height: 1.65; border-radius: 0;
+    border-left: 3px solid var(--muted);
+  }
+  pre .c { color: var(--soft); }
+  pre .del { color: var(--alert); }
+  pre .add { color: var(--ok); }
+
+  /* ---------- steal / don't ---------- */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 28px; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } }
+  .col { border-radius: var(--r); padding: clamp(24px,3vw,34px); }
+  .col.take { background: var(--fill); }
+  .col.leave { background: transparent; border: 1px solid var(--rule); }
+  .col h3 {
+    font-family: var(--serif); font-weight: 400; font-size: 22px;
+    margin: 10px 0 0; color: var(--deep);
+  }
+  .col ul { margin: 16px 0 0; padding-left: 18px; }
+  .col li { margin-bottom: 11px; font-size: 15px; line-height: 1.5; }
+  .col li:last-child { margin-bottom: 0; }
+  .col li b { color: var(--deep); font-weight: 600; }
+
+  /* ---------- order ---------- */
+  ol.order { counter-reset: s; list-style: none; padding: 0; margin: 28px 0 0; }
+  ol.order li {
+    display: grid; grid-template-columns: 44px 1fr; gap: 18px;
+    padding: 20px 0; border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  ol.order li::before {
+    counter-increment: s; content: counter(s);
+    font-family: var(--serif); font-size: 27px; color: var(--muted);
+    line-height: 1;
+  }
+  ol.order b { color: var(--deep); font-weight: 600; display: block; margin-bottom: 4px; font-size: 16px; }
+  ol.order span { font-size: 14.5px; color: var(--ink); }
+
+  footer {
+    margin-top: 64px; padding-top: 26px;
+    border-top: 1px solid var(--rule);
+    font-size: 12.5px; color: var(--soft); max-width: var(--measure);
+  }
+  a { color: var(--ink); }
+  a:focus-visible, li:focus-visible { outline: 2px solid var(--alert); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Design teardown · 17 Aug 2026</p>
+    <h1>Two ways to hold<br><em>a reader's attention</em></h1>
+    <p class="standfirst">mooserhotel.at earns attention by withholding. esport-manufaktur.vercel.app spends everything on the first screen, then has nothing left. The gap isn't taste — it's restraint, and restraint is a system you can copy.</p>
+    <div class="meta">
+      <span><b>Reference</b> mooserhotel.at</span>
+      <span><b>Subject</b> esport-manufaktur.vercel.app</span>
+      <span><b>Method</b> source audit + 8 live viewport captures at 1440px</span>
+    </div>
+  </header>
+
+  <section>
+    <p class="eyebrow">The verdict</p>
+    <div class="verdict">
+      <p>Your site has one volume knob, and it is turned to maximum on every element. Mooser has a full mixing desk.</p>
+      <p>85 of your text elements render at weight 900. Almost all are uppercase with −5% letter-spacing. When everything shouts, size is your only remaining tool for hierarchy — so headlines inflate to 108px and the page grows to 9,482px to fit them. Mooser gets the same drama from a serif/sans pairing at ordinary sizes, which leaves weight, case, and contrast free to do the actual work of ranking information.</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">System comparison</p>
+    <h2>Where the two systems diverge</h2>
+    <div class="tablewrap">
+      <table>
+        <caption>Mooser values from their published CSS tokens. Yours measured from the running DOM.</caption>
+        <thead>
+          <tr><th scope="col">Axis</th><th scope="col">Mooser Hotel</th><th scope="col">eSport Manufaktur</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Palette</th>
+            <td class="them">7 tokens, one warm family. No signal colours at all.
+              <div class="swatches" aria-hidden="true">
+                <span class="sw" style="background:#F2EFE8"></span><span class="sw" style="background:#DED6CF"></span><span class="sw" style="background:#BCAEA0"></span><span class="sw" style="background:#9C8677"></span><span class="sw" style="background:#5C443A"></span><span class="sw" style="background:#42312A"></span><span class="sw" style="background:#3C3C38"></span>
+              </div>
+            </td>
+            <td class="you"><b>Six competing greens</b>, no token file — <code>theme.extend</code> is empty.
+              <div class="swatches" aria-hidden="true">
+                <span class="sw" style="background:#00ff00"></span><span class="sw" style="background:#00dd00"></span><span class="sw" style="background:#10b981"></span><span class="sw" style="background:#2dd4bf"></span><span class="sw" style="background:#84cc16"></span><span class="sw" style="background:#00818d"></span><span class="sw" style="background:#d1dbd2"></span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Typography</th>
+            <td class="them">Two families with distinct jobs — Nikolai serif for all statements, Brandon Grotesque for UI. Line-height 150%.</td>
+            <td class="you">One family, one weight. <b>Inter 900 on 85 elements</b>, uppercase, −5% tracking. Hierarchy by size only.</td>
+          </tr>
+          <tr>
+            <th scope="row">Corner radius</th>
+            <td class="them">Two tokens: 50px standard, 120px for large image panels. Form fields deliberately 0px.</td>
+            <td class="you"><b>Eight ad-hoc values</b> — 20, 24, 28, 32, 40, 48, 51.2, 9999px. No rule behind any of them.</td>
+          </tr>
+          <tr>
+            <th scope="row">Ground</th>
+            <td class="them">One cream ground held the whole way down. Depth comes from fills inside it.</td>
+            <td class="you"><b>Flips six times</b> in 9,482px: dark → sage → dark → sage → dark → sage.</td>
+          </tr>
+          <tr>
+            <th scope="row">Motion</th>
+            <td class="them">Calm one-shot scroll reveals (0.5–1.3s) for content; bouncy fast transitions (0.15–0.3s) for anything interactive. Two clearly separated registers.</td>
+            <td class="you">Sophisticated GSAP hero, then near-silence. The intro promises a level of craft the rest doesn't keep.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Findings</p>
+    <h2>Eight things costing you credibility</h2>
+    <p class="lede">Ordered by severity. The first two are defects, not opinions.</p>
+
+    <div class="findings">
+
+      <article class="find">
+        <div class="find-top"><span class="chip crit">Critical</span><h3>Your headline font weight doesn't exist</h3></div>
+        <p>Every heading on the site asks for weight 900. Your font request stops at 700, so the browser fakes it — smearing the glyphs outward instead of loading a real black cut. On a site whose entire identity rests on heavy type, the heavy type is a forgery.</p>
+        <div class="ev"><b>index.html</b> requests <code>Inter:wght@300;400;500;600;700</code>. The DOM renders <b>85 elements at weight 900</b> and 12 at 700.</div>
+        <p class="fix"><b>Fix:</b> add <code>800;900</code> to the Google Fonts URL. One line, and every headline on the site sharpens.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip crit">Critical</span><h3>The navigation disappears on half the page</h3></div>
+        <p>The sticky bar keeps white text and a translucent dark fill regardless of what's behind it. Over your sage sections it becomes near-invisible, and it sits directly on top of your own section headings as they scroll past — so both the nav and the headline lose.</p>
+        <div class="ev">Illegible in <b>3 of 8</b> captured viewports — the logo strip, Best Cases, and the contact section. All three are light-ground.</div>
+        <p class="fix"><b>Fix:</b> Mooser's answer is the reason their nav shrinks to a floating dark pill — it carries its own ground, so it never depends on what's underneath. Adopt that, or swap nav tokens per section via <code>IntersectionObserver</code>.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">High</span><h3>One typographic register, used for everything</h3></div>
+        <p>This is the single biggest aesthetic gap. Mooser's serif carries meaning: it marks a statement. When their sans appears you know instantly you're in UI. You have no equivalent signal, so a card title and a section headline feel identical and only differ in size.</p>
+        <div class="ev">Weight distribution: <b>900 ×85</b>, 700 ×12, 500 ×28, 400 ×9, 600 ×1. Nearly all display type is also uppercase with <code>tracking-tighter</code>.</div>
+        <p class="fix"><b>Fix:</b> introduce a second face for statements only — headlines and pull-quotes. Not a serif; that's Mooser's world, not esports. A wide grotesque or a technical mono display face gives you the same two-register contrast in a voice that fits gaming.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">High</span><h3>The cookie modal destroys your best asset</h3></div>
+        <p>Your hero is genuinely good — the character-staggered GSAP build on <em>BEGEISTERN</em>, the masked diagonal grid, the volumetric glow. First-time visitors see none of it. The consent dialog opens immediately and blurs the entire page behind it.</p>
+        <div class="ev"><b>CookiePopup.tsx:51</b> — <code>backdrop-blur-sm</code> over a full-screen scrim, mounted on load. Your accept button is also <code>#00ff00</code>, a pure green that appears nowhere else in the brand.</div>
+        <p class="fix"><b>Fix:</b> delay the banner until the hero animation completes, or demote it to a bottom bar. Let the intro land first — it's the strongest thing you've built.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">High</span><h3>Six greens pretending to be one brand</h3></div>
+        <p>Mooser's palette is disciplined to the point of austerity: seven tokens, no signal colours, everything in one family. Your greens were each chosen locally and never reconciled, and <code>#00ff00</code> — pure display green — sits next to muted emerald in the same viewport.</p>
+        <div class="ev">Across components: <code>#00ff00</code> ×6, <code>#10b981</code>, <code>#2dd4bf</code>, <code>#84cc16</code>, <code>#00818d</code>, <code>#00dd00</code>. <b>tailwind.config.js</b> has <code>theme: { extend: {} }</code> — nothing is named.</div>
+        <p class="fix"><b>Fix:</b> pick one primary and one accent, name them in Tailwind, delete the rest. Token names make the next inconsistency impossible to add by accident.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">Medium</span><h3>The ground flips six times</h3></div>
+        <p>Dark, sage, dark, sage, dark, sage. Each flip forces the eye to re-adapt and resets the sense of place — which is why the page reads as six landing pages stacked rather than one document. Mooser holds one cream ground for the entire site and creates depth <em>within</em> it using beige and taupe fills.</p>
+        <div class="ev">Section backgrounds top to bottom: <code>#020617</code> → <code>#d1dbd2</code> → transparent → <code>#020617</code> → <code>#c5d0c6</code> → <code>#020617</code> → <code>#d1dbd2</code>. Total height <b>9,482px</b>.</div>
+        <p class="fix"><b>Fix:</b> commit to dark as your ground — it suits esports and it's where your hero already lives. Get contrast from elevated panels, not from inverting the page.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">Medium</span><h3>Eight corner radii, no scale</h3></div>
+        <p>Mooser has exactly two radius tokens plus one deliberate exception — form fields stay square, which makes them read as functional rather than promotional. That's a rule doing real work. Your eight values are the fingerprint of decisions made card by card.</p>
+        <div class="ev">In the live DOM: <code>9999px</code> ×46, <code>32px</code> ×21, <code>40px</code> ×7, <code>20px</code> ×4, plus 24, 28, 48 and 51.2px.</div>
+        <p class="fix"><b>Fix:</b> three tokens — pill for controls, one card radius, one large-surface radius. Square for inputs.</p>
+      </article>
+
+      <article class="find">
+        <div class="find-top"><span class="chip">Medium</span><h3>Your second-largest headline isn't English</h3></div>
+        <p>"BRANDS WE LEVELING UP." is set at 108px — the biggest type on the site after the hero. It sits directly above Mercedes-Benz, Indeed and Sparkasse logos, which is precisely the moment you're asking to be taken seriously.</p>
+        <div class="ev">Rendered at <b>108px / weight 900 / −5.4px tracking</b>, immediately above the client logo strip.</div>
+        <p class="fix"><b>Fix:</b> "Brands we level up." Or drop the English entirely — the rest of the page is German, and the switch buys you nothing.</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Translation, not imitation</p>
+    <h2>What to take — and what would be a mistake</h2>
+    <p class="lede">Mooser sells stillness to people booking an alpine retreat. You sell energy to brand managers buying esports activations. Copying their surface would read as costume.</p>
+    <div class="cols">
+      <div class="col take">
+        <p class="eyebrow">Take the structure</p>
+        <h3>Portable</h3>
+        <ul>
+          <li><b>Two type registers.</b> A display face that means "statement", a UI face for everything else.</li>
+          <li><b>A radius rule</b> with a deliberate exception that carries meaning.</li>
+          <li><b>One ground, held.</b> Depth from fills, not from flipping the page.</li>
+          <li><b>Split motion.</b> Slow one-shot reveals for content, fast springy easing for interaction.</li>
+          <li><b>A nav that carries its own background</b> so it never depends on the section behind it.</li>
+          <li><b>Palette austerity.</b> Seven named tokens is a feature, not a limitation.</li>
+        </ul>
+      </div>
+      <div class="col leave">
+        <p class="eyebrow">Leave the surface</p>
+        <h3>Not portable</h3>
+        <ul>
+          <li><b>The brown-and-cream palette.</b> Warm earth tones read as spa, not competition.</li>
+          <li><b>The Didone serif.</b> Elegant for a chalet; wrong for a stage with 4,000 people at it.</li>
+          <li><b>50–120px radii everywhere.</b> Too soft for your subject; you'd lose all edge.</li>
+          <li><b>Handwriting accents and joke marquees.</b> Charming from a hotel, unserious in a B2B pitch to Mercedes.</li>
+          <li><b>The multi-second cinematic intro.</b> Yours already lands faster, which is right for this audience.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">Implementation</p>
+    <h2>The token layer you're missing</h2>
+    <p class="lede">Every finding above traces back to one cause: nothing is named, so nothing can be reused. This is the file that fixes six of the eight.</p>
+<pre><span class="c">// tailwind.config.js — currently: theme: { extend: {} }</span>
+theme: {
+  extend: {
+    colors: {
+      ground: '#020617',        <span class="c">// the one ground, held</span>
+      raised: '#0B1628',        <span class="c">// panels — replaces the sage flip</span>
+      line:   '#1C2B44',
+      brand:  '#10b981',        <span class="c">// one primary</span>
+      accent: '#2dd4bf',        <span class="c">// one accent</span>
+      <span class="del">// delete: #00ff00, #00dd00, #84cc16, #00818d, #d1dbd2, #c5d0c6</span>
+    },
+    borderRadius: {
+      card:    '24px',          <span class="c">// every card</span>
+      surface: '40px',          <span class="c">// large panels only</span>
+      <span class="c">// controls use rounded-full; inputs stay square</span>
+    },
+    fontFamily: {
+      display: ['"Archivo Expanded"', 'Inter', 'sans-serif'],  <span class="add">// statements</span>
+      sans:    ['Inter', 'sans-serif'],                        <span class="c">// everything else</span>
+    },
+  },
+}
+
+<span class="c">// index.html — the one-line critical fix</span>
+<span class="del">- family=Inter:wght@300;400;500;600;700</span>
+<span class="add">+ family=Inter:wght@300;400;500;600;700;800;900</span></pre>
+  </section>
+
+  <section>
+    <p class="eyebrow">Sequence</p>
+    <h2>Do it in this order</h2>
+    <ol class="order">
+      <li><b>Load the 900 weight</b><span>One line. Immediately sharpens every heading on the site. Ten minutes.</span></li>
+      <li><b>Fix the navigation contrast</b><span>Give the bar its own ground. Removes a genuine legibility failure on three sections.</span></li>
+      <li><b>Delay the cookie banner</b><span>Let the hero animation finish first. Your strongest asset currently never gets seen.</span></li>
+      <li><b>Write the token file</b><span>Colours, radii, fonts. Collapses six greens and eight radii into a system, and stops the drift recurring.</span></li>
+      <li><b>Commit to the dark ground</b><span>Remove the sage sections; rebuild that contrast with raised panels. The largest visual change, and the one that makes it feel like one site.</span></li>
+      <li><b>Add the second type register</b><span>A wide or technical display face for statements only. This is what finally closes the gap with Mooser.</span></li>
+      <li><b>Fix the English headline</b><span>Five minutes, and it's sitting above your best client logos.</span></li>
+    </ol>
+  </section>
+
+  <footer>
+    Mooser figures are from the design-system document you supplied, sourced from their published CSS custom properties. Figures for your site were measured directly: static analysis of the repository plus a headless Chromium pass over the running build at 1440×900, sampling computed styles across the full 9,482px page. Note that webfont CDNs are blocked in this environment, so the captures rendered in a fallback face — layout, colour and spacing measurements are accurate; the screenshots do not show Inter.
+  </footer>
+
+</div>

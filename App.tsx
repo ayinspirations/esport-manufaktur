@@ -24,6 +24,7 @@ import { servicesContent, serviceSlugs } from './components/servicesContent';
 import { Purpose } from './components/Purpose';
 import { UeberUnsPage } from './components/UeberUnsPage';
 import { SocialStack } from './components/ui/social-stack';
+import { smoothScrollToElement } from './components/motion';
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
@@ -68,7 +69,11 @@ export default function App() {
 
     const handleNav = () => {
       setActivePage(resolvePage());
-      window.scrollTo(0, 0);
+      // Explicitly instant. The document has scroll-behavior: smooth, so a
+      // bare scrollTo(0, 0) animates -- and an animated reset that is still
+      // running when the page content swaps gets cut off part-way, leaving
+      // the visitor stranded mid-page on the new route.
+      window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     };
 
     handleNav();
@@ -86,7 +91,10 @@ export default function App() {
       v.currentTime = 0;
     });
     setActivePage(page);
-    window.scrollTo(0, 0);
+    // Instant for the same reason as handleNav above: this reset races the
+    // render of a page that is usually much shorter, and an animated one
+    // loses that race.
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     if (servicePages.includes(page)) {
       window.history.pushState(null, '', `/services/${page}`);
     } else if (page === 'ueber-uns') {
@@ -102,17 +110,23 @@ export default function App() {
     if (activePage !== 'home') {
       setActivePage('home');
       window.history.pushState(null, '', '/#home');
-
-      requestAnimationFrame(() => {
+      // The homepage has to mount before the target exists. A single frame is
+      // not always enough, so poll a few frames rather than silently doing
+      // nothing when the element is not there yet.
+      let tries = 0;
+      const attempt = () => {
         const el = document.getElementById(id);
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          smoothScrollToElement(el);
+        } else if (tries++ < 30) {
+          requestAnimationFrame(attempt);
         }
-      });
+      };
+      requestAnimationFrame(attempt);
     } else {
       const el = document.getElementById(id);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        smoothScrollToElement(el);
       }
     }
   };
@@ -152,11 +166,13 @@ export default function App() {
         )}
 
         {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
-        {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
-        {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
+        {/* Back from a case returns to the Best Cases section the visitor came
+            from, not the top of the homepage -- same as BlogDetail below. */}
+        {activePage === 'hagebau' && <CaseDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'tsystems' && <TSystemsDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} />}

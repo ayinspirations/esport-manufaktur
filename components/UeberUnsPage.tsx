@@ -2,6 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
+import { DUR, STAGGER, EASE_REVEAL } from './motion';
 
 interface UeberUnsPageProps {
   onNavigate: (page: any) => void;
@@ -35,10 +36,12 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
           {paragraphs.map((paragraph, i) => (
             <motion.p
               key={i}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.9 }}
+              // Staggered and on the shared reveal curve, so this page lands
+              // on the same rhythm as the tile grids elsewhere.
+              transition={{ duration: DUR.slow, delay: i * STAGGER.line, ease: EASE_REVEAL }}
               className="text-white/70 text-lg md:text-xl leading-relaxed max-w-3xl font-medium tracking-tight"
             >
               {paragraph}

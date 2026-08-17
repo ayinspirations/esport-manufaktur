@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { blogPosts, BlogPost } from './blogPosts';
 import { SECTION_PADDING } from './spacing';
+import { Reveal, RevealText } from './Reveal';
+import { DUR } from './motion';
 
 interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
@@ -12,7 +14,7 @@ interface BlogSectionProps {
 const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => (
   <button
     onClick={() => onOpenPost(post.slug)}
-    className={`group text-left flex flex-col rounded-[2rem] overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
+    className={`group text-left flex flex-col rounded-surface overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
       <img
@@ -49,7 +51,14 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
 
   return (
     <div className={`w-full flex items-center justify-center px-4 sm:px-6 md:px-14 ${SECTION_PADDING}`} id="blog">
-      <section className="relative w-full max-w-[1440px] mx-auto rounded-[3rem] md:rounded-[3.2rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10">
+      {/* Same treatment as the Purpose panel: the dark shell fades in as its
+          own tile, then its contents build on top of it. */}
+      <Reveal
+        as="section"
+        y={28}
+        duration={DUR.slow}
+        className="relative w-full max-w-[1440px] mx-auto rounded-shell md:rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10"
+      >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           <div className="absolute inset-0 bg-[#020617]" />
           <div
@@ -72,23 +81,18 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
         </div>
 
         <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-16 md:mb-20"
-          >
-            <div className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
+          <div className="mb-16 md:mb-20">
+            <Reveal delay={0.12} className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
               Insights
-            </div>
+            </Reveal>
             <h2 className="text-[clamp(38px,6.5vw,90px)] font-black text-white leading-[0.9] tracking-tighter uppercase">
-              Blog <br /> <span className="text-white/40 italic">&amp; Wissen.</span>
+              <RevealText as="span" by="word" text="Blog" delay={0.18} />
+              <RevealText as="span" by="word" text="& Wissen." delay={0.3} className="text-white/40 italic" />
             </h2>
-            <p className="text-white/60 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
+            <Reveal delay={0.42} as="p" className="text-white/60 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
               Praxiswissen zu Gaming, eSport-Events und digitaler Markenaktivierung.
-            </p>
-          </motion.div>
+            </Reveal>
+          </div>
 
           {/* Desktop / tablet: multi-column grid, unchanged */}
           <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -140,7 +144,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             </button>
           </div>
         </div>
-      </section>
+      </Reveal>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown, ChevronLeft } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { ServiceContent } from './servicesContent';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 
@@ -143,7 +143,7 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
   const [active, setActive] = useState(0);
 
   return (
-    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center rounded-[28px] ${TILE} p-8 md:p-14`}>
+    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center rounded-surface ${TILE} p-8 md:p-14`}>
       <div className="flex flex-col">
         {steps.map((step, i) => {
           const isOpen = active === i;
@@ -174,7 +174,7 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
         })}
       </div>
 
-      <div className="relative aspect-[4/3] rounded-[20px] bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden">
+      <div className="relative aspect-[4/3] rounded-card bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent" />
         <div key={active} className="relative z-10 flex flex-col items-center text-center px-8" style={{ animation: 'processFade 0.4s ease-out' }}>
           <style>{`@keyframes processFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
@@ -243,11 +243,17 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             </button>
           </Reveal>
 
-          <Reveal duration={0.75} delay={0.05}>
-            <h1 className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl">
-              {content.hero.headline}
-            </h1>
-          </Reveal>
+          {/* stagger 0: these hero headlines run to three or four lines, and a
+              per-word stagger made them arrive line by line. The statement
+              lands as one piece, keeping the masked slide-up. */}
+          <RevealText
+            as="h1"
+            by="word"
+            stagger={0}
+            text={content.hero.headline}
+            delay={0.05}
+            className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl"
+          />
 
           <Reveal duration={0.75} delay={0.15}>
             <p className="mt-6 md:mt-8 text-white/70 text-lg sm:text-xl font-medium leading-relaxed max-w-xl">
@@ -265,11 +271,9 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       <section className={`${CANVAS_B} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-16">
-            <Reveal className="md:col-span-5" as="div">
-              <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-slate-900">
-                {content.pain.heading}
-              </h2>
-            </Reveal>
+            <div className="md:col-span-5">
+              <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+            </div>
             <Reveal delay={0.1} className="md:col-span-7">
               <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">{content.pain.text}</p>
             </Reveal>
@@ -280,11 +284,9 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       {/* ============ 3. LEISTUNGEN IM DETAIL -- Apple-style tile carousel ============ */}
       <section className={`${CANVAS_A} ${SECTION}`}>
         <div className={CONTAINER}>
-          <Reveal className="max-w-2xl mb-14 md:mb-20">
-            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900">
-              {content.leistungenHeading}
-            </h2>
-          </Reveal>
+          <div className="max-w-2xl mb-14 md:mb-20">
+              <RevealText as="h2" by="word" text={content.leistungenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+            </div>
 
           <div className="flex flex-col gap-16 md:gap-20">
             {content.leistungen.map((group, gi) => (
@@ -303,7 +305,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
                     {group.cards.map((card, ci) => (
                       <div
                         key={ci}
-                        className={`snap-start shrink-0 w-[260px] sm:w-[300px] h-full p-7 md:p-8 rounded-[20px] ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)]`}
+                        className={`snap-start shrink-0 w-[260px] sm:w-[300px] h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)]`}
                       >
                         <div className="w-9 h-9 rounded-full bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-xs font-black mb-6">
                           {String(ci + 1).padStart(2, '0')}
@@ -329,11 +331,9 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       {/* ============ 4. UNSER VORGEHEN -- interactive accordion + visual ============ */}
       <section className={`${CANVAS_B} ${SECTION}`}>
         <div className={CONTAINER}>
-          <Reveal className="max-w-2xl mb-12 md:mb-16">
-            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900">
-              {content.vorgehenHeading}
-            </h2>
-          </Reveal>
+          <div className="max-w-2xl mb-12 md:mb-16">
+              <RevealText as="h2" by="word" text={content.vorgehenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+            </div>
 
           <Reveal>
             <ProcessInteractive steps={content.vorgehen} />
@@ -344,11 +344,9 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       {/* ============ 5. FÜR WEN ============ */}
       <section className={`${CANVAS_A} ${SECTION}`}>
         <div className={CONTAINER}>
-          <Reveal className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900">
-              {content.fuerWenHeading}
-            </h2>
-          </Reveal>
+          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+              <RevealText as="h2" by="word" text={content.fuerWenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+            </div>
           <Reveal delay={0.1} className="flex flex-wrap justify-center gap-3 md:gap-4">
             {content.fuerWen.map((chip, i) => (
               <span
@@ -376,7 +374,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             <Reveal delay={0.1} className="md:col-span-7">
               <div
                 onClick={goToBestCases}
-                className={`group cursor-pointer relative aspect-[16/10] rounded-[20px] overflow-hidden ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] flex items-center justify-center`}
+                className={`group cursor-pointer relative aspect-[16/10] rounded-card overflow-hidden ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] flex items-center justify-center`}
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
                 <span className="relative z-10 text-white/30 text-xs font-black uppercase tracking-[0.25em]">
@@ -400,7 +398,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
               const isOpen = openFaq === i;
               return (
                 <Reveal key={i} delay={i * 0.08}>
-                  <div className="rounded-[20px] bg-white border border-slate-900/10 overflow-hidden shadow-sm">
+                  <div className="rounded-card bg-white border border-slate-900/10 overflow-hidden shadow-sm">
                     <button
                       onClick={() => setOpenFaq(isOpen ? null : i)}
                       className="w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"
@@ -432,11 +430,9 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       {/* ============ 8. CTA-CLOSER ============ */}
       <section className={`${CANVAS_B} ${SECTION} pb-28 md:pb-36`}>
         <div className={`${CONTAINER} text-center`}>
-          <Reveal className="max-w-2xl mx-auto">
-            <h2 className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-slate-900">
-              {content.ctaCloser.headline}
-            </h2>
-          </Reveal>
+          <div className="max-w-2xl mx-auto">
+              <RevealText as="h2" by="word" text={content.ctaCloser.headline} className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-slate-900" />
+            </div>
           <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4 mb-8">
             <PrimaryButton onClick={onOpenBooking}>{content.ctaCloser.primaryLabel}</PrimaryButton>
             {content.ctaCloser.secondaryLabel && (

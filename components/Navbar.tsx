@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
+import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
@@ -51,16 +52,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
       style={{ willChange: 'opacity, transform, filter' }}
       className="fixed top-0 left-0 right-0 z-[100] md:px-14 md:py-8 pointer-events-none"
     >
-      {/* Desktop bar -- unchanged pill/blur chrome */}
+      {/* Desktop bar -- morphs from a full-width, near-transparent strip over
+          the hero into a compact floating pill that carries its own dark
+          ground once scrolling starts.
+
+          Carrying its own ground is the actual fix, not a style choice: the
+          bar keeps white text throughout, and the homepage alternates between
+          #020617 and the sage sections. While the bar was translucent it
+          became unreadable over every light section it crossed. Now its
+          legibility no longer depends on what happens to be behind it. */}
       <div
-        className={`hidden md:flex relative max-w-[1440px] mx-auto items-center justify-between pointer-events-auto h-[62px] px-8 rounded-[28px] transition-all duration-500 ease-in-out ${
-          scrolled ? 'scale-[0.99]' : 'scale-100'
+        className={`hidden md:flex relative mx-auto items-center justify-between pointer-events-auto rounded-full ${
+          scrolled ? 'max-w-[1040px] h-[56px] px-6' : 'max-w-[1440px] h-[62px] px-8'
         }`}
         style={{
-          background: scrolled ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
-          backdropFilter: 'blur(16px) saturate(120%)',
-          WebkitBackdropFilter: 'blur(16px) saturate(120%)',
-          boxShadow: scrolled ? '0 8px 24px -18px rgba(0,0,0,0.3)' : 'none'
+          // Fully opaque once scrolled -- not translucent. At 0.92 alpha the
+          // service tiles and case tiles showed through as they passed behind
+          // the bar, which read as the tiles dissolving into a murky strip at
+          // the top of the page. Solid means content passes cleanly behind it.
+          background: scrolled ? '#020617' : 'rgba(255,255,255,0.03)',
+          backdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
+          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0)'}`,
+          boxShadow: scrolled ? '0 18px 50px -20px rgba(0,0,0,0.75)' : 'none',
+          transition: `background 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
         }}
       >
         <div className="flex items-center gap-3 shrink-0">
@@ -77,25 +92,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Startseite
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className="text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
           >
             Best Cases
           </button>
@@ -104,7 +119,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'contact')}
-            className="bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50 px-5 h-9 rounded-full text-xs font-semibold tracking-tight transition-all duration-300 hover:scale-[1.03] active:scale-[0.97]"
+            className="spring bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50 px-5 h-9 rounded-full text-xs font-semibold tracking-tight"
           >
             Kontakt
           </button>
@@ -118,9 +133,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           never moves -- it just swaps icon -- so it doubles as the close (X)
           button in the exact top-right spot where it always sits. */}
       <div
-        className={`md:hidden pointer-events-auto transition-colors duration-300 ${
+        className={`md:hidden pointer-events-auto ${
           isOpen ? 'bg-[#020617] border border-white/10 overflow-hidden' : ''
         }`}
+        style={
+          isOpen
+            ? undefined
+            : {
+                // Same reasoning as the desktop bar: the logo and burger are
+                // white, so once the page scrolls past the hero onto a sage
+                // section they need their own ground to stay visible.
+                background: scrolled ? '#020617' : 'transparent',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
+                boxShadow: scrolled ? '0 14px 40px -22px rgba(0,0,0,0.8)' : 'none',
+                transition: `background 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
+              }
+        }
       >
         <div className="flex items-center justify-between px-6 py-5">
           <button

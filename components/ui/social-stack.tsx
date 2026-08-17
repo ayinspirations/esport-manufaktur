@@ -173,7 +173,7 @@ export const SocialStack: React.FC = () => {
             rel="noopener noreferrer"
             aria-label={label}
             tabIndex={effectiveOpen ? 0 : -1}
-            className={`${SOLID_CLASS} absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-[20px] border transition-[transform,opacity,box-shadow] duration-500 ease-out ${
+            className={`${SOLID_CLASS} absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-card border transition-[transform,opacity,box-shadow] duration-500 ease-out ${
               effectiveOpen ? openClass : closedClass
             }`}
             style={{ transitionDelay: `${i * 80}ms` }}
@@ -187,7 +187,7 @@ export const SocialStack: React.FC = () => {
           onClick={() => setIsOpen((v) => !v)}
           aria-expanded={effectiveOpen}
           aria-label="Social Media Links"
-          className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-[20px] border transition-all duration-300 ${
+          className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-card border transition-all duration-300 ${
             effectiveOpen ? SOLID_CLASS : GLASSY_CLASS
           }`}
         >

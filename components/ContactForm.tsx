@@ -1,6 +1,9 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { HubSpotForm } from './HubSpotForm';
+import { RevealText } from './Reveal';
+import { LazyVideo } from './LazyVideo';
+import { DUR, EASE_REVEAL_CSS } from './motion';
 
 export const ContactForm: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -33,29 +36,30 @@ export const ContactForm: React.FC = () => {
       >
         <div className="relative z-10">
           <div className="text-center mb-12 md:mb-16">
-            <h2
+            {/* This headline and its subline were the only reveals on the
+                homepage still running on the browser's default `ease` curve
+                rather than the shared reveal curve, which made the closing
+                section land on a subtly different rhythm from everything
+                above it. Now on the same vocabulary as the rest of the page. */}
+            <RevealText
+              as="h2"
+              by="word"
+              text="Lass uns sprechen."
               className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-slate-900 uppercase"
-              style={{
-                opacity: visible ? 1 : 0,
-                transform: visible ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'opacity 1s ease, transform 1s ease 0.2s',
-              }}
-            >
-              Lass uns sprechen.
-            </h2>
+            />
             <p
               className="text-slate-600 text-lg md:text-2xl font-bold max-w-2xl mx-auto tracking-tight leading-tight"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity 1s ease, transform 1s ease 0.3s',
+                transition: `opacity ${DUR.slow}s ${EASE_REVEAL_CSS} 0.3s, transform ${DUR.slow}s ${EASE_REVEAL_CSS} 0.3s`,
               }}
             >
               Wir helfen Ihnen, Zielgruppen zu aktivieren und Ihre Marke erlebbar zu machen.
             </p>
           </div>
 
-          <div className="relative rounded-[3rem] overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
+          <div className="relative rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
             <div className="absolute inset-0 z-0 pointer-events-none">
               <div className="absolute inset-0 bg-[#020617]" />
               <div
@@ -75,9 +79,10 @@ export const ContactForm: React.FC = () => {
                   WebkitMaskComposite: 'source-in',
                 }}
               />
-              <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-[0.08] mix-blend-overlay">
-                <source src="/videos/hero-bg.mp4" type="video/mp4" />
-              </video>
+              <LazyVideo
+                src="/videos/hero-bg.mp4"
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.08] mix-blend-overlay"
+              />
             </div>
 
             <div className="relative z-10 p-8 sm:p-12 md:p-20">

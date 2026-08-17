@@ -70,7 +70,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             </p>
           </section>
 
-          <section className="p-8 bg-slate-50 rounded-[2rem] border border-black/[0.03]">
+          <section className="p-8 bg-slate-50 rounded-surface border border-black/[0.03]">
             <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Angaben nach § 2 DL-InfoV</h3>
             <ul className="list-disc pl-5 space-y-2 text-xs font-bold text-slate-500 uppercase tracking-wider leading-relaxed">
               <li>Unsere Dienstleistungen richten sich an Unternehmen, Verbände und Institutionen.</li>
@@ -290,7 +290,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             {activeContent.subtitle}
           </p>
 
-          <div className="glass bg-white/60 rounded-[3rem] p-10 md:p-20 shadow-2xl border border-white/40">
+          <div className="glass bg-white/60 rounded-shell p-10 md:p-20 shadow-2xl border border-white/40">
             {activeContent.body}
           </div>
         </motion.div>

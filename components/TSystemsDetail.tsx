@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Reveal, RevealText } from './Reveal';
+import { STAGGER, DUR } from './motion';
 
 interface TSystemsDetailProps {
   onBack: () => void;
@@ -43,14 +45,10 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl"
-              >
-                T-Systems <br /> <span className="text-white/40 italic">Gaming.</span>
-              </motion.h1>
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+                <RevealText as="span" by="word" text="T-Systems" delay={0.1} />
+                <RevealText as="span" by="word" text="Gaming." delay={0.24} className="text-white/40 italic" />
+              </h1>
             </div>
 
             <motion.div
@@ -76,19 +74,17 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                Gaming-Plattform für T-Systems - Employer Branding für Tech-Talente
-              </h2>
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+              <RevealText as="h2" by="word" text="Gaming-Plattform für T-Systems - Employer Branding für Tech-Talente" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
+              <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Für T-Systems haben wir eine maßgeschneiderte Gaming-Plattform entwickelt, um das Unternehmen als attraktiven Arbeitgeber im technischen Umfeld zu positionieren. Ziel war es, technikaffine Schüler anzusprechen und sie auf spielerische Weise für IT und technische Berufe zu begeistern.
-              </p>
-              <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
+              </Reveal>
+              <Reveal as="p" delay={0.16} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
                 Die Plattform bot digitale Qualifikationsturniere, spannende Inhalte und gezielte Interaktionen - perfekt zugeschnitten auf die junge Zielgruppe. Unser Team der e-Sport Manufaktur kümmerte sich um die gesamte Umsetzung: von der Konzeption und Gestaltung bis hin zur technischen Umsetzung und Betreuung.
-              </p>
+              </Reveal>
             </section>
 
             {/* Image Slider — pure CSS, no AnimatePresence */}
-            <div className="relative group rounded-[2.5rem] overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl">
+            <div className="relative group rounded-shell overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl">
               <div className="absolute inset-0">
                 {images.map((src, i) => (
                   <img
@@ -131,12 +127,12 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
             </div>
 
             <section className="space-y-8">
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+              <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
                 Neben der digitalen Aktivierung organisierten wir am 10. Dezember 2024 ein großes Live-Finale, bei dem die Besucher nicht nur zuschauen, sondern an Spielstationen auch selbst aktiv werden und die Gaming-Welt hautnah erleben konnten. Mit hochwertigen Setups, großen Screens und interaktiven Elementen wurde ein echtes Erlebnis geschaffen, das Marke, Technologie und Community nachhaltig verbindet.
-              </p>
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed">
+              </Reveal>
+              <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
                 Durch ein umfassendes Eventpaket haben wir es T-Systems ermöglicht, potenzielle Talente auf eine moderne und interaktive Weise anzusprechen.
-              </p>
+              </Reveal>
             </section>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
@@ -144,13 +140,13 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 { title: 'Konzept und Umsetzung', icon: <Target className="w-6 h-6" />, text: 'Entwicklung einer Gaming-Plattform, die speziell auf die Zielgruppe zugeschnitten ist.' },
                 { title: 'Finale vor Ort', icon: <Users className="w-6 h-6" />, text: 'Spannendes Live-Finale mit aktiven Gaming-Stationen für Zuschauer und Community-Erlebnisse.' },
               ].map((item, i) => (
-                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-[2rem] border border-slate-900/5 shadow-sm">
+                <Reveal key={i} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
                   <h3 className="text-2xl font-black uppercase tracking-tighter mb-4">{item.title}</h3>
                   <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
 
@@ -173,7 +169,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
           {/* Sidebar */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
-              <div className="bg-slate-900 text-white p-10 rounded-[2.5rem] shadow-2xl">
+              <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
                   <section>
                     <div className="flex items-center gap-3 mb-4">
@@ -253,7 +249,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>
