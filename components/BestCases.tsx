@@ -4,21 +4,21 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
-import { DUR, EASE_REVEAL } from './motion';
+import { DUR, EASE_REVEAL, STAGGER } from './motion';
 
-// The case tiles are the largest media surfaces on the site, so they get the
-// "sheet laying flat" entry: each one starts tipped back in 3D and below its
-// resting place, then rights itself onto the page. transformPerspective keeps
-// the projection on the tile itself, so no parent wrapper is needed and the
-// grid layout stays exactly as it was.
+// Same entry as the service tiles: a straight fade with a short rise, no 3D
+// tilt. Keeping both tile grids on one gesture is what makes the page read as
+// a single system -- the tilt made this section announce itself as a separate
+// piece of work.
 //
-// Toned down from the reference (-60deg / 300px): six tiles at full strength,
-// one after another, is genuinely nauseating. -42deg / 110px keeps the
-// gesture and loses the motion sickness.
-const TILE_FROM = { opacity: 0, y: 110, rotateX: -42, transformPerspective: 1200 };
-const TILE_TO = { opacity: 1, y: 0, rotateX: 0, transformPerspective: 1200 };
+// Values mirror ServiceCard exactly (32px rise, DUR.reveal, EASE_REVEAL).
+const TILE_FROM = { opacity: 0, y: 32 };
+const TILE_TO = { opacity: 1, y: 0 };
 const TILE_VIEWPORT = { once: true, margin: '-80px' } as const;
-const TILE_STYLE = { transformOrigin: '50% 100%' } as const;
+
+// Stagger restarts on each grid row (2 tiles, then 1 full-width, then 3), so
+// no tile waits on the delay of one sitting above it in a different row.
+const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, STAGGER.card * 2];
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
@@ -47,8 +47,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.1, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[0], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -92,8 +91,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.2, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[1], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -138,8 +136,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.3, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[2], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -184,8 +181,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.4, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[3], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -229,8 +225,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.5, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[4], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -269,8 +264,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               initial={TILE_FROM}
               whileInView={TILE_TO}
               viewport={TILE_VIEWPORT}
-              style={TILE_STYLE}
-              transition={{ duration: DUR.slow, delay: 0.6, ease: EASE_REVEAL }}
+              transition={{ duration: DUR.reveal, delay: TILE_DELAY[5], ease: EASE_REVEAL }}
               className="relative group overflow-hidden rounded-shell bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
             >
               <div 
