@@ -93,8 +93,8 @@ interface RevealTextProps {
  * clipping box and slides up into view, staggered. This is the effect that
  * makes a headline feel authored rather than faded in.
  *
- * The mask carries a little vertical padding (offset by an equal negative
- * margin) so descenders in g/j/p/y are not clipped by `overflow: hidden`.
+ * The mask clips only its bottom edge (see below), so descenders, umlauts and
+ * italic overhang all paint freely and line wrapping is untouched.
  *
  * Accessibility: the full string stays on the wrapper as aria-label and every
  * split fragment is aria-hidden, so assistive tech reads one clean sentence
@@ -122,21 +122,31 @@ export const RevealText: React.FC<RevealTextProps> = ({
       <span
         key={key}
         aria-hidden="true"
-        // The mask clips on all four sides, so it needs breathing room on all
-        // four. Each edge is clipping something different:
-        //   bottom  descenders (g/j/p/q/y)
-        //   top     diacritics above cap height -- umlauts are the common case
-        //           in German, and "FÜR" lost the dots off its U
-        //   sides   italic slant, which leans past the glyph's advance width
-        //           and sliced the last letter off italic headings
-        // The padding is cancelled by an equal negative margin, so nothing
-        // about the layout changes.
-        className="inline-block overflow-hidden align-bottom p-[0.18em] -m-[0.18em]"
+        // The reveal only ever needs to hide what sits BELOW the word, so the
+        // mask clips one edge instead of all four.
+        //
+        // `overflow: hidden` clips every side, which meant padding each edge
+        // to keep descenders, umlauts and the italic slant from being sliced.
+        // That padding had to be cancelled by a negative margin, and the
+        // negative margin is what broke line wrapping: layout measured each
+        // word narrower than it paints, so a word at the end of a line was
+        // treated as fitting and then painted past the container edge, where
+        // an ancestor's overflow clipped it.
+        //
+        // clip-path cuts only at the bottom. The other three insets are
+        // negative, so the glyph paints freely upward and sideways, and no
+        // padding or margin trickery is involved at all.
+        style={{ clipPath: 'inset(-0.5em -0.5em -0.14em -0.5em)' }}
+        className="inline-block align-bottom"
       >
         <span
           className="inline-block"
           style={{
-            transform: inView ? 'translateY(0)' : 'translateY(110%)',
+            // 130% rather than 110%: the mask's bottom edge is cut slightly
+            // below the box so descenders survive, and the resting position
+            // has to clear that gap or a sliver of the word shows through
+            // before the reveal starts.
+            transform: inView ? 'translateY(0)' : 'translateY(130%)',
             opacity: inView ? 1 : 0,
             transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${d}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${d}s`,
             willChange: 'transform, opacity'
