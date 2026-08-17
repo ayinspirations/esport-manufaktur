@@ -66,9 +66,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           scrolled ? 'max-w-[1040px] h-[56px] px-6' : 'max-w-[1440px] h-[62px] px-8'
         }`}
         style={{
-          background: scrolled ? 'rgba(2,6,23,0.92)' : 'rgba(255,255,255,0.03)',
-          backdropFilter: 'blur(16px) saturate(120%)',
-          WebkitBackdropFilter: 'blur(16px) saturate(120%)',
+          // Fully opaque once scrolled -- not translucent. At 0.92 alpha the
+          // service tiles and case tiles showed through as they passed behind
+          // the bar, which read as the tiles dissolving into a murky strip at
+          // the top of the page. Solid means content passes cleanly behind it.
+          background: scrolled ? '#020617' : 'rgba(255,255,255,0.03)',
+          backdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
           border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0)'}`,
           boxShadow: scrolled ? '0 18px 50px -20px rgba(0,0,0,0.75)' : 'none',
           transition: `background 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
@@ -139,9 +143,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 // Same reasoning as the desktop bar: the logo and burger are
                 // white, so once the page scrolls past the hero onto a sage
                 // section they need their own ground to stay visible.
-                background: scrolled ? 'rgba(2,6,23,0.92)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(16px) saturate(120%)' : 'none',
-                WebkitBackdropFilter: scrolled ? 'blur(16px) saturate(120%)' : 'none',
+                background: scrolled ? '#020617' : 'transparent',
+                backdropFilter: 'none',
+                WebkitBackdropFilter: 'none',
                 boxShadow: scrolled ? '0 14px 40px -22px rgba(0,0,0,0.8)' : 'none',
                 transition: `background 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
               }

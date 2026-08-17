@@ -238,7 +238,10 @@ interface CompetenciesProps {
 
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   return (
-    <div className="w-full flex items-center justify-center" id="competencies">
+    // scroll-mt clears the sticky bar (56px pill + 32px top inset = 88px), so
+    // jumping to this section never parks its heading or the first row of
+    // tiles underneath the navigation.
+    <div className="w-full flex items-center justify-center scroll-mt-28" id="competencies">
       <section className={`w-full pt-6 md:pt-8 lg:pt-10 pb-16 md:pb-24 lg:pb-28 bg-transparent relative overflow-hidden`}>
         <style>{`
           .card-desc-wrap { max-height: 0; opacity: 0; }
