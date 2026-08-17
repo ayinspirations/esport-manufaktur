@@ -136,7 +136,15 @@ export const RevealText: React.FC<RevealTextProps> = ({
         // clip-path cuts only at the bottom. The other three insets are
         // negative, so the glyph paints freely upward and sideways, and no
         // padding or margin trickery is involved at all.
-        style={{ clipPath: 'inset(-0.5em -0.5em -0.14em -0.5em)' }}
+        //
+        // They are -100% rather than a tuned em value on purpose. How far a
+        // glyph paints outside its box depends on the font: an italic's slant,
+        // a diacritic's height and an overshooting round all differ per
+        // typeface, and the display face here is a webfont. -100% of the box
+        // on each free side is far past anything a text face can produce, so
+        // there is no value left to get wrong. Only the bottom edge, the one
+        // doing the actual work, is a real measurement.
+        style={{ clipPath: 'inset(-100% -100% -0.14em -100%)' }}
         className="inline-block align-bottom"
       >
         <span
