@@ -153,8 +153,8 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
               110px directly above the Mercedes-Benz, Indeed and Sparkasse
               logos -- the exact moment the page asks to be taken seriously. */}
           <h2 className="text-[clamp(44px,7.5vw,110px)] font-black leading-[0.85] tracking-tighter uppercase flex flex-col items-center">
-            <RevealText as="span" by="char" text="Brands we" className="text-slate-950" />
-            <RevealText as="span" by="char" text="level up." className="text-slate-400/90" delay={0.14} />
+            <RevealText as="span" by="word" text="Brands we" className="text-slate-950" />
+            <RevealText as="span" by="word" text="level up." className="text-slate-400/90" delay={0.14} />
           </h2>
         </div>
       </div>

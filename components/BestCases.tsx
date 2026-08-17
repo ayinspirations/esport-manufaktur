@@ -30,8 +30,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
         <div className="flex flex-col lg:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
           <div className="max-w-3xl">
             <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
-              <RevealText as="span" by="char" text="Best" />
-              <RevealText as="span" by="char" text="Cases." className="text-slate-900/40 italic" delay={0.14} />
+              <RevealText as="span" by="word" text="Best" />
+              <RevealText as="span" by="word" text="Cases." className="text-slate-900/40 italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.32} className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
               Bewegtbilder für echte Erlebnisse. Ausgewählte Projekte in voller Dynamik.

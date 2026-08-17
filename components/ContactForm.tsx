@@ -42,7 +42,7 @@ export const ContactForm: React.FC = () => {
                 above it. Now on the same vocabulary as the rest of the page. */}
             <RevealText
               as="h2"
-              by="char"
+              by="word"
               text="Lass uns sprechen."
               className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-slate-900 uppercase"
             />

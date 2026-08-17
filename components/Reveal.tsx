@@ -59,7 +59,18 @@ export const Reveal: React.FC<RevealProps> = ({
 interface RevealTextProps {
   /** Plain text. Use \n to force a line break -- each line masks separately. */
   text: string;
-  /** Split granularity. Characters read as a "build", words as a "settle". */
+  /**
+   * Split granularity. Words are the safe default and what every headline on
+   * the site uses.
+   *
+   * 'char' puts each glyph in its own inline-block, which has two costs:
+   * kerning pairs between adjacent glyphs are lost, and any slanted glyph
+   * leans out of its own box and collides with the next one. On the display
+   * headlines here -- italic, uppercase, tracking-tighter -- that produced
+   * visibly overlapping letters ("SERVICES." colliding at the V/I pair).
+   *
+   * Only reach for 'char' on upright text at normal tracking.
+   */
   by?: 'word' | 'char';
   className?: string;
   /** Delay before the first unit starts, in seconds. */
