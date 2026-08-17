@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { STAGGER } from './motion';
 
 interface CaseDetailProps {
   onBack: () => void;
@@ -230,13 +232,13 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                 { title: 'Sponsoring System', icon: <Target className="w-6 h-6" />, text: 'Effektive Integration zahlreicher Partner und Generierung zusätzlicher Einnahmen.' },
                 { title: 'Gesellschaftliche Begleitung', icon: <HeartHandshake className="w-6 h-6" />, text: 'Aufklärung über digitale Themen wie Gaming-Sucht und Medienkompetenz.' },
               ].map((item, i) => (
-                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
+                <Reveal key={i} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
                   <h3 className="text-2xl font-black uppercase tracking-tighter mb-4">{item.title}</h3>
                   <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>

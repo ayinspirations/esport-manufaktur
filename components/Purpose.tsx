@@ -3,6 +3,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
+import { Reveal } from './Reveal';
+import { STAGGER } from './motion';
 
 interface PurposeProps {
   onNavigate?: (page: any) => void;
@@ -38,8 +40,10 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
         </div>
 
-        {/* No fly-in / slide -- a quiet opacity-only fade, matching the calm
-            Apple-style page build the brief asks for. */}
+        {/* The section as a whole still arrives on a quiet opacity-only fade,
+            which keeps this block calmer than the tile grids around it. The
+            three statement blocks inside it now stagger in on the shared
+            reveal, so they read as a sequence rather than appearing at once. */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -55,15 +59,15 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 mt-16 md:mt-20 pt-12 md:pt-16 border-t border-white/10">
-            {blocks.map((block) => (
-              <div key={block.label}>
+            {blocks.map((block, i) => (
+              <Reveal key={block.label} delay={i * STAGGER.card} y={28}>
                 <p className="text-white font-black text-xl md:text-2xl leading-snug tracking-tight mb-4">
                   {block.statement}
                 </p>
                 <p className="text-white/40 text-[11px] font-black uppercase tracking-widest">
                   {block.label}
                 </p>
-              </div>
+              </Reveal>
             ))}
           </div>
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { STAGGER } from './motion';
 
 interface BayernZocktDetailProps {
   onBack: () => void;
@@ -178,13 +180,13 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                 { title: 'Turniermanagement', icon: <Trophy className="w-6 h-6" />, text: 'Umsetzung von Wettkämpfen für verschiedene Leistungsniveaus.' },
                 { title: 'Content Creation', icon: <Lightbulb className="w-6 h-6" />, text: 'News der EM2024 gepaart mit EA FC25 News in prägnanten Short-Formaten.' },
               ].map((item, i) => (
-                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
+                <Reveal key={i} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
                   <h3 className="text-2xl font-black uppercase tracking-tighter mb-4">{item.title}</h3>
                   <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
 

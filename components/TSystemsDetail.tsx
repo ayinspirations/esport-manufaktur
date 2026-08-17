@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { STAGGER } from './motion';
 
 interface TSystemsDetailProps {
   onBack: () => void;
@@ -144,13 +146,13 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 { title: 'Konzept und Umsetzung', icon: <Target className="w-6 h-6" />, text: 'Entwicklung einer Gaming-Plattform, die speziell auf die Zielgruppe zugeschnitten ist.' },
                 { title: 'Finale vor Ort', icon: <Users className="w-6 h-6" />, text: 'Spannendes Live-Finale mit aktiven Gaming-Stationen für Zuschauer und Community-Erlebnisse.' },
               ].map((item, i) => (
-                <div key={i} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
+                <Reveal key={i} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
                   <h3 className="text-2xl font-black uppercase tracking-tighter mb-4">{item.title}</h3>
                   <p className="text-slate-600 font-medium leading-relaxed">{item.text}</p>
-                </div>
+                </Reveal>
               ))}
             </div>
 

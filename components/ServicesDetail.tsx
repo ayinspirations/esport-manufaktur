@@ -5,6 +5,8 @@ import {
   Gamepad2, Trophy, Monitor, Cpu, Camera, 
   CheckCircle2, ArrowRight, ExternalLink, Layers, Globe, ShieldCheck, Zap, Target, Users
 } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { STAGGER } from './motion';
 
 interface ServicesDetailProps {
   onNavigate: (page: 'home' | 'services') => void;
@@ -168,13 +170,21 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                 <div className="lg:col-span-7">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {activeService.capabilities.map((cap, i) => (
-                      <div key={i} className="p-8 bg-slate-50 rounded-shell border border-black/[0.03] group hover:bg-white hover:shadow-xl transition-all">
+                      // Keyed by the active tab as well as the index, so
+                      // switching tabs remounts these and replays the stagger
+                      // instead of swapping the text under static cards.
+                      <Reveal
+                        key={`${activeService.id}-${i}`}
+                        delay={i * STAGGER.card}
+                        y={26}
+                        className="p-8 bg-slate-50 rounded-shell border border-black/[0.03] group hover:bg-white hover:shadow-xl transition-all"
+                      >
                         <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center mb-6 shadow-sm group-hover:bg-emerald-500 group-hover:text-white transition-all">
                           <CheckCircle2 className="w-5 h-5 opacity-30 group-hover:opacity-100" />
                         </div>
                         <h4 className="text-sm font-black text-slate-950 tracking-widest mb-2 uppercase">{cap.name}</h4>
                         <p className="text-slate-400 text-xs font-medium uppercase tracking-widest">{cap.desc}</p>
-                      </div>
+                      </Reveal>
                     ))}
                   </div>
                 </div>
@@ -199,7 +209,12 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                    { title: "Red Carpet & Premieren", desc: "Perfekte Abläufe, klare Inszenierung, professionelle Technik.", icon: Zap },
                    { title: "Promotions & Activations", desc: "Marken greifbar machen – am POS, auf Messen oder im öffentlichen Raum.", icon: Target }
                  ].map((item, i) => (
-                    <div key={i} className="p-8 bg-white rounded-shell border border-black/5 shadow-xl flex gap-6 items-center">
+                    <Reveal
+                      key={i}
+                      delay={i * STAGGER.card}
+                      y={26}
+                      className="p-8 bg-white rounded-shell border border-black/5 shadow-xl flex gap-6 items-center"
+                    >
                       <div className="w-14 h-14 bg-emerald-500 rounded-2xl flex items-center justify-center text-white shrink-0">
                         <item.icon className="w-6 h-6" />
                       </div>
@@ -207,7 +222,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                         <h4 className="text-xl font-bold text-slate-950 tracking-tighter mb-1 uppercase">{item.title}</h4>
                         <p className="text-slate-500 font-medium tracking-tight text-sm">{item.desc}</p>
                       </div>
-                    </div>
+                    </Reveal>
                  ))}
               </div>
            </div>
