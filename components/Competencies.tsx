@@ -98,7 +98,11 @@ const ServiceCard: React.FC<{
   onNavigate?: (page: any) => void;
   /** Stagger offset in seconds for the entry reveal. */
   delay?: number;
-}> = ({ item, onNavigate, delay = 0 }) => {
+  /** Sizing/placement classes. Supplied by whichever layout renders the card
+      -- the mobile carousel wants a fixed track width, the desktop grid wants
+      a column span and its own aspect ratio. */
+  sizing?: string;
+}> = ({ item, onNavigate, delay = 0, sizing = '' }) => {
   const clickable = Boolean(item.page);
   // The reveal lives on the card's own root rather than in a wrapper element:
   // these cards are direct children of a flex + scroll-snap track, and an
@@ -118,7 +122,7 @@ const ServiceCard: React.FC<{
         transform: inView ? 'translateY(0)' : 'translateY(32px)',
         transition: `opacity ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s, transform ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s`
       }}
-      className={`group relative shrink-0 snap-center md:snap-start w-[80%] sm:w-[55%] md:w-[31%] lg:w-[23%] aspect-[3/4] rounded-surface overflow-hidden select-none ${clickable ? 'cursor-pointer' : ''}`}
+      className={`group relative rounded-surface overflow-hidden select-none ${sizing} ${clickable ? 'cursor-pointer' : ''}`}
     >
       {item.placeholder ? (
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950 flex flex-col items-center justify-center gap-3 transition-transform duration-500 ease-out group-hover:scale-105">
@@ -213,7 +217,7 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
       <style>{`.services-carousel-track::-webkit-scrollbar{display:none}`}</style>
       <div
         ref={trackRef}
-        className="services-carousel-track flex gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 md:mx-0 px-[10%] sm:px-[22.5%] md:px-0"
+        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-[10%] sm:px-[22.5%]"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {children}
@@ -231,6 +235,37 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
     </div>
   );
 };
+
+// -- Desktop composition ----------------------------------------------------
+// An editorial grid instead of a slider: tiles vary in width and proportion,
+// sit on their own vertical offsets, and leave real empty ground between them.
+// The offsets are what stop it reading as a plain gallery -- neighbouring
+// tiles never line up on the same baseline.
+//
+// One entry per service, in order. `span` is the column span on a 12-column
+// grid, `start` forces the column so the gaps are deliberate rather than
+// whatever auto-placement leaves over, `ratio` sets the tile's proportion and
+// `offset` is its vertical shift. Tweak the composition here; nothing else
+// needs to change.
+const DESKTOP_TILES = [
+  { start: 'lg:col-start-1',  span: 'lg:col-span-6', ratio: 'lg:aspect-[4/3]',   offset: '' },
+  { start: 'lg:col-start-8',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-28' },
+  { start: 'lg:col-start-2',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-16' },
+  { start: 'lg:col-start-7',  span: 'lg:col-span-6', ratio: 'lg:aspect-[16/10]', offset: 'lg:mt-40' },
+  { start: 'lg:col-start-1',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-12' },
+  { start: 'lg:col-start-8',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-32' },
+  { start: 'lg:col-start-2',  span: 'lg:col-span-6', ratio: 'lg:aspect-[4/3]',   offset: 'lg:mt-20' },
+  { start: 'lg:col-start-9',  span: 'lg:col-span-4', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-8' },
+  { start: 'lg:col-start-1',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-24' },
+  { start: 'lg:col-start-6',  span: 'lg:col-span-7', ratio: 'lg:aspect-[16/10]', offset: 'lg:mt-16' },
+];
+
+// md sits between the two: a calmer two-up rhythm, still offset, no slider.
+const MD_TILES = [
+  'md:col-span-7', 'md:col-span-5 md:mt-20', 'md:col-span-5', 'md:col-span-7 md:mt-16',
+  'md:col-span-6', 'md:col-span-6 md:mt-20', 'md:col-span-7', 'md:col-span-5 md:mt-16',
+  'md:col-span-5', 'md:col-span-7 md:mt-20',
+];
 
 interface CompetenciesProps {
   onNavigate?: (page: any) => void;
@@ -274,19 +309,42 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <ServicesCarousel>
-            {data.map((item, i) => (
-              // Cards enter as a staggered run rather than all at once. The
-              // delay is capped so the tail of a 10-card track doesn't sit
-              // invisible for most of a second waiting its turn.
-              <ServiceCard
-                key={item.title}
-                item={item}
-                onNavigate={onNavigate}
-                delay={Math.min(i, 5) * STAGGER.card}
-              />
-            ))}
-          </ServicesCarousel>
+          {/* Mobile keeps the swipeable track -- an offset editorial grid has
+              nowhere to breathe on a phone, and swiping is the better gesture
+              there anyway. */}
+          <div className="md:hidden">
+            <ServicesCarousel>
+              {data.map((item, i) => (
+                <ServiceCard
+                  key={item.title}
+                  item={item}
+                  onNavigate={onNavigate}
+                  delay={Math.min(i, 5) * STAGGER.card}
+                  sizing="shrink-0 snap-center w-[80%] sm:w-[55%] aspect-[3/4]"
+                />
+              ))}
+            </ServicesCarousel>
+          </div>
+
+          {/* Desktop: no slider. Every service is visible at once, sized and
+              offset per DESKTOP_TILES, with generous empty ground between. */}
+          <div className="hidden md:grid grid-cols-12 gap-x-6 gap-y-16 lg:gap-x-8 lg:gap-y-8 items-start">
+            {data.map((item, i) => {
+              const lg = DESKTOP_TILES[i % DESKTOP_TILES.length];
+              return (
+                <ServiceCard
+                  key={item.title}
+                  item={item}
+                  onNavigate={onNavigate}
+                  // Stagger runs per row rather than per card: with ten tiles
+                  // a flat i * step would leave the last one waiting most of a
+                  // second after it is already on screen.
+                  delay={(i % 3) * STAGGER.card}
+                  sizing={`aspect-[3/4] ${MD_TILES[i % MD_TILES.length]} ${lg.start} ${lg.span} ${lg.ratio} ${lg.offset}`}
+                />
+              );
+            })}
+          </div>
         </div>
       </section>
     </div>
