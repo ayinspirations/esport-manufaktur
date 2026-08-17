@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { STAGGER } from './motion';
 
 interface TSystemsDetailProps {
@@ -78,9 +78,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                Gaming-Plattform für T-Systems - Employer Branding für Tech-Talente
-              </h2>
+              <RevealText as="h2" by="word" text="Gaming-Plattform für T-Systems - Employer Branding für Tech-Talente" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Für T-Systems haben wir eine maßgeschneiderte Gaming-Plattform entwickelt, um das Unternehmen als attraktiven Arbeitgeber im technischen Umfeld zu positionieren. Ziel war es, technikaffine Schüler anzusprechen und sie auf spielerische Weise für IT und technische Berufe zu begeistern.
               </p>

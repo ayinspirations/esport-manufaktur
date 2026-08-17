@@ -102,13 +102,23 @@ const ServiceCard: React.FC<{
       -- the mobile carousel wants a fixed track width, the desktop grid wants
       a column span and its own aspect ratio. */
   sizing?: string;
-}> = ({ item, onNavigate, delay = 0, sizing = '' }) => {
+  /** Overrides the card's own visibility check.
+   *
+   *  Inside the mobile carousel the card must not decide for itself. Only the
+   *  first two cards are ever within the viewport horizontally; the rest sit
+   *  hundreds of pixels off to the right, so their observer never fires and
+   *  they stay at opacity 0 until swiped to -- eight of ten services were
+   *  effectively invisible. The carousel watches its own track instead and
+   *  reveals the whole row at once. */
+  visible?: boolean;
+}> = ({ item, onNavigate, delay = 0, sizing = '', visible }) => {
   const clickable = Boolean(item.page);
   // The reveal lives on the card's own root rather than in a wrapper element:
   // these cards are direct children of a flex + scroll-snap track, and an
   // extra box between the track and the card would break both the snap
   // alignment and the per-card width basis.
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  const shown = visible ?? inView;
 
   return (
     <div
@@ -118,8 +128,8 @@ const ServiceCard: React.FC<{
       onClick={clickable ? () => onNavigate?.(item.page) : undefined}
       onKeyDown={clickable ? (e) => (e.key === 'Enter' || e.key === ' ') && onNavigate?.(item.page) : undefined}
       style={{
-        opacity: inView ? 1 : 0,
-        transform: inView ? 'translateY(0)' : 'translateY(32px)',
+        opacity: shown ? 1 : 0,
+        transform: shown ? 'translateY(0)' : 'translateY(32px)',
         transition: `opacity ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s, transform ${DUR.reveal}s ${EASE_REVEAL_CSS} ${delay}s`
       }}
       className={`group relative rounded-surface overflow-hidden select-none ${sizing} ${clickable ? 'cursor-pointer' : ''}`}
@@ -279,6 +289,9 @@ interface CompetenciesProps {
 
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
   const [showAll, setShowAll] = useState(false);
+  // Drives the reveal for every card in the mobile carousel at once -- see the
+  // `visible` prop on ServiceCard for why the cards cannot decide this alone.
+  const { ref: trackWrapRef, inView: trackInView } = useInView<HTMLDivElement>({ threshold: 0.05 });
 
   return (
     // scroll-mt clears the sticky bar (56px pill + 32px top inset = 88px), so
@@ -320,15 +333,19 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
           {/* Mobile keeps the swipeable track -- an offset editorial grid has
               nowhere to breathe on a phone, and swiping is the better gesture
               there anyway. */}
-          <div className="md:hidden">
+          <div className="md:hidden" ref={trackWrapRef}>
             <ServicesCarousel>
               {data.map((item, i) => (
                 <ServiceCard
                   key={item.title}
                   item={item}
                   onNavigate={onNavigate}
-                  delay={Math.min(i, 5) * STAGGER.card}
+                  // Stagger only across the cards that are actually on screen
+                  // at rest; the ones further along the track would otherwise
+                  // finish their delay long before anyone swipes to them.
+                  delay={Math.min(i, 2) * STAGGER.card}
                   sizing="shrink-0 snap-center w-[80%] sm:w-[55%] aspect-[3/4]"
+                  visible={trackInView}
                 />
               ))}
             </ServicesCarousel>

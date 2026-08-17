@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Globe, Share2, Smartphone, Layout, HeartHandshake, Youtube, Play } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { STAGGER } from './motion';
 
 interface CaseDetailProps {
@@ -125,9 +125,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                BFV eFootball – Die digitale Fußballplattform in Bayern
-              </h2>
+              <RevealText as="h2" by="word" text="BFV eFootball – Die digitale Fußballplattform in Bayern" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <div className="space-y-6">
                 <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Seit über drei Jahren gestalten wir gemeinsam mit der BFV Service GmbH die Zukunft des digitalen Fußballs. Der BFV eFootball verbindet Tradition und Innovation: Als Teil des Bayerischen Fußball-Verbandes – dem größten Landesverband im DFB – bringt die Plattform Fußball und Gaming zusammen.

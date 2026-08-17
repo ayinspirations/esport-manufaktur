@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { STAGGER } from './motion';
 
 interface CaseDetailProps {
@@ -136,9 +136,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                Hagebau Bolay Case Study: Gaming Day 1.0 & 2.0
-              </h2>
+              <RevealText as="h2" by="word" text="Hagebau Bolay Case Study: Gaming Day 1.0 & 2.0" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Für Hagebau Bolay haben wir mit dem Gaming Day 1.0 und Gaming Day 2.0 ein einzigartiges Eventformat geschaffen, das Gaming, Esport und interaktives Entertainment zu einem unvergesslichen Erlebnis verschmelzen ließ.
               </p>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { STAGGER } from './motion';
 
 interface BayernZocktDetailProps {
@@ -109,9 +109,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-24">
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                Über das Projekt
-              </h2>
+              <RevealText as="h2" by="word" text="Über das Projekt" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Die Kooperation mit Bayern Zockt hat die Gaming-Community in Bayern zusammengebracht und das Gaming in der Region auf eine neue Ebene gehoben. Das Turnier adressierte neue Zielgruppen mit einer digitalen Plattform, in der diese mit verschiedenen Spielen ihr Können unter Beweis stellen konnten.
               </p>

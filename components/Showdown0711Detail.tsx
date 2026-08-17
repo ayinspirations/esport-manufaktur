@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
-import { Reveal } from './Reveal';
+import { Reveal, RevealText } from './Reveal';
 import { STAGGER } from './motion';
 
 interface CaseDetailProps {
@@ -111,9 +111,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40">
-                Innovatives Recruiting durch Gaming - Employer Branding für Tech-Talente
-              </h2>
+              <RevealText as="h2" by="word" text="Innovatives Recruiting durch Gaming - Employer Branding für Tech-Talente" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
               <div className="space-y-6">
                 <p className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                   Über 200 Bewerbungen, 64 Spieler:innen und 2.000 € Preisgeld für die besten Gamer. Wer junge Talente heute erreichen möchte, muss ihre Lebenswelt verstehen: Gaming, Gamification und persönliche Begegnung auf Augenhöhe.
