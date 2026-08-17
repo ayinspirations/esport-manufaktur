@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HubSpotForm } from './HubSpotForm';
 import { RevealText } from './Reveal';
+import { LazyVideo } from './LazyVideo';
 import { DUR, EASE_REVEAL_CSS } from './motion';
 
 export const ContactForm: React.FC = () => {
@@ -78,9 +79,10 @@ export const ContactForm: React.FC = () => {
                   WebkitMaskComposite: 'source-in',
                 }}
               />
-              <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover opacity-[0.08] mix-blend-overlay">
-                <source src="/videos/hero-bg.mp4" type="video/mp4" />
-              </video>
+              <LazyVideo
+                src="/videos/hero-bg.mp4"
+                className="absolute inset-0 w-full h-full object-cover opacity-[0.08] mix-blend-overlay"
+              />
             </div>
 
             <div className="relative z-10 p-8 sm:p-12 md:p-20">

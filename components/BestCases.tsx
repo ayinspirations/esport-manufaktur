@@ -5,6 +5,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
+import { LazyVideo } from './LazyVideo';
 
 // Same entry as the service tiles: a straight fade with a short rise, no 3D
 // tilt. Keeping both tile grids on one gesture is what makes the page read as
@@ -53,16 +54,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('tsystems')}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
+                <LazyVideo
+                  src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                >
-                  <source src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov" type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                   <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
@@ -97,16 +92,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('hagebau')}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
+                <LazyVideo
+                  src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                >
-                  <source src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov" type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                   <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
@@ -142,16 +131,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('showdown-0711')}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
+                <LazyVideo
+                  src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
-                >
-                  <source src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov" type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                   <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
@@ -187,16 +170,10 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('bayern-zockt')}
               >
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  preload="auto"
+                <LazyVideo
+                  src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                >
-                  <source src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov" type="video/mp4" />
-                </video>
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20 pointer-events-none">
                   <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">

@@ -4,6 +4,7 @@ import { ArrowUpRight, ArrowRight, ChevronLeft, Camera } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
 import { useInView } from '../hooks/useInView';
+import { LazyVideo } from './LazyVideo';
 
 interface ServiceItem {
   title: string;
@@ -148,13 +149,8 @@ const ServiceCard: React.FC<{
             style={{ backgroundImage: `url(${item.image})` }}
           />
           {item.video && (
-            <video
+            <LazyVideo
               src={item.video}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
               poster={item.image}
               aria-label={item.imageAlt}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105 md:group-hover:scale-[1.08]"

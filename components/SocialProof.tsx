@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 import { SECTION_PADDING } from './spacing';
@@ -49,68 +49,37 @@ const LogoItem: React.FC<{ logo: (typeof logos)[number]; copyKey: string }> = ({
     href={logo.link || '#'}
     target={logo.link ? '_blank' : undefined}
     rel={logo.link ? 'noopener noreferrer' : undefined}
-    // Fixed min-width + shrink-0 so a not-yet-loaded (0-intrinsic-size) image
-    // can never collapse the slot to nothing and get visually cut off --
-    // independent of load state, per the fixed-width requirement.
-    className={`flex items-center justify-center transition-colors duration-500 shrink-0 min-w-[56px] md:min-w-[72px] lg:min-w-[80px] pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
+    // Fixed width, not min-width: the marquee translates by a percentage of
+    // the track, so the track has to measure the same whether or not the
+    // images have loaded yet. A fixed slot makes that true by construction.
+    className={`flex items-center justify-center transition-colors duration-500 shrink-0 w-[104px] md:w-[150px] lg:w-[180px] pointer-events-auto ${logo.link ? 'cursor-pointer' : 'cursor-default'}`}
     onClick={(e) => !logo.link && e.preventDefault()}
   >
     <img
       src={logo.url}
       alt={logo.name}
-      className={`w-auto object-contain ${
+      className={`max-w-full object-contain ${
         logo.name === 'Indeed' || logo.name === 'Mercedes Benz'
-          ? 'h-16 md:h-20 lg:h-24 max-w-[180px] md:max-w-[260px]'
-          : 'h-12 md:h-16 lg:h-20 max-w-[140px] md:max-w-[220px]'
+          ? 'max-h-16 md:max-h-20 lg:max-h-24'
+          : 'max-h-12 md:max-h-16 lg:max-h-20'
       }`}
-      loading="eager"
+      loading="lazy"
       decoding="async"
     />
   </a>
 );
 
 export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => {
-  // The marquee needs two things before it moves.
+  // The band starts the moment the strip is on screen -- nothing else.
   //
-  // 1. Every logo must have finished loading and decoding. Starting earlier is
-  //    what caused the "cut off / too tight / too fast" first-load bug -- the
-  //    track's real width (and so how far a % translate has to travel) was
-  //    still shifting under it as each <img> resolved its intrinsic size.
-  // 2. The strip must actually be on screen. Previously only (1) applied, so
-  //    on a fast connection the band had been running for a while by the time
-  //    anyone scrolled down to it, and it was caught mid-cycle. Now it holds
-  //    its resting frame and sets off when the visitor arrives.
-  const [imagesReady, setImagesReady] = useState(false);
-  const { ref: stripRef, inView: stripInView } = useInView<HTMLDivElement>({ threshold: 0.15 });
-  const marqueeReady = imagesReady && stripInView;
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const loadOne = (src: string) =>
-      new Promise<void>((resolve) => {
-        const img = new Image();
-        img.src = src;
-        if (img.decode) {
-          img.decode().then(resolve).catch(resolve);
-        } else {
-          img.onload = () => resolve();
-          img.onerror = () => resolve();
-        }
-      });
-
-    Promise.all(logos.map((logo) => loadOne(logo.url))).then(() => {
-      if (cancelled) return;
-      // One extra frame so layout has settled before the track starts moving.
-      requestAnimationFrame(() => {
-        if (!cancelled) setImagesReady(true);
-      });
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
+  // It used to wait for every logo to finish decoding, because the track's
+  // width (and so how far a % translate has to travel) shifted as each <img>
+  // resolved its intrinsic size. That gate is gone: each logo now sits in a
+  // fixed-width slot, so the track measures the same before and after the
+  // images arrive and there is nothing left to wait for. Which mattered --
+  // one logo in this list was a 16 MB PNG, and the whole band sat frozen
+  // behind it.
+  const { ref: stripRef, inView: marqueeReady } = useInView<HTMLDivElement>({ threshold: 0.1 });
 
   return (
     <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden ${SECTION_PADDING}`}>
@@ -125,7 +94,8 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
         .animate-marquee-scroll {
           animation: marquee-scroll 40s linear infinite;
           /* Stays paused (frozen on its resting frame) until the "is-ready"
-             class lands -- see the image-preload effect above. Pure CSS
+             class lands, which happens when the strip scrolls into view.
+             Pure CSS
              animation, so a backgrounded/restored tab never causes a
              JS-timestamp delta jump; the browser's own animation clock
              just keeps correct time (or pauses) on its own. */
