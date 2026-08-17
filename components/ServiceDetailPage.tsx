@@ -243,9 +243,13 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             </button>
           </Reveal>
 
+          {/* stagger 0: these hero headlines run to three or four lines, and a
+              per-word stagger made them arrive line by line. The statement
+              lands as one piece, keeping the masked slide-up. */}
           <RevealText
             as="h1"
             by="word"
+            stagger={0}
             text={content.hero.headline}
             delay={0.05}
             className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl"

@@ -76,6 +76,15 @@ interface RevealTextProps {
   /** Delay before the first unit starts, in seconds. */
   delay?: number;
   duration?: number;
+  /**
+   * Seconds between units. Defaults to the shared per-word/per-character step.
+   *
+   * Pass 0 to move the whole string as one gesture while keeping the masked
+   * slide-up. On a headline that wraps over several lines the default stagger
+   * reads as the text arriving line by line, which is wrong for a hero -- the
+   * statement should land in one piece.
+   */
+  stagger?: number;
   as?: React.ElementType;
 }
 
@@ -97,12 +106,13 @@ export const RevealText: React.FC<RevealTextProps> = ({
   className = '',
   delay = 0,
   duration = DUR.slow,
+  stagger,
   as = 'span'
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
 
   const lines = text.split('\n');
-  const step = by === 'char' ? STAGGER.char : STAGGER.word;
+  const step = stagger ?? (by === 'char' ? STAGGER.char : STAGGER.word);
   let unitIndex = 0;
 
   const mask = (content: React.ReactNode, key: string) => {
