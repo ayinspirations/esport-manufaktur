@@ -122,13 +122,16 @@ export const RevealText: React.FC<RevealTextProps> = ({
       <span
         key={key}
         aria-hidden="true"
-        // The mask clips on both axes, so it needs breathing room on both.
-        // Vertical padding keeps descenders (g/j/p/y) off the bottom edge.
-        // Horizontal padding is for italics: a slanted glyph leans past its
-        // own advance width, and without this the last letter of an italic
-        // word is sliced off (visible on the case-study headings). Each pad
-        // is cancelled by an equal negative margin, so layout is unchanged.
-        className="inline-block overflow-hidden align-bottom pb-[0.14em] -mb-[0.14em] px-[0.14em] -mx-[0.14em]"
+        // The mask clips on all four sides, so it needs breathing room on all
+        // four. Each edge is clipping something different:
+        //   bottom  descenders (g/j/p/q/y)
+        //   top     diacritics above cap height -- umlauts are the common case
+        //           in German, and "FÜR" lost the dots off its U
+        //   sides   italic slant, which leans past the glyph's advance width
+        //           and sliced the last letter off italic headings
+        // The padding is cancelled by an equal negative margin, so nothing
+        // about the layout changes.
+        className="inline-block overflow-hidden align-bottom p-[0.18em] -m-[0.18em]"
       >
         <span
           className="inline-block"

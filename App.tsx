@@ -152,11 +152,13 @@ export default function App() {
         )}
 
         {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
-        {activePage === 'hagebau' && <CaseDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'tsystems' && <TSystemsDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => navigateTo('home')} />}
-        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => navigateTo('home')} />}
-        {activePage === 'bfv' && <BFVDetail onBack={() => navigateTo('home')} />}
+        {/* Back from a case returns to the Best Cases section the visitor came
+            from, not the top of the homepage -- same as BlogDetail below. */}
+        {activePage === 'hagebau' && <CaseDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'tsystems' && <TSystemsDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} />}
