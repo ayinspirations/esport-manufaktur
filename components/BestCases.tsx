@@ -34,8 +34,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               <RevealText as="span" by="word" text="Best" />
               <RevealText as="span" by="word" text="Cases." className="text-slate-900/40 italic" delay={0.14} />
             </h2>
-            <Reveal as="p" delay={0.32} className="text-slate-600 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
-              Bewegtbilder für echte Erlebnisse. Ausgewählte Projekte in voller Dynamik.
+            <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
+              Einblicke in Projekte, die Marken erlebbar machen.
+            </Reveal>
+            <Reveal as="p" delay={0.4} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-2xl leading-relaxed tracking-tight">
+              Von Gaming, eSport und Gamification über digitale Lösungen bis zu Events und Content zeigen unsere Cases, wie aus Ideen individuelle Aktivierungen mit echter Wirkung entstehen.
             </Reveal>
           </div>
         </div>

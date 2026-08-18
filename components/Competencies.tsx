@@ -166,7 +166,7 @@ const ServiceCard: React.FC<{
             {item.title}
           </h3>
           <div className="card-desc-wrap overflow-hidden">
-            <p className="mt-2 text-white/70 text-[13px] lg:text-sm font-medium leading-snug line-clamp-5 break-words [overflow-wrap:break-word]">
+            <p className="mt-2 text-white/70 text-[13px] lg:text-sm font-medium leading-snug break-words [overflow-wrap:break-word]">
               {item.description}
             </p>
           </div>
@@ -299,10 +299,10 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
           .card-desc-wrap { max-height: 0; opacity: 0; }
           @media (hover: hover) {
             .card-desc-wrap { transition: max-height 350ms ease, opacity 300ms ease; }
-            .group:hover .card-desc-wrap { max-height: 200px; opacity: 1; }
+            .group:hover .card-desc-wrap { max-height: 420px; opacity: 1; }
           }
           @media (hover: none) {
-            .card-desc-wrap { max-height: 200px; opacity: 1; }
+            .card-desc-wrap { max-height: 420px; opacity: 1; }
           }
         `}</style>
 

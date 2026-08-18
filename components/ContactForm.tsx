@@ -47,16 +47,24 @@ export const ContactForm: React.FC = () => {
               text="Lass uns sprechen."
               className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-slate-900 uppercase"
             />
-            <p
-              className="text-slate-600 text-lg md:text-2xl font-bold max-w-2xl mx-auto tracking-tight leading-tight"
+            <div
+              className="max-w-2xl mx-auto"
               style={{
                 opacity: visible ? 1 : 0,
                 transform: visible ? 'translateY(0)' : 'translateY(20px)',
                 transition: `opacity ${DUR.slow}s ${EASE_REVEAL_CSS} 0.3s, transform ${DUR.slow}s ${EASE_REVEAL_CSS} 0.3s`,
               }}
             >
-              Wir helfen Ihnen, Zielgruppen zu aktivieren und Ihre Marke erlebbar zu machen.
-            </p>
+              <p className="text-slate-600 text-lg md:text-xl font-bold tracking-tight leading-snug">
+                Du hast eine Idee, ein konkretes Projekt oder suchst nach dem richtigen Ansatz?
+              </p>
+              <p className="text-slate-600 text-base md:text-lg font-medium tracking-tight leading-relaxed mt-4">
+                Erzähl uns kurz, was du vorhast. Gemeinsam schauen wir, wie wir deine Zielgruppe mit Gaming, eSport und Gamification erreichen und deine Marke digital wie physisch erlebbar machen können.
+              </p>
+              <p className="text-slate-900 text-sm md:text-base font-black tracking-tight mt-6">
+                Unverbindlich. Persönlich. Auf dein Projekt zugeschnitten.
+              </p>
+            </div>
           </div>
 
           <div className="relative rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
