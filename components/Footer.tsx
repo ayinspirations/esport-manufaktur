@@ -32,7 +32,12 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-[1100px] mx-auto"
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 lg:gap-16 mb-24">
+            {/* The track count has to match what the children actually occupy:
+                the intro block spans 2, Links and Rechtliches take 1 each, so
+                the grid needs exactly 4. It declared 5 at lg, leaving a phantom
+                empty track on the right -- the container was centred, but the
+                content inside it sat 233px left of centre because of it. */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-12 lg:gap-16 mb-24">
               <div className="col-span-2">
                 <a
                   href="#home"
