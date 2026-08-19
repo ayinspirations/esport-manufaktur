@@ -213,7 +213,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                       <h3 className="text-xl font-black uppercase tracking-tighter">Format</h3>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-black text-emerald-400 leading-tight">Digitale Turnierplattform + Live-Finale</h4>
+                      <h4 className="text-lg font-black text-[#0e958e] leading-tight">Digitale Turnierplattform + Live-Finale</h4>
                       <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">Regional · Community-driven · Hybrid</p>
                     </div>
                   </section>
@@ -232,7 +232,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                         { title: 'Content Creation', desc: 'Gaming- & Event-Content im Short-Form-Format' }
                       ].map((item, i) => (
                         <li key={i}>
-                          <h5 className="font-black uppercase tracking-widest text-[10px] text-emerald-400 mb-1">{item.title}</h5>
+                          <h5 className="font-black uppercase tracking-widest text-[10px] text-[#0e958e] mb-1">{item.title}</h5>
                           <p className="text-white/80 font-bold leading-snug">{item.desc}</p>
                         </li>
                       ))}

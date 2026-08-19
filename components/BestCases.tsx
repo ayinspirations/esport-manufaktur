@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
+import { HeroGround, HERO_GRADIENT_TEXT } from './HeroGround';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
 import { LazyVideo } from './LazyVideo';
 
@@ -247,19 +248,17 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               transition={{ duration: DUR.reveal, delay: TILE_DELAY[5], ease: EASE_REVEAL }}
               className="relative group overflow-hidden rounded-shell bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
             >
-              <div 
-                className="absolute inset-0 opacity-40 group-hover:opacity-60 transition-opacity duration-700"
-                style={{
-                  background: 'radial-gradient(circle at 50% 50%, #1e40af 0%, transparent 70%)',
-                }}
-              />
-              
+              {/* The closing tile stands on the hero's own ground, so the page
+                  ends where it began. It lifts slightly on hover -- the tile is
+                  a button, and this is the only feedback it has. */}
+              <HeroGround className="opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
+
               <div className="relative z-10 flex flex-col items-center">
                 <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase">
                   TAKE YOUR <br />
                   PROJECT <br />
                   TO THE <br />
-                  <span className="text-[#0e958e]">
+                  <span className={HERO_GRADIENT_TEXT}>
                     NEXT LEVEL.
                   </span>
                 </h3>

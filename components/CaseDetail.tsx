@@ -243,7 +243,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                       <h3 className="text-xl font-black uppercase tracking-tighter">Format</h3>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-black text-emerald-400 leading-tight">Employer Branding Gaming Event</h4>
+                      <h4 className="text-lg font-black text-[#0e958e] leading-tight">Employer Branding Gaming Event</h4>
                       <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">On-Site · Interaktiv · Zielgruppenfokussiert</p>
                     </div>
                   </section>
@@ -262,7 +262,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
                         { title: 'Experience & Kommunikation', desc: 'Live-Interaktion, Moderation & Community-Erlebnis' }
                       ].map((item, i) => (
                         <li key={i}>
-                          <h5 className="font-black uppercase tracking-widest text-[10px] text-emerald-400 mb-1">{item.title}</h5>
+                          <h5 className="font-black uppercase tracking-widest text-[10px] text-[#0e958e] mb-1">{item.title}</h5>
                           <p className="text-white/80 font-bold leading-snug">{item.desc}</p>
                         </li>
                       ))}

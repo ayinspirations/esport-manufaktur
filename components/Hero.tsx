@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { ArrowRight } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
+import { HeroGround, HERO_GRADIENT_TEXT } from './HeroGround';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -137,53 +138,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
       data-nav-ground="dark"
       className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center"
     >
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-[#020617]" />
-
-        {/* Ambient light -- large, low-opacity radial gradient, no filter:blur() (see
-            note below on grid) so it never triggers a first-paint flicker on mobile
-            Safari. Volumetric feel comes purely from the gradient's own soft stops. */}
-        <div
-          ref={glowRef}
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.36) 0%, rgba(0,129,141,0.17) 26%, rgba(0,129,141,0.05) 46%, transparent 64%)'
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
-
-        {/* Diagonal line pattern -- two layers at different spacing so it reads as
-            depth rather than a flat repeating wallpaper, each masked with a radial
-            (bright center-right, fading toward the edges) intersected with a vertical
-            fade. White-based mask stops on purpose: black-to-transparent gradients can
-            render as luminance masks in some browsers (black ~= invisible regardless
-            of alpha), wiping the pattern out instead of giving a controlled fade. */}
-        <div ref={gridRef} className="absolute inset-0">
-          <div
-            className="absolute top-0 right-0 w-[85%] h-full opacity-60"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(45, 212, 191, 0.55) 38px, rgba(45, 212, 191, 0.55) 40px)',
-              maskImage:
-                'radial-gradient(ellipse 70% 65% at 68% 45%, white 0%, white 35%, transparent 78%), linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse 70% 65% at 68% 45%, white 0%, white 35%, transparent 78%), linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%)',
-              maskComposite: 'intersect',
-              WebkitMaskComposite: 'source-in'
-            }}
-          />
-          <div
-            className="absolute top-0 right-0 w-[60%] h-full opacity-25"
-            style={{
-              backgroundImage:
-                'repeating-linear-gradient(115deg, transparent, transparent 78px, rgba(132, 204, 22, 0.4) 78px, rgba(132, 204, 22, 0.4) 80px)',
-              maskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)'
-            }}
-          />
-        </div>
-      </div>
+      <HeroGround glowRef={glowRef} gridRef={gridRef} />
 
       <div
         ref={contentRef}
@@ -207,7 +162,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             {BEGEISTERN_CHARS.map((char, i) => (
               <span
                 key={i}
-                className="hero-begeistern-char inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
+                className={`hero-begeistern-char inline-block ${HERO_GRADIENT_TEXT}`}
                 style={{
                   backgroundSize: `${BEGEISTERN_CHARS.length * 100}% 100%`,
                   backgroundPosition: `${(i / (BEGEISTERN_CHARS.length - 1)) * 100}% 0`
