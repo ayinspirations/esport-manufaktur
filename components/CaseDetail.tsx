@@ -74,7 +74,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#d1dbd2] text-slate-900">
+    <div className="min-h-screen bg-[#badeda] text-slate-900">
       {/* Hero Section */}
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
@@ -82,14 +82,14 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           alt="Hagebau Bolay Gaming Day Recruiting Event" 
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#d1dbd2]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#badeda]" />
         
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto mb-2 md:mb-0">
               <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
                 <RevealText as="span" by="word" text="Hagebau" delay={0.1} />
-                <RevealText as="span" by="word" text="Bolay." delay={0.24} className="text-white/40 italic" />
+                <RevealText as="span" by="word" text="Bolay." delay={0.24} className="text-[#0e958e] italic" />
               </h1>
             </div>
             
@@ -132,7 +132,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <RevealText as="h2" by="word" text="Hagebau Bolay Case Study: Gaming Day 1.0 & 2.0" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-slate-900/40" />
+              <RevealText as="h2" by="word" text="Hagebau Bolay Case Study: Gaming Day 1.0 & 2.0" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]" />
               <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
                 Für Hagebau Bolay haben wir mit dem Gaming Day 1.0 und Gaming Day 2.0 ein einzigartiges Eventformat geschaffen, das Gaming, Esport und interaktives Entertainment zu einem unvergesslichen Erlebnis verschmelzen ließ.
               </Reveal>
@@ -143,7 +143,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
 
             {/* Image Slider */}
             <div 
-              className="relative group rounded-shell overflow-hidden aspect-video bg-[#d1dbd2] shadow-2xl touch-none"
+              className="relative group rounded-shell overflow-hidden aspect-video bg-[#badeda] shadow-2xl touch-none"
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
             >

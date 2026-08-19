@@ -58,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
           Carrying its own ground is the actual fix, not a style choice: the
           bar keeps white text throughout, and the homepage alternates between
-          #020617 and the sage sections. While the bar was translucent it
+          #020617 and the light canvas sections. While the bar was translucent it
           became unreadable over every light section it crossed. Now its
           legibility no longer depends on what happens to be behind it. */}
       <div
@@ -141,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             ? undefined
             : {
                 // Same reasoning as the desktop bar: the logo and burger are
-                // white, so once the page scrolls past the hero onto a sage
+                // white, so once the page scrolls past the hero onto a light
                 // section they need their own ground to stay visible.
                 background: scrolled ? '#020617' : 'transparent',
                 backdropFilter: 'none',

@@ -23,7 +23,7 @@ export const UseCases: React.FC = () => {
             <div className="text-emerald-700 font-black tracking-[0.4em] uppercase text-[10px] mb-2.5">
               Vielseitige Expertise
             </div>
-            <h2 className="text-3xl md:text-5xl lg:text-[54px] font-black mb-3.5 tracking-tighter text-slate-900 leading-[1.05]">
+            <h2 className="text-3xl md:text-5xl lg:text-[54px] font-black mb-3.5 tracking-tighter text-[#0b0f2a] leading-[1.05]">
               Branchen & Use Cases.
             </h2>
             <p className="text-slate-600 font-bold max-w-2xl text-base md:text-lg tracking-tight leading-snug">

@@ -95,7 +95,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
   const activeService = serviceData.find(s => s.id === activeTab)!;
 
   return (
-    <div className="pt-24 md:pt-40 pb-20 bg-[#d1dbd2]">
+    <div className="pt-24 md:pt-40 pb-20 bg-[#badeda]">
       <div className="max-w-[1440px] mx-auto px-6 md:px-14">
         {/* Intro Section */}
         <motion.div 
@@ -103,9 +103,9 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl mb-16 md:mb-24"
         >
-          <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-slate-950">
+          <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-[#0b0f2a]">
             Leistungen mit <br />
-            <span className="text-slate-900/40 italic">System.</span>
+            <span className="text-[#0e958e] italic">System.</span>
           </h1>
           <p className="text-slate-700 text-xl md:text-2xl font-bold leading-snug tracking-tight max-w-2xl">
             Wir entwickeln Konzepte, setzen sie technisch um und begleiten Projekte operativ – von der Idee bis zur Auswertung.
@@ -155,7 +155,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
                   <div className="px-4 py-2 bg-emerald-100 rounded-lg text-emerald-700 text-[10px] font-black uppercase tracking-[0.25em] w-fit mb-10">
                     Capability 0{serviceData.findIndex(s => s.id === activeTab) + 1}
                   </div>
-                  <h2 className="text-4xl md:text-6xl font-bold text-slate-950 tracking-tighter mb-8 leading-[0.95]">
+                  <h2 className="text-4xl md:text-6xl font-bold text-[#0b0f2a] tracking-tighter mb-8 leading-[0.95]">
                     {activeService.title}
                   </h2>
                   <p className="text-slate-500 text-xl font-medium leading-relaxed mb-12">
@@ -198,7 +198,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
            <div className="grid lg:grid-cols-2 gap-20 items-center">
               <div>
                  <div className="text-emerald-700 font-black tracking-[0.4em] uppercase text-[10px] mb-6">Experience Design</div>
-                 <h2 className="text-4xl md:text-7xl font-bold tracking-tighter mb-10 text-slate-950 leading-[0.9]">Events als <br /> Kommunikationsanlass.</h2>
+                 <h2 className="text-4xl md:text-7xl font-bold tracking-tighter mb-10 text-[#0b0f2a] leading-[0.9]">Events als <br /> Kommunikationsanlass.</h2>
                  <p className="text-slate-600 text-xl font-medium leading-relaxed max-w-xl">
                    Events stellen Menschen in den Mittelpunkt der Kommunikation. Wir nutzen Events als Bühne für Marken, Interaktion und Emotion.
                  </p>

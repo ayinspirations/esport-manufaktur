@@ -23,16 +23,16 @@ const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, STAGGER.card * 2];
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
-    <section id="best-cases" className={`w-full bg-[#c5d0c6] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
+    <section id="best-cases" className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
       {/* The section wrapper no longer animates: it used to fade the whole
           block in while every tile inside was independently fading in too, so
           the two passes ran over each other and muddied both. */}
       <div className="max-w-[1440px] mx-auto">
         <div className="flex flex-col lg:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
           <div className="max-w-3xl">
-            <h2 className="text-[clamp(40px,7vw,100px)] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
+            <h2 className="text-[clamp(40px,7vw,100px)] font-black text-[#0b0f2a] leading-[0.85] tracking-tighter uppercase">
               <RevealText as="span" by="word" text="Best" />
-              <RevealText as="span" by="word" text="Cases." className="text-slate-900/40 italic" delay={0.14} />
+              <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
               Einblicke in Projekte, die Marken erlebbar machen.
@@ -259,7 +259,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                   TAKE YOUR <br />
                   PROJECT <br />
                   TO THE <br />
-                  <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-blue-500 bg-clip-text text-transparent animate-gradient-x">
+                  <span className="text-[#0e958e]">
                     NEXT LEVEL.
                   </span>
                 </h3>

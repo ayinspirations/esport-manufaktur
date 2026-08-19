@@ -11,8 +11,11 @@ export default {
         // Grounds
         ground: '#020617',      // primary dark ground (slate-950)
         'ground-soft': '#061226', // hero vignette mid-stop
-        sage: '#d1dbd2',        // light section ground
-        'sage-deep': '#c5d0c6', // second light ground (Best Cases)
+        canvas: '#badeda',      // the one light ground, used by every light section
+        // Headings. Every headline is set in this pair: the leading words in
+        // `ink`, the trailing/secondary words in `ink-accent`.
+        ink: '#0b0f2a',
+        'ink-accent': '#0e958e',
         // Brand accents
         brand: '#10b981',       // emerald 500
         'brand-bright': '#34d399', // emerald 400 -- primary CTA

@@ -86,7 +86,7 @@ export const CookiePopup: React.FC = () => {
                     <div className="w-14 h-14 rounded-card bg-[#00ff00]/10 flex items-center justify-center border border-[#00ff00]/20 mb-5">
                       <Cookie className="w-7 h-7 text-[#00ff00]" />
                     </div>
-                    <h3 id="cookie-title" className="text-slate-900 font-black uppercase tracking-wider text-xl mb-1.5">
+                    <h3 id="cookie-title" className="text-[#0b0f2a] font-black uppercase tracking-wider text-xl mb-1.5">
                       Cookie-Einstellungen
                     </h3>
                     <p className="text-slate-500 text-[11px] uppercase tracking-[0.3em] font-bold">
@@ -135,7 +135,7 @@ export const CookiePopup: React.FC = () => {
                     Zurück
                   </button>
 
-                  <h3 className="text-slate-900 font-black uppercase tracking-wider text-lg mb-6">
+                  <h3 className="text-[#0b0f2a] font-black uppercase tracking-wider text-lg mb-6">
                     Welche Cookies dürfen wir setzen?
                   </h3>
 

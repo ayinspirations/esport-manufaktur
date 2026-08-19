@@ -4,12 +4,10 @@ import { Reveal, RevealText } from './Reveal';
 import { ServiceContent } from './servicesContent';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 
-// The site's homepage canvas is light (#d1dbd2) -- dark is reserved for
-// accents and tiles only. Sections alternate between this and a slightly
-// deeper tone of the same color for a subtle tonal shift, never a hard
-// jump in contrast.
-const CANVAS_A = 'bg-[#d1dbd2]';
-const CANVAS_B = 'bg-[#c5d0c6]';
+// The site's canvas is light (#badeda) -- dark is reserved for accents and
+// tiles only. It is a single ground now: the light sections used to alternate
+// between two near-identical tones, which read as a seam rather than as depth.
+const CANVAS = 'bg-[#badeda]';
 // Same glow + vignette gradient as the homepage Hero's dark background,
 // just without its diagonal grid lines -- richer than a flat slate fill.
 const TILE = 'tile-gradient text-white';
@@ -268,11 +266,11 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 2. AUSGANGSLAGE ============ */}
-      <section className={`${CANVAS_B} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-16">
             <div className="md:col-span-5">
-              <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+              <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
             <Reveal delay={0.1} className="md:col-span-7">
               <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">{content.pain.text}</p>
@@ -282,10 +280,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 3. LEISTUNGEN IM DETAIL -- Apple-style tile carousel ============ */}
-      <section className={`${CANVAS_A} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="max-w-2xl mb-14 md:mb-20">
-              <RevealText as="h2" by="word" text={content.leistungenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+              <RevealText as="h2" by="word" text={content.leistungenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
 
           <div className="flex flex-col gap-16 md:gap-20">
@@ -293,7 +291,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
               <div key={gi}>
                 {group.heading && (
                   <Reveal className="max-w-2xl mb-10 md:mb-12">
-                    <h3 className="text-[clamp(22px,2.6vw,32px)] font-black tracking-tighter mb-4 text-slate-900">
+                    <h3 className="text-[clamp(22px,2.6vw,32px)] font-black tracking-tighter mb-4 text-[#0b0f2a]">
                       {group.heading}
                     </h3>
                     {group.text && <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">{group.text}</p>}
@@ -329,10 +327,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 4. UNSER VORGEHEN -- interactive accordion + visual ============ */}
-      <section className={`${CANVAS_B} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="max-w-2xl mb-12 md:mb-16">
-              <RevealText as="h2" by="word" text={content.vorgehenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+              <RevealText as="h2" by="word" text={content.vorgehenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
 
           <Reveal>
@@ -342,10 +340,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 5. FÜR WEN ============ */}
-      <section className={`${CANVAS_A} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-              <RevealText as="h2" by="word" text={content.fuerWenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900" />
+              <RevealText as="h2" by="word" text={content.fuerWenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
           <Reveal delay={0.1} className="flex flex-wrap justify-center gap-3 md:gap-4">
             {content.fuerWen.map((chip, i) => (
@@ -361,11 +359,11 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 6. BEST-CASE-TEASER ============ */}
-      <section className={`${CANVAS_B} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
             <Reveal className="md:col-span-5">
-              <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter mb-5 text-slate-900">
+              <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter mb-5 text-[#0b0f2a]">
                 {content.bestCase.heading}
               </h2>
               <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium mb-8">{content.bestCase.text}</p>
@@ -387,10 +385,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 7. FAQ ============ */}
-      <section className={`${CANVAS_A} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION}`}>
         <div className={`${CONTAINER} max-w-[900px]`}>
           <Reveal className="text-center mb-12 md:mb-16">
-            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-slate-900">FAQ</h2>
+            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">FAQ</h2>
           </Reveal>
 
           <div className="flex flex-col gap-3">
@@ -428,10 +426,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 8. CTA-CLOSER ============ */}
-      <section className={`${CANVAS_B} ${SECTION} pb-28 md:pb-36`}>
+      <section className={`${CANVAS} ${SECTION} pb-28 md:pb-36`}>
         <div className={`${CONTAINER} text-center`}>
           <div className="max-w-2xl mx-auto">
-              <RevealText as="h2" by="word" text={content.ctaCloser.headline} className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-slate-900" />
+              <RevealText as="h2" by="word" text={content.ctaCloser.headline} className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-[#0b0f2a]" />
             </div>
           <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4 mb-8">
             <PrimaryButton onClick={onOpenBooking}>{content.ctaCloser.primaryLabel}</PrimaryButton>

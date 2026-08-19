@@ -45,7 +45,7 @@ export const ContactForm: React.FC = () => {
               as="h2"
               by="word"
               text="Lass uns sprechen."
-              className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-slate-900 uppercase"
+              className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-[#0b0f2a] uppercase"
             />
             <div
               className="max-w-2xl mx-auto"

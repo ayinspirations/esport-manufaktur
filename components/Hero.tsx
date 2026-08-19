@@ -200,15 +200,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             MENSCHEN
           </span>
           <span className="hero-line-3 block" aria-hidden="true">
+            {/* Solid accent rather than the old teal-to-lime sweep: every
+                headline on the site now runs on the same two-colour pair, and
+                a per-character gradient was the one place that broke it. The
+                characters still animate in individually. */}
             {BEGEISTERN_CHARS.map((char, i) => (
-              <span
-                key={i}
-                className="hero-begeistern-char inline-block bg-gradient-to-r from-[#2dd4bf] to-[#84cc16] bg-clip-text text-transparent"
-                style={{
-                  backgroundSize: `${BEGEISTERN_CHARS.length * 100}% 100%`,
-                  backgroundPosition: `${(i / (BEGEISTERN_CHARS.length - 1)) * 100}% 0`
-                }}
-              >
+              <span key={i} className="hero-begeistern-char inline-block text-[#0e958e]">
                 {char}
               </span>
             ))}
