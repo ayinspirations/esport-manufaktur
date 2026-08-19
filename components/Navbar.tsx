@@ -5,6 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 
+// The frosted-glass backdrop shared by the desktop bar and the mobile header.
+// `brightness` is the part that does the work: it dims what is behind the bar
+// without covering it, so white text stays legible over the light #badeda
+// canvas without the fill on top having to be opaque.
+const GLASS = 'blur(24px) saturate(140%) brightness(0.45)';
+
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
   scrollToSection: (id: string) => void;
@@ -64,26 +70,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           the hero into a compact floating pill of frosted glass once scrolling
           starts: the page stays visible through it, blurred.
 
-          The tint is dark on purpose. The bar's text, logo and icons are white
-          throughout, and the page runs both the #020617 ground and the light
-          #badeda canvas underneath it -- a light or untinted glass would lose
-          the text over every dark section. 0.7 is the alpha at which white/70
-          nav links still clear 4.5:1 over the lightest thing that can pass
-          behind the bar, which is not the canvas but the white cards and
-          pills sitting on it.
+          The bar's text, logo and icons are white, so whatever ends up behind
+          the glass has to stay dark enough to carry them. The obvious way to
+          guarantee that is a heavy dark fill, but a fill is opaque by
+          definition: at the alpha white text needs, the bar stops being glass
+          and becomes a slab laid over the page.
 
-          The blur is what makes the transparency work. An earlier pass tried
-          0.92 alpha with no backdrop filter, and the tiles passing behind
-          showed through as a murky smear; blurred, the same content reads as
-          depth behind glass. */}
+          So the darkening happens inside the filter instead. `brightness()`
+          tone-maps the backdrop itself -- every shape, edge and colour behind
+          the bar survives it, just dimmed -- which leaves the fill free to
+          stay light (0.32) and genuinely see-through. Even over a white card,
+          the composite keeps white/70 nav links above 4.5:1.
+
+          The blur is what makes the transparency read as glass rather than as
+          a smear. An earlier pass tried 0.92 alpha with no backdrop filter at
+          all, and the tiles passing behind looked like they were dissolving. */}
       <div
         className={`hidden md:flex relative mx-auto items-center justify-between pointer-events-auto rounded-full ${
           scrolled ? 'max-w-[1040px] h-[56px] px-6' : 'max-w-[1440px] h-[62px] px-8'
         }`}
         style={{
-          background: scrolled ? 'rgba(2,6,23,0.70)' : 'rgba(255,255,255,0.03)',
-          backdropFilter: scrolled ? 'blur(22px) saturate(150%)' : 'blur(16px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? 'blur(22px) saturate(150%)' : 'blur(16px) saturate(120%)',
+          background: scrolled ? 'rgba(2,6,23,0.32)' : 'rgba(255,255,255,0.03)',
+          backdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
           border: `1px solid ${scrolled ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0)'}`,
           // Inner top highlight: the lit edge that makes a translucent panel
           // read as a pane of glass rather than as a hole in the page.
@@ -155,13 +164,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           isOpen
             ? undefined
             : {
-                // Same frosted glass as the desktop bar, same reasoning for
-                // the dark tint: the logo and burger are white, so once the
-                // page scrolls past the hero onto the light canvas they need
-                // a ground of their own -- just one you can see through.
-                background: scrolled ? 'rgba(2,6,23,0.70)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(22px) saturate(150%)' : 'none',
-                WebkitBackdropFilter: scrolled ? 'blur(22px) saturate(150%)' : 'none',
+                // Same frosted glass as the desktop bar, same reasoning: the
+                // logo and burger are white, so once the page scrolls past the
+                // hero onto the light canvas they need a ground of their own
+                // -- just one you can see through.
+                background: scrolled ? 'rgba(2,6,23,0.32)' : 'transparent',
+                backdropFilter: scrolled ? GLASS : 'none',
+                WebkitBackdropFilter: scrolled ? GLASS : 'none',
                 boxShadow: scrolled
                   ? 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -22px rgba(0,0,0,0.8)'
                   : 'none',
