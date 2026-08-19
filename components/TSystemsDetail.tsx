@@ -34,18 +34,30 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
       {/* Hero Section */}
-      <div data-nav-ground="dark" className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img
           src="/images/t-systems/hero.jpg"
           alt="T-Systems Gaming Platform"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#badeda]" />
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(186,222,218,0) 34%, rgba(186,222,218,0.9) 60%, #badeda 76%)'
+          }}
+        />
+        {/* Tells the nav where the photograph ends and the canvas begins. The
+            bar crosses both halves of this hero on the way down, and the img
+            underneath would otherwise report "dark" for the canvas half too.
+            Decorative and empty -- it exists to be hit-tested. */}
+        <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[52%]" />
+
 
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
                 <RevealText as="span" by="word" text="T-Systems" delay={0.1} />
                 <RevealText as="span" by="word" text="Gaming." delay={0.24} className="text-[#0e958e] italic" />
               </h1>
@@ -59,7 +71,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
             >
               <button
                 onClick={onBack}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full text-white text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-transparent hover:bg-[#0b0f2a]/[0.07] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 rounded-full text-[#0b0f2a] text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
               >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                 Zurück

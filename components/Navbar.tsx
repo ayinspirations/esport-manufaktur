@@ -61,10 +61,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   const inkOnGlass = ground === 'light' && scrolled;
   const navLinkTone = inkOnGlass
     ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
-    : 'text-white/70 hover:text-emerald-400';
+    : 'text-white/75 hover:text-[#5fd6cf]';
   const ctaTone = inkOnGlass
     ? 'bg-[#0b0f2a] hover:bg-[#0e958e] text-white border border-transparent'
-    : 'bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50';
+    // The accent lightened one step for the dark tone: #0e958e is mixed for
+    // display type on a dark ground but thin for a 12px pill label.
+    : 'bg-[#0e958e]/20 hover:bg-[#0e958e]/30 text-[#5fd6cf] hover:text-white border border-[#0e958e]/45 hover:border-[#0e958e]/70';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -207,20 +209,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
       </div>
 
       {/* Mobile header -- no bar chrome at rest, just logo + menu button. When
-          opened, this same block (not a separate floating card) grows a dark
-          panel flush with the top edge, so the nav visibly emerges from the
-          burger button instead of popping up elsewhere. The toggle button
-          never moves -- it just swaps icon -- so it doubles as the close (X)
-          button in the exact top-right spot where it always sits. */}
+          opened, this same block (not a separate floating card) grows a panel
+          flush with the top edge, so the nav visibly emerges from the burger
+          button instead of popping up elsewhere. The toggle button never
+          moves -- it just swaps icon -- so it doubles as the close (X) button
+          in the exact top-right spot where it always sits.
+
+          The open panel is the site's canvas with ink chrome, the same three
+          colours as everything behind it. It used to be a dark slab, which
+          was the last surface still running the old palette. */}
       <div
         ref={mobileBarRef}
         className={`md:hidden pointer-events-auto ${
-          isOpen ? 'bg-[#020617] border border-white/10 overflow-hidden' : ''
+          isOpen ? 'bg-[#badeda] border border-[#0b0f2a]/10 overflow-hidden' : ''
         }`}
         style={
-          // The open menu keeps a solid dark panel. It covers most of the
-          // viewport rather than skimming across it, so there is no ground
-          // behind it worth showing -- and a full menu list needs its own.
+          // The open menu stays opaque. It covers most of the viewport rather
+          // than skimming across it, so there is no ground behind it worth
+          // showing -- and a full menu list needs one of its own.
           isOpen
             ? undefined
             : {
@@ -249,20 +255,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass && !isOpen ? 0 : 1, filter: GLASS.dark.iconShadow }}
+                style={{ opacity: inkOnGlass || isOpen ? 0 : 1, filter: GLASS.dark.iconShadow }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass && !isOpen ? 1 : 0, filter: GLASS.light.iconShadow }}
+                style={{ opacity: inkOnGlass || isOpen ? 1 : 0, filter: isOpen ? 'none' : GLASS.light.iconShadow }}
               />
             </span>
           </button>
           <button
             className={`p-2 rounded-full transition-colors ${
-              inkOnGlass && !isOpen
+              inkOnGlass || isOpen
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
@@ -283,35 +289,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="flex flex-col gap-7 text-lg font-bold text-white text-center px-8 pt-2 pb-8">
+              <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
                 <button
                   onClick={(e) => handleLinkClick(e, 'home')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Startseite
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'competencies')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Services
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Über uns
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
                 </button>
-                <div className="h-px bg-white/10 w-1/3 mx-auto" />
+                <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
                   onClick={(e) => handleLinkClick(e, 'contact')}
-                  className="mx-auto bg-emerald-400 text-slate-900 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base shadow-[0_0_50px_rgba(52,211,153,0.3)] tracking-tighter"
+                  className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen
                 </button>
@@ -329,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
+            className="md:hidden fixed inset-0 z-[-1] bg-[#0b0f2a]/45 backdrop-blur-sm pointer-events-auto"
           />
         )}
       </AnimatePresence>

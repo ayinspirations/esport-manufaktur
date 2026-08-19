@@ -22,6 +22,9 @@ export default {
         // light cards, which is under the minimum for anything body-sized.
         // Same hue, same role, just dark enough to be read.
         'ink-accent-deep': '#0a6f6a',
+        // And one step lighter, for small accent text on the *dark* ground --
+        // the mirror of ink-accent-deep. Same hue throughout.
+        'ink-accent-soft': '#5fd6cf',
         // Brand accents
         brand: '#10b981',       // emerald 500
         'brand-bright': '#34d399', // emerald 400 -- primary CTA

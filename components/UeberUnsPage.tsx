@@ -97,35 +97,39 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
   return (
     <div className="w-full">
       {/* ============ 1. HERO ============ */}
-      {/* The other subpages open on a full-bleed photo. There is no photograph
-          of the agency to run here, and a stock crowd shot would be a worse
-          answer than none -- so this one opens on the homepage hero's own
-          ground instead, which keeps the entrance recognisably ours. Swap in
-          an <img> layer here the day a real team photo exists. */}
-      <section
-        data-nav-ground="dark"
-        className="relative w-full min-h-[70vh] md:min-h-[78vh] flex items-end overflow-hidden bg-[#020617]"
-      >
-        <HeroGround />
+      {/* Same shape as the service pages: a visual band up top handing over to
+          the canvas, headline in ink below it. The band here is the homepage
+          hero's own ground rather than a photograph -- there is no picture of
+          the agency to run, and a stock crowd shot would be a worse answer
+          than none. Swap in an <img> the day a real team photo exists. */}
+      <section className={`relative w-full ${CANVAS}`}>
+        <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
+          <HeroGround
+            style={{
+              maskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)'
+            }}
+          />
+        </div>
 
-        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-32 text-white`}>
+        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
           <Reveal duration={0.6}>
             <button
               onClick={() => onNavigate('home')}
-              className="group inline-flex items-center gap-2 mb-10 md:mb-14 text-white/70 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
+              className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
             >
               <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
               Zur Startseite
             </button>
           </Reveal>
 
-          <h1 className="text-[clamp(44px,8vw,110px)] font-black leading-[0.9] tracking-tighter uppercase">
+          <h1 className="text-[clamp(44px,8vw,110px)] font-black leading-[0.9] tracking-tighter uppercase text-[#0b0f2a]">
             <RevealText as="span" by="word" text="Über" delay={0.05} />
             <RevealText as="span" by="word" text="uns." delay={0.18} className="text-[#0e958e] italic" />
           </h1>
 
           <Reveal duration={0.75} delay={0.3}>
-            <p className="mt-6 md:mt-8 text-white/70 text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
+            <p className="mt-6 md:mt-8 text-[#0b0f2a]/70 text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
               Wir machen Marken und Botschaften erlebbar.
             </p>
           </Reveal>

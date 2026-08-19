@@ -29,7 +29,7 @@ const PrimaryButton: React.FC<{ onClick: () => void; children: React.ReactNode; 
 }) => (
   <button
     onClick={onClick}
-    className={`group inline-flex items-center gap-2.5 bg-emerald-400 hover:bg-emerald-300 text-slate-900 px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight shadow-[0_10px_40px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_15px_50px_-10px_rgba(16,185,129,0.5)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${className}`}
+    className={`group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${className}`}
   >
     {children}
     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -39,7 +39,7 @@ const PrimaryButton: React.FC<{ onClick: () => void; children: React.ReactNode; 
 const SecondaryButton: React.FC<{ onClick: () => void; children: React.ReactNode }> = ({ onClick, children }) => (
   <button
     onClick={onClick}
-    className="inline-flex items-center gap-2.5 bg-slate-900/[0.04] hover:bg-slate-900/[0.08] text-slate-900 border border-slate-900/15 hover:border-slate-900/25 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02]"
+    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.07] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02]"
   >
     {children}
   </button>
@@ -53,7 +53,7 @@ const GhostLink: React.FC<{ onClick: () => void; children: React.ReactNode; tone
   <button
     onClick={onClick}
     className={`group inline-flex items-center gap-2 font-bold text-sm tracking-tight transition-colors duration-300 ${
-      tone === 'dark' ? 'text-slate-500 hover:text-slate-900' : 'text-white/70 hover:text-white'
+      tone === 'dark' ? 'text-[#0b0f2a]/60 hover:text-[#0e958e]' : 'text-white/70 hover:text-white'
     }`}
   >
     {children}
@@ -217,24 +217,36 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
 
   return (
     <div className="w-full">
-      {/* ============ 1. HERO -- full-bleed photo + dark overlay for legibility ============ */}
-      <section data-nav-ground="dark" className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-end overflow-hidden bg-[#020617]">
-        <div className="absolute inset-0 z-0">
+      {/* ============ 1. HERO -- photo band above, headline on the canvas ============ */}
+      {/* The photograph is its own band rather than a full-bleed backdrop the
+          text sits on. That is what lets the headline run in the site's ink
+          instead of the white it needed while it lay over the picture -- and
+          it keeps the picture at a real size, which a fade behind a
+          four-line headline could not. The band's lower edge dissolves into
+          the canvas so the two read as one hero, not two blocks. */}
+      <section className={`relative w-full ${CANVAS}`}>
+        <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
           <img
             src={content.hero.image}
             alt={content.hero.imageAlt}
             className="absolute inset-0 w-full h-full object-cover"
             loading="eager"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/70 to-[#020617]/20" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617]/60 via-transparent to-transparent" />
+          {/* Top scrim for the nav, bottom hand-over to the canvas. */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                'linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(186,222,218,0) 32%, rgba(186,222,218,0.85) 82%, #badeda 100%)'
+            }}
+          />
         </div>
 
-        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-32 text-white`}>
+        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
           <Reveal duration={0.6}>
             <button
               onClick={() => onNavigate('home')}
-              className="group inline-flex items-center gap-2 mb-10 md:mb-14 text-white/70 hover:text-white text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
+              className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
             >
               <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
               Zur Startseite
@@ -250,11 +262,11 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             stagger={0}
             text={content.hero.headline}
             delay={0.05}
-            className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl"
+            className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl text-[#0b0f2a]"
           />
 
           <Reveal duration={0.75} delay={0.15}>
-            <p className="mt-6 md:mt-8 text-white/70 text-lg sm:text-xl font-medium leading-relaxed max-w-xl">
+            <p className="mt-6 md:mt-8 text-[#0b0f2a]/70 text-lg sm:text-xl font-medium leading-relaxed max-w-xl">
               {content.hero.subline}
             </p>
           </Reveal>

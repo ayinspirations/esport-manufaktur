@@ -9,6 +9,8 @@ interface HeroGroundProps {
   glowRef?: React.Ref<HTMLDivElement>;
   gridRef?: React.Ref<HTMLDivElement>;
   className?: string;
+  /** For masking the ground off where it has to hand over to the canvas. */
+  style?: React.CSSProperties;
 }
 
 /**
@@ -20,8 +22,8 @@ interface HeroGroundProps {
  * in here is a percentage, so it composes at tile scale as readily as at full
  * viewport height.
  */
-export const HeroGround: React.FC<HeroGroundProps> = ({ glowRef, gridRef, className = '' }) => (
-  <div className={`absolute inset-0 z-0 overflow-hidden pointer-events-none ${className}`}>
+export const HeroGround: React.FC<HeroGroundProps> = ({ glowRef, gridRef, className = '', style }) => (
+  <div className={`absolute inset-0 z-0 overflow-hidden pointer-events-none ${className}`} style={style}>
     <div className="absolute inset-0 bg-[#020617]" />
 
     {/* Ambient light -- large, low-opacity radial gradient, no filter:blur() (see
