@@ -23,6 +23,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
         as="section"
         y={28}
         duration={DUR.slow}
+        data-nav-ground="dark"
         className="relative w-full max-w-[1440px] mx-auto rounded-shell md:rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

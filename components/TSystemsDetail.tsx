@@ -34,7 +34,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
       {/* Hero Section */}
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div data-nav-ground="dark" className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img
           src="/images/t-systems/hero.jpg"
           alt="T-Systems Gaming Platform"

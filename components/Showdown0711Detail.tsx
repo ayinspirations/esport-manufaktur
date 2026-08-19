@@ -67,7 +67,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
       {/* Hero Section */}
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div data-nav-ground="dark" className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
           src="/images/cases/0711.jpg" 
           alt="0711 Showdown" 

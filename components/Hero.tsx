@@ -134,6 +134,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
   return (
     <section
       ref={heroRef}
+      data-nav-ground="dark"
       className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center"
     >
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">

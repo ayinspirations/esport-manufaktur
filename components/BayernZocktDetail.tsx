@@ -66,7 +66,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
 
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div data-nav-ground="dark" className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
           src="/images/bayern-zockt/hero.jpg" 
           alt="Bayern Zockt Gaming Event" 

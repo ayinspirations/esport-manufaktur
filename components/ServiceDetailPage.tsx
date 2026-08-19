@@ -218,7 +218,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
   return (
     <div className="w-full">
       {/* ============ 1. HERO -- full-bleed photo + dark overlay for legibility ============ */}
-      <section className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-end overflow-hidden bg-[#020617]">
+      <section data-nav-ground="dark" className="relative w-full min-h-[85vh] md:min-h-[92vh] flex items-end overflow-hidden bg-[#020617]">
         <div className="absolute inset-0 z-0">
           <img
             src={content.hero.image}

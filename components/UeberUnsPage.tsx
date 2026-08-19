@@ -21,7 +21,7 @@ const paragraphs = [
 
 export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollToSection }) => {
   return (
-    <div className="min-h-screen bg-[#020617] text-white">
+    <div data-nav-ground="dark" className="min-h-screen bg-[#020617] text-white">
       <div className="max-w-[900px] mx-auto px-6 md:px-14 pt-32 md:pt-48 pb-24 md:pb-40">
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.9 }}>
           <h1 className="text-[clamp(44px,8vw,110px)] font-black leading-[0.9] tracking-tighter uppercase">

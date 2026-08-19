@@ -76,7 +76,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
       {/* Hero Section */}
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div data-nav-ground="dark" className="relative h-[60vh] md:h-[70vh] overflow-hidden">
         <img 
           src="/images/hagebau/hero-hagebau.jpg" 
           alt="Hagebau Bolay Gaming Day Recruiting Event" 
