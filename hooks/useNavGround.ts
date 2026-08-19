@@ -4,27 +4,66 @@ import type { RefObject } from 'react';
 export type NavGround = 'light' | 'dark';
 
 /**
- * The attribute that marks a section as a dark ground. Put it on the wrapper
- * of anything the nav has to cross that is dark enough to need white chrome
- * -- the hero, the dark panels, the photo headers on the case pages.
- *
- * Deliberately section-scale only. The dark *tiles* sitting inside the light
- * sections are not marked: they pass behind the bar constantly, and marking
- * them would leave the nav flipping tone every few hundred pixels of scroll.
- * The light glass stays legible over them anyway (~6:1 for the ink text),
- * which is what makes ignoring them safe rather than merely convenient.
+ * Optional override. Put `data-nav-ground="dark"` (or `"light"`) on anything
+ * the detection below reads wrongly -- a light photograph on a dark section,
+ * say. Nothing needs it by default; the probe works these out on its own.
  */
 export const NAV_GROUND_ATTR = 'data-nav-ground';
 
+/** Relative luminance, sRGB. */
+const luminance = (r: number, g: number, b: number) => {
+  const lin = (c: number) => {
+    const v = c / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  };
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+};
+
 /**
- * Reports whether the nav bar is currently sitting over a dark section or a
- * light one, so it can carry glass and text that suit what is behind it.
+ * What tone is painted at one point, or null if this element paints nothing
+ * there and the one behind it should be asked instead.
+ */
+const toneOf = (el: Element): NavGround | null => {
+  const override = el.closest(`[${NAV_GROUND_ATTR}]`);
+  if (override) {
+    const value = override.getAttribute(NAV_GROUND_ATTR);
+    if (value === 'dark' || value === 'light') return value;
+  }
+
+  // Photographs, video and canvases: no colour to sample, and every one of
+  // them on this site is dark or dark-overlaid. Treated as dark rather than
+  // guessed at.
+  if (/^(IMG|VIDEO|CANVAS|SVG)$/.test(el.tagName)) return 'dark';
+
+  const cs = getComputedStyle(el);
+  // A background image is a gradient or a photo; same reasoning as above.
+  if (cs.backgroundImage && cs.backgroundImage !== 'none') return 'dark';
+
+  const match = cs.backgroundColor.match(/[\d.]+/g);
+  if (!match) return null;
+  const [r, g, b] = match.map(Number);
+  const alpha = match.length > 3 ? Number(match[3]) : 1;
+  // Anything this sheer is a tint over whatever is behind it, not a ground of
+  // its own -- keep walking rather than judging the page by a 4% overlay.
+  if (alpha < 0.85) return null;
+
+  return luminance(r, g, b) > 0.45 ? 'light' : 'dark';
+};
+
+/**
+ * Reports whether the nav bar is currently over a dark backdrop or a light
+ * one, so it can carry glass and text that suit what is behind it.
  *
- * It hit-tests three points across the bar rather than tracking scroll
- * offsets, so it needs no knowledge of the page's layout and keeps working on
- * routes it has never seen -- any section that marks itself dark is honoured.
- * A single dark hit wins: a bar straddling the seam between two sections gets
- * the treatment that stays readable over both.
+ * It hit-tests three points across the bar and reads the first thing that
+ * actually paints at each, so it needs no map of the page and keeps working on
+ * routes it has never seen. It follows the real backdrop rather than the
+ * section: the dark tiles inside the light sections pass behind the bar
+ * constantly, and once the glass became thin enough to see through, they stop
+ * being something the veil can paper over -- ink text on an unlifted dark tile
+ * is unreadable. The bar has to answer to what is actually there.
+ *
+ * Majority of three rather than first-dark-wins, so a tile clipping one end of
+ * the bar does not flip the whole thing; it takes half the width to count.
  *
  * `refs` may hold several candidate bars (desktop, mobile); the first one
  * actually rendered at the current breakpoint is the one probed.
@@ -62,13 +101,19 @@ export function useNavGround(
       const y = rect.top + rect.height / 2;
       const xs = [0.2, 0.5, 0.8].map((f) => rect.left + rect.width * f);
 
-      const overDark = xs.some((x) =>
-        document
-          .elementsFromPoint(x, y)
-          .some((el) => el.closest(`[${NAV_GROUND_ATTR}="dark"]`))
-      );
+      let dark = 0;
+      for (const x of xs) {
+        for (const el of document.elementsFromPoint(x, y)) {
+          if (bar.contains(el)) continue;
+          const tone = toneOf(el);
+          if (tone) {
+            if (tone === 'dark') dark++;
+            break;
+          }
+        }
+      }
 
-      setGround(overDark ? 'dark' : 'light');
+      setGround(dark >= 2 ? 'dark' : 'light');
     };
 
     const schedule = () => {

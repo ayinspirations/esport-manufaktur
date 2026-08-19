@@ -6,38 +6,39 @@ import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroI
 import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 import { useNavGround } from '../hooks/useNavGround';
 
-// Two frosted glasses, one per ground the bar crosses. Which one is showing is
-// decided by `useNavGround` -- see there for why it goes by section and not by
-// what literally sits behind the bar.
+// Two glasses, one per ground the bar crosses. Which one is showing is decided
+// by `useNavGround` -- see there for why it goes by section and not by what
+// literally sits behind the bar.
 //
-// Neither relies on an opaque fill. A fill heavy enough to guarantee contrast
-// on its own stops being glass and becomes a slab laid over the page, which is
-// exactly what this replaced. The light glass is a white veil that lifts
-// whatever is behind it; the dark one dims through `brightness()` inside the
-// filter, so shapes, edges and colour all survive, just darker.
+// Both are built to be *seen through*: a thin veil and a modest blur, so a
+// headline or a photograph passing behind the bar stays recognisable rather
+// than dissolving into a tinted strip. Earlier passes bought contrast by
+// piling on the fill and then by compressing the backdrop's range with
+// `contrast()` -- both worked, and both turned the bar back into a slab laid
+// over the page, which is the thing it is not supposed to be.
 //
-// Both are safe for their own text over *anything* that can pass behind them,
-// which is what lets the ground switch be a matter of looks rather than of
-// legibility: measured worst cases are ~6:1 for ink on the light glass over a
-// dark tile, and ~5.7:1 for white on the dark glass over a bright photo.
+// So the legibility is carried by the text instead of the panel: each tone
+// pairs its glass with a halo in the opposite value, tight enough to stay
+// invisible against the glass itself and strong enough to hold the letterforms
+// apart from whatever slides underneath. That is the trade this makes
+// deliberately -- against a worst-case backdrop the measured text-to-backdrop
+// ratio is lower than the old slab's, and the halo is what keeps it readable.
 const GLASS = {
   light: {
-    fill: 'rgba(255,255,255,0.55)',
-    // `contrast` before `brightness` is what makes one light glass survive
-    // both grounds: compressing the backdrop's range first pulls the dark
-    // tiles up toward mid, then the lift lands them light -- without blowing
-    // the already-light canvas out to flat white and losing its tint.
-    filter: 'blur(24px) saturate(160%) contrast(0.65) brightness(1.2)',
-    border: 'rgba(11,15,42,0.12)',
-    shadow: 'inset 0 1px 0 rgba(255,255,255,0.55), 0 18px 50px -24px rgba(11,15,42,0.45)',
+    fill: 'rgba(255,255,255,0.20)',
+    filter: 'blur(10px) saturate(180%) brightness(1.06)',
+    border: 'rgba(11,15,42,0.10)',
+    shadow: 'inset 0 1px 0 rgba(255,255,255,0.45), 0 18px 50px -28px rgba(11,15,42,0.35)',
+    textShadow: '0 1px 2px rgba(255,255,255,0.95), 0 0 10px rgba(255,255,255,0.85)',
+    iconShadow: 'drop-shadow(0 1px 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.8))',
   },
   dark: {
-    fill: 'rgba(2,6,23,0.28)',
-    // Mirror of the light glass: compress, then dim. Keeps a bright photo
-    // sliding behind a case-page header from washing the white text out.
-    filter: 'blur(24px) saturate(140%) contrast(0.75) brightness(0.55)',
-    border: 'rgba(255,255,255,0.14)',
-    shadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -20px rgba(0,0,0,0.75)',
+    fill: 'rgba(2,6,23,0.20)',
+    filter: 'blur(10px) saturate(160%) brightness(0.82)',
+    border: 'rgba(255,255,255,0.12)',
+    shadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -24px rgba(0,0,0,0.6)',
+    textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.65)',
+    iconShadow: 'drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 0 8px rgba(0,0,0,0.6))',
   },
 } as const;
 
@@ -131,6 +132,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           // Inner top highlight: the lit edge that makes a translucent panel
           // read as a pane of glass rather than as a hole in the page.
           boxShadow: scrolled ? glass.shadow : 'none',
+          // text-shadow inherits, so declaring the halo once here puts it on
+          // every label inside. The filled Kontakt pill opts out below.
+          textShadow: scrolled ? glass.textShadow : GLASS.dark.textShadow,
           transition: `background 600ms ${EASE_REVEAL_CSS}, backdrop-filter 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
         }}
       >
@@ -150,14 +154,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 0 : 1 }}
+                style={{ opacity: inkOnGlass ? 0 : 1, filter: GLASS.dark.iconShadow }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 1 : 0 }}
+                style={{ opacity: inkOnGlass ? 1 : 0, filter: GLASS.light.iconShadow }}
               />
             </span>
           </button>
@@ -195,6 +199,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           <button
             onClick={(e) => handleLinkClick(e, 'contact')}
             className={`spring px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
+            style={{ textShadow: 'none' }}
           >
             Kontakt
           </button>
@@ -225,9 +230,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 WebkitBackdropFilter: scrolled ? glass.filter : 'none',
                 boxShadow: scrolled
                   ? (inkOnGlass
-                      ? 'inset 0 -1px 0 rgba(11,15,42,0.10), 0 14px 40px -26px rgba(11,15,42,0.5)'
-                      : 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -22px rgba(0,0,0,0.8)')
+                      ? 'inset 0 -1px 0 rgba(11,15,42,0.10), 0 14px 40px -30px rgba(11,15,42,0.4)'
+                      : 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -26px rgba(0,0,0,0.6)')
                   : 'none',
+                textShadow: scrolled ? glass.textShadow : GLASS.dark.textShadow,
                 transition: `background 500ms ${EASE_REVEAL_CSS}, backdrop-filter 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
               }
         }
@@ -243,14 +249,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass && !isOpen ? 0 : 1 }}
+                style={{ opacity: inkOnGlass && !isOpen ? 0 : 1, filter: GLASS.dark.iconShadow }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass && !isOpen ? 1 : 0 }}
+                style={{ opacity: inkOnGlass && !isOpen ? 1 : 0, filter: GLASS.light.iconShadow }}
               />
             </span>
           </button>
@@ -260,6 +266,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
+            style={{ filter: isOpen ? 'none' : glass.iconShadow }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Mobile Menu"
           >

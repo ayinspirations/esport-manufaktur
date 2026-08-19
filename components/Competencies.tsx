@@ -267,15 +267,21 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
     // tiles underneath the navigation.
     <div className="w-full flex items-center justify-center scroll-mt-28" id="competencies">
       <section className={`w-full pt-6 md:pt-8 lg:pt-10 pb-16 md:pb-24 lg:pb-28 bg-transparent relative overflow-hidden`}>
+        {/* The description is closed at rest and opens on hover -- on every
+            input, not just pointers. There used to be a `(hover: none)` rule
+            pinning it open, which meant a card on a phone or a touch laptop
+            showed its full paragraph permanently while the same card on a
+            desktop showed only its title. Touch browsers apply :hover on tap,
+            so the gesture still works there; it is the resting state that is
+            now the same everywhere. */}
         <style>{`
-          .card-desc-wrap { max-height: 0; opacity: 0; }
-          @media (hover: hover) {
-            .card-desc-wrap { transition: max-height 350ms ease, opacity 300ms ease; }
-            .group:hover .card-desc-wrap { max-height: 420px; opacity: 1; }
+          .card-desc-wrap {
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 350ms ease, opacity 300ms ease;
           }
-          @media (hover: none) {
-            .card-desc-wrap { max-height: 420px; opacity: 1; }
-          }
+          .group:hover .card-desc-wrap,
+          .group:focus-within .card-desc-wrap { max-height: 420px; opacity: 1; }
         `}</style>
 
         <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
