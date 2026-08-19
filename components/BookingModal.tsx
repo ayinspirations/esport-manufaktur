@@ -79,7 +79,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                   <Calendar className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-slate-900 leading-none">Termin buchen</h3>
+                  <h3 className="text-sm md:text-base font-black uppercase tracking-tight text-[#0b0f2a] leading-none">Termin buchen</h3>
                   <p className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-slate-400 mt-1">Kostenloses Kennenlernen</p>
                 </div>
               </div>
@@ -109,7 +109,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                   <div className="w-24 h-24 rounded-full bg-emerald-500 flex items-center justify-center text-white mb-8 shadow-xl shadow-emerald-500/20">
                     <CheckCircle2 className="w-12 h-12" />
                   </div>
-                  <h2 className="text-4xl font-black uppercase tracking-tighter text-slate-950 mb-4">
+                  <h2 className="text-4xl font-black uppercase tracking-tighter text-[#0b0f2a] mb-4">
                     Vielen Dank!
                   </h2>
                   <p className="text-slate-600 text-lg max-w-md mx-auto mb-10 font-medium">

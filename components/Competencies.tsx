@@ -313,9 +313,9 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
               the whole block fading in at once. */}
           <div className="mb-16 md:mb-24 lg:mb-28">
             <div className="max-w-3xl">
-              <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-slate-900 leading-[0.9] tracking-tighter uppercase">
+              <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-[#0b0f2a] leading-[0.9] tracking-tighter uppercase">
                 <RevealText as="span" by="word" text="Unsere" />
-                <RevealText as="span" by="word" text="Services." className="text-slate-900/40 italic" delay={0.16} />
+                <RevealText as="span" by="word" text="Services." className="text-[#0e958e] italic" delay={0.16} />
               </h2>
               <Reveal as="p" delay={0.34} className="text-slate-900 font-bold text-lg md:text-xl mt-5 max-w-xl leading-snug tracking-tight">
                 Von der digitalen Experience bis zum physischen Erlebnis.

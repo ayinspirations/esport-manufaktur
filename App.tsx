@@ -139,7 +139,7 @@ export default function App() {
   const standardSectionPadding = "py-24 md:py-32";
 
   return (
-    <div className="relative min-h-screen selection:bg-emerald-500 selection:text-white bg-[#d1dbd2] overflow-x-hidden w-full">
+    <div className="relative min-h-screen selection:bg-emerald-500 selection:text-white bg-[#badeda] overflow-x-hidden w-full">
       <div className="noise fixed inset-0 z-50 pointer-events-none" />
       
       <Navbar onNavigate={navigateTo} scrollToSection={scrollToSection} activePage={activePage === 'services' ? 'services' : 'home'} />

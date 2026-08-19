@@ -22,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
   ];
 
   return (
-    <div className="w-full bg-[#d1dbd2]">
+    <div className="w-full bg-[#badeda]">
       <div className="max-w-[1440px] mx-auto w-full px-6 md:px-14">
         <footer className="py-24 md:py-32 relative">
           <motion.div 

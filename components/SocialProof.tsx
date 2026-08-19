@@ -82,7 +82,7 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
   const { ref: stripRef, inView: marqueeReady } = useInView<HTMLDivElement>({ threshold: 0.1 });
 
   return (
-    <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#d1dbd2] overflow-hidden ${SECTION_PADDING}`}>
+    <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#badeda] overflow-hidden ${SECTION_PADDING}`}>
       <style>{`
         .marquee-track {
           --marquee-start: -236px;
@@ -131,8 +131,8 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
               110px directly above the Mercedes-Benz, Indeed and Sparkasse
               logos -- the exact moment the page asks to be taken seriously. */}
           <h2 className="text-[clamp(44px,7.5vw,110px)] font-black leading-[0.85] tracking-tighter uppercase flex flex-col items-center">
-            <RevealText as="span" by="word" text="Brands we" className="text-slate-950" />
-            <RevealText as="span" by="word" text="level up." className="text-slate-400/90" delay={0.14} />
+            <RevealText as="span" by="word" text="Brands we" className="text-[#0b0f2a]" />
+            <RevealText as="span" by="word" text="level up." className="text-[#0e958e]" delay={0.14} />
           </h2>
         </div>
       </div>
@@ -153,8 +153,8 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
         </div>
 
         {/* Linear-inspired Gradient Fades */}
-        <div className="absolute inset-y-0 left-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-r from-[#d1dbd2] via-[#d1dbd2]/80 to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-l from-[#d1dbd2] via-[#d1dbd2]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-r from-[#badeda] via-[#badeda]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-24 md:w-[200px] lg:w-[400px] bg-gradient-to-l from-[#badeda] via-[#badeda]/80 to-transparent z-10 pointer-events-none" />
       </div>
 
       {/* Block 3: CTA to Best Cases */}

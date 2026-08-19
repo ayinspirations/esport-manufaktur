@@ -5,6 +5,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 
+// The frosted-glass backdrop shared by the desktop bar and the mobile header.
+// `brightness` is the part that does the work: it dims what is behind the bar
+// without covering it, so white text stays legible over the light #badeda
+// canvas without the fill on top having to be opaque.
+const GLASS = 'blur(24px) saturate(140%) brightness(0.45)';
+
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
   scrollToSection: (id: string) => void;
@@ -46,36 +52,54 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -10, scale: 0.985, filter: 'blur(8px)' }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+      // Neither a `filter` nor a `will-change` here, deliberately -- both make
+      // this wrapper a backdrop root, and a backdrop root stops
+      // `backdrop-filter` anywhere inside it from ever sampling the page. The
+      // nav used to blur in from 8px and settle at `blur(0px)`, with
+      // `will-change: opacity, transform` left standing afterwards; between
+      // them the bar below was translucent but its frost never engaged, so
+      // content slid behind it perfectly sharp. Opacity, offset and scale
+      // carry the entrance on their own, and Framer promotes the layer for
+      // the duration of the animation without being told to.
+      initial={{ opacity: 0, y: -10, scale: 0.985 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
-      style={{ willChange: 'opacity, transform, filter' }}
       className="fixed top-0 left-0 right-0 z-[100] md:px-14 md:py-8 pointer-events-none"
     >
       {/* Desktop bar -- morphs from a full-width, near-transparent strip over
-          the hero into a compact floating pill that carries its own dark
-          ground once scrolling starts.
+          the hero into a compact floating pill of frosted glass once scrolling
+          starts: the page stays visible through it, blurred.
 
-          Carrying its own ground is the actual fix, not a style choice: the
-          bar keeps white text throughout, and the homepage alternates between
-          #020617 and the sage sections. While the bar was translucent it
-          became unreadable over every light section it crossed. Now its
-          legibility no longer depends on what happens to be behind it. */}
+          The bar's text, logo and icons are white, so whatever ends up behind
+          the glass has to stay dark enough to carry them. The obvious way to
+          guarantee that is a heavy dark fill, but a fill is opaque by
+          definition: at the alpha white text needs, the bar stops being glass
+          and becomes a slab laid over the page.
+
+          So the darkening happens inside the filter instead. `brightness()`
+          tone-maps the backdrop itself -- every shape, edge and colour behind
+          the bar survives it, just dimmed -- which leaves the fill free to
+          stay light (0.32) and genuinely see-through. Even over a white card,
+          the composite keeps white/70 nav links above 4.5:1.
+
+          The blur is what makes the transparency read as glass rather than as
+          a smear. An earlier pass tried 0.92 alpha with no backdrop filter at
+          all, and the tiles passing behind looked like they were dissolving. */}
       <div
         className={`hidden md:flex relative mx-auto items-center justify-between pointer-events-auto rounded-full ${
           scrolled ? 'max-w-[1040px] h-[56px] px-6' : 'max-w-[1440px] h-[62px] px-8'
         }`}
         style={{
-          // Fully opaque once scrolled -- not translucent. At 0.92 alpha the
-          // service tiles and case tiles showed through as they passed behind
-          // the bar, which read as the tiles dissolving into a murky strip at
-          // the top of the page. Solid means content passes cleanly behind it.
-          background: scrolled ? '#020617' : 'rgba(255,255,255,0.03)',
-          backdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? 'none' : 'blur(16px) saturate(120%)',
-          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0)'}`,
-          boxShadow: scrolled ? '0 18px 50px -20px rgba(0,0,0,0.75)' : 'none',
-          transition: `background 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
+          background: scrolled ? 'rgba(2,6,23,0.32)' : 'rgba(255,255,255,0.03)',
+          backdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
+          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0)'}`,
+          // Inner top highlight: the lit edge that makes a translucent panel
+          // read as a pane of glass rather than as a hole in the page.
+          boxShadow: scrolled
+            ? 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -20px rgba(0,0,0,0.75)'
+            : 'none',
+          transition: `background 600ms ${EASE_REVEAL_CSS}, backdrop-filter 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
         }}
       >
         <div className="flex items-center gap-3 shrink-0">
@@ -140,14 +164,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           isOpen
             ? undefined
             : {
-                // Same reasoning as the desktop bar: the logo and burger are
-                // white, so once the page scrolls past the hero onto a sage
-                // section they need their own ground to stay visible.
-                background: scrolled ? '#020617' : 'transparent',
-                backdropFilter: 'none',
-                WebkitBackdropFilter: 'none',
-                boxShadow: scrolled ? '0 14px 40px -22px rgba(0,0,0,0.8)' : 'none',
-                transition: `background 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
+                // Same frosted glass as the desktop bar, same reasoning: the
+                // logo and burger are white, so once the page scrolls past the
+                // hero onto the light canvas they need a ground of their own
+                // -- just one you can see through.
+                background: scrolled ? 'rgba(2,6,23,0.32)' : 'transparent',
+                backdropFilter: scrolled ? GLASS : 'none',
+                WebkitBackdropFilter: scrolled ? GLASS : 'none',
+                boxShadow: scrolled
+                  ? 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -22px rgba(0,0,0,0.8)'
+                  : 'none',
+                transition: `background 500ms ${EASE_REVEAL_CSS}, backdrop-filter 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
               }
         }
       >

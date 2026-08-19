@@ -27,7 +27,7 @@ export const StickyScrollTransition: React.FC<StickyScrollTransitionProps> = ({ 
   const useCasesY = useTransform(scrollYProgress, [0.45, 0.6], [50, 0]);
 
   return (
-    <div ref={containerRef} className="relative h-[300vh] w-full bg-[#d1dbd2]">
+    <div ref={containerRef} className="relative h-[300vh] w-full bg-[#badeda]">
       {/* Der Sticky-Container füllt den gesamten Viewport aus */}
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-6 md:px-14">
         

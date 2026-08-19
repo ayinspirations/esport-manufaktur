@@ -31,7 +31,7 @@ export const WhyUs: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="text-[clamp(36px,6vw,90px)] font-black text-slate-950 tracking-tighter leading-[0.95] mb-20 md:mb-32 max-w-5xl"
+            className="text-[clamp(36px,6vw,90px)] font-black text-[#0b0f2a] tracking-tighter leading-[0.95] mb-20 md:mb-32 max-w-5xl"
           >
             Strategisches Agenturdenken trifft konsequente Umsetzung.
           </motion.h2>

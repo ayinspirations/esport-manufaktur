@@ -200,6 +200,9 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             MENSCHEN
           </span>
           <span className="hero-line-3 block" aria-hidden="true">
+            {/* The one headline that keeps its own colour: the teal-to-lime
+                sweep runs across the whole word, each character sampling its
+                own slice of a single shared gradient. */}
             {BEGEISTERN_CHARS.map((char, i) => (
               <span
                 key={i}

@@ -283,8 +283,8 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="text-emerald-700 font-black tracking-[0.4em] uppercase text-[10px] mb-6">Legal Information</div>
-          <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-slate-950">
-            {activeContent.title.split('.')[0]}<span className="text-slate-900/30 italic">.</span>
+          <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-[#0b0f2a]">
+            {activeContent.title.split('.')[0]}<span className="text-[#0e958e] italic">.</span>
           </h1>
           <p className="text-slate-600 text-xl md:text-2xl font-bold leading-tight tracking-tight mb-20 max-w-2xl">
             {activeContent.subtitle}

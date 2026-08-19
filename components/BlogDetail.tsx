@@ -34,7 +34,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
     return (
       <div className="pt-32 md:pt-48 pb-24 md:pb-40 px-6 md:px-14 min-h-screen">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter mb-8">Artikel nicht gefunden.</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-[#0b0f2a] tracking-tighter mb-8">Artikel nicht gefunden.</h1>
           <button
             onClick={onBack}
             className="inline-flex items-center gap-2 text-emerald-700 font-black uppercase tracking-widest text-sm hover:text-emerald-600 transition-colors"
@@ -67,7 +67,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
             <span>{post.readTime} Lesezeit</span>
           </div>
 
-          <h1 className="text-4xl md:text-7xl font-black mb-8 tracking-tighter leading-[0.95] text-slate-950">
+          <h1 className="text-4xl md:text-7xl font-black mb-8 tracking-tighter leading-[0.95] text-[#0b0f2a]">
             {post.title}
           </h1>
 
@@ -86,7 +86,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
 
             {post.sections.map((section) => (
               <section key={section.heading}>
-                <h2 className="text-xl md:text-2xl font-black text-slate-900 tracking-tight mb-5">
+                <h2 className="text-xl md:text-2xl font-black text-[#0b0f2a] tracking-tight mb-5">
                   {section.heading}
                 </h2>
                 {section.paragraphs.map((paragraph, i) => (
