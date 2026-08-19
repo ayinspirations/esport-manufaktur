@@ -70,14 +70,31 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
         <img 
           src="/images/bayern-zockt/hero.jpg" 
           alt="Bayern Zockt Gaming Event" 
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#badeda]" />
+        {/* The photograph hands over to the canvas before the headline
+            starts, so the title sits on the site's own ground and can be set
+            in the same ink-then-accent pair as every heading on the homepage.
+            The old overlay only reached the canvas at the very bottom edge,
+            which left the headline on the picture and forced it to be white. */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(186,222,218,0) 34%, rgba(186,222,218,0.9) 60%, #badeda 76%)'
+          }}
+        />
+        {/* Tells the nav where the photograph ends and the canvas begins. The
+            bar crosses both halves of this hero on the way down, and the img
+            underneath would otherwise report "dark" for the canvas half too.
+            Decorative and empty -- it exists to be hit-tested. */}
+        <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[52%]" />
+
         
         <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
           <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
             <div className="flex flex-col w-full md:w-auto">
-              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-white drop-shadow-2xl">
+              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
                 <RevealText as="span" by="word" text="GAMING IN" delay={0.1} />
                 <RevealText as="span" by="word" text="BAYERN" delay={0.24} className="text-[#0e958e] italic" />
               </h1>
@@ -91,7 +108,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
             >
               <button 
                 onClick={onBack}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/20 rounded-full text-white text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
+                className="flex items-center justify-center gap-2 px-6 py-3 bg-transparent hover:bg-[#0b0f2a]/[0.07] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 rounded-full text-[#0b0f2a] text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
               >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                 Zurück
@@ -213,7 +230,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                       <h3 className="text-xl font-black uppercase tracking-tighter">Format</h3>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-black text-emerald-400 leading-tight">Digitale Turnierplattform + Live-Finale</h4>
+                      <h4 className="text-lg font-black text-[#0e958e] leading-tight">Digitale Turnierplattform + Live-Finale</h4>
                       <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">Regional · Community-driven · Hybrid</p>
                     </div>
                   </section>
@@ -232,7 +249,7 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = ({ onBack }) 
                         { title: 'Content Creation', desc: 'Gaming- & Event-Content im Short-Form-Format' }
                       ].map((item, i) => (
                         <li key={i}>
-                          <h5 className="font-black uppercase tracking-widest text-[10px] text-emerald-400 mb-1">{item.title}</h5>
+                          <h5 className="font-black uppercase tracking-widest text-[10px] text-[#0e958e] mb-1">{item.title}</h5>
                           <p className="text-white/80 font-bold leading-snug">{item.desc}</p>
                         </li>
                       ))}

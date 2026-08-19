@@ -14,7 +14,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
       body: (
         <div className="space-y-12">
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Angaben gemäß § 5 TMG</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Angaben gemäß § 5 TMG</h3>
             <p className="text-2xl font-bold text-slate-900 leading-tight">
               eSport Manufaktur GmbH<br />
               Gartenstraße 16/1<br />
@@ -24,12 +24,12 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Vertreten durch</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Vertreten durch</h3>
             <p className="text-xl font-bold text-slate-900">Geschäftsführer: Gianluca Crepaldi</p>
           </section>
 
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Kontakt</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Kontakt</h3>
             <p className="text-xl font-bold text-slate-900">
               Telefon: +49 151 44360133<br />
               E-Mail: info@esport-manufaktur.com<br />
@@ -38,7 +38,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Register & Steuern</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Register & Steuern</h3>
             <div className="space-y-4">
               <p className="text-slate-600 font-medium leading-relaxed">
                 <span className="font-black text-slate-900">Handelsregister:</span><br />
@@ -52,16 +52,16 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Streitbeilegung</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Streitbeilegung</h3>
             <p className="text-slate-600 font-medium leading-relaxed">
               Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br />
-              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">https://ec.europa.eu/consumers/odr/</a>
+              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="text-[#0a6f6a] underline">https://ec.europa.eu/consumers/odr/</a>
             </p>
             <p className="mt-4 text-slate-500 italic">Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
           </section>
 
           <section>
-            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-emerald-600 mb-6">Verantwortlich nach § 18 Abs. 2 MStV</h3>
+            <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Verantwortlich nach § 18 Abs. 2 MStV</h3>
             <p className="text-slate-600 font-medium leading-relaxed">
               eSport Manufaktur GmbH<br />
               Gianluca Crepaldi<br />
@@ -71,7 +71,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section className="p-8 bg-slate-50 rounded-surface border border-black/[0.03]">
-            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-400 mb-4">Angaben nach § 2 DL-InfoV</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em] text-[#0b0f2a]/50 mb-4">Angaben nach § 2 DL-InfoV</h3>
             <ul className="list-disc pl-5 space-y-2 text-xs font-bold text-slate-500 uppercase tracking-wider leading-relaxed">
               <li>Unsere Dienstleistungen richten sich an Unternehmen, Verbände und Institutionen.</li>
               <li>Vertrags- und Kommunikationssprache ist Deutsch.</li>
@@ -116,7 +116,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Anbieter und Verantwortlicher</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Anbieter und Verantwortlicher</h3>
             <p className="text-lg font-bold text-slate-900">
               eSport Manufaktur GmbH<br />
               Gartenstraße 16/1<br />
@@ -126,7 +126,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Arten der erhobenen Daten</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Arten der erhobenen Daten</h3>
             <p>Zu den personenbezogenen Daten, die diese Website selbstständig oder durch Dritte verarbeitet, gehören: Tracker; Nutzungsdaten; Anzahl der Nutzer; Sitzungsstatistiken; E-Mail; Nachname; Antworten auf Fragen; Benutzerinhalte; Telefonnummer.</p>
             <p className="mt-4 text-slate-500">
               Vollständige Details zu jeder Art von verarbeiteten personenbezogenen Daten werden in den dafür vorgesehenen Abschnitten dieser Datenschutzerklärung oder punktuell durch Erklärungstexte bereitgestellt, die vor der Datenerhebung angezeigt werden.
@@ -139,7 +139,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section className="space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Art und Ort der Datenverarbeitung</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Art und Ort der Datenverarbeitung</h3>
             
             <div>
               <h4 className="font-black text-slate-900 mb-2 uppercase text-xs">Verarbeitungsmethoden</h4>
@@ -160,18 +160,18 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Zwecke der Verarbeitung</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Zwecke der Verarbeitung</h3>
             <p>Personenbezogene Daten über den Nutzer werden erhoben, damit der Anbieter den Dienst erbringen und des Weiteren seinen gesetzlichen Verpflichtungen nachkommen, auf Durchsetzungsforderungen reagieren, seine Rechte und Interessen (oder die der Nutzer oder Dritter) schützen, böswillige oder betrügerische Aktivitäten aufdecken kann. Darüber hinaus werden Daten zu folgenden Zwecken erhoben: Analytik, Anzeigen von Inhalten externer Plattformen, Tag-Verwaltung, Kontaktieren des Nutzers, Zugriff auf Profile von Drittanbietern, Interaktion mit externen sozialen Netzwerken und Plattformen und Interaktion mit Live-Chat-Plattformen.</p>
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Facebook-Genehmigungen</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Facebook-Genehmigungen</h3>
             <p>Diese Website kann bestimmte Facebook-Genehmigungen verlangen, um mit dem Facebook-Konto des Nutzers Aktionen auszuführen und Informationen einschließlich personenbezogener Daten daraus zu erhalten. Diese Website verbindet sich mittels dieses Dienstes mit dem Nutzerprofil auf dem sozialen Netzwerk Facebook, bereitgestellt von Facebook Inc.</p>
             <p className="mt-2">Folgende Genehmigungen werden verlangt: Allgemeine Angaben, E-Mail, Geräteinformationen, Nutzungsdaten und Tracker.</p>
           </section>
 
           <section className="space-y-8">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Ausführliche Angaben über die Verarbeitung personenbezogener Daten</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Ausführliche Angaben über die Verarbeitung personenbezogener Daten</h3>
             
             <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
               <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Analytik</h4>
@@ -217,7 +217,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Rechtsgrundlagen der Verarbeitung</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Rechtsgrundlagen der Verarbeitung</h3>
             <p>Der Anbieter darf personenbezogene Daten von Nutzern nur dann verarbeiten, wenn einer der folgenden Punkte zutrifft:</p>
             <ul className="list-disc pl-5 mt-3 space-y-1">
               <li>Die Nutzer haben ihre Einwilligung für einen oder mehrere bestimmte Zwecke erteilt.</li>
@@ -229,7 +229,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Rechte der Nutzer (DSGVO)</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Rechte der Nutzer (DSGVO)</h3>
             <p>Nutzer haben im gesetzlich zulässigen Umfang insbesondere das Recht, Folgendes zu tun:</p>
             <ul className="list-disc pl-5 mt-3 space-y-2">
               <li>Die Einwilligungen jederzeit widerrufen.</li>
@@ -243,7 +243,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             </ul>
             
             <div className="mt-8 p-6 bg-slate-950 text-white rounded-2xl border border-white/10 shadow-xl">
-              <h4 className="font-black uppercase text-[10px] tracking-[0.2em] mb-3 text-emerald-400">Details zum Widerspruchsrecht</h4>
+              <h4 className="font-black uppercase text-[10px] tracking-[0.2em] mb-3 text-[#0e958e]">Details zum Widerspruchsrecht</h4>
               <p className="text-sm leading-relaxed text-white/70">
                 Werden personenbezogene Daten im öffentlichen Interesse, in Ausübung eines dem Anbieter übertragenen hoheitlichen Befugnisses oder zur Wahrung der berechtigten Interessen des Anbieters verarbeitet, kann der Nutzer dieser Verarbeitung widersprechen, indem er einen Rechtfertigungsgrund angibt, der sich auf seine besondere Situation bezieht.
                 Nutzer werden darüber informiert, dass sie der Verarbeitung der personenbezogenen Daten für Direktwerbung jederzeit unentgeltlich ohne Angabe von Gründen widersprechen können.
@@ -252,7 +252,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-emerald-600 mb-4">Begriffsbestimmungen</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Begriffsbestimmungen</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Personenbezogene Daten</div>
               <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Nutzungsdaten</div>
@@ -282,11 +282,11 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="text-emerald-700 font-black tracking-[0.4em] uppercase text-[10px] mb-6">Legal Information</div>
+          <div className="text-[#0a6f6a] font-black tracking-[0.4em] uppercase text-[10px] mb-6">Legal Information</div>
           <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-[#0b0f2a]">
             {activeContent.title.split('.')[0]}<span className="text-[#0e958e] italic">.</span>
           </h1>
-          <p className="text-slate-600 text-xl md:text-2xl font-bold leading-tight tracking-tight mb-20 max-w-2xl">
+          <p className="text-[#0b0f2a]/70 text-xl md:text-2xl font-bold leading-tight tracking-tight mb-20 max-w-2xl">
             {activeContent.subtitle}
           </p>
 

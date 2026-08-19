@@ -230,7 +230,7 @@ export const ServicesDetail: React.FC<ServicesDetailProps> = ({ onNavigate }) =>
 
         {/* Section: Technology & Platforms */}
         <div className="mb-24">
-           <section className="bg-slate-950 rounded-shell p-10 md:p-24 overflow-hidden relative">
+           <section data-nav-ground="dark" className="bg-slate-950 rounded-shell p-10 md:p-24 overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
               <div className="relative z-10 flex flex-col lg:flex-row gap-20 items-center">
                  <div className="lg:w-1/2">

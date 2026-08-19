@@ -175,7 +175,7 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
-        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} />}
+        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={() => setIsBookingOpen(true)} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
         )}

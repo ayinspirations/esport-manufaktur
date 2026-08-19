@@ -180,6 +180,11 @@ const ServiceCard: React.FC<{
   );
 };
 
+const ARROW_BUTTON =
+  'spring w-11 h-11 rounded-full border border-[#0b0f2a]/20 flex items-center justify-center ' +
+  'text-[#0b0f2a] disabled:opacity-30 disabled:cursor-not-allowed ' +
+  'hover:enabled:bg-[#0e958e] hover:enabled:border-[#0e958e] hover:enabled:text-white';
+
 // -- Carousel: shared scroll-snap track + prev/next buttons for both mobile
 // and desktop. Native smooth scrolling gives the clean horizontal slide
 // (no jump-cut), and the peek-padding percentages are tuned per breakpoint
@@ -223,18 +228,23 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
       <style>{`.services-carousel-track::-webkit-scrollbar{display:none}`}</style>
       <div
         ref={trackRef}
-        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-[10%] sm:px-[22.5%]"
+        // Phone keeps the centred single card with its neighbours peeking, so
+        // the percentage padding stays there. From md the track runs flush
+        // with the container and simply holds three or four cards at a time --
+        // a peek offset would only push the row out of alignment with the
+        // heading above it.
+        className="services-carousel-track flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2 -mx-6 px-[10%] sm:px-[22.5%] md:mx-0 md:px-0"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {children}
       </div>
       <div className="flex items-center justify-end gap-3 mt-8">
         <button onClick={() => scrollByCard(-1)} disabled={!canLeft} aria-label="Zurück"
-          className="spring w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          className={ARROW_BUTTON}>
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button onClick={() => scrollByCard(1)} disabled={!canRight} aria-label="Weiter"
-          className="spring w-11 h-11 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-emerald-400 hover:enabled:border-emerald-400 hover:enabled:text-slate-950">
+          className={ARROW_BUTTON}>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
@@ -242,50 +252,12 @@ const ServicesCarousel: React.FC<{ children: React.ReactNode }> = ({ children })
   );
 };
 
-// -- Desktop composition ----------------------------------------------------
-// An editorial grid instead of a slider: tiles vary in width and proportion,
-// sit on their own vertical offsets, and leave real empty ground between them.
-// The offsets are what stop it reading as a plain gallery -- neighbouring
-// tiles never line up on the same baseline.
-//
-// One entry per service, in order. `span` is the column span on a 12-column
-// grid, `start` forces the column so the gaps are deliberate rather than
-// whatever auto-placement leaves over, `ratio` sets the tile's proportion and
-// `offset` is its vertical shift. Tweak the composition here; nothing else
-// needs to change.
-const DESKTOP_TILES = [
-  { start: 'lg:col-start-1',  span: 'lg:col-span-6', ratio: 'lg:aspect-[4/3]',   offset: '' },
-  { start: 'lg:col-start-8',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-28' },
-  // "Digitale Lösungen" sits higher than the rest of its row on purpose --
-  // it fills the empty ground under the wide first tile instead of hanging
-  // below it. Raise or lower it here.
-  { start: 'lg:col-start-2',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:-mt-24' },
-  { start: 'lg:col-start-7',  span: 'lg:col-span-6', ratio: 'lg:aspect-[16/10]', offset: 'lg:mt-40' },
-  { start: 'lg:col-start-1',  span: 'lg:col-span-5', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-12' },
-  { start: 'lg:col-start-8',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-32' },
-  { start: 'lg:col-start-2',  span: 'lg:col-span-6', ratio: 'lg:aspect-[4/3]',   offset: 'lg:mt-20' },
-  { start: 'lg:col-start-9',  span: 'lg:col-span-4', ratio: 'lg:aspect-[3/4]',   offset: 'lg:mt-8' },
-  { start: 'lg:col-start-1',  span: 'lg:col-span-4', ratio: 'lg:aspect-square',  offset: 'lg:mt-24' },
-  { start: 'lg:col-start-6',  span: 'lg:col-span-7', ratio: 'lg:aspect-[16/10]', offset: 'lg:mt-16' },
-];
-
-// md sits between the two: a calmer two-up rhythm, still offset, no slider.
-const MD_TILES = [
-  'md:col-span-7', 'md:col-span-5 md:mt-20', 'md:col-span-5', 'md:col-span-7 md:mt-16',
-  'md:col-span-6', 'md:col-span-6 md:mt-20', 'md:col-span-7', 'md:col-span-5 md:mt-16',
-  'md:col-span-5', 'md:col-span-7 md:mt-20',
-];
-
-/** Services shown before "Mehr anzeigen" is pressed (desktop/tablet only). */
-const INITIAL_TILES = 4;
-
 interface CompetenciesProps {
   onNavigate?: (page: any) => void;
 }
 
 export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
-  const [showAll, setShowAll] = useState(false);
-  // Drives the reveal for every card in the mobile carousel at once -- see the
+  // Drives the reveal for every card in the carousel at once -- see the
   // `visible` prop on ServiceCard for why the cards cannot decide this alone.
   const { ref: trackWrapRef, inView: trackInView } = useInView<HTMLDivElement>({ threshold: 0.05 });
 
@@ -295,14 +267,23 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
     // tiles underneath the navigation.
     <div className="w-full flex items-center justify-center scroll-mt-28" id="competencies">
       <section className={`w-full pt-6 md:pt-8 lg:pt-10 pb-16 md:pb-24 lg:pb-28 bg-transparent relative overflow-hidden`}>
+        {/* Closed at rest, opens on hover -- and the hover rule is fenced
+            behind a real pointer on purpose.
+
+            There used to be a `(hover: none)` rule pinning the description
+            permanently open, so the same card showed its full paragraph on a
+            phone and only its title on a desktop. Deleting that was right;
+            letting the `:hover` rule through to touch alongside it was not.
+            Touch browsers emulate hover on the first tap and hold the click
+            back until the second, which is what stopped the cards opening
+            their service pages. On touch the description simply stays closed
+            and a tap navigates, first time. */}
         <style>{`
           .card-desc-wrap { max-height: 0; opacity: 0; }
-          @media (hover: hover) {
+          @media (hover: hover) and (pointer: fine) {
             .card-desc-wrap { transition: max-height 350ms ease, opacity 300ms ease; }
-            .group:hover .card-desc-wrap { max-height: 420px; opacity: 1; }
-          }
-          @media (hover: none) {
-            .card-desc-wrap { max-height: 420px; opacity: 1; }
+            .group:hover .card-desc-wrap,
+            .group:focus-within .card-desc-wrap { max-height: 420px; opacity: 1; }
           }
         `}</style>
 
@@ -326,10 +307,16 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          {/* Mobile keeps the swipeable track -- an offset editorial grid has
-              nowhere to breathe on a phone, and swiping is the better gesture
-              there anyway. */}
-          <div className="md:hidden" ref={trackWrapRef}>
+          {/* One carousel at every width. Desktop used to get an offset
+              editorial grid with a "Mehr anzeigen" gate, which put four of the
+              ten services on screen and hid the rest behind a click. The track
+              shows them as a row you page through, so all ten are reachable
+              the same way on a phone and on a desktop.
+
+              Card widths are exact thirds and quarters of the track rather
+              than round percentages, so a page lands flush instead of leaving
+              a sliver of the next card cut off at the edge. */}
+          <div ref={trackWrapRef}>
             <ServicesCarousel>
               {data.map((item, i) => (
                 <ServiceCard
@@ -338,50 +325,18 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => {
                   onNavigate={onNavigate}
                   // Stagger only across the cards that are actually on screen
                   // at rest; the ones further along the track would otherwise
-                  // finish their delay long before anyone swipes to them.
-                  delay={Math.min(i, 2) * STAGGER.card}
-                  sizing="shrink-0 snap-center w-[80%] sm:w-[55%] aspect-[3/4]"
+                  // finish their delay long before anyone pages to them.
+                  delay={Math.min(i, 3) * STAGGER.card}
+                  sizing={
+                    'shrink-0 snap-center aspect-[3/4] w-[80%] sm:w-[55%] ' +
+                    'md:snap-start md:w-[calc((100%-2rem)/3)] xl:w-[calc((100%-3rem)/4)]'
+                  }
                   visible={trackInView}
                 />
               ))}
             </ServicesCarousel>
           </div>
 
-          {/* Desktop: no slider. The first four services are shown; the rest
-              load on request, so the section opens as a composition rather
-              than a wall of ten tiles. */}
-          <div className="hidden md:grid grid-cols-12 gap-x-6 gap-y-16 lg:gap-x-8 lg:gap-y-8 items-start">
-            {data.slice(0, showAll ? data.length : INITIAL_TILES).map((item, i) => {
-              const lg = DESKTOP_TILES[i % DESKTOP_TILES.length];
-              return (
-                <ServiceCard
-                  key={item.title}
-                  item={item}
-                  onNavigate={onNavigate}
-                  // Stagger runs per row rather than per card: a flat i * step
-                  // would leave the last tile waiting most of a second after
-                  // it is already on screen.
-                  delay={(i % 3) * STAGGER.card}
-                  sizing={`aspect-[3/4] ${MD_TILES[i % MD_TILES.length]} ${lg.start} ${lg.span} ${lg.ratio} ${lg.offset}`}
-                />
-              );
-            })}
-          </div>
-
-          {!showAll && (
-            <div className="hidden md:flex justify-center mt-20 lg:mt-28">
-              <button
-                onClick={() => setShowAll(true)}
-                className="spring inline-flex items-center gap-2.5 bg-emerald-400 text-slate-900 px-7 py-4 rounded-full font-black text-sm tracking-tighter"
-              >
-                Mehr anzeigen
-                <ArrowRight className="w-4 h-4" />
-                <span className="sr-only">
-                  {data.length - INITIAL_TILES} weitere Services
-                </span>
-              </button>
-            </div>
-          )}
         </div>
       </section>
     </div>

@@ -5,7 +5,15 @@ import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { blogPosts, BlogPost } from './blogPosts';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
-import { DUR } from './motion';
+import { DUR, STAGGER } from './motion';
+import { useInView } from '../hooks/useInView';
+
+// The heading runs eyebrow -> "Blog" -> "& Wissen." -> subline, the last of
+// which starts at 0.42s. The cards begin once that subline is most of the way
+// in rather than fully settled: waiting for the last pixel put 2.4s between
+// the section arriving and its first tile, which reads as a stall. This still
+// lands the headline first and the tiles second, as two clear beats.
+const CARDS_AFTER_HEADING = 0.42 + DUR.reveal;
 
 interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
@@ -48,6 +56,7 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
 
 export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
   const [showAllMobile, setShowAllMobile] = useState(false);
+  const { ref: headingRef, inView: headingSeen } = useInView<HTMLDivElement>({ threshold: 0.4 });
 
   return (
     <div className={`w-full flex items-center justify-center px-4 sm:px-6 md:px-14 ${SECTION_PADDING}`} id="blog">
@@ -57,6 +66,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
         as="section"
         y={28}
         duration={DUR.slow}
+        data-nav-ground="dark"
         className="relative w-full max-w-[1440px] mx-auto rounded-shell md:rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10"
       >
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
@@ -81,7 +91,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
         </div>
 
         <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
-          <div className="mb-16 md:mb-20">
+          <div className="mb-16 md:mb-20" ref={headingRef}>
             <Reveal delay={0.12} className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
               Insights
             </Reveal>
@@ -95,14 +105,21 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
           </div>
 
           {/* Desktop / tablet: multi-column grid, unchanged */}
+          {/* Driven by the heading's own visibility, not each card's. On a tall
+              screen the first row of cards enters the viewport in the same
+              scroll step as the headline, so per-card `whileInView` had them
+              racing it. */}
           <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {blogPosts.map((post, i) => (
               <motion.div
                 key={post.slug}
                 initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.8, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+                transition={{
+                  duration: 0.8,
+                  delay: CARDS_AFTER_HEADING + i * STAGGER.card,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
               >
                 <BlogCard post={post} onOpenPost={onOpenPost} className="w-full h-full" />
               </motion.div>
@@ -111,7 +128,12 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
 
           {/* Mobile: centered horizontal swipe carousel, with a toggle to show
               every post stacked in a single column instead. */}
-          <div className="sm:hidden">
+          <motion.div
+            className="sm:hidden"
+            initial={{ opacity: 0, y: 24 }}
+            animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+            transition={{ duration: 0.8, delay: CARDS_AFTER_HEADING, ease: [0.16, 1, 0.3, 1] }}
+          >
             {!showAllMobile ? (
               <>
                 <style>{`.blog-carousel-track::-webkit-scrollbar{display:none}`}</style>
@@ -142,7 +164,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
                 <>Alle Artikel anzeigen <ChevronDown className="w-4 h-4" /></>
               )}
             </button>
-          </div>
+          </motion.div>
         </div>
       </Reveal>
     </div>

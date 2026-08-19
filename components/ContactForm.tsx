@@ -67,7 +67,7 @@ export const ContactForm: React.FC = () => {
             </div>
           </div>
 
-          <div className="relative rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
+          <div data-nav-ground="dark" className="relative rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
             <div className="absolute inset-0 z-0 pointer-events-none">
               <div className="absolute inset-0 bg-[#020617]" />
               <div

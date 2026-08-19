@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Cookie, X, Check, SlidersHorizontal, ArrowLeft } from 'lucide-react';
+import { X, Check, SlidersHorizontal, ArrowLeft } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 import { CATEGORIES, CONSENT_EVENT, getConsent, saveConsent } from './cookieConsent';
 import { EASE_REVEAL } from './motion';
@@ -75,26 +75,25 @@ export const CookiePopup: React.FC = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ duration: 0.45, ease: EASE_REVEAL }}
-            className="relative overflow-hidden bg-white/95 backdrop-blur-2xl border border-white/40 rounded-shell p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.25)] max-w-[560px] w-full max-h-[85vh] overflow-y-auto"
+            className="relative overflow-hidden bg-[#badeda] border border-[#0b0f2a]/10 rounded-shell p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(11,15,42,0.3)] max-w-[560px] w-full max-h-[85vh] overflow-y-auto"
           >
-            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 bg-[#00ff00]/10 blur-[80px] rounded-full pointer-events-none" />
+            <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 bg-[#0e958e]/20 blur-[80px] rounded-full pointer-events-none" />
 
             <div className="relative z-10">
               {!showDetails ? (
                 <>
                   <div className="flex flex-col items-center text-center mb-7">
-                    <div className="w-14 h-14 rounded-card bg-[#00ff00]/10 flex items-center justify-center border border-[#00ff00]/20 mb-5">
-                      <Cookie className="w-7 h-7 text-[#00ff00]" />
-                    </div>
-                    <h3 id="cookie-title" className="text-[#0b0f2a] font-black uppercase tracking-wider text-xl mb-1.5">
-                      Cookie-Einstellungen
+                    {/* Two-tone like every other heading on the site: the
+                        subject in ink, the qualifier in the accent. */}
+                    <h3 id="cookie-title" className="font-black uppercase tracking-wider text-xl mb-1.5 text-[#0b0f2a]">
+                      Cookie-<span className="text-[#0e958e]">Einstellungen</span>
                     </h3>
-                    <p className="text-slate-500 text-[11px] uppercase tracking-[0.3em] font-bold">
+                    <p className="text-[#0b0f2a]/50 text-[11px] uppercase tracking-[0.3em] font-bold">
                       Privatsphäre &amp; Sicherheit
                     </p>
                   </div>
 
-                  <p className="text-slate-600 text-base leading-relaxed mb-8 font-medium text-center">
+                  <p className="text-[#0b0f2a]/70 text-base leading-relaxed mb-8 font-medium text-center">
                     Wir nutzen Cookies, um die Seite zu betreiben und – mit deiner Einwilligung – ihre Nutzung
                     auszuwerten und eingebettete Dienste zu laden. Du entscheidest, was wir verwenden dürfen.
                   </p>
@@ -102,7 +101,11 @@ export const CookiePopup: React.FC = () => {
                   <div className="flex flex-col gap-3">
                     <button
                       onClick={() => decide({ statistics: true, marketing: true })}
-                      className="spring w-full py-4 bg-[#00ff00] hover:bg-[#00dd00] text-black text-[13px] font-black uppercase tracking-[0.25em] rounded-full flex items-center justify-center gap-3"
+                      // Ink on the accent rather than white: at 13px this text
+                      // is well under the large-text threshold, and white on
+                      // #0e958e only reaches 3.7:1. Ink on the same accent is
+                      // 5.1:1 and keeps the CI colour exactly.
+                      className="spring w-full py-4 bg-[#0e958e] hover:bg-[#0e958e]/85 text-[#0b0f2a] text-[13px] font-black uppercase tracking-[0.25em] rounded-full flex items-center justify-center gap-3"
                     >
                       <Check className="w-5 h-5" />
                       Alle akzeptieren
@@ -112,13 +115,13 @@ export const CookiePopup: React.FC = () => {
                         is not a valid choice. */}
                     <button
                       onClick={() => decide({ statistics: false, marketing: false })}
-                      className="spring w-full py-4 bg-slate-900 hover:bg-slate-800 text-white text-[13px] font-black uppercase tracking-[0.25em] rounded-full"
+                      className="spring w-full py-4 bg-[#0b0f2a] hover:bg-[#0b0f2a]/85 text-white text-[13px] font-black uppercase tracking-[0.25em] rounded-full"
                     >
                       Nur notwendige
                     </button>
                     <button
                       onClick={() => setShowDetails(true)}
-                      className="w-full py-3 text-slate-600 hover:text-slate-900 text-[12px] font-black uppercase tracking-[0.2em] rounded-full transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-3 text-[#0b0f2a]/60 hover:text-[#0e958e] text-[12px] font-black uppercase tracking-[0.2em] rounded-full transition-colors flex items-center justify-center gap-2"
                     >
                       <SlidersHorizontal className="w-4 h-4" />
                       Einstellungen
@@ -129,14 +132,14 @@ export const CookiePopup: React.FC = () => {
                 <>
                   <button
                     onClick={() => setShowDetails(false)}
-                    className="flex items-center gap-2 text-slate-500 hover:text-slate-900 text-[11px] font-black uppercase tracking-[0.2em] transition-colors mb-6"
+                    className="flex items-center gap-2 text-[#0b0f2a]/60 hover:text-[#0e958e] text-[11px] font-black uppercase tracking-[0.2em] transition-colors mb-6"
                   >
                     <ArrowLeft className="w-4 h-4" />
                     Zurück
                   </button>
 
-                  <h3 className="text-[#0b0f2a] font-black uppercase tracking-wider text-lg mb-6">
-                    Welche Cookies dürfen wir setzen?
+                  <h3 className="font-black uppercase tracking-wider text-lg mb-6 text-[#0b0f2a]">
+                    Welche Cookies <span className="text-[#0e958e]">dürfen wir setzen?</span>
                   </h3>
 
                   <div className="flex flex-col gap-3 mb-8">
@@ -146,14 +149,14 @@ export const CookiePopup: React.FC = () => {
                       return (
                         <div
                           key={cat.id}
-                          className="rounded-card border border-slate-900/10 bg-slate-900/[0.03] p-5"
+                          className="rounded-card border border-[#0b0f2a]/10 bg-white/40 p-5"
                         >
                           <div className="flex items-start justify-between gap-4">
                             <div className="min-w-0">
-                              <div className="text-slate-900 font-black text-sm uppercase tracking-wider mb-1.5">
+                              <div className="text-[#0b0f2a] font-black text-sm uppercase tracking-wider mb-1.5">
                                 {cat.label}
                               </div>
-                              <p className="text-slate-600 text-[13px] font-medium leading-snug">
+                              <p className="text-[#0b0f2a]/65 text-[13px] font-medium leading-snug">
                                 {cat.description}
                               </p>
                             </div>
@@ -165,7 +168,7 @@ export const CookiePopup: React.FC = () => {
                               disabled={cat.locked}
                               onClick={() => !cat.locked && entry[1](!entry[0])}
                               className={`shrink-0 w-12 h-7 rounded-full transition-colors duration-300 relative ${
-                                on ? 'bg-[#00ff00]' : 'bg-slate-300'
+                                on ? 'bg-[#0e958e]' : 'bg-[#0b0f2a]/20'
                               } ${cat.locked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                             >
                               <span
@@ -182,16 +185,16 @@ export const CookiePopup: React.FC = () => {
 
                   <button
                     onClick={() => decide({ statistics, marketing })}
-                    className="spring w-full py-4 bg-slate-900 hover:bg-slate-800 text-white text-[13px] font-black uppercase tracking-[0.25em] rounded-full"
+                    className="spring w-full py-4 bg-[#0b0f2a] hover:bg-[#0b0f2a]/85 text-white text-[13px] font-black uppercase tracking-[0.25em] rounded-full"
                   >
                     Auswahl speichern
                   </button>
                 </>
               )}
 
-              <p className="text-slate-400 text-[11px] font-medium text-center mt-6">
+              <p className="text-[#0b0f2a]/45 text-[11px] font-medium text-center mt-6">
                 Details in unserer{' '}
-                <a href="#privacy" onClick={() => setIsVisible(false)} className="underline hover:text-slate-700">
+                <a href="#privacy" onClick={() => setIsVisible(false)} className="underline hover:text-[#0e958e]">
                   Datenschutzerklärung
                 </a>
                 . Du kannst deine Auswahl jederzeit im Footer ändern.
@@ -203,7 +206,7 @@ export const CookiePopup: React.FC = () => {
             <button
               onClick={() => setIsVisible(false)}
               aria-label="Schließen"
-              className="absolute top-6 right-6 text-slate-300 hover:text-slate-900 transition-colors"
+              className="absolute top-6 right-6 text-[#0b0f2a]/35 hover:text-[#0b0f2a] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>

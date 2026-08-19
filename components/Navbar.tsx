@@ -1,15 +1,46 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
+import { useNavGround } from '../hooks/useNavGround';
 
-// The frosted-glass backdrop shared by the desktop bar and the mobile header.
-// `brightness` is the part that does the work: it dims what is behind the bar
-// without covering it, so white text stays legible over the light #badeda
-// canvas without the fill on top having to be opaque.
-const GLASS = 'blur(24px) saturate(140%) brightness(0.45)';
+// Two glasses, one per ground the bar crosses. Which one is showing is decided
+// by `useNavGround` -- see there for why it goes by section and not by what
+// literally sits behind the bar.
+//
+// Both are built to be *seen through*: a thin veil and a modest blur, so a
+// headline or a photograph passing behind the bar stays recognisable rather
+// than dissolving into a tinted strip. Earlier passes bought contrast by
+// piling on the fill and then by compressing the backdrop's range with
+// `contrast()` -- both worked, and both turned the bar back into a slab laid
+// over the page, which is the thing it is not supposed to be.
+//
+// So the legibility is carried by the text instead of the panel: each tone
+// pairs its glass with a halo in the opposite value, tight enough to stay
+// invisible against the glass itself and strong enough to hold the letterforms
+// apart from whatever slides underneath. That is the trade this makes
+// deliberately -- against a worst-case backdrop the measured text-to-backdrop
+// ratio is lower than the old slab's, and the halo is what keeps it readable.
+const GLASS = {
+  light: {
+    fill: 'rgba(255,255,255,0.20)',
+    filter: 'blur(10px) saturate(180%) brightness(1.06)',
+    border: 'rgba(11,15,42,0.10)',
+    shadow: 'inset 0 1px 0 rgba(255,255,255,0.45), 0 18px 50px -28px rgba(11,15,42,0.35)',
+    textShadow: '0 1px 2px rgba(255,255,255,0.95), 0 0 10px rgba(255,255,255,0.85)',
+    iconShadow: 'drop-shadow(0 1px 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.8))',
+  },
+  dark: {
+    fill: 'rgba(2,6,23,0.20)',
+    filter: 'blur(10px) saturate(160%) brightness(0.82)',
+    border: 'rgba(255,255,255,0.12)',
+    shadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -24px rgba(0,0,0,0.6)',
+    textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.65)',
+    iconShadow: 'drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 0 8px rgba(0,0,0,0.6))',
+  },
+} as const;
 
 interface NavbarProps {
   onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
@@ -20,6 +51,22 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, activePage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const desktopBarRef = useRef<HTMLDivElement>(null);
+  const mobileBarRef = useRef<HTMLDivElement>(null);
+  const ground = useNavGround([desktopBarRef, mobileBarRef], scrolled);
+  const glass = GLASS[ground];
+  // Only the scrolled bar has a ground of its own; unscrolled it is a bare
+  // strip over the dark hero, so the white chrome holds there either way.
+  const inkOnGlass = ground === 'light' && scrolled;
+  const navLinkTone = inkOnGlass
+    ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
+    : 'text-white/75 hover:text-[#5fd6cf]';
+  const ctaTone = inkOnGlass
+    ? 'bg-[#0b0f2a] hover:bg-[#0e958e] text-white border border-transparent'
+    // The accent lightened one step for the dark tone: #0e958e is mixed for
+    // display type on a dark ground but thin for a 12px pill label.
+    : 'bg-[#0e958e]/20 hover:bg-[#0e958e]/30 text-[#5fd6cf] hover:text-white border border-[#0e958e]/45 hover:border-[#0e958e]/70';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,47 +115,57 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
     >
       {/* Desktop bar -- morphs from a full-width, near-transparent strip over
           the hero into a compact floating pill of frosted glass once scrolling
-          starts: the page stays visible through it, blurred.
-
-          The bar's text, logo and icons are white, so whatever ends up behind
-          the glass has to stay dark enough to carry them. The obvious way to
-          guarantee that is a heavy dark fill, but a fill is opaque by
-          definition: at the alpha white text needs, the bar stops being glass
-          and becomes a slab laid over the page.
-
-          So the darkening happens inside the filter instead. `brightness()`
-          tone-maps the backdrop itself -- every shape, edge and colour behind
-          the bar survives it, just dimmed -- which leaves the fill free to
-          stay light (0.32) and genuinely see-through. Even over a white card,
-          the composite keeps white/70 nav links above 4.5:1.
+          starts: the page stays visible through it, blurred, and the glass
+          switches with the section behind it (see GLASS above).
 
           The blur is what makes the transparency read as glass rather than as
           a smear. An earlier pass tried 0.92 alpha with no backdrop filter at
           all, and the tiles passing behind looked like they were dissolving. */}
       <div
+        ref={desktopBarRef}
         className={`hidden md:flex relative mx-auto items-center justify-between pointer-events-auto rounded-full ${
           scrolled ? 'max-w-[1040px] h-[56px] px-6' : 'max-w-[1440px] h-[62px] px-8'
         }`}
         style={{
-          background: scrolled ? 'rgba(2,6,23,0.32)' : 'rgba(255,255,255,0.03)',
-          backdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
-          WebkitBackdropFilter: scrolled ? GLASS : 'blur(16px) saturate(120%)',
-          border: `1px solid ${scrolled ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0)'}`,
+          background: scrolled ? glass.fill : 'rgba(255,255,255,0.03)',
+          backdropFilter: scrolled ? glass.filter : 'blur(16px) saturate(120%)',
+          WebkitBackdropFilter: scrolled ? glass.filter : 'blur(16px) saturate(120%)',
+          border: `1px solid ${scrolled ? glass.border : 'rgba(255,255,255,0)'}`,
           // Inner top highlight: the lit edge that makes a translucent panel
           // read as a pane of glass rather than as a hole in the page.
-          boxShadow: scrolled
-            ? 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -20px rgba(0,0,0,0.75)'
-            : 'none',
+          boxShadow: scrolled ? glass.shadow : 'none',
+          // text-shadow inherits, so declaring the halo once here puts it on
+          // every label inside. The filled Kontakt pill opts out below.
+          textShadow: scrolled ? glass.textShadow : GLASS.dark.textShadow,
           transition: `background 600ms ${EASE_REVEAL_CSS}, backdrop-filter 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}, max-width 700ms ${EASE_REVEAL_CSS}, height 700ms ${EASE_REVEAL_CSS}, padding 700ms ${EASE_REVEAL_CSS}`
         }}
       >
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="flex items-center gap-2.5 text-white group"
+            className="flex items-center gap-2.5 group"
             aria-label="eSport Manufaktur"
           >
-            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-8 w-auto object-contain" />
+            {/* The two logo files are the same artwork in two inks on the same
+                transparent ground, so the pair can be stacked and cross-faded.
+                Swapping the `src` instead would cut hard in the middle of the
+                glass's own 600ms transition. The white one vanishes on the
+                light glass, the blue one on the dark. */}
+            <span className="relative block h-8">
+              <img
+                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                alt="eSport Manufaktur"
+                className="h-8 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: inkOnGlass ? 0 : 1, filter: GLASS.dark.iconShadow }}
+              />
+              <img
+                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: inkOnGlass ? 1 : 0, filter: GLASS.light.iconShadow }}
+              />
+            </span>
           </button>
         </div>
 
@@ -116,25 +173,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Startseite
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className="nav-link text-sm font-medium tracking-tight transition-colors duration-300 text-white/70 hover:text-emerald-400"
+            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Best Cases
           </button>
@@ -143,7 +200,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'contact')}
-            className="spring bg-emerald-400/15 hover:bg-emerald-400/25 text-emerald-300 hover:text-white border border-emerald-400/30 hover:border-emerald-400/50 px-5 h-9 rounded-full text-xs font-semibold tracking-tight"
+            className={`spring px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
+            style={{ textShadow: 'none' }}
           >
             Kontakt
           </button>
@@ -151,29 +209,37 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
       </div>
 
       {/* Mobile header -- no bar chrome at rest, just logo + menu button. When
-          opened, this same block (not a separate floating card) grows a dark
-          panel flush with the top edge, so the nav visibly emerges from the
-          burger button instead of popping up elsewhere. The toggle button
-          never moves -- it just swaps icon -- so it doubles as the close (X)
-          button in the exact top-right spot where it always sits. */}
+          opened, this same block (not a separate floating card) grows a panel
+          flush with the top edge, so the nav visibly emerges from the burger
+          button instead of popping up elsewhere. The toggle button never
+          moves -- it just swaps icon -- so it doubles as the close (X) button
+          in the exact top-right spot where it always sits.
+
+          The open panel is the site's canvas with ink chrome, the same three
+          colours as everything behind it. It used to be a dark slab, which
+          was the last surface still running the old palette. */}
       <div
+        ref={mobileBarRef}
         className={`md:hidden pointer-events-auto ${
-          isOpen ? 'bg-[#020617] border border-white/10 overflow-hidden' : ''
+          isOpen ? 'bg-[#badeda] border border-[#0b0f2a]/10 overflow-hidden' : ''
         }`}
         style={
+          // The open menu stays opaque. It covers most of the viewport rather
+          // than skimming across it, so there is no ground behind it worth
+          // showing -- and a full menu list needs one of its own.
           isOpen
             ? undefined
             : {
-                // Same frosted glass as the desktop bar, same reasoning: the
-                // logo and burger are white, so once the page scrolls past the
-                // hero onto the light canvas they need a ground of their own
-                // -- just one you can see through.
-                background: scrolled ? 'rgba(2,6,23,0.32)' : 'transparent',
-                backdropFilter: scrolled ? GLASS : 'none',
-                WebkitBackdropFilter: scrolled ? GLASS : 'none',
+                // Same two glasses as the desktop bar, chosen the same way.
+                background: scrolled ? glass.fill : 'transparent',
+                backdropFilter: scrolled ? glass.filter : 'none',
+                WebkitBackdropFilter: scrolled ? glass.filter : 'none',
                 boxShadow: scrolled
-                  ? 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -22px rgba(0,0,0,0.8)'
+                  ? (inkOnGlass
+                      ? 'inset 0 -1px 0 rgba(11,15,42,0.10), 0 14px 40px -30px rgba(11,15,42,0.4)'
+                      : 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -26px rgba(0,0,0,0.6)')
                   : 'none',
+                textShadow: scrolled ? glass.textShadow : GLASS.dark.textShadow,
                 transition: `background 500ms ${EASE_REVEAL_CSS}, backdrop-filter 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
               }
         }
@@ -181,13 +247,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center justify-between px-6 py-5">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
-            className="flex items-center text-white"
+            className="flex items-center"
             aria-label="eSport Manufaktur"
           >
-            <img src="/logos/Esport-Manufaktur_Logo-weiss.png" alt="eSport Manufaktur" className="h-9 w-auto object-contain" />
+            <span className="relative block h-9">
+              <img
+                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                alt="eSport Manufaktur"
+                className="h-9 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: inkOnGlass || isOpen ? 0 : 1, filter: GLASS.dark.iconShadow }}
+              />
+              <img
+                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                alt=""
+                aria-hidden="true"
+                className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: inkOnGlass || isOpen ? 1 : 0, filter: isOpen ? 'none' : GLASS.light.iconShadow }}
+              />
+            </span>
           </button>
           <button
-            className="text-white p-2 rounded-full hover:bg-white/10 transition-colors"
+            className={`p-2 rounded-full transition-colors ${
+              inkOnGlass || isOpen
+                ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
+                : 'text-white hover:bg-white/10'
+            }`}
+            style={{ filter: isOpen ? 'none' : glass.iconShadow }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Mobile Menu"
           >
@@ -204,35 +289,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               transition={{ duration: 0.3, ease: 'easeInOut' }}
               className="overflow-hidden"
             >
-              <div className="flex flex-col gap-7 text-lg font-bold text-white text-center px-8 pt-2 pb-8">
+              <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
                 <button
                   onClick={(e) => handleLinkClick(e, 'home')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Startseite
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'competencies')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Services
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Über uns
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
-                  className="transition-all tracking-tighter text-white hover:text-emerald-400"
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
                 </button>
-                <div className="h-px bg-white/10 w-1/3 mx-auto" />
+                <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
                   onClick={(e) => handleLinkClick(e, 'contact')}
-                  className="mx-auto bg-emerald-400 text-slate-900 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base shadow-[0_0_50px_rgba(52,211,153,0.3)] tracking-tighter"
+                  className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen
                 </button>
@@ -250,7 +335,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsOpen(false)}
-            className="md:hidden fixed inset-0 z-[-1] bg-black/40 backdrop-blur-sm pointer-events-auto"
+            className="md:hidden fixed inset-0 z-[-1] bg-[#0b0f2a]/45 backdrop-blur-sm pointer-events-auto"
           />
         )}
       </AnimatePresence>

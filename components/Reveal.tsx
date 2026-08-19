@@ -26,6 +26,12 @@ interface RevealProps {
   /** Starting vertical offset in px, resolves to 0. */
   y?: number;
   as?: React.ElementType;
+  /**
+   * `data-*` attributes are forwarded to the rendered element. Until this was
+   * added the wrapper swallowed them, which is an easy failure to miss: the
+   * markup reads as if the attribute is set and the DOM never receives it.
+   */
+  [attr: `data-${string}`]: unknown;
 }
 
 export const Reveal: React.FC<RevealProps> = ({
@@ -34,13 +40,15 @@ export const Reveal: React.FC<RevealProps> = ({
   delay = 0,
   duration = DUR.reveal,
   y = 24,
-  as = 'div'
+  as = 'div',
+  ...rest
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
 
   return React.createElement(
     as,
     {
+      ...rest,
       ref,
       className,
       style: {
