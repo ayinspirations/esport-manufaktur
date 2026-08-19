@@ -23,6 +23,11 @@ import { useNavGround } from '../hooks/useNavGround';
 // apart from whatever slides underneath. That is the trade this makes
 // deliberately -- against a worst-case backdrop the measured text-to-backdrop
 // ratio is lower than the old slab's, and the halo is what keeps it readable.
+//
+// Text only. The logo and the burger carried the same halo as a drop-shadow
+// and it read as a glow bleeding out from behind them -- fine under a word,
+// wrong under a mark. They sit on the glass unaided; the tone switch already
+// puts the right ink under them.
 const GLASS = {
   light: {
     fill: 'rgba(255,255,255,0.20)',
@@ -30,7 +35,6 @@ const GLASS = {
     border: 'rgba(11,15,42,0.10)',
     shadow: 'inset 0 1px 0 rgba(255,255,255,0.45), 0 18px 50px -28px rgba(11,15,42,0.35)',
     textShadow: '0 1px 2px rgba(255,255,255,0.95), 0 0 10px rgba(255,255,255,0.85)',
-    iconShadow: 'drop-shadow(0 1px 2px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.8))',
   },
   dark: {
     fill: 'rgba(2,6,23,0.20)',
@@ -38,7 +42,6 @@ const GLASS = {
     border: 'rgba(255,255,255,0.12)',
     shadow: 'inset 0 1px 0 rgba(255,255,255,0.10), 0 18px 50px -24px rgba(0,0,0,0.6)',
     textShadow: '0 1px 3px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.65)',
-    iconShadow: 'drop-shadow(0 1px 3px rgba(0,0,0,0.9)) drop-shadow(0 0 8px rgba(0,0,0,0.6))',
   },
 } as const;
 
@@ -156,14 +159,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 0 : 1, filter: GLASS.dark.iconShadow }}
+                style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 1 : 0, filter: GLASS.light.iconShadow }}
+                style={{ opacity: inkOnGlass ? 1 : 0 }}
               />
             </span>
           </button>
@@ -255,14 +258,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass || isOpen ? 0 : 1, filter: GLASS.dark.iconShadow }}
+                style={{ opacity: inkOnGlass || isOpen ? 0 : 1 }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass || isOpen ? 1 : 0, filter: isOpen ? 'none' : GLASS.light.iconShadow }}
+                style={{ opacity: inkOnGlass || isOpen ? 1 : 0 }}
               />
             </span>
           </button>
@@ -272,7 +275,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
-            style={{ filter: isOpen ? 'none' : glass.iconShadow }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle Mobile Menu"
           >
