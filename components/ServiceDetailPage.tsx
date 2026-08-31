@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ChevronDown, ChevronLeft } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { ServiceContent } from './servicesContent';
+import { servicesContent } from './servicesContent';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 
 // The site's canvas is light (#badeda) -- dark is reserved for accents and
@@ -16,7 +16,12 @@ const SECTION = 'py-20 md:py-28 lg:py-32';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 interface ServiceDetailPageProps {
-  content: ServiceContent;
+  /**
+   * The page looks its own copy up rather than being handed it, so that
+   * `servicesContent` is imported here -- inside this lazily-loaded chunk --
+   * and not by the router that decides to render it.
+   */
+  slug: string;
   onNavigate: (page: any) => void;
   scrollToSection: (id: string) => void;
   onOpenBooking: () => void;
@@ -187,11 +192,12 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
 };
 
 export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
-  content,
+  slug,
   onNavigate,
   scrollToSection,
   onOpenBooking
 }) => {
+  const content = servicesContent[slug];
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   useDocumentHead({

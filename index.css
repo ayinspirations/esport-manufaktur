@@ -28,10 +28,16 @@ html {
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  /* Inlined as a data URI -- see the matching note in index.html. This rule
+     loads after that one and would otherwise win the cascade and put the
+     third-party request straight back. Keep the two in step. */
   .noise {
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     opacity: 0.05;
     pointer-events: none;
+    /* Fixed, full-viewport, above everything: without its own compositor layer
+       every scroll frame repaints the grain across the whole viewport. */
+    transform: translateZ(0);
   }
 
   /* Text link with an underline that wipes in from the left. Belongs to the

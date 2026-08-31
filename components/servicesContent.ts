@@ -1,3 +1,5 @@
+import { serviceSlugs as routableSlugs } from './serviceSlugs';
+
 export interface ServiceCard {
   title: string;
   text: string;
@@ -377,4 +379,19 @@ export const servicesContent: Record<string, ServiceContent> = {
   }
 };
 
-export const serviceSlugs = Object.keys(servicesContent);
+export { serviceSlugs } from './serviceSlugs';
+
+// The router's copy of the slug list lives in `./serviceSlugs` so it can be
+// imported without pulling this file's content in with it. That only stays
+// safe if the two never drift, so the build asserts they match. Stripped from
+// production output -- `import.meta.env.DEV` is a compile-time constant, so
+// the whole block is dead code there and is removed by the minifier.
+if (import.meta.env.DEV) {
+  const declared = [...routableSlugs].sort().join(',');
+  const actual = Object.keys(servicesContent).sort().join(',');
+  if (declared !== actual) {
+    console.error(
+      `serviceSlugs is out of sync with servicesContent.\n  serviceSlugs:    ${declared}\n  servicesContent: ${actual}`
+    );
+  }
+}

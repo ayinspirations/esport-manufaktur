@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
@@ -7,24 +7,52 @@ import { Competencies } from './components/Competencies';
 import { BestCases } from './components/BestCases';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
-import { ServicesDetail } from './components/ServicesDetail';
 import { BlogSection } from './components/BlogSection';
-import { BlogDetail } from './components/BlogDetail';
 import { blogPosts } from './components/blogPosts';
-import { LegalPage } from './components/LegalPage';
-import { CaseDetail } from './components/CaseDetail';
-import { TSystemsDetail } from './components/TSystemsDetail';
-import { BayernZocktDetail } from './components/BayernZocktDetail';
-import { Showdown0711Detail } from './components/Showdown0711Detail';
-import { BFVDetail } from './components/BFVDetail';
-import { CookiePopup } from './components/CookiePopup';
-import { BookingModal } from './components/BookingModal';
-import { ServiceDetailPage } from './components/ServiceDetailPage';
-import { servicesContent, serviceSlugs } from './components/servicesContent';
+import { serviceSlugs } from './components/serviceSlugs';
 import { Purpose } from './components/Purpose';
-import { UeberUnsPage } from './components/UeberUnsPage';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
+
+// ---------------------------------------------------------------------------
+// Route splitting
+// ---------------------------------------------------------------------------
+// Everything above is the homepage, which is what an arriving visitor is
+// almost always looking at, so it stays in the entry bundle and renders
+// without a second round trip.
+//
+// Everything below is a route reached by a click -- five case studies, the
+// services overview and its four subpages, the blog articles, the two legal
+// pages, "Über uns" -- plus two overlays that only exist once something is
+// interacted with. None of it can be on screen at first paint, and all of it
+// was being downloaded, parsed and evaluated before the hero could render.
+// Together they were the larger half of a single 667 kB bundle.
+//
+// `lazy` puts each behind its own chunk, fetched when the route is first
+// opened; `warmRouteChunks` below then pulls them in during idle time, so in
+// practice the chunk is already cached by the time it is clicked and the
+// Suspense fallback never actually shows.
+const ServicesDetail = lazy(() => import('./components/ServicesDetail').then(m => ({ default: m.ServicesDetail })));
+const BlogDetail = lazy(() => import('./components/BlogDetail').then(m => ({ default: m.BlogDetail })));
+const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
+const CaseDetail = lazy(() => import('./components/CaseDetail').then(m => ({ default: m.CaseDetail })));
+const TSystemsDetail = lazy(() => import('./components/TSystemsDetail').then(m => ({ default: m.TSystemsDetail })));
+const BayernZocktDetail = lazy(() => import('./components/BayernZocktDetail').then(m => ({ default: m.BayernZocktDetail })));
+const Showdown0711Detail = lazy(() => import('./components/Showdown0711Detail').then(m => ({ default: m.Showdown0711Detail })));
+const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
+const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
+const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
+const CookiePopup = lazy(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
+const BookingModal = lazy(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
+
+/**
+ * Held in place of a route while its chunk is in flight.
+ *
+ * Full viewport height and the page's own background: a short fallback that
+ * collapses to nothing would drop the scroll height to zero and then restore
+ * it a moment later, which reads as the page flinching.
+ */
+const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidden="true" />;
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
@@ -35,37 +63,55 @@ const blogSlugs = blogPosts.map((post) => post.slug);
 // These pages use real pathnames (/services/<slug>, /ueber-uns) instead of
 // the #hash routing the rest of the site uses, so they get proper, distinct,
 // crawlable URLs for SEO. Everything else keeps working exactly as before.
-const servicePages = serviceSlugs as Page[];
+const servicePages = serviceSlugs as readonly string[] as Page[];
+
+/**
+ * Resolves the current page from either a real pathname (/services/<slug>,
+ * used by the 4 service detail pages) or the #hash the rest of the site still
+ * uses -- read for the very first render and again on every
+ * hashchange/popstate (browser back/forward).
+ *
+ * At module scope rather than inside the mount effect so that the first render
+ * can already be the right page; see the `useState` initialiser below.
+ */
+const resolvePage = (): Page => {
+  const path = window.location.pathname.replace(/\/+$/, '');
+  const serviceMatch = path.match(/^\/services\/([a-z-]+)$/);
+  if (serviceMatch && servicePages.includes(serviceMatch[1] as Page)) {
+    return serviceMatch[1] as Page;
+  }
+  if (path === '/ueber-uns') {
+    return 'ueber-uns';
+  }
+
+  const currentHash = window.location.hash.replace('#', '');
+  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', ...blogSlugs];
+  if (validPages.includes(currentHash)) {
+    return currentHash as Page;
+  }
+  return 'home';
+};
 
 export default function App() {
-  const [activePage, setActivePage] = useState<Page>('home');
-  const [isMounted, setIsMounted] = useState(false);
+  // Resolved during the first render, not afterwards in an effect.
+  //
+  // This used to start at 'home' behind an `isMounted` flag that an effect
+  // flipped, which cost every visit a full render-and-paint of a bare dark
+  // rectangle before anything real appeared -- the route was not known until
+  // after React had already committed once. Reading the URL in the state
+  // initialiser makes the first commit the correct page, so the hero (or
+  // whichever route was linked) is in the very first paint.
+  const [activePage, setActivePage] = useState<Page>(resolvePage);
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  // Latches true on the first open; see the BookingModal mount below.
+  const [hasOpenedBooking, setHasOpenedBooking] = useState(false);
+
+  const openBooking = () => {
+    setHasOpenedBooking(true);
+    setIsBookingOpen(true);
+  };
 
   useEffect(() => {
-    setIsMounted(true);
-
-    // Resolves the current page from either a real pathname (/services/<slug>,
-    // used by the 4 new service detail pages) or the #hash the rest of the
-    // site still uses -- checked on first mount and again on every
-    // hashchange/popstate (browser back/forward).
-    const resolvePage = (): Page => {
-      const path = window.location.pathname.replace(/\/+$/, '');
-      const serviceMatch = path.match(/^\/services\/([a-z-]+)$/);
-      if (serviceMatch && servicePages.includes(serviceMatch[1] as Page)) {
-        return serviceMatch[1] as Page;
-      }
-      if (path === '/ueber-uns') {
-        return 'ueber-uns';
-      }
-
-      const currentHash = window.location.hash.replace('#', '');
-      const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', ...blogSlugs];
-      if (validPages.includes(currentHash)) {
-        return currentHash as Page;
-      }
-      return 'home';
-    };
 
     const handleNav = () => {
       setActivePage(resolvePage());
@@ -76,7 +122,6 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     };
 
-    handleNav();
     window.addEventListener('hashchange', handleNav);
     window.addEventListener('popstate', handleNav);
     return () => {
@@ -131,10 +176,6 @@ export default function App() {
     }
   };
 
-  if (!isMounted) {
-    return <div className="min-h-screen bg-[#020617]" />;
-  }
-
   const baseTransition = "pt-16 md:pt-24";
   const standardSectionPadding = "py-24 md:py-32";
 
@@ -147,7 +188,7 @@ export default function App() {
       <main className="relative z-10 flex flex-col gap-0 pb-10">
         {activePage === 'home' && (
           <div className="flex flex-col">
-            <Hero onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={() => setIsBookingOpen(true)} />
+            <Hero onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} />
 
             <SocialProof scrollToSection={scrollToSection} />
 
@@ -165,6 +206,7 @@ export default function App() {
           </div>
         )}
 
+        <Suspense fallback={activePage === 'home' ? null : <RouteFallback />}>
         {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
         {/* Back from a case returns to the Best Cases section the visitor came
             from, not the top of the homepage -- same as BlogDetail below. */}
@@ -175,24 +217,34 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
-        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={() => setIsBookingOpen(true)} />}
+        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
         )}
         {servicePages.includes(activePage) && (
           <ServiceDetailPage
-            content={servicesContent[activePage]}
+            slug={activePage}
             onNavigate={navigateTo}
             scrollToSection={scrollToSection}
-            onOpenBooking={() => setIsBookingOpen(true)}
+            onOpenBooking={openBooking}
           />
         )}
+        </Suspense>
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />
       {activePage === 'home' && <SocialStack />}
-      <CookiePopup />
-      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+      <Suspense fallback={null}>
+        <CookiePopup />
+        {/* Mounted from the first time it is opened and kept mounted after
+            that, rather than mounted on `isBookingOpen`. Its chunk therefore
+            never loads for a visitor who does not book, but once it has, the
+            modal's own AnimatePresence still gets to play its close
+            animation -- unmounting it on close would cut that off. */}
+        {hasOpenedBooking && (
+          <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+        )}
+      </Suspense>
     </div>
   );
 }

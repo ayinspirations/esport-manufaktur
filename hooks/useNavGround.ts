@@ -89,9 +89,15 @@ export function useNavGround(
     }
 
     let frame = 0;
+    let trailing: ReturnType<typeof setTimeout> | undefined;
+    let lastProbeAt = 0;
+    let lastProbeY = Number.NaN;
 
     const probe = () => {
       frame = 0;
+      lastProbeAt = performance.now();
+      lastProbeY = window.scrollY;
+
       const bar = refsRef.current
         .map((r) => r.current)
         .find((el) => el && el.getBoundingClientRect().width > 0);
@@ -116,17 +122,68 @@ export function useNavGround(
       setGround(dark >= 2 ? 'dark' : 'light');
     };
 
+    // The probe is not cheap and it must not run on every frame.
+    //
+    // Each pass is three `elementsFromPoint` hit-tests plus a `getComputedStyle`
+    // read per layer they walk through, and all of it is synchronous against
+    // live layout. Driven straight off `scroll` -- one rAF-coalesced pass per
+    // frame -- it was doing that work ~60 times a second for the whole length
+    // of the page, and it is the single most expensive thing this site ran
+    // while scrolling.
+    //
+    // What it produces is one bit: dark ground or light. That bit changes a
+    // handful of times over the entire page, at section boundaries. Sampling
+    // it eight times a second instead of sixty is imperceptible -- the switch
+    // still lands within a frame or two of the boundary crossing -- and costs
+    // roughly an eighth as much.
+    //
+    // MIN_INTERVAL is the floor between two probes; MIN_DELTA skips the probe
+    // outright for scrolls too small to have moved the bar onto a different
+    // section, which is most of the events a trackpad or a momentum fling
+    // emits. The trailing timeout is what guarantees the *last* event in a
+    // burst is always honoured, so the bar never settles on a stale tone.
+    const MIN_INTERVAL = 120;
+    const MIN_DELTA = 8;
+
     const schedule = () => {
+      if (frame) return;
+
+      const now = performance.now();
+      const movedEnough =
+        Number.isNaN(lastProbeY) || Math.abs(window.scrollY - lastProbeY) >= MIN_DELTA;
+      const waited = now - lastProbeAt >= MIN_INTERVAL;
+
+      if (movedEnough && waited) {
+        if (trailing) {
+          clearTimeout(trailing);
+          trailing = undefined;
+        }
+        frame = requestAnimationFrame(probe);
+        return;
+      }
+
+      if (!trailing) {
+        trailing = setTimeout(() => {
+          trailing = undefined;
+          if (!frame) frame = requestAnimationFrame(probe);
+        }, MIN_INTERVAL);
+      }
+    };
+
+    // Resize changes the layout under the bar outright, so it is never
+    // deferred the way a scroll is.
+    const onResize = () => {
       if (!frame) frame = requestAnimationFrame(probe);
     };
 
     probe();
     window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
+    window.addEventListener('resize', onResize, { passive: true });
     return () => {
       if (frame) cancelAnimationFrame(frame);
+      if (trailing) clearTimeout(trailing);
       window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener('resize', onResize);
     };
   }, [active]);
 

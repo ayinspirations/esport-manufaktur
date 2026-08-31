@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ScrollToCasesCTA } from './ScrollToCasesCTA';
 import { SECTION_PADDING } from './spacing';
 import { RevealText } from './Reveal';
-import { useInView } from '../hooks/useInView';
+import { useInView, useInViewContinuous } from '../hooks/useInView';
 
 const logos = [
   { name: 'DAZN', url: '/logos/DAZN_Logo_Master.svg.png', link: 'https://www.dazn.com/de-DE/welcome' },
@@ -79,7 +79,11 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
   // images arrive and there is nothing left to wait for. Which mattered --
   // one logo in this list was a 16 MB PNG, and the whole band sat frozen
   // behind it.
-  const { ref: stripRef, inView: marqueeReady } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  // Continuous, not once: the marquee is paused again as soon as it scrolls
+  // out of view rather than running for the rest of the session.
+  const { ref: stripRef, inView: marqueeReady } = useInViewContinuous<HTMLDivElement>({
+    threshold: 0
+  });
 
   return (
     <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#badeda] overflow-hidden ${SECTION_PADDING}`}>
@@ -102,12 +106,15 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
           animation-play-state: paused;
           display: flex;
           width: fit-content;
-          will-change: transform;
           backface-visibility: hidden;
           perspective: 1000px;
         }
         .animate-marquee-scroll.is-ready {
           animation-play-state: running;
+          /* Promised only while the strip is actually moving. Left on the base
+             rule it pinned a layer the size of ~56 logos for the whole session,
+             including the long stretches when the animation is paused. */
+          will-change: transform;
         }
         .animate-marquee-scroll.is-ready:hover {
           animation-play-state: paused;

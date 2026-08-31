@@ -59,7 +59,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 onClick={() => onNavigate?.('tsystems')}
               >
                 <LazyVideo
-                  src="/videos/copy_F69586CF-8AA3-4705-94FD-D75DC73A64F7.mov"
+                  src="/videos/case-tsystems.mp4"
+                  poster="/videos/case-tsystems.jpg"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
@@ -97,7 +98,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 onClick={() => onNavigate?.('hagebau')}
               >
                 <LazyVideo
-                  src="/videos/copy_5444A7DC-9BDF-4DF7-927D-C5A1C8DC7E39.mov"
+                  src="/videos/case-hagebau.mp4"
+                  poster="/videos/case-hagebau.jpg"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
@@ -136,7 +138,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 onClick={() => onNavigate?.('showdown-0711')}
               >
                 <LazyVideo
-                  src="/videos/copy_C23D97A5-2B74-44A6-A5E0-66CEB8290725.mov"
+                  src="/videos/case-showdown.mp4"
+                  poster="/videos/case-showdown.jpg"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
@@ -175,7 +178,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                 onClick={() => onNavigate?.('bayern-zockt')}
               >
                 <LazyVideo
-                  src="/videos/copy_41103C48-CF53-4B8E-A316-5051B2CA42CD.mov"
+                  src="/videos/case-bayern-zockt.mp4"
+                  poster="/videos/case-bayern-zockt.jpg"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />

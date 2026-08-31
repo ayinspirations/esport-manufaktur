@@ -1,0 +1,68 @@
+# Netlify deploy configuration.
+#
+# Before this file existed the site deployed with Netlify's defaults, which
+# cost it twice: every asset was served with a bare ETag (so a returning
+# visitor re-validated all ~40 logos, images and videos over the network on
+# every visit), and there was no SPA fallback at all -- /services/<slug> and
+# /ueber-uns are real pathnames handled by the client router, so a direct hit
+# or a reload on one of them returned Netlify's 404 page.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# ---------------------------------------------------------------------------
+# Caching
+# ---------------------------------------------------------------------------
+
+# Vite fingerprints everything under /assets with a content hash, so a changed
+# file always arrives under a new name. These can be cached permanently.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Media lives at stable, unhashed paths, so it cannot be immutable -- replacing
+# a case video must eventually reach people who already have it. A month of
+# hot cache plus stale-while-revalidate gives repeat visits an instant paint
+# while a replacement propagates in the background.
+[[headers]]
+  for = "/videos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+
+[[headers]]
+  for = "/logos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+
+# The HTML shell names the current hashed bundles, so it must never be held
+# past a deploy or the page boots against assets that no longer exist.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# ---------------------------------------------------------------------------
+# SPA fallback
+# ---------------------------------------------------------------------------
+# Netlify serves a real file whenever one exists at the requested path, so this
+# only catches client-side routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

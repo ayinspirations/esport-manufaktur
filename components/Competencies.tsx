@@ -28,7 +28,7 @@ const data: ServiceItem[] = [
   },
   {
     title: "Content & Streaming",
-    video: "/videos/BestCase4.mov",
+    video: "/videos/content-streaming.mp4",
     image: "/REWExfckoln_1770162125933.jpg",
     imageAlt: "Professionelle Streaming-Produktion für Gaming-Content bei eSport Manufaktur",
     description: "Wir übersetzen Produkte und Markenbotschaften in interaktive und gamifizierte Erlebnisse, die authentisch unterhalten, aktivieren und im Gedächtnis bleiben.",
@@ -36,7 +36,7 @@ const data: ServiceItem[] = [
   },
   {
     title: "Digitale Lösungen",
-    video: "/videos/Gamification.MOV",
+    video: "/videos/digitale-loesungen.mp4",
     image: "/Gamification.jpg",
     imageAlt: "Gamification-Plattform für digitale Markenaktivierung bei eSport Manufaktur",
     description: "Digitale Messe- & Eventpässe, Quizformate, Games, eSport-Turniere oder komplette digitale Eventformate: Auf Basis unserer modularen Software-Komponenten und individueller Entwicklung schaffen wir maßgeschneiderte Lösungen, die aktivieren, begeistern und messbar wirken.",
@@ -44,7 +44,7 @@ const data: ServiceItem[] = [
   },
   {
     title: "Messen & Events",
-    video: "/videos/Eventtechnik.mov",
+    video: "/videos/messen-events.mp4",
     image: "/images/competencies/eventtechnik.jpg",
     imageAlt: "Eventtechnik-Setup für Gaming-Messen und Live-Events bei eSport Manufaktur",
     description: "Wir entwickeln zielgruppenrelevante Aktivierungen und ganzheitliche Eventkonzepte – vom einzelnen Erlebnis am Messestand bis zur Konzeption, Organisation und Umsetzung kompletter Messen und Events.",
