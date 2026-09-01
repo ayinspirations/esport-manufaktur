@@ -58,11 +58,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
   const desktopBarRef = useRef<HTMLDivElement>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
-  const ground = useNavGround([desktopBarRef, mobileBarRef], scrolled);
+  // Probed at every scroll position, not just once scrolled.
+  //
+  // It used to be gated on `scrolled`, because the only thing the tone drove
+  // was which glass the bar wore and only the scrolled bar had any. With the
+  // phone bar carrying no glass at all, the mark and the burger are toned
+  // directly by what is behind them -- and at the top of a subpage that is the
+  // light canvas, where white chrome is invisible. The probe is throttled to
+  // roughly eight reads a second (see useNavGround), so running it from the
+  // first pixel costs nothing worth counting.
+  const ground = useNavGround([desktopBarRef, mobileBarRef], true);
   const glass = GLASS[ground];
-  // Only the scrolled bar has a ground of its own; unscrolled it is a bare
-  // strip over the dark hero, so the white chrome holds there either way.
+  // Only the scrolled *desktop* bar has a ground of its own; unscrolled it is a
+  // bare strip over the dark hero, so the white chrome holds there either way.
   const inkOnGlass = ground === 'light' && scrolled;
+  // The phone bar has no glass at any scroll position, so its chrome answers
+  // to what is actually behind it and nothing else. At the top of the page
+  // that is the dark hero, which `useNavGround` already reports as dark.
+  const inkOnMobile = ground === 'light';
   const navLinkTone = inkOnGlass
     ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
     : 'text-white/75 hover:text-[#5fd6cf]';
@@ -249,17 +262,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           isOpen
             ? undefined
             : {
-                // Same two glasses as the desktop bar, chosen the same way.
-                background: scrolled ? glass.fill : 'transparent',
-                backdropFilter: scrolled ? glass.filter : 'none',
-                WebkitBackdropFilter: scrolled ? glass.filter : 'none',
-                boxShadow: scrolled
-                  ? (inkOnGlass
-                      ? 'inset 0 -1px 0 rgba(11,15,42,0.10), 0 14px 40px -30px rgba(11,15,42,0.4)'
-                      : 'inset 0 -1px 0 rgba(255,255,255,0.10), 0 14px 40px -26px rgba(0,0,0,0.6)')
-                  : 'none',
-                textShadow: scrolled ? glass.textShadow : GLASS.dark.textShadow,
-                transition: `background 500ms ${EASE_REVEAL_CSS}, backdrop-filter 500ms ${EASE_REVEAL_CSS}, box-shadow 500ms ${EASE_REVEAL_CSS}`
+                // Closed, there is no bar at all on a phone -- no fill, no
+                // frost, no shadow, no edge. Just the mark and the burger
+                // sitting on the page.
+                //
+                // The desktop bar is a compact pill inset from the top, so its
+                // glass reads as an object floating over the page. The phone
+                // bar is full-bleed and edge-to-edge, so the same glass read as
+                // a strip bolted across the top of the screen instead -- a
+                // band, and one that got in the way of every photograph and
+                // headline that passed under it.
+                //
+                // What the glass was buying was legibility, and that job is
+                // already done by the tone switch: `useNavGround` reads what is
+                // actually behind the bar and swaps the mark and the burger
+                // between white and ink.
+                //
+                // No halo under them, deliberately -- see the note on GLASS
+                // above. A drop-shadow behind a mark reads as a glow bleeding
+                // out from under it, which is why it was taken off in the first
+                // place; losing the glass is not a reason to put it back.
+                background: 'transparent',
+                boxShadow: 'none'
               }
         }
       >
@@ -274,20 +298,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass || isOpen ? 0 : 1 }}
+                style={{ opacity: inkOnMobile || isOpen ? 0 : 1 }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass || isOpen ? 1 : 0 }}
+                style={{ opacity: inkOnMobile || isOpen ? 1 : 0 }}
               />
             </span>
           </button>
           <button
             className={`p-2 rounded-full transition-colors ${
-              inkOnGlass || isOpen
+              inkOnMobile || isOpen
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
