@@ -261,7 +261,6 @@ export default function App() {
             slug={route.service}
             onNavigate={navigateTo}
             onSelectService={selectService}
-            scrollToSection={scrollToSection}
             onOpenBooking={openBooking}
           />
         )}

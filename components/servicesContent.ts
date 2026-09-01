@@ -56,6 +56,15 @@ export interface ServiceContent {
   };
   leistungenHeading: string;
   leistungen: ServiceLeistungGroup[];
+  /**
+   * What the service achieves -- the third of the three blocks the services
+   * page shows (what it is / scope / effect).
+   *
+   * NEW COPY, written from each service's own listed Leistungen and not yet
+   * signed off. No figures, no claims that are not already implied by what the
+   * service does; still, this is the block to read before it goes live.
+   */
+  wirkung?: string;
   vorgehenHeading?: string;
   vorgehen?: ServiceStep[];
   fuerWenHeading?: string;
@@ -95,6 +104,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       heading: 'Warum klassisches Marketing im Gaming-Umfeld scheitert',
       text: 'Die Gaming-Community erkennt sofort, wenn eine Marke mit alten Werbelogiken auf neue Zielgruppen trifft. Plumpe Logo-Platzierungen, generische Botschaften und fehlende Kultur-Kenntnis kosten mehr Glaubwürdigkeit, als sie Reichweite bringen. Wer im Gaming-Umfeld ernst genommen werden will, braucht eine Strategie, die aus der Zielgruppe heraus gedacht ist — nicht eine, die ihr übergestülpt wird.'
     },
+    wirkung:
+      'Eine Positionierung, die in der Community trägt: klare Zielgruppen, ein definierter Platz für eure Marke und Ziele, an denen sich jede folgende Aktivierung ausrichten lässt.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -173,6 +184,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       heading: 'Warum Standard-Content in der Gaming-Community nicht funktioniert',
       text: 'Content, der sichtbar "von außen produziert" wirkt, wird von der Community sofort abgestraft. Gleichzeitig überfordert professionelles Streaming-Setup, Formatentwicklung und Creator-Auswahl viele Teams intern. Das Ergebnis: entweder gar kein Content oder Content ohne Wirkung.'
     },
+    wirkung:
+      'Reichweite, die aus dem Format kommt und nicht aus dem Mediabudget — Inhalte, die in der Gaming-Community geteilt werden, weil sie dort hingehören.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -251,6 +264,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       heading: 'Warum Standard-Messestände die Gaming-Zielgruppe verfehlen',
       text: 'Ein klassischer Messestand mit ein paar Bildschirmen reicht nicht, um eine Gaming-Zielgruppe zu binden. Gleichzeitig werden technische Komplexität — Konsolen, PCs, Netzwerk, Streaming vor Ort — und Logistik häufig unterschätzt. Ergebnis: hoher Aufwand, wenig Wirkung.'
     },
+    wirkung:
+      'Ein Auftritt, an dem die Zielgruppe stehenbleibt statt vorbeizugehen — mit Aktivierungen, die vor Ort funktionieren und über den Veranstaltungstag hinaus nachwirken.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -328,6 +343,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       heading: 'Warum Standardsoftware selten zur Marke passt',
       text: 'Fertige Tools und Gamification-Ansätze von der Stange wirken oft aufgesetzt und binden die Zielgruppe nicht wirklich. Gleichzeitig fehlt vielen Unternehmen das eigene Entwicklerteam, um individuelle digitale Lösungen selbst zu bauen und zu betreiben.'
     },
+    wirkung:
+      'Aktivierungen, die sich skalieren und auswerten lassen: jede Interaktion erfasst, jedes Format wiederverwendbar, jeder Durchlauf messbar.',
     leistungenHeading: 'Was wir bauen und betreiben',
     leistungen: [
       {
@@ -418,6 +435,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       image: '/images/hagebau/slide-2.jpg',
       imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von eSport Manufaktur'
     },
+    wirkung:
+      'Technik, die im Hintergrund bleibt — stabiler Turnierbetrieb, saubere Übertragung und ein Ablauf, der ohne Zwischenfälle durchläuft.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -457,6 +476,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       image: '/hero-rewe.jpg',
       imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei eSport Manufaktur'
     },
+    wirkung:
+      'Eine Fläche, die als Markenraum gelesen wird und nicht als Standardstand — gebaut für das Format, das darin stattfindet.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -494,6 +515,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       ctaLabel: 'Produktion anfragen'
       // No hero photograph yet -- the branded placeholder band stands in.
     },
+    wirkung:
+      'Material, das nach dem Event weiterarbeitet: Bilder und Bewegtbild für Social, Presse, Vertrieb und die nächste Kampagne.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -531,6 +554,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       image: '/images/hagebau/slide-1.jpg',
       imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei eSport Manufaktur'
     },
+    wirkung:
+      'Glaubwürdigkeit, die sich nicht einkaufen lässt — Reichweite über Stimmen, denen die jeweilige Community ohnehin zuhört.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -569,6 +594,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       image: '/images/status-quo/rewe-event.jpg',
       imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei eSport Manufaktur'
     },
+    wirkung:
+      'Ein Weg, auf dem Talente sichtbar werden und bleiben — von der ersten Onlinerunde bis ins Finale, als Pipeline statt als Einzelaktion.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {
@@ -607,6 +634,8 @@ export const servicesContent: Record<string, ServiceContent> = {
       image: '/hero-gamechanger.jpg',
       imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei eSport Manufaktur'
     },
+    wirkung:
+      'Kontakt zu jungen Zielgruppen, bevor sie eine Stellenanzeige lesen — und eine Arbeitgebermarke, die sie selbst ausprobiert haben.',
     leistungenHeading: 'Leistungen im Detail',
     leistungen: [
       {

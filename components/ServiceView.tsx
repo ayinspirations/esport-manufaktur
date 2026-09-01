@@ -1,468 +1,111 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown, ChevronLeft, ImageIcon } from 'lucide-react';
-import { Reveal, RevealText } from './Reveal';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
+import { Reveal } from './Reveal';
 import type { ServiceContent } from './servicesContent';
-
-// The site's canvas is light (#badeda) -- dark is reserved for accents and
-// tiles only. It is a single ground now: the light sections used to alternate
-// between two near-identical tones, which read as a seam rather than as depth.
-const CANVAS = 'bg-[#badeda]';
-// Same glow + vignette gradient as the homepage Hero's dark background,
-// just without its diagonal grid lines -- richer than a flat slate fill.
-const TILE = 'tile-gradient text-white';
-
-const SECTION = 'py-20 md:py-28 lg:py-32';
-const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 interface ServiceViewProps {
   content: ServiceContent;
   onOpenBooking: () => void;
-  /** Jumps to the Best Cases section on the homepage. */
-  onGoToBestCases: () => void;
-  /** Jumps to the contact form on the homepage. */
-  onGoToContact: () => void;
 }
 
-const PrimaryButton: React.FC<{ onClick: () => void; children: React.ReactNode; className?: string }> = ({
-  onClick,
-  children,
-  className = ''
-}) => (
-  <button
-    onClick={onClick}
-    className={`group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] ${className}`}
-  >
-    {children}
-    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-  </button>
-);
+const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
-const SecondaryButton: React.FC<{ onClick: () => void; children: React.ReactNode }> = ({ onClick, children }) => (
-  <button
-    onClick={onClick}
-    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.07] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02]"
-  >
-    {children}
-  </button>
-);
-
-const GhostLink: React.FC<{ onClick: () => void; children: React.ReactNode; tone?: 'light' | 'dark' }> = ({
-  onClick,
-  children,
-  tone = 'dark'
-}) => (
-  <button
-    onClick={onClick}
-    className={`group inline-flex items-center gap-2 font-bold text-sm tracking-tight transition-colors duration-300 ${
-      tone === 'dark' ? 'text-[#0b0f2a]/60 hover:text-[#0e958e]' : 'text-white/70 hover:text-white'
-    }`}
-  >
-    {children}
-    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
-  </button>
-);
-
-// Apple-style horizontal card row: fixed-width snap-scrolling tiles + a
-// prev/next arrow pair that disables itself at either end. Used everywhere
-// this template needs "several tiles side by side."
-const TileCarousel: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(false);
-
-  const updateEdges = () => {
-    const el = trackRef.current;
-    if (!el) return;
-    setCanLeft(el.scrollLeft > 4);
-    setCanRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
-  };
-
-  useEffect(() => {
-    updateEdges();
-    const el = trackRef.current;
-    if (!el) return;
-    el.addEventListener('scroll', updateEdges, { passive: true });
-    window.addEventListener('resize', updateEdges);
-    return () => {
-      el.removeEventListener('scroll', updateEdges);
-      window.removeEventListener('resize', updateEdges);
-    };
-  }, []);
-
-  const scrollByCard = (dir: 1 | -1) => {
-    const el = trackRef.current;
-    if (!el) return;
-    // Step by exactly one card's rendered width + gap (not a hardcoded px
-    // value) so it lands precisely on a snap point at every breakpoint --
-    // a fixed offset that doesn't match the actual mobile card width was
-    // what left cards partially cut off instead of fully in view.
-    const firstCard = el.firstElementChild as HTMLElement | null;
-    const gap = parseFloat(window.getComputedStyle(el).columnGap || '0') || 0;
-    const step = firstCard ? firstCard.getBoundingClientRect().width + gap : el.clientWidth * 0.9;
-    el.scrollBy({ left: dir * step, behavior: 'smooth' });
-  };
-
-  return (
-    <div className="relative">
-      <style>{`.tile-carousel-track::-webkit-scrollbar{display:none}`}</style>
-      <div
-        ref={trackRef}
-        className="tile-carousel-track flex gap-5 md:gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-      >
-        {children}
-      </div>
-
-      <div className="flex items-center justify-end gap-3 mt-6">
-        <button
-          onClick={() => scrollByCard(-1)}
-          disabled={!canLeft}
-          aria-label="Zurück"
-          className="w-10 h-10 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-slate-900 hover:enabled:text-white"
-        >
-          <ChevronLeft className="w-4 h-4" />
-        </button>
-        <button
-          onClick={() => scrollByCard(1)}
-          disabled={!canRight}
-          aria-label="Weiter"
-          className="w-10 h-10 rounded-full border border-slate-900/20 flex items-center justify-center text-slate-900 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed hover:enabled:bg-slate-900 hover:enabled:text-white"
-        >
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// Apple-style interactive process card: a left-hand expandable list (click
-// a step, its description opens, the others collapse) paired with a visual
-// panel on the right that updates to reflect whichever step is active.
-const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }> = ({ steps }) => {
-  const [active, setActive] = useState(0);
-
-  return (
-    <div className={`grid md:grid-cols-2 gap-10 md:gap-16 items-center rounded-surface ${TILE} p-8 md:p-14`}>
-      <div className="flex flex-col">
-        {steps.map((step, i) => {
-          const isOpen = active === i;
-          return (
-            <div key={i} className={i > 0 ? 'border-t border-white/10' : ''}>
-              <button
-                onClick={() => setActive(i)}
-                className="w-full flex items-center justify-between gap-6 text-left py-5 md:py-6"
-                aria-expanded={isOpen}
-              >
-                <span className="font-black text-lg md:text-xl tracking-tight">{step.title}</span>
-                <ChevronDown
-                  className={`w-5 h-5 shrink-0 text-white/50 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-              <div
-                className="grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
-              >
-                <div className="overflow-hidden">
-                  <p className="pb-5 md:pb-6 text-white/60 text-sm md:text-base leading-relaxed font-medium max-w-md">
-                    {step.text}
-                  </p>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div className="relative aspect-[4/3] rounded-card bg-white/[0.04] border border-white/10 flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-transparent to-transparent" />
-        <div key={active} className="relative z-10 flex flex-col items-center text-center px-8" style={{ animation: 'processFade 0.4s ease-out' }}>
-          <style>{`@keyframes processFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}`}</style>
-          <span className="text-6xl md:text-7xl font-black text-emerald-300 tracking-tighter mb-4">
-            {String(active + 1).padStart(2, '0')}
-          </span>
-          <span className="text-white text-lg md:text-xl font-black tracking-tight">{steps[active].title}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
+// ---------------------------------------------------------------------------
+// One service, as three rows
+// ---------------------------------------------------------------------------
+// This used to be an eight-section page per service: a full-bleed photo band,
+// the Ausgangslage, a horizontal Leistungen carousel, an interactive Vorgehen
+// accordion, "Für wen", a Best-Case teaser, an FAQ and a closer. Read one after
+// another through a filter, that is a lot of page between one service and the
+// next, and most of it answered questions nobody had asked yet.
+//
+// Three rows now, the same three for every service: what it is, what is in it,
+// what it does for you. Laid out as a definition table -- label on the left,
+// content on the right, a rule between rows -- so the eye can jump straight to
+// the row it wants and so two services compare to each other line by line.
+//
+// The photo band is gone with it. It sat directly beneath the filter, so the
+// artwork butted into the menu above it, and it pushed the actual answer half a
+// screen down on every switch.
+// ---------------------------------------------------------------------------
 
 /**
- * One service, rendered in full.
+ * One labelled row of the table.
  *
- * Split out of the old per-slug ServiceDetailPage so the services page can
- * swap between services without a route change. It renders content and
- * nothing else -- no document title, no scroll reset, no routing -- because
- * all of that now belongs to the page that owns the filter, and doing it here
- * as well would fire it again on every switch.
- *
- * Every section below the hero is conditional. The four pillars supply all of
- * them; the shorter services supply the hero, their Leistungen and the closer,
- * and the sections they have nothing to say in are left out rather than
- * printed as an empty heading.
+ * The label sticks while its own row is on screen, so on a long Leistungsumfang
+ * the reader can still see which row they are in. It is scoped to the row, so
+ * it can never travel over the next one.
  */
-export const ServiceView: React.FC<ServiceViewProps> = ({
-  content,
-  onOpenBooking,
-  onGoToBestCases: goToBestCases,
-  onGoToContact: goToContact
-}) => {
-  // Collapses back to the first question whenever the service changes -- the
-  // key on this component in ServicesPage remounts it, so this is simply the
-  // initial state again rather than an effect that has to notice the switch.
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  return (
-    <div className="w-full">
-      {/* ============ 1. HERO -- photo band above, headline on the canvas ============ */}
-      {/* The photograph is its own band rather than a full-bleed backdrop the
-          text sits on. That is what lets the headline run in the site's ink
-          instead of the white it needed while it lay over the picture -- and
-          it keeps the picture at a real size, which a fade behind a
-          four-line headline could not. The band's lower edge dissolves into
-          the canvas so the two read as one hero, not two blocks. */}
-      <section className={`relative w-full ${CANVAS}`}>
-        <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
-          {content.hero.image ? (
-            <img
-              src={content.hero.image}
-              alt={content.hero.imageAlt ?? ''}
-              className="absolute inset-0 w-full h-full object-cover"
-              loading="eager"
-            />
-          ) : (
-            /* No photograph for this service yet. A branded band on the site's
-               own dark ground, clearly labelled, rather than a broken image or
-               a flat grey box. */
-            <div className="absolute inset-0 tile-gradient flex flex-col items-center justify-center gap-3">
-              <ImageIcon className="w-9 h-9 text-white/20" />
-              <span className="text-white/40 text-[10px] font-black uppercase tracking-[0.25em] border border-white/15 rounded-full px-3 py-1">
-                Bild folgt
-              </span>
-            </div>
-          )}
-          {/* Top scrim for the nav, bottom hand-over to the canvas. */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(2,6,23,0.5) 0%, rgba(186,222,218,0) 32%, rgba(186,222,218,0.85) 82%, #badeda 100%)'
-            }}
-          />
-        </div>
-
-        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
-          {/* stagger 0: these hero headlines run to three or four lines, and a
-              per-word stagger made them arrive line by line. The statement
-              lands as one piece, keeping the masked slide-up. */}
-          <RevealText
-            as="h1"
-            by="word"
-            stagger={0}
-            text={content.hero.headline}
-            delay={0.05}
-            className="text-[clamp(32px,6.2vw,72px)] font-black leading-[1.02] tracking-tighter max-w-4xl text-[#0b0f2a]"
-          />
-
-          <Reveal duration={0.75} delay={0.15}>
-            <p className="mt-6 md:mt-8 text-[#0b0f2a]/70 text-lg sm:text-xl font-medium leading-relaxed max-w-xl">
-              {content.hero.subline}
-            </p>
-          </Reveal>
-
-          <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11">
-            <PrimaryButton onClick={onOpenBooking}>{content.hero.ctaLabel}</PrimaryButton>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ============ 2. AUSGANGSLAGE ============ */}
-      {content.pain && (
-        <section className={`${CANVAS} ${SECTION}`}>
-          <div className={CONTAINER}>
-            <div className="grid md:grid-cols-12 gap-8 md:gap-16">
-              <div className="md:col-span-5">
-                <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
-              </div>
-              <Reveal delay={0.1} className="md:col-span-7">
-                <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">{content.pain.text}</p>
-              </Reveal>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ============ 3. LEISTUNGEN IM DETAIL -- Apple-style tile carousel ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
-        <div className={CONTAINER}>
-          <div className="max-w-2xl mb-14 md:mb-20">
-              <RevealText as="h2" by="word" text={content.leistungenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
-            </div>
-
-          <div className="flex flex-col gap-16 md:gap-20">
-            {content.leistungen.map((group, gi) => (
-              <div key={gi}>
-                {group.heading && (
-                  <Reveal className="max-w-2xl mb-10 md:mb-12">
-                    <h3 className="text-[clamp(22px,2.6vw,32px)] font-black tracking-tighter mb-4 text-[#0b0f2a]">
-                      {group.heading}
-                    </h3>
-                    {group.text && <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">{group.text}</p>}
-                  </Reveal>
-                )}
-
-                <Reveal>
-                  <TileCarousel>
-                    {group.cards.map((card, ci) => (
-                      <div
-                        key={ci}
-                        className={`snap-start shrink-0 w-[260px] sm:w-[300px] h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)]`}
-                      >
-                        <div className="w-9 h-9 rounded-full bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-xs font-black mb-6">
-                          {String(ci + 1).padStart(2, '0')}
-                        </div>
-                        <h4 className="text-base md:text-lg font-black tracking-tight mb-3 leading-snug">{card.title}</h4>
-                        <p className="text-white/55 text-sm leading-relaxed font-medium">{card.text}</p>
-                      </div>
-                    ))}
-                  </TileCarousel>
-                </Reveal>
-
-                {group.groupCta && (
-                  <Reveal delay={0.2} className="mt-10 md:mt-12">
-                    <SecondaryButton onClick={onOpenBooking}>{group.groupCta}</SecondaryButton>
-                  </Reveal>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ 4. UNSER VORGEHEN -- interactive accordion + visual ============ */}
-      {content.vorgehen && content.vorgehen.length > 0 && (
-        <section className={`${CANVAS} ${SECTION}`}>
-          <div className={CONTAINER}>
-            <div className="max-w-2xl mb-12 md:mb-16">
-              <RevealText as="h2" by="word" text={content.vorgehenHeading ?? 'Unser Vorgehen'} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
-            </div>
-
-            <Reveal>
-              <ProcessInteractive steps={content.vorgehen} />
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      {/* ============ 5. FÜR WEN ============ */}
-      {content.fuerWen && content.fuerWen.length > 0 && (
-        <section className={`${CANVAS} ${SECTION}`}>
-        <div className={CONTAINER}>
-          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-              <RevealText as="h2" by="word" text={content.fuerWenHeading ?? 'Für wen'} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
-            </div>
-          <Reveal delay={0.1} className="flex flex-wrap justify-center gap-3 md:gap-4">
-            {content.fuerWen.map((chip, i) => (
-              <span
-                key={i}
-                className="px-5 py-2.5 rounded-full bg-white border border-slate-900/10 text-slate-700 text-sm font-bold tracking-tight shadow-sm"
-              >
-                {chip}
-              </span>
-            ))}
-          </Reveal>
-        </div>
-        </section>
-      )}
-
-      {/* ============ 6. BEST-CASE-TEASER ============ */}
-      {content.bestCase && (
-      <section className={`${CANVAS} ${SECTION}`}>
-        <div className={CONTAINER}>
-          <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
-            <Reveal className="md:col-span-5">
-              <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter mb-5 text-[#0b0f2a]">
-                {content.bestCase.heading}
-              </h2>
-              <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium mb-8">{content.bestCase.text}</p>
-              <GhostLink onClick={goToBestCases}>Alle Best Cases ansehen</GhostLink>
-            </Reveal>
-            <Reveal delay={0.1} className="md:col-span-7">
-              <div
-                onClick={goToBestCases}
-                className={`group cursor-pointer relative aspect-[16/10] rounded-card overflow-hidden ${TILE} border border-white/10 transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] flex items-center justify-center`}
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent" />
-                <span className="relative z-10 text-white/30 text-xs font-black uppercase tracking-[0.25em]">
-                  Referenz-Case folgt
-                </span>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* ============ 7. FAQ ============ */}
-      {content.faq && content.faq.length > 0 && (
-      <section className={`${CANVAS} ${SECTION}`}>
-        <div className={`${CONTAINER} max-w-[900px]`}>
-          <Reveal className="text-center mb-12 md:mb-16">
-            <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">FAQ</h2>
-          </Reveal>
-
-          <div className="flex flex-col gap-3">
-            {content.faq.map((item, i) => {
-              const isOpen = openFaq === i;
-              return (
-                <Reveal key={i} delay={i * 0.08}>
-                  <div className="rounded-card bg-white border border-slate-900/10 overflow-hidden shadow-sm">
-                    <button
-                      onClick={() => setOpenFaq(isOpen ? null : i)}
-                      className="w-full flex items-center justify-between gap-6 text-left px-6 md:px-8 py-6"
-                      aria-expanded={isOpen}
-                    >
-                      <span className="font-bold text-base md:text-lg tracking-tight text-slate-900">{item.q}</span>
-                      <ChevronDown
-                        className={`w-5 h-5 shrink-0 text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-                      />
-                    </button>
-                    <div
-                      className="grid transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                      style={{ gridTemplateRows: isOpen ? '1fr' : '0fr' }}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="px-6 md:px-8 pb-6 text-slate-600 text-sm md:text-base leading-relaxed font-medium">
-                          {item.a}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      )}
-
-      {/* ============ 8. CTA-CLOSER ============ */}
-      <section className={`${CANVAS} ${SECTION} pb-28 md:pb-36`}>
-        <div className={`${CONTAINER} text-center`}>
-          <div className="max-w-2xl mx-auto">
-              <RevealText as="h2" by="word" text={content.ctaCloser.headline} className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-[#0b0f2a]" />
-            </div>
-          <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4 mb-8">
-            <PrimaryButton onClick={onOpenBooking}>{content.ctaCloser.primaryLabel}</PrimaryButton>
-            {content.ctaCloser.secondaryLabel && (
-              <SecondaryButton onClick={onOpenBooking}>{content.ctaCloser.secondaryLabel}</SecondaryButton>
-            )}
-          </Reveal>
-          <Reveal delay={0.2}>
-            <GhostLink onClick={goToContact}>Oder direkt zum Kontaktformular</GhostLink>
-          </Reveal>
-        </div>
-      </section>
+const Row: React.FC<{ label: string; children: React.ReactNode; delay?: number }> = ({
+  label,
+  children,
+  delay = 0
+}) => (
+  <Reveal delay={delay} className="border-t border-[#0b0f2a]/12 py-10 md:py-14">
+    <div className="grid md:grid-cols-12 gap-4 md:gap-10">
+      <div className="md:col-span-3">
+        <h2 className="md:sticky md:top-28 text-[11px] font-black uppercase tracking-[0.22em] text-[#0b0f2a]/45">
+          {label}
+        </h2>
+      </div>
+      <div className="md:col-span-9">{children}</div>
     </div>
-  );
-};
+  </Reveal>
+);
+
+export const ServiceView: React.FC<ServiceViewProps> = ({ content, onOpenBooking }) => (
+  <div className={`${CONTAINER} pb-24 md:pb-32`}>
+    {/* --- Heading ------------------------------------------------------- */}
+    <Reveal className="pt-12 md:pt-16 pb-10 md:pb-14">
+      <h2 className="text-[clamp(28px,4.4vw,52px)] font-black leading-[1.02] tracking-tighter text-[#0b0f2a] max-w-4xl">
+        {content.hero.headline}
+      </h2>
+    </Reveal>
+
+    {/* --- 1. What it is -------------------------------------------------- */}
+    <Row label="Was es ist">
+      <p className="text-slate-700 text-lg md:text-xl leading-relaxed font-medium max-w-3xl">
+        {content.hero.subline}
+      </p>
+    </Row>
+
+    {/* --- 2. What is in it ----------------------------------------------- */}
+    {/* A grid, not the horizontal carousel this used to be: with at most eight
+        entries they all fit, and a track you have to page through hides half of
+        the answer to "what do I actually get". */}
+    <Row label="Leistungsumfang" delay={0.06}>
+      <div className="grid sm:grid-cols-2 gap-x-10 gap-y-8">
+        {content.leistungen.flatMap((group) => group.cards).map((card, i) => (
+          <div key={i}>
+            <h3 className="text-[15px] md:text-base font-black tracking-tight text-[#0b0f2a] mb-1.5">
+              {card.title}
+            </h3>
+            <p className="text-slate-600 text-sm md:text-[15px] leading-relaxed font-medium">
+              {card.text}
+            </p>
+          </div>
+        ))}
+      </div>
+    </Row>
+
+    {/* --- 3. What it does for you ---------------------------------------- */}
+    {content.wirkung && (
+      <Row label="Was es bewirkt" delay={0.12}>
+        <p className="text-slate-700 text-lg md:text-xl leading-relaxed font-medium max-w-3xl">
+          {content.wirkung}
+        </p>
+      </Row>
+    )}
+
+    {/* --- Closer --------------------------------------------------------- */}
+    <Reveal delay={0.16} className="border-t border-[#0b0f2a]/12 pt-10 md:pt-14">
+      <button
+        onClick={onOpenBooking}
+        className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+      >
+        {content.hero.ctaLabel}
+        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+      </button>
+    </Reveal>
+  </div>
+);

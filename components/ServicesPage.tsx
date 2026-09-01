@@ -16,7 +16,6 @@ interface ServicesPageProps {
   onNavigate: (target: string) => void;
   /** Selects a service: updates the URL and the router, without a page change. */
   onSelectService: (slug: string) => void;
-  scrollToSection: (id: string) => void;
   onOpenBooking: () => void;
 }
 
@@ -78,7 +77,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   slug,
   onNavigate,
   onSelectService,
-  scrollToSection,
   onOpenBooking
 }) => {
   // Derived from the URL, never stored.
@@ -124,7 +122,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     userSwitched.current = false;
     const el = filterRef.current;
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - navClearance();
+    const top = el.getBoundingClientRect().top + window.scrollY - navClearance() - 12;
     window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
   }, [active]);
 
@@ -154,25 +152,24 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         </Reveal>
       </section>
 
-      {/* ============ Filter ============ */}
+      {/* ============ Menu bar ============ */}
       {/*
-        Sticky, so the filter stays reachable through a service that runs to
-        several screens. The offset matches the floating navigation above it.
+        A menu bar, and deliberately not a sticky one any more.
 
-        Deliberately a solid canvas fill, not frosted glass: this bar spans the
-        full width and is pinned for the entire length of the page, and a
-        backdrop-filter of that size is re-rasterised on every scroll frame --
-        the one effect this site can least afford to leave running permanently.
+        Pinned under the navigation it was permanently in the way: it sat over
+        whatever was being read, the service's own artwork ran into it while
+        scrolling, and on a narrow window two rows of pills ate a third of the
+        viewport for the entire length of the page. A menu belongs at the top of
+        what it controls -- you go to it, it does not follow you.
+
+        With the service view cut down to three rows it is also never far: the
+        whole of a service now fits in roughly a screen and a half.
       */}
-      <div
-        ref={filterRef}
-        className="sticky z-50 bg-[#badeda] border-b border-[#0b0f2a]/10"
-        style={{ top: 'var(--nav-clearance)' }}
-      >
+      <div ref={filterRef} className="border-y border-[#0b0f2a]/12">
         <div className={`${CONTAINER} py-4 md:py-5`}>
           <div
             role="tablist"
-            aria-label="Services filtern"
+            aria-label="Services"
             className="services-filter flex gap-2 md:gap-2.5 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
@@ -180,17 +177,11 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               <React.Fragment key={s.slug}>
                 {/* The four pillars are the ones the homepage sends people in
                     on, so they are kept readable as a group rather than buried
-                    in a run of ten identical pills. How that group is marked
-                    depends on the axis:
-
-                    On desktop the pills wrap, so the break is a real one -- a
-                    zero-height item spanning the full row pushes the remaining
-                    six onto their own line. A vertical rule here would simply
-                    be carried to wherever the row happened to wrap and read as
-                    a stray mark at the end of a line.
-
-                    On mobile the row scrolls horizontally and never wraps, so
-                    there is no line to break and the rule is the right cue. */}
+                    in a run of ten identical pills. On desktop the pills wrap,
+                    so the break is a real one: a zero-height item spanning the
+                    row pushes the remaining six onto their own line. On mobile
+                    the row scrolls and never wraps, so a rule is the right cue
+                    there instead. */}
                 {i === PILLAR_COUNT && (
                   <>
                     <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
@@ -221,25 +212,8 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-          // A strip of canvas between the filter and the service below it.
-          // Without it the service's hero artwork starts on the pixel the
-          // filter ends, so the bar reads as stuck onto the picture rather
-          // than as chrome sitting above the page -- and while scrolling, the
-          // artwork appears to run straight into the pills.
-          className="pt-6 md:pt-10"
         >
-          <ServiceView
-            content={content}
-            onOpenBooking={onOpenBooking}
-            onGoToBestCases={() => {
-              onNavigate('home');
-              requestAnimationFrame(() => scrollToSection('best-cases'));
-            }}
-            onGoToContact={() => {
-              onNavigate('home');
-              requestAnimationFrame(() => scrollToSection('contact-section'));
-            }}
-          />
+          <ServiceView content={content} onOpenBooking={onOpenBooking} />
         </motion.div>
       </AnimatePresence>
 
