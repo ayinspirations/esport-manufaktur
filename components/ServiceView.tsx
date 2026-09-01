@@ -18,11 +18,14 @@ const TILE = 'tile-gradient text-white';
 // ---------------------------------------------------------------------------
 // One service
 // ---------------------------------------------------------------------------
-// Back to the shape the original per-service pages had -- a full-size headline
-// with its subline and the call to action right under it, the Ausgangslage as a
-// two-column spread, and "Leistungen im Detail" as dark tiles -- minus the two
-// parts that are deliberately not coming back: the FAQ and the "Unser Vorgehen"
-// accordion.
+// Four sections: the headline with its subline and the calls to action, the
+// Ausgangslage as a two-column spread, "Leistungen im Detail" as dark tiles,
+// and the closer.
+//
+// Deliberately not here, and not coming back: the FAQ, the "Unser Vorgehen"
+// accordion, "Was es bewirkt" and "Für wen". Their copy is still in
+// servicesContent -- `wirkung`, `fuerWen`, `vorgehen`, `faq` are simply not
+// read any more -- so none of it has to be rewritten if it is ever wanted back.
 //
 // Two things from the interim version are kept. The Leistungen are a grid
 // rather than the horizontal carousel they were: with at most eight entries
@@ -74,7 +77,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Termin vereinbaren
+            Kostenlose Anfrage starten
           </button>
         </Reveal>
       </section>
@@ -158,52 +161,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         </div>
       </section>
 
-      {/* ============ 4. Was es bewirkt ============ */}
-      {content.wirkung && (
-        <section className={`${CONTAINER} ${SECTION}`}>
-          <div className="grid md:grid-cols-12 gap-6 md:gap-16">
-            <div className="md:col-span-5">
-              <RevealText
-                as="h2"
-                by="word"
-                text="Was es bewirkt"
-                className="text-[clamp(26px,3.2vw,40px)] font-black leading-[1.08] tracking-tighter text-[#0b0f2a]"
-              />
-            </div>
-            <Reveal delay={0.1} className="md:col-span-7">
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
-                {content.wirkung}
-              </p>
-            </Reveal>
-          </div>
-        </section>
-      )}
-
-      {/* ============ 5. Für wen ============ */}
-      {content.fuerWen && content.fuerWen.length > 0 && (
-        <section className={`${CONTAINER} ${SECTION}`}>
-          <div className="text-center max-w-2xl mx-auto mb-9 md:mb-12">
-            <RevealText
-              as="h2"
-              by="word"
-              text={content.fuerWenHeading ?? 'Für wen'}
-              className="text-[clamp(26px,3.2vw,40px)] font-black leading-[1.08] tracking-tighter text-[#0b0f2a]"
-            />
-          </div>
-          <Reveal delay={0.1} className="flex flex-wrap justify-center gap-3 md:gap-4">
-            {content.fuerWen.map((chip, i) => (
-              <span
-                key={i}
-                className="px-5 py-2.5 rounded-full bg-white border border-slate-900/10 text-slate-700 text-sm font-bold tracking-tight shadow-sm"
-              >
-                {chip}
-              </span>
-            ))}
-          </Reveal>
-        </section>
-      )}
-
-      {/* ============ 6. Abschluss ============ */}
+      {/* ============ 4. Abschluss ============ */}
       {/* Both routes open in place. Sending someone back to the homepage and
           then scrolling them to the form at the bottom of it lost the service
           they were asking about; the popup carries it along as the subject. */}
@@ -229,7 +187,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Termin vereinbaren
+            Kostenlose Anfrage starten
           </button>
         </Reveal>
       </section>
