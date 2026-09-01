@@ -39,9 +39,9 @@ const TILE_TEXT_VARIANTS = {
   show: { opacity: 1, y: 0, transition: { duration: DUR.interact, ease: EASE_REVEAL } }
 };
 
-// Stagger restarts on each grid row (2 tiles, then 1 full-width, then 3), so
-// no tile waits on the delay of one sitting above it in a different row.
-const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, STAGGER.card * 2];
+// Stagger restarts on each row of the mosaic -- three rows of two -- so no
+// tile waits on the delay of one sitting above it in a different row.
+const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
 
 export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
   return (
@@ -65,9 +65,24 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
-          {/* Row 1 - T-Systems and Hagebau (Side by Side) */}
-          <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
+        {/* Mosaic.
+            Every tile used to be exactly 500px tall, so six different column
+            spans still produced one flat band of equal-height boxes -- a table,
+            not a mosaic.
+
+            The grid is six columns of a uniform row unit instead, and each tile
+            claims a different rectangle of it. Because every span is whole
+            units of the same cell, the shapes vary while the layout still
+            tiles exactly: rows 1-3 take the wide tile and the portrait beside
+            it, rows 4-5 the square and the panorama, rows 6-8 the two large
+            squares. No gaps, no dense-packing heuristics, no tile left
+            orphaned on its own row at a smaller width.
+
+            Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
+            2x2 square, 4x2 panorama, 3x3 a large square. */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
+          {/* Rows 1-3 — T-Systems 16:9, Hagebau portrait beside it */}
+          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -91,7 +106,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Employer Branding
@@ -107,7 +122,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
+          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -131,7 +146,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Recruiting
@@ -147,8 +162,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          {/* Row 2 - Full Width 0711 Showdown */}
-          <div className="col-span-1 lg:col-span-12 h-[400px] md:h-[600px] lg:h-[500px]">
+          {/* Rows 4-5 — Showdown square, Bayern zockt panorama beside it */}
+          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -172,14 +187,14 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Event Production
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-white text-[clamp(32px,5vw,64px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.95] tracking-tighter uppercase mb-3 drop-shadow-2xl">
                       0711 Showdown
                     </h3>
                   </div>
@@ -188,8 +203,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          {/* Row 3 - Bayern Zockt, BFV, CTA */}
-          <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
+          
+          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -220,7 +235,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       Bayern Zockt
                     </h3>
                   </div>
@@ -229,7 +244,8 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
+          {/* Rows 6-8 — BFV and the closing tile, two large squares */}
+          <div className="col-span-1 aspect-[4/3] lg:col-span-3 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -269,7 +285,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
             </motion.div>
           </div>
 
-          <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
+          <div className="col-span-1 aspect-[4/3] lg:col-span-3 lg:row-span-3 lg:aspect-auto">
             <motion.button
               onClick={() => onScroll?.('contact-section')}
               variants={TILE_VARIANTS}
