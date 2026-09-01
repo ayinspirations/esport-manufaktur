@@ -34,3 +34,44 @@ export function useInView<T extends HTMLElement>(options?: IntersectionObserverI
 
   return { ref, inView };
 }
+
+/**
+ * Like `useInView`, but it keeps watching: the flag goes back to false when the
+ * element leaves the viewport again.
+ *
+ * For things that cost something continuously rather than once. The logo
+ * marquee is the case this exists for -- it is a CSS transform animation on a
+ * strip of ~56 images, and `useInView` unobserves after the first entry, so
+ * once a visitor had scrolled past it the animation kept running (and kept the
+ * compositor working on it) for the rest of the session, several screens above
+ * whatever they were actually reading.
+ *
+ * Under prefers-reduced-motion this reports false permanently, so the caller
+ * leaves the animation paused -- the opposite of `useInView`, whose job there
+ * is to resolve reveals immediately.
+ */
+export function useInViewContinuous<T extends HTMLElement>(
+  options?: IntersectionObserverInit
+) {
+  const ref = useRef<T>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0, ...options }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return { ref, inView };
+}

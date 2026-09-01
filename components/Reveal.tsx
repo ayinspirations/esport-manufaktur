@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useInView } from '../hooks/useInView';
 import { EASE_REVEAL_CSS, DUR, STAGGER } from './motion';
 
@@ -248,11 +248,24 @@ export const RevealTilt: React.FC<RevealTiltProps> = ({
   rotate = -48
 }) => {
   const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  // `will-change` is a promise about the near future, and this one is kept
+  // only until the tilt has landed.
+  //
+  // Unlike the two reveals above, this one does need it: it animates a 3D
+  // rotation on a large media surface, and without the hint the first frame
+  // is where the layer gets rasterised, which is exactly where the animation
+  // can least afford it. But it was being left on afterwards, permanently, on
+  // every tilted tile on the page -- and a standing `will-change: transform`
+  // is a compositor layer held open for good, with the GPU memory and the
+  // extra composite pass that implies, for an animation that ran once and is
+  // never replayed.
+  const [settled, setSettled] = useState(false);
 
   return (
     <div ref={ref} style={{ perspective: '1200px' }} className={className}>
       <div
         className={innerClassName}
+        onTransitionEnd={() => setSettled(true)}
         style={{
           opacity: inView ? 1 : 0,
           transform: inView
@@ -260,7 +273,7 @@ export const RevealTilt: React.FC<RevealTiltProps> = ({
             : `rotateX(${rotate}deg) translateY(${y}px)`,
           transformOrigin: '50% 100%',
           transition: `opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s, transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s`,
-          willChange: 'transform, opacity'
+          willChange: settled ? undefined : 'transform, opacity'
         }}
       >
         {children}

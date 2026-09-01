@@ -54,6 +54,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, activePage }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const scrolledRef = useRef(false);
 
   const desktopBarRef = useRef<HTMLDivElement>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
@@ -72,10 +73,25 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
     : 'bg-[#0e958e]/20 hover:bg-[#0e958e]/30 text-[#5fd6cf] hover:text-white border border-[#0e958e]/45 hover:border-[#0e958e]/70';
 
   useEffect(() => {
+    // Passive: this listener never calls preventDefault, and saying so up front
+    // lets the browser scroll without first waiting to find out. A non-passive
+    // scroll listener on `window` blocks the compositor on the main thread for
+    // every event, which is felt as lag on touch even when the handler itself
+    // is trivial.
+    //
+    // The read is also gated on the value actually changing. `window.scrollY`
+    // is compared against a ref rather than going straight to setState on every
+    // event: React does bail out of an identical value, but only after the
+    // update has been queued and a render scheduled, and this fires hundreds of
+    // times per fling.
     const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
+      const next = window.scrollY > 30;
+      if (next !== scrolledRef.current) {
+        scrolledRef.current = next;
+        setScrolled(next);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -96,7 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         setIsOpen(false);
       }
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 

@@ -7,7 +7,17 @@
     font-family: 'Inter', sans-serif;
     background-color: #020617;
     color: #000000;
+    /* Paired declaration, and the order matters.
+       `overflow-x: hidden` makes the element a scroll container, and a
+       scroll container is what `position: sticky` inside it sticks to --
+       so the services filter scrolled away with the page instead of
+       pinning under the nav. `overflow-x: clip` clips exactly the same
+       way without creating one.
+       Browsers that do not know `clip` ignore the second declaration and
+       keep `hidden`: they still get the clipping, they just do not get
+       sticky, which is what they had before either way. */
     overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     position: relative;
   }
@@ -15,8 +25,28 @@
 
 html {
   overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   background-color: #020617;
+}
+
+/* Same pairing as a utility, for the app shell -- see the note on body. */
+.clip-x {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+:root {
+  /* Vertical room the floating navigation occupies: a full-width strip on
+     mobile, a compact pill inset from the top on desktop. Anything that pins
+     itself below the nav -- currently the services filter -- offsets by this
+     rather than hard-coding the number in a component. `navClearance()` in
+     ServicesPage.tsx mirrors it for the scroll maths; keep the two together. */
+  --nav-clearance: 64px;
+}
+
+@media (min-width: 768px) {
+  :root { --nav-clearance: 96px; }
 }
 
 
@@ -183,14 +213,38 @@ html {
   @apply w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-7 rounded-2xl flex items-center justify-center transition-all active:scale-[0.98] shadow-[0_20px_50px_-10px_rgba(16,185,129,0.3)] tracking-tighter text-2xl cursor-pointer border-none !important;
 }
 
-/* Scrollbar styles */
+/* Scrollbar -- deliberately almost invisible.
+
+   It used to be an 8px bar with a #badeda track and a solid black thumb, which
+   is a light-canvas colour scheme painted down the side of a page whose hero is
+   near-black: over the hero it read as a bright stripe stuck to the edge of the
+   screen. A scrollbar is chrome, not a design element -- it should be findable
+   when looked for and unnoticed otherwise, on both the dark hero and the light
+   canvas below it.
+
+   Transparent track, a translucent neutral thumb that works over either ground,
+   and a little more presence on hover. */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #badeda;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #000;
-  border-radius: 4px;
+  background: rgba(127, 145, 155, 0.32);
+  border-radius: 10px;
+  /* Transparent border + background-clip insets the visible thumb, so it reads
+     as a slim pill floating in the gutter rather than a bar filling it. */
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(127, 145, 155, 0.55);
+  background-clip: content-box;
+}
+
+/* Firefox has no ::-webkit pseudo-elements; these two are the whole API. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(127, 145, 155, 0.32) transparent;
 }
