@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowUpRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
-import { useInView } from '../hooks/useInView';
+import { useInView, useInViewContinuous } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
 
 /**
@@ -78,13 +78,33 @@ const PillarCard: React.FC<{
   onNavigate?: (page: any) => void;
   delay?: number;
 }> = ({ item, onNavigate, delay = 0 }) => {
-  const { ref, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+  const { ref: revealRef, inView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
+  // A second, continuous observer for the phone, where there is no hover to
+  // open the tile's description with. It reports while the tile is properly on
+  // screen -- not merely clipping the edge -- so the text appears as a tile is
+  // scrolled to and goes again as it is scrolled past.
+  //
+  // `true` for the reduced-motion case: this decides whether text is *shown*,
+  // not whether something animates, and a visitor on that setting should get
+  // the copy rather than a permanently empty tile.
+  const { ref: dwellRef, inView: dwelling } = useInViewContinuous<HTMLDivElement>(
+    { threshold: 0.6 },
+    true
+  );
+
+  // Both observers watch the same element. A callback ref feeds them both; it
+  // runs before either hook's effect, so each finds its `.current` set.
+  const setCardRef = (el: HTMLDivElement | null) => {
+    (revealRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+    (dwellRef as React.MutableRefObject<HTMLDivElement | null>).current = el;
+  };
 
   const open = () => onNavigate?.(`service:${item.slug}`);
 
   return (
     <div
-      ref={ref}
+      ref={setCardRef}
       role="link"
       tabIndex={0}
       onClick={open}
@@ -116,7 +136,7 @@ const PillarCard: React.FC<{
           <h3 className="text-white font-black text-lg lg:text-[19px] tracking-tight uppercase leading-[1.1]">
             {item.title}
           </h3>
-          <div className="card-desc-wrap overflow-hidden">
+          <div className={`card-desc-wrap overflow-hidden ${dwelling ? 'is-visible' : ''}`}>
             <p className="mt-2 text-white/70 text-[13px] lg:text-sm font-medium leading-snug break-words [overflow-wrap:break-word]">
               {item.tagline}
             </p>
@@ -152,14 +172,21 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
           letting the `:hover` rule through to touch alongside it was not.
           Touch browsers emulate hover on the first tap and hold the click
           back until the second, which is what stopped the cards opening
-          their service pages. On touch the description simply stays closed
-          and a tap navigates, first time. */}
+          their service pages. The :hover rule is still fenced behind a real
+          pointer, so a tap navigates first time; on touch the description is
+          opened by a class the scroll position drives instead. */}
       <style>{`
-        .card-desc-wrap { max-height: 0; opacity: 0; }
+        .card-desc-wrap { max-height: 0; opacity: 0; transition: max-height 350ms ease, opacity 300ms ease; }
         @media (hover: hover) and (pointer: fine) {
-          .card-desc-wrap { transition: max-height 350ms ease, opacity 300ms ease; }
           .group:hover .card-desc-wrap,
           .group:focus-within .card-desc-wrap { max-height: 420px; opacity: 1; }
+        }
+        /* Without a pointer there is no hover to open these with, so scroll
+           position does the job: the description appears once its tile is
+           properly on screen and closes again as it leaves. Fenced to coarse
+           pointers so a desktop tile never opens on its own. */
+        @media (hover: none), (pointer: coarse) {
+          .card-desc-wrap.is-visible { max-height: 420px; opacity: 1; }
         }
       `}</style>
 
