@@ -8,6 +8,7 @@ interface UeberUnsPageProps {
   onNavigate: (page: any) => void;
   scrollToSection: (id: string) => void;
   onOpenBooking?: () => void;
+  onOpenContact?: (subject?: string) => void;
 }
 
 // Same three constants the service detail pages are built on, so this page
@@ -88,7 +89,7 @@ const Avatar: React.FC<{ member: Member; index: number }> = ({ member, index }) 
     </div>
   );
 
-export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollToSection, onOpenBooking }) => {
+export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollToSection, onOpenBooking, onOpenContact }) => {
   const goToContact = () => {
     onNavigate('home');
     requestAnimationFrame(() => scrollToSection('contact-section'));
@@ -248,11 +249,13 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
               Termin vereinbaren
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
+            {/* Opens the form in place rather than routing back to the
+                homepage and scrolling to the bottom of it. */}
             <button
-              onClick={goToContact}
+              onClick={() => (onOpenContact ? onOpenContact('Über uns') : goToContact())}
               className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight"
             >
-              Zum Kontaktformular
+              Projekt anfragen
             </button>
           </Reveal>
         </div>

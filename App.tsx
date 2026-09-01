@@ -43,6 +43,7 @@ const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({
 const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const CookiePopup = lazy(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
 const BookingModal = lazy(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
+const ContactModal = lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 
 /**
  * Held in place of a route while its chunk is in flight.
@@ -133,6 +134,19 @@ export default function App() {
   const openBooking = () => {
     setHasOpenedBooking(true);
     setIsBookingOpen(true);
+  };
+
+  // Same latching as the booking modal: its chunk never loads for a visitor who
+  // does not ask, and once it has, the modal stays mounted so AnimatePresence
+  // can still play its close animation.
+  const [isContactOpen, setIsContactOpen] = useState(false);
+  const [contactSubject, setContactSubject] = useState<string | undefined>(undefined);
+  const [hasOpenedContact, setHasOpenedContact] = useState(false);
+
+  const openContact = (subject?: string) => {
+    setContactSubject(subject);
+    setHasOpenedContact(true);
+    setIsContactOpen(true);
   };
 
   useEffect(() => {
@@ -262,6 +276,8 @@ export default function App() {
             onNavigate={navigateTo}
             onSelectService={selectService}
             onOpenBooking={openBooking}
+            onOpenContact={openContact}
+            onOpenPost={openBlogPost}
           />
         )}
         {/* Back from a case returns to the Best Cases section the visitor came
@@ -273,7 +289,7 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
-        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} />}
+        {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
         )}
@@ -291,6 +307,13 @@ export default function App() {
             animation -- unmounting it on close would cut that off. */}
         {hasOpenedBooking && (
           <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+        )}
+        {hasOpenedContact && (
+          <ContactModal
+            isOpen={isContactOpen}
+            onClose={() => setIsContactOpen(false)}
+            subject={contactSubject}
+          />
         )}
       </Suspense>
     </div>

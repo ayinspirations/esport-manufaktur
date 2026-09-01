@@ -1,11 +1,14 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Reveal } from './Reveal';
 import type { ServiceContent } from './servicesContent';
 
 interface ServiceViewProps {
   content: ServiceContent;
+  /** Opens the booking popup. */
   onOpenBooking: () => void;
+  /** Opens the contact-form popup, told which service it is about. */
+  onOpenContact: (subject?: string) => void;
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
@@ -53,7 +56,7 @@ const Row: React.FC<{ label: string; children: React.ReactNode; delay?: number }
   </Reveal>
 );
 
-export const ServiceView: React.FC<ServiceViewProps> = ({ content, onOpenBooking }) => (
+export const ServiceView: React.FC<ServiceViewProps> = ({ content, onOpenBooking, onOpenContact }) => (
   <div className={`${CONTAINER} pb-24 md:pb-32`}>
     {/* --- Heading ------------------------------------------------------- */}
     <Reveal className="pt-12 md:pt-16 pb-10 md:pb-14">
@@ -98,14 +101,26 @@ export const ServiceView: React.FC<ServiceViewProps> = ({ content, onOpenBooking
     )}
 
     {/* --- Closer --------------------------------------------------------- */}
+    {/* Both routes open in place. Sending someone back to the homepage and then
+        scrolling them to the form at the bottom of it lost the service they
+        were asking about, and the popup carries it along as the subject. */}
     <Reveal delay={0.16} className="border-t border-[#0b0f2a]/12 pt-10 md:pt-14">
-      <button
-        onClick={onOpenBooking}
-        className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-      >
-        {content.hero.ctaLabel}
-        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-      </button>
+      <div className="flex flex-wrap items-center gap-4">
+        <button
+          onClick={() => onOpenContact(content.h1)}
+          className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+        >
+          {content.hero.ctaLabel}
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+        </button>
+        <button
+          onClick={onOpenBooking}
+          className="group inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+        >
+          <CalendarDays className="w-4 h-4" />
+          Termin vereinbaren
+        </button>
+      </div>
     </Reveal>
   </div>
 );

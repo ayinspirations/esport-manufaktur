@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { ServiceView } from './ServiceView';
+import { BlogSection } from './BlogSection';
 import { servicesContent } from './servicesContent';
 import { services, pillars, serviceSlugs } from './serviceCatalogue';
 import { useDocumentHead } from '../hooks/useDocumentHead';
@@ -17,6 +18,9 @@ interface ServicesPageProps {
   /** Selects a service: updates the URL and the router, without a page change. */
   onSelectService: (slug: string) => void;
   onOpenBooking: () => void;
+  onOpenContact: (subject?: string) => void;
+  /** Opens a blog article, for the Blog section at the foot of the page. */
+  onOpenPost: (slug: string) => void;
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
@@ -77,7 +81,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   slug,
   onNavigate,
   onSelectService,
-  onOpenBooking
+  onOpenBooking,
+  onOpenContact,
+  onOpenPost
 }) => {
   // Derived from the URL, never stored.
   //
@@ -213,9 +219,17 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
         >
-          <ServiceView content={content} onOpenBooking={onOpenBooking} />
+          <ServiceView content={content} onOpenBooking={onOpenBooking} onOpenContact={onOpenContact} />
         </motion.div>
       </AnimatePresence>
+
+      {/* The homepage's Blog section, at the foot of every service.
+          Outside the AnimatePresence above on purpose: it is identical for all
+          ten services, so it should stay put while the service above it swaps
+          rather than tearing down and rebuilding its cards on every click. */}
+      <div className="border-t border-[#0b0f2a]/12">
+        <BlogSection onOpenPost={onOpenPost} />
+      </div>
 
       <style>{`.services-filter::-webkit-scrollbar { display: none; }`}</style>
     </div>

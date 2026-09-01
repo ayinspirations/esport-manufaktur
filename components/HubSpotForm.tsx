@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 import { Loader2, CheckCircle2 } from 'lucide-react';
 
 declare global {
@@ -10,6 +10,14 @@ declare global {
 
 export const HubSpotForm: React.FC = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'ready' | 'error' | 'submitted'>('idle');
+  // HubSpot injects the form by CSS selector, so the container needs an id that
+  // is unique to this instance rather than the fixed `hs_form_target` it used
+  // to carry. There are two mount points now -- the section at the foot of the
+  // homepage and the popup the subpages open -- and the popup stays mounted
+  // once it has been opened. Navigate from a subpage back to the homepage after
+  // opening it and both were live at once under the same id, at which point
+  // HubSpot renders into whichever the document happens to hold first.
+  const targetId = `hs-form-${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const initializedRef = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -112,7 +120,7 @@ export const HubSpotForm: React.FC = () => {
           region: 'eu1',
           portalId: '144588019',
           formId: '1100960a-23d3-4104-9ba4-03dcd952f909',
-          target: '#hs_form_target',
+          target: `#${targetId}`,
           css: '',
           inlineMessage: 'Vielen Dank!',
           onFormReady: () => {
@@ -186,7 +194,7 @@ export const HubSpotForm: React.FC = () => {
       )}
 
       <div className={`hs-form-wrapper ${showForm ? 'opacity-100' : 'opacity-0 h-0 overflow-hidden'}`}>
-        <div id="hs_form_target" ref={containerRef} className="w-full" />
+        <div id={targetId} ref={containerRef} className="w-full" />
       </div>
     </div>
   );
