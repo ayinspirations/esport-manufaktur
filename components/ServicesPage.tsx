@@ -171,28 +171,27 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         With the service view cut down to three rows it is also never far: the
         whole of a service now fits in roughly a screen and a half.
       */}
-      <div ref={filterRef} className="border-y border-[#0b0f2a]/12">
+      <div ref={filterRef} className="pb-2 md:pb-4">
         <div className={`${CONTAINER} py-4 md:py-5`}>
           <div
             role="tablist"
             aria-label="Services"
-            className="services-filter flex gap-2 md:gap-2.5 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
+            className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {services.map((s, i) => (
               <React.Fragment key={s.slug}>
-                {/* The four pillars are the ones the homepage sends people in
-                    on, so they are kept readable as a group rather than buried
-                    in a run of ten identical pills. On desktop the pills wrap,
-                    so the break is a real one: a zero-height item spanning the
-                    row pushes the remaining six onto their own line. On mobile
-                    the row scrolls and never wraps, so a rule is the right cue
-                    there instead. */}
+                {/* On mobile the row scrolls and never wraps, so a rule marks
+                    where the four pillars end and the rest begin.
+
+                    Desktop had a forced line break here doing the same job, and
+                    it is gone: a full-width item forms a flex line of its own,
+                    so the pillars were separated from the row below by two
+                    vertical gaps where every other row had one. Uneven spacing
+                    cost more than the grouping was worth, and the pills wrap
+                    onto their own rows at the usual widths anyway. */}
                 {i === PILLAR_COUNT && (
-                  <>
-                    <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
-                    <span aria-hidden="true" className="hidden md:block basis-full h-0" />
-                  </>
+                  <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
                 )}
                 <FilterPill label={s.title} active={s.slug === active} onSelect={() => select(s.slug)} />
               </React.Fragment>
@@ -227,9 +226,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           Outside the AnimatePresence above on purpose: it is identical for all
           ten services, so it should stay put while the service above it swaps
           rather than tearing down and rebuilding its cards on every click. */}
-      <div className="border-t border-[#0b0f2a]/12">
-        <BlogSection onOpenPost={onOpenPost} />
-      </div>
+      <BlogSection onOpenPost={onOpenPost} />
 
       <style>{`.services-filter::-webkit-scrollbar { display: none; }`}</style>
     </div>
