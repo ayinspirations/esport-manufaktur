@@ -163,10 +163,31 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
         </motion.div>
       </AnimatePresence>
 
-      {/* Legibility scrim: dark at the foot where the copy and the rail sit,
-          and along the left where the headline runs. */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/55 to-[#020617]/25 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/80 via-transparent to-transparent pointer-events-none" />
+      {/*
+        Legibility scrim, weighted rather than even.
+
+        A flat wash across the whole frame took the same amount out of the
+        picture everywhere, so the photograph never got to be bright anywhere
+        and the whole stage read as hazy. This keeps the upper middle of the
+        image close to full strength and spends the darkness where it is
+        actually needed: the foot, under the copy and the rail, a touch at the
+        very top for the navigation, and a soft fall from the left where the
+        headline runs.
+      */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.94) 20%, rgba(2,6,23,0.5) 48%, rgba(2,6,23,0.08) 74%, rgba(2,6,23,0.45) 100%)'
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to right, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.3) 36%, rgba(2,6,23,0) 66%)'
+        }}
+      />
 
       {/* ---- Copy for the active case ---- */}
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pt-32 pb-8 md:pb-10">
@@ -200,10 +221,20 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
       </div>
 
       {/* ---- Card rail ---- */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pb-10 md:pb-16">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pb-4 md:pb-8">
+        {/*
+          The vertical padding is inside the scroller, not around it.
+
+          `overflow-x: auto` does not stay on one axis -- the computed
+          overflow-y becomes auto with it -- so the rail is a clipping box in
+          both directions. The active card lifts and grows, and its shadow
+          spreads well past its own box, and all of that was being sliced off
+          at the top and bottom edges. Padding within the scroll box is room
+          the card can actually use; a margin outside it would not be.
+        */}
         <div
           ref={railRef}
-          className="case-rail flex gap-3 md:gap-4 overflow-x-auto pb-3 -mx-6 px-6 md:mx-0 md:px-0"
+          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {CASES.map((c, i) => {
@@ -215,10 +246,10 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
                 onClick={() => setActive(i)}
                 aria-current={isActive ? 'true' : undefined}
                 aria-label={`${c.title} anzeigen`}
-                className={`relative shrink-0 w-[112px] sm:w-[132px] md:w-[152px] aspect-[3/4] rounded-2xl overflow-hidden transition-[transform,opacity,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`group relative shrink-0 w-[136px] sm:w-[158px] md:w-[184px] aspect-[3/4] rounded-[22px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
-                    ? 'scale-[1.06] opacity-100 shadow-[0_24px_60px_-18px_rgba(0,0,0,0.85)] ring-2 ring-white/80'
-                    : 'scale-100 opacity-55 hover:opacity-85 ring-1 ring-white/15'
+                    ? '-translate-y-3 scale-[1.05] shadow-[0_38px_70px_-24px_rgba(0,0,0,0.9)]'
+                    : 'shadow-[0_18px_40px_-22px_rgba(0,0,0,0.8)] hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-24px_rgba(0,0,0,0.85)]'
                 }`}
               >
                 {c.card || c.image ? (
@@ -232,8 +263,29 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
                 ) : (
                   <FallbackGround />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
-                <span className="absolute inset-x-0 bottom-0 p-3 text-left text-white text-[11px] md:text-xs font-black uppercase tracking-tight leading-tight">
+
+                {/*
+                  Inactive cards are held back with a wash over the artwork
+                  rather than with `opacity`. Opacity fades the card toward the
+                  backdrop it sits on, which drains the colour out of a row of
+                  game artwork and is what made these read as flat and grey.
+                  A dark wash keeps every card fully opaque -- the artwork stays
+                  saturated, it is just in shadow until it is picked.
+                */}
+                <div
+                  className={`absolute inset-0 transition-colors duration-500 ${
+                    isActive ? 'bg-transparent' : 'bg-[#020617]/55 group-hover:bg-[#020617]/25'
+                  }`}
+                />
+
+                {/* Foot scrim, so the title holds against any artwork. */}
+                <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
+
+                <span
+                  className={`absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-left text-[11px] md:text-xs font-black uppercase tracking-tight leading-tight transition-colors duration-500 ${
+                    isActive ? 'text-white' : 'text-white/75'
+                  }`}
+                >
                   {c.title}
                 </span>
               </button>
