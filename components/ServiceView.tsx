@@ -64,7 +64,12 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
           </p>
         </Reveal>
 
-        <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 flex flex-wrap items-center gap-4">
+        {/* Desktop only. On a phone the headline, the subline and this pair of
+            buttons stack into one column, so the calls to action land directly
+            under the heading and then again at the foot of a page that is not
+            long enough to have forgotten them -- the same ask twice, a screen
+            apart. The closer keeps them; up here they are dropped. */}
+        <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 hidden md:flex flex-wrap items-center gap-4">
           <button
             onClick={requestProject}
             className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"

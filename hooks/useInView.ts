@@ -51,7 +51,17 @@ export function useInView<T extends HTMLElement>(options?: IntersectionObserverI
  * is to resolve reveals immediately.
  */
 export function useInViewContinuous<T extends HTMLElement>(
-  options?: IntersectionObserverInit
+  options?: IntersectionObserverInit,
+  /**
+   * What to report when the visitor prefers reduced motion, where this stops
+   * observing entirely.
+   *
+   * `false` (the default) is right when the flag drives an animation -- the
+   * marquee stays paused. Pass `true` when it drives whether *content* is
+   * shown: the content then simply appears, which is what reduced motion asks
+   * for, rather than becoming unreachable.
+   */
+  reducedMotionValue = false
 ) {
   const ref = useRef<T>(null);
   const [inView, setInView] = useState(false);
@@ -61,6 +71,7 @@ export function useInViewContinuous<T extends HTMLElement>(
     if (!el) return;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInView(reducedMotionValue);
       return;
     }
 

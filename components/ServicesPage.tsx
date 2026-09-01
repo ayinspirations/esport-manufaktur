@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
@@ -50,7 +50,7 @@ const FilterPill: React.FC<{
     // aria-current rather than aria-pressed: these behave as a set of related
     // links through the same page, and only one is ever the current one.
     aria-current={active ? 'true' : undefined}
-    className={`shrink-0 snap-start whitespace-nowrap rounded-full px-4 py-2.5 md:px-5 text-[12px] md:text-[13px] font-black uppercase tracking-[0.08em] transition-colors duration-300 border ${
+    className={`shrink-0 snap-start whitespace-nowrap rounded-full px-3 py-2 md:px-5 md:py-2.5 text-[10.5px] md:text-[13px] font-black uppercase tracking-[0.06em] md:tracking-[0.08em] transition-colors duration-300 border ${
       active
         ? 'bg-[#0b0f2a] text-white border-[#0b0f2a]'
         : 'bg-white/50 text-[#0b0f2a]/70 border-[#0b0f2a]/10 hover:bg-white hover:text-[#0b0f2a] hover:border-[#0b0f2a]/25'
@@ -96,6 +96,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   // services someone looked at, for free.
   const active = (slug && serviceSlugs.includes(slug) ? slug : serviceSlugs[0]) as string;
   const filterRef = useRef<HTMLDivElement>(null);
+  // The pill strip scrolls on a phone. These say whether there is anything left
+  // to reach in either direction, which is what the arrows and the edge fades
+  // are driven by.
+  const railRef = useRef<HTMLDivElement>(null);
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(false);
   // Distinguishes a switch the visitor made from the initial render and from
   // browser back/forward, which must not steal the scroll position.
   const userSwitched = useRef(false);
@@ -108,6 +114,39 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     ogImage: content.seo.ogImage,
     canonicalPath: content.path
   });
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const update = () => {
+      setCanLeft(rail.scrollLeft > 4);
+      setCanRight(rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 4);
+    };
+    update();
+    rail.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update, { passive: true });
+    return () => {
+      rail.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+    };
+  }, []);
+
+  // Roughly a screenful at a time, so a page always lands on a pill boundary
+  // rather than halfway through a label.
+  const page = (dir: 1 | -1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: 'smooth' });
+  };
+
+  // Keep the selected pill in view when the service changes from anywhere else
+  // -- a homepage tile, a shared link, browser back.
+  useEffect(() => {
+    const rail = railRef.current;
+    const pill = rail?.querySelector<HTMLElement>('[aria-current="true"]');
+    if (!rail || !pill) return;
+    rail.scrollTo({ left: Math.max(pill.offsetLeft - rail.clientWidth * 0.25, 0), behavior: 'smooth' });
+  }, [active]);
 
   const select = useCallback(
     (next: string) => {
@@ -173,29 +212,70 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       */}
       <div ref={filterRef} className="pb-2 md:pb-4">
         <div className={`${CONTAINER} py-4 md:py-5`}>
-          <div
-            role="tablist"
-            aria-label="Services"
-            className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {services.map((s, i) => (
-              <React.Fragment key={s.slug}>
-                {/* On mobile the row scrolls and never wraps, so a rule marks
-                    where the four pillars end and the rest begin.
+          {/*
+            On a phone the strip scrolls, and it used to give no sign of that:
+            two and a bit pills were visible, the third sliced by the viewport
+            edge, and nothing said the other seven existed. The pills are
+            smaller here, the cut edge is turned into a deliberate fade, and a
+            pair of arrows both announces the overflow and pages through it.
+            From md the pills simply wrap and none of this applies.
+          */}
+          <div className="relative">
+            <div
+              ref={railRef}
+              role="tablist"
+              aria-label="Services"
+              className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {services.map((s, i) => (
+                <React.Fragment key={s.slug}>
+                  {/* On mobile the row scrolls and never wraps, so a rule marks
+                      where the four pillars end and the rest begin.
 
-                    Desktop had a forced line break here doing the same job, and
-                    it is gone: a full-width item forms a flex line of its own,
-                    so the pillars were separated from the row below by two
-                    vertical gaps where every other row had one. Uneven spacing
-                    cost more than the grouping was worth, and the pills wrap
-                    onto their own rows at the usual widths anyway. */}
-                {i === PILLAR_COUNT && (
-                  <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
-                )}
-                <FilterPill label={s.title} active={s.slug === active} onSelect={() => select(s.slug)} />
-              </React.Fragment>
-            ))}
+                      Desktop had a forced line break here doing the same job,
+                      and it is gone: a full-width item forms a flex line of its
+                      own, so the pillars were separated from the row below by
+                      two vertical gaps where every other row had one. */}
+                  {i === PILLAR_COUNT && (
+                    <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
+                  )}
+                  <FilterPill label={s.title} active={s.slug === active} onSelect={() => select(s.slug)} />
+                </React.Fragment>
+              ))}
+            </div>
+
+            {/* Fades sit over the scroll edges, so a pill leaving the strip
+                dissolves instead of being chopped in half. They are shown only
+                when there is actually something in that direction. */}
+            <div
+              aria-hidden="true"
+              className={`md:hidden pointer-events-none absolute inset-y-0 -left-6 w-10 bg-gradient-to-r from-[#badeda] to-transparent transition-opacity duration-300 ${canLeft ? 'opacity-100' : 'opacity-0'}`}
+            />
+            <div
+              aria-hidden="true"
+              className={`md:hidden pointer-events-none absolute inset-y-0 -right-6 w-10 bg-gradient-to-l from-[#badeda] to-transparent transition-opacity duration-300 ${canRight ? 'opacity-100' : 'opacity-0'}`}
+            />
+          </div>
+
+          {/* Phone only: the pills wrap from md and there is nothing to page. */}
+          <div className="md:hidden flex items-center justify-end gap-2 mt-3">
+            <button
+              onClick={() => page(-1)}
+              disabled={!canLeft}
+              aria-label="Vorherige Services"
+              className="w-9 h-9 rounded-full border border-[#0b0f2a]/20 flex items-center justify-center text-[#0b0f2a] disabled:opacity-25 transition-opacity"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => page(1)}
+              disabled={!canRight}
+              aria-label="Weitere Services"
+              className="w-9 h-9 rounded-full border border-[#0b0f2a]/20 flex items-center justify-center text-[#0b0f2a] disabled:opacity-25 transition-opacity"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
