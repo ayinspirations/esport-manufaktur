@@ -18,6 +18,27 @@ const TILE_FROM = { opacity: 0, y: 32 };
 const TILE_TO = { opacity: 1, y: 0 };
 const TILE_VIEWPORT = { once: true, margin: '-80px' } as const;
 
+// The tile arrives, then the copy on it -- not both at once. A headline that is
+// already painted while the tile under it is still sliding up reads as two
+// things happening on top of each other.
+//
+// Done with variants rather than a second `whileInView`: a variant name
+// propagates from a motion parent to its motion children automatically, so the
+// overlay starts from the tile's own animation rather than from its own
+// viewport test, and the two can never drift apart.
+const TILE_VARIANTS = {
+  hidden: TILE_FROM,
+  show: (delay: number) => ({
+    ...TILE_TO,
+    transition: { duration: DUR.reveal, delay, ease: EASE_REVEAL, delayChildren: delay + 0.26 }
+  })
+};
+
+const TILE_TEXT_VARIANTS = {
+  hidden: { opacity: 0, y: 14 },
+  show: { opacity: 1, y: 0, transition: { duration: DUR.interact, ease: EASE_REVEAL } }
+};
+
 // Stagger restarts on each grid row (2 tiles, then 1 full-width, then 3), so
 // no tile waits on the delay of one sitting above it in a different row.
 const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, STAGGER.card * 2];
@@ -49,10 +70,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[0]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[0], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -69,7 +91,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Employer Branding
@@ -80,7 +102,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                       T-Systems
                     </h3>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -88,10 +110,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-6 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[1]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[1], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -108,7 +131,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Recruiting
@@ -119,7 +142,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                       Hagebau Bolay
                     </h3>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -128,10 +151,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-12 h-[400px] md:h-[600px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[2]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[2], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -148,7 +172,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-8 md:p-12 flex flex-col justify-between z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
                     <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
                       Event Production
@@ -159,7 +183,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                       0711 Showdown
                     </h3>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -168,10 +192,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[3]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[3], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -207,10 +232,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.div 
               className="h-full w-full"
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[4]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[4], ease: EASE_REVEAL }}
             >
               <div
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
@@ -246,10 +272,11 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
           <div className="col-span-1 lg:col-span-4 h-[400px] lg:h-[500px]">
             <motion.button
               onClick={() => onScroll?.('contact-section')}
-              initial={TILE_FROM}
-              whileInView={TILE_TO}
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[5]}
+              initial="hidden"
+              whileInView="show"
               viewport={TILE_VIEWPORT}
-              transition={{ duration: DUR.reveal, delay: TILE_DELAY[5], ease: EASE_REVEAL }}
               className="relative group overflow-hidden rounded-shell bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
             >
               {/* The closing tile stands on the hero's own ground, so the page

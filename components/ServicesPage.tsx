@@ -166,7 +166,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       */}
       <div
         ref={filterRef}
-        className="sticky z-40 bg-[#badeda] border-b border-[#0b0f2a]/10"
+        className="sticky z-50 bg-[#badeda] border-b border-[#0b0f2a]/10"
         style={{ top: 'var(--nav-clearance)' }}
       >
         <div className={`${CONTAINER} py-4 md:py-5`}>
@@ -221,6 +221,12 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          // A strip of canvas between the filter and the service below it.
+          // Without it the service's hero artwork starts on the pixel the
+          // filter ends, so the bar reads as stuck onto the picture rather
+          // than as chrome sitting above the page -- and while scrolling, the
+          // artwork appears to run straight into the pills.
+          className="pt-6 md:pt-10"
         >
           <ServiceView
             content={content}

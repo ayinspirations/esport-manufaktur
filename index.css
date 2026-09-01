@@ -58,16 +58,10 @@ html {
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  /* Inlined as a data URI -- see the matching note in index.html. This rule
-     loads after that one and would otherwise win the cascade and put the
-     third-party request straight back. Keep the two in step. */
   .noise {
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
     opacity: 0.05;
     pointer-events: none;
-    /* Fixed, full-viewport, above everything: without its own compositor layer
-       every scroll frame repaints the grain across the whole viewport. */
-    transform: translateZ(0);
   }
 
   /* Text link with an underline that wipes in from the left. Belongs to the
@@ -219,14 +213,38 @@ html {
   @apply w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black py-7 rounded-2xl flex items-center justify-center transition-all active:scale-[0.98] shadow-[0_20px_50px_-10px_rgba(16,185,129,0.3)] tracking-tighter text-2xl cursor-pointer border-none !important;
 }
 
-/* Scrollbar styles */
+/* Scrollbar -- deliberately almost invisible.
+
+   It used to be an 8px bar with a #badeda track and a solid black thumb, which
+   is a light-canvas colour scheme painted down the side of a page whose hero is
+   near-black: over the hero it read as a bright stripe stuck to the edge of the
+   screen. A scrollbar is chrome, not a design element -- it should be findable
+   when looked for and unnoticed otherwise, on both the dark hero and the light
+   canvas below it.
+
+   Transparent track, a translucent neutral thumb that works over either ground,
+   and a little more presence on hover. */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #badeda;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #000;
-  border-radius: 4px;
+  background: rgba(127, 145, 155, 0.32);
+  border-radius: 10px;
+  /* Transparent border + background-clip insets the visible thumb, so it reads
+     as a slim pill floating in the gutter rather than a bar filling it. */
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(127, 145, 155, 0.55);
+  background-clip: content-box;
+}
+
+/* Firefox has no ::-webkit pseudo-elements; these two are the whole API. */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(127, 145, 155, 0.32) transparent;
 }

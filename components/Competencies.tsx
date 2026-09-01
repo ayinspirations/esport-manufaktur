@@ -5,6 +5,15 @@ import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
 import { useInView } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
 
+/**
+ * How long a tile's own text waits after the tile starts moving.
+ *
+ * Roughly two thirds of the tile's travel: long enough that the surface has
+ * clearly arrived first, short enough that the two still read as one gesture
+ * rather than two separate animations.
+ */
+const TEXT_LAG = 0.26;
+
 // ---------------------------------------------------------------------------
 // The four pillars
 // ---------------------------------------------------------------------------
@@ -91,7 +100,18 @@ const PillarCard: React.FC<{
 
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/25 to-transparent" />
 
-      <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex items-end justify-between gap-3">
+      {/* The tile arrives, then its label -- not both at once.
+          A card whose text is already painted while the card itself is still
+          sliding up reads as two things happening on top of each other. Held
+          back by a beat, the tile lands and the label settles onto it. */}
+      <div
+        className="absolute inset-x-0 bottom-0 p-5 md:p-6 flex items-end justify-between gap-3"
+        style={{
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(14px)',
+          transition: `opacity ${DUR.interact}s ${EASE_REVEAL_CSS} ${delay + TEXT_LAG}s, transform ${DUR.interact}s ${EASE_REVEAL_CSS} ${delay + TEXT_LAG}s`
+        }}
+      >
         <div className="min-w-0 card-text-col">
           <h3 className="text-white font-black text-lg lg:text-[19px] tracking-tight uppercase leading-[1.1]">
             {item.title}
