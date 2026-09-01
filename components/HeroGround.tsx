@@ -39,12 +39,17 @@ export const HeroGround: React.FC<HeroGroundProps> = ({ glowRef, gridRef, classN
     />
     <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
 
-    {/* Diagonal line pattern -- two layers at different spacing so it reads as
-        depth rather than a flat repeating wallpaper, each masked with a radial
-        (bright center-right, fading toward the edges) intersected with a vertical
-        fade. White-based mask stops on purpose: black-to-transparent gradients can
-        render as luminance masks in some browsers (black ~= invisible regardless
-        of alpha), wiping the pattern out instead of giving a controlled fade. */}
+    {/* Diagonal line pattern, masked with a radial (bright center-right, fading
+        toward the edges) intersected with a vertical fade. White-based mask stops
+        on purpose: black-to-transparent gradients can render as luminance masks in
+        some browsers (black ~= invisible regardless of alpha), wiping the pattern
+        out instead of giving a controlled fade.
+
+        One layer, not two. There used to be a second set of lines at twice the
+        spacing in lime (rgba(132, 204, 22, 0.4)) at 25% opacity, meant to add
+        depth. At that opacity over a near-black navy lime has no chroma left to
+        show -- it landed as a flat warm grey, so what it actually added was a
+        second, muddier grid interleaved between the teal one. */}
     <div ref={gridRef} className="absolute inset-0">
       <div
         className="absolute top-0 right-0 w-[85%] h-full opacity-60"
@@ -57,15 +62,6 @@ export const HeroGround: React.FC<HeroGroundProps> = ({ glowRef, gridRef, classN
             'radial-gradient(ellipse 70% 65% at 68% 45%, white 0%, white 35%, transparent 78%), linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%)',
           maskComposite: 'intersect',
           WebkitMaskComposite: 'source-in'
-        }}
-      />
-      <div
-        className="absolute top-0 right-0 w-[60%] h-full opacity-25"
-        style={{
-          backgroundImage:
-            'repeating-linear-gradient(115deg, transparent, transparent 78px, rgba(132, 204, 22, 0.4) 78px, rgba(132, 204, 22, 0.4) 80px)',
-          maskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 72% 40%, white 0%, transparent 75%)'
         }}
       />
     </div>
