@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, ChevronDown, ChevronLeft } from 'lucide-react';
+import { ArrowRight, ChevronDown, ChevronLeft, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { servicesContent } from './servicesContent';
-import { useDocumentHead } from '../hooks/useDocumentHead';
+import type { ServiceContent } from './servicesContent';
 
 // The site's canvas is light (#badeda) -- dark is reserved for accents and
 // tiles only. It is a single ground now: the light sections used to alternate
@@ -15,16 +14,13 @@ const TILE = 'tile-gradient text-white';
 const SECTION = 'py-20 md:py-28 lg:py-32';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
-interface ServiceDetailPageProps {
-  /**
-   * The page looks its own copy up rather than being handed it, so that
-   * `servicesContent` is imported here -- inside this lazily-loaded chunk --
-   * and not by the router that decides to render it.
-   */
-  slug: string;
-  onNavigate: (page: any) => void;
-  scrollToSection: (id: string) => void;
+interface ServiceViewProps {
+  content: ServiceContent;
   onOpenBooking: () => void;
+  /** Jumps to the Best Cases section on the homepage. */
+  onGoToBestCases: () => void;
+  /** Jumps to the contact form on the homepage. */
+  onGoToContact: () => void;
 }
 
 const PrimaryButton: React.FC<{ onClick: () => void; children: React.ReactNode; className?: string }> = ({
@@ -191,35 +187,30 @@ const ProcessInteractive: React.FC<{ steps: { title: string; text: string }[] }>
   );
 };
 
-export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
-  slug,
-  onNavigate,
-  scrollToSection,
-  onOpenBooking
+/**
+ * One service, rendered in full.
+ *
+ * Split out of the old per-slug ServiceDetailPage so the services page can
+ * swap between services without a route change. It renders content and
+ * nothing else -- no document title, no scroll reset, no routing -- because
+ * all of that now belongs to the page that owns the filter, and doing it here
+ * as well would fire it again on every switch.
+ *
+ * Every section below the hero is conditional. The four pillars supply all of
+ * them; the shorter services supply the hero, their Leistungen and the closer,
+ * and the sections they have nothing to say in are left out rather than
+ * printed as an empty heading.
+ */
+export const ServiceView: React.FC<ServiceViewProps> = ({
+  content,
+  onOpenBooking,
+  onGoToBestCases: goToBestCases,
+  onGoToContact: goToContact
 }) => {
-  const content = servicesContent[slug];
+  // Collapses back to the first question whenever the service changes -- the
+  // key on this component in ServicesPage remounts it, so this is simply the
+  // initial state again rather than an effect that has to notice the switch.
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-
-  useDocumentHead({
-    title: content.seo.title,
-    description: content.seo.description,
-    ogImage: content.seo.ogImage,
-    canonicalPath: content.path
-  });
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, []);
-
-  const goToBestCases = () => {
-    onNavigate('home');
-    requestAnimationFrame(() => scrollToSection('best-cases'));
-  };
-
-  const goToContact = () => {
-    onNavigate('home');
-    requestAnimationFrame(() => scrollToSection('contact-section'));
-  };
 
   return (
     <div className="w-full">
@@ -232,12 +223,24 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
           the canvas so the two read as one hero, not two blocks. */}
       <section className={`relative w-full ${CANVAS}`}>
         <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
-          <img
-            src={content.hero.image}
-            alt={content.hero.imageAlt}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="eager"
-          />
+          {content.hero.image ? (
+            <img
+              src={content.hero.image}
+              alt={content.hero.imageAlt ?? ''}
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
+            />
+          ) : (
+            /* No photograph for this service yet. A branded band on the site's
+               own dark ground, clearly labelled, rather than a broken image or
+               a flat grey box. */
+            <div className="absolute inset-0 tile-gradient flex flex-col items-center justify-center gap-3">
+              <ImageIcon className="w-9 h-9 text-white/20" />
+              <span className="text-white/40 text-[10px] font-black uppercase tracking-[0.25em] border border-white/15 rounded-full px-3 py-1">
+                Bild folgt
+              </span>
+            </div>
+          )}
           {/* Top scrim for the nav, bottom hand-over to the canvas. */}
           <div
             className="absolute inset-0 pointer-events-none"
@@ -249,16 +252,6 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
         </div>
 
         <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
-          <Reveal duration={0.6}>
-            <button
-              onClick={() => onNavigate('home')}
-              className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
-              Zur Startseite
-            </button>
-          </Reveal>
-
           {/* stagger 0: these hero headlines run to three or four lines, and a
               per-word stagger made them arrive line by line. The statement
               lands as one piece, keeping the masked slide-up. */}
@@ -284,18 +277,20 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 2. AUSGANGSLAGE ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
-        <div className={CONTAINER}>
-          <div className="grid md:grid-cols-12 gap-8 md:gap-16">
-            <div className="md:col-span-5">
-              <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
+      {content.pain && (
+        <section className={`${CANVAS} ${SECTION}`}>
+          <div className={CONTAINER}>
+            <div className="grid md:grid-cols-12 gap-8 md:gap-16">
+              <div className="md:col-span-5">
+                <RevealText as="h2" by="word" text={content.pain.heading} className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
+              </div>
+              <Reveal delay={0.1} className="md:col-span-7">
+                <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">{content.pain.text}</p>
+              </Reveal>
             </div>
-            <Reveal delay={0.1} className="md:col-span-7">
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">{content.pain.text}</p>
-            </Reveal>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ============ 3. LEISTUNGEN IM DETAIL -- Apple-style tile carousel ============ */}
       <section className={`${CANVAS} ${SECTION}`}>
@@ -345,23 +340,26 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
       </section>
 
       {/* ============ 4. UNSER VORGEHEN -- interactive accordion + visual ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
-        <div className={CONTAINER}>
-          <div className="max-w-2xl mb-12 md:mb-16">
-              <RevealText as="h2" by="word" text={content.vorgehenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
+      {content.vorgehen && content.vorgehen.length > 0 && (
+        <section className={`${CANVAS} ${SECTION}`}>
+          <div className={CONTAINER}>
+            <div className="max-w-2xl mb-12 md:mb-16">
+              <RevealText as="h2" by="word" text={content.vorgehenHeading ?? 'Unser Vorgehen'} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
 
-          <Reveal>
-            <ProcessInteractive steps={content.vorgehen} />
-          </Reveal>
-        </div>
-      </section>
+            <Reveal>
+              <ProcessInteractive steps={content.vorgehen} />
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* ============ 5. FÜR WEN ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
+      {content.fuerWen && content.fuerWen.length > 0 && (
+        <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
-              <RevealText as="h2" by="word" text={content.fuerWenHeading} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
+              <RevealText as="h2" by="word" text={content.fuerWenHeading ?? 'Für wen'} className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]" />
             </div>
           <Reveal delay={0.1} className="flex flex-wrap justify-center gap-3 md:gap-4">
             {content.fuerWen.map((chip, i) => (
@@ -374,9 +372,11 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
             ))}
           </Reveal>
         </div>
-      </section>
+        </section>
+      )}
 
       {/* ============ 6. BEST-CASE-TEASER ============ */}
+      {content.bestCase && (
       <section className={`${CANVAS} ${SECTION}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-16 items-center">
@@ -401,8 +401,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
           </div>
         </div>
       </section>
+      )}
 
       {/* ============ 7. FAQ ============ */}
+      {content.faq && content.faq.length > 0 && (
       <section className={`${CANVAS} ${SECTION}`}>
         <div className={`${CONTAINER} max-w-[900px]`}>
           <Reveal className="text-center mb-12 md:mb-16">
@@ -442,6 +444,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({
           </div>
         </div>
       </section>
+      )}
 
       {/* ============ 8. CTA-CLOSER ============ */}
       <section className={`${CANVAS} ${SECTION} pb-28 md:pb-36`}>

@@ -58,6 +58,29 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # ---------------------------------------------------------------------------
+# Renamed services
+# ---------------------------------------------------------------------------
+# "Messen & Events" became "Events & Erlebniswelten" and "Content & Streaming"
+# became "Content & Live-Kommunikation". Both addresses are indexed, so they
+# get a real 301 rather than being quietly rewritten -- a crawler is then told
+# the page moved and carries its ranking across, instead of finding two URLs
+# serving the same content.
+#
+# These must stay above the catch-all below: Netlify takes the first rule that
+# matches, and the catch-all matches everything.
+[[redirects]]
+  from = "/services/messen-events"
+  to = "/services/events-erlebniswelten"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/services/content-streaming"
+  to = "/services/content-live-kommunikation"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
 # SPA fallback
 # ---------------------------------------------------------------------------
 # Netlify serves a real file whenever one exists at the requested path, so this

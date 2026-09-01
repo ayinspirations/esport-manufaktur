@@ -9,7 +9,7 @@ import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { BlogSection } from './components/BlogSection';
 import { blogPosts } from './components/blogPosts';
-import { serviceSlugs } from './components/serviceSlugs';
+import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
@@ -32,7 +32,6 @@ import { smoothScrollToElement } from './components/motion';
 // opened; `warmRouteChunks` below then pulls them in during idle time, so in
 // practice the chunk is already cached by the time it is clicked and the
 // Suspense fallback never actually shows.
-const ServicesDetail = lazy(() => import('./components/ServicesDetail').then(m => ({ default: m.ServicesDetail })));
 const BlogDetail = lazy(() => import('./components/BlogDetail').then(m => ({ default: m.BlogDetail })));
 const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
 const CaseDetail = lazy(() => import('./components/CaseDetail').then(m => ({ default: m.CaseDetail })));
@@ -40,7 +39,7 @@ const TSystemsDetail = lazy(() => import('./components/TSystemsDetail').then(m =
 const BayernZocktDetail = lazy(() => import('./components/BayernZocktDetail').then(m => ({ default: m.BayernZocktDetail })));
 const Showdown0711Detail = lazy(() => import('./components/Showdown0711Detail').then(m => ({ default: m.Showdown0711Detail })));
 const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
-const ServiceDetailPage = lazy(() => import('./components/ServiceDetailPage').then(m => ({ default: m.ServiceDetailPage })));
+const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const CookiePopup = lazy(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
 const BookingModal = lazy(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
@@ -57,40 +56,64 @@ const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidd
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
   | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
-  | 'strategie-konzeption' | 'content-streaming' | 'messen-events' | 'digitale-loesungen' | 'ueber-uns';
-
-const blogSlugs = blogPosts.map((post) => post.slug);
-// These pages use real pathnames (/services/<slug>, /ueber-uns) instead of
-// the #hash routing the rest of the site uses, so they get proper, distinct,
-// crawlable URLs for SEO. Everything else keeps working exactly as before.
-const servicePages = serviceSlugs as readonly string[] as Page[];
+  | 'ueber-uns';
 
 /**
- * Resolves the current page from either a real pathname (/services/<slug>,
- * used by the 4 service detail pages) or the #hash the rest of the site still
- * uses -- read for the very first render and again on every
- * hashchange/popstate (browser back/forward).
+ * A resolved location: which page, and -- on the services page -- which
+ * service is open.
+ *
+ * The individual services used to each be their own `Page`, back when each was
+ * a separate route with its own component. They are one page with a filter
+ * now, so the service is a parameter of that page rather than a page of its
+ * own. It still has its own URL: `/services/<slug>` addresses the services
+ * page with that service selected.
+ */
+interface Route {
+  page: Page;
+  service?: string;
+}
+
+const blogSlugs = blogPosts.map((post) => post.slug);
+
+/**
+ * Resolves the current route from either a real pathname (/services,
+ * /services/<slug>, /ueber-uns) or the #hash the rest of the site still uses
+ * -- read for the very first render and again on every hashchange/popstate
+ * (browser back/forward).
  *
  * At module scope rather than inside the mount effect so that the first render
  * can already be the right page; see the `useState` initialiser below.
  */
-const resolvePage = (): Page => {
+const resolveRoute = (): Route => {
   const path = window.location.pathname.replace(/\/+$/, '');
-  const serviceMatch = path.match(/^\/services\/([a-z-]+)$/);
-  if (serviceMatch && servicePages.includes(serviceMatch[1] as Page)) {
-    return serviceMatch[1] as Page;
+
+  const serviceMatch = path.match(/^\/services\/([a-z0-9-]+)$/);
+  if (serviceMatch) {
+    // resolveServiceSlug follows a rename, so the two slugs these pages used
+    // to live under still land on the right service instead of a 404.
+    return { page: 'services', service: resolveServiceSlug(serviceMatch[1]) };
+  }
+  if (path === '/services') {
+    return { page: 'services' };
   }
   if (path === '/ueber-uns') {
-    return 'ueber-uns';
+    return { page: 'ueber-uns' };
   }
 
   const currentHash = window.location.hash.replace('#', '');
   const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', ...blogSlugs];
   if (validPages.includes(currentHash)) {
-    return currentHash as Page;
+    return { page: currentHash as Page };
   }
-  return 'home';
+  return { page: 'home' };
 };
+
+/**
+ * Navigation targets. A plain page id, or `service:<slug>` to open the
+ * services page on one particular service -- which is what the homepage
+ * pillar tiles send.
+ */
+const SERVICE_TARGET = /^service:([a-z0-9-]+)$/;
 
 export default function App() {
   // Resolved during the first render, not afterwards in an effect.
@@ -101,7 +124,8 @@ export default function App() {
   // after React had already committed once. Reading the URL in the state
   // initialiser makes the first commit the correct page, so the hero (or
   // whichever route was linked) is in the very first paint.
-  const [activePage, setActivePage] = useState<Page>(resolvePage);
+  const [route, setRoute] = useState<Route>(resolveRoute);
+  const { page: activePage } = route;
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   // Latches true on the first open; see the BookingModal mount below.
   const [hasOpenedBooking, setHasOpenedBooking] = useState(false);
@@ -114,7 +138,7 @@ export default function App() {
   useEffect(() => {
 
     const handleNav = () => {
-      setActivePage(resolvePage());
+      setRoute(resolveRoute());
       // Explicitly instant. The document has scroll-behavior: smooth, so a
       // bare scrollTo(0, 0) animates -- and an animated reset that is still
       // running when the page content swaps gets cut off part-way, leaving
@@ -130,18 +154,29 @@ export default function App() {
     };
   }, []);
 
-  const navigateTo = (page: Page) => {
+  /**
+   * `target` is a page id, or `service:<slug>` to open the services page on a
+   * particular service.
+   */
+  const navigateTo = (target: string) => {
     document.querySelectorAll('video').forEach(v => {
       v.pause();
       v.currentTime = 0;
     });
-    setActivePage(page);
+
+    const service = target.match(SERVICE_TARGET)?.[1];
+    const page = (service ? 'services' : target) as Page;
+
+    setRoute({ page, service });
     // Instant for the same reason as handleNav above: this reset races the
     // render of a page that is usually much shorter, and an animated one
     // loses that race.
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-    if (servicePages.includes(page)) {
-      window.history.pushState(null, '', `/services/${page}`);
+
+    if (service) {
+      window.history.pushState(null, '', `/services/${service}`);
+    } else if (page === 'services') {
+      window.history.pushState(null, '', '/services');
     } else if (page === 'ueber-uns') {
       window.history.pushState(null, '', '/ueber-uns');
     } else {
@@ -149,11 +184,25 @@ export default function App() {
     }
   };
 
-  const openBlogPost = (slug: string) => navigateTo(slug as Page);
+  const openBlogPost = (slug: string) => navigateTo(slug);
+
+  /**
+   * Switching service inside the services page.
+   *
+   * Deliberately not `navigateTo`: that resets the scroll to the top of the
+   * document, which is right when the whole page changes and wrong here --
+   * the services page scrolls itself back to its filter bar, keeping the
+   * filter in view so the next switch is one click away rather than one
+   * scroll-up-and-click.
+   */
+  const selectService = (service: string) => {
+    setRoute({ page: 'services', service });
+    window.history.pushState(null, '', `/services/${service}`);
+  };
 
   const scrollToSection = (id: string) => {
     if (activePage !== 'home') {
-      setActivePage('home');
+      setRoute({ page: 'home' });
       window.history.pushState(null, '', '/#home');
       // The homepage has to mount before the target exists. A single frame is
       // not always enough, so poll a few frames rather than silently doing
@@ -180,7 +229,7 @@ export default function App() {
   const standardSectionPadding = "py-24 md:py-32";
 
   return (
-    <div className="relative min-h-screen selection:bg-emerald-500 selection:text-white bg-[#badeda] overflow-x-hidden w-full">
+    <div className="relative min-h-screen selection:bg-emerald-500 selection:text-white bg-[#badeda] clip-x w-full">
       <div className="noise fixed inset-0 z-50 pointer-events-none" />
       
       <Navbar onNavigate={navigateTo} scrollToSection={scrollToSection} activePage={activePage === 'services' ? 'services' : 'home'} />
@@ -207,7 +256,15 @@ export default function App() {
         )}
 
         <Suspense fallback={activePage === 'home' ? null : <RouteFallback />}>
-        {activePage === 'services' && <ServicesDetail onNavigate={navigateTo} />}
+        {activePage === 'services' && (
+          <ServicesPage
+            slug={route.service}
+            onNavigate={navigateTo}
+            onSelectService={selectService}
+            scrollToSection={scrollToSection}
+            onOpenBooking={openBooking}
+          />
+        )}
         {/* Back from a case returns to the Best Cases section the visitor came
             from, not the top of the homepage -- same as BlogDetail below. */}
         {activePage === 'hagebau' && <CaseDetail onBack={() => scrollToSection('best-cases')} />}
@@ -220,14 +277,6 @@ export default function App() {
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
-        )}
-        {servicePages.includes(activePage) && (
-          <ServiceDetailPage
-            slug={activePage}
-            onNavigate={navigateTo}
-            scrollToSection={scrollToSection}
-            onOpenBooking={openBooking}
-          />
         )}
         </Suspense>
       </main>

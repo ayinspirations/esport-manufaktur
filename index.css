@@ -7,7 +7,17 @@
     font-family: 'Inter', sans-serif;
     background-color: #020617;
     color: #000000;
+    /* Paired declaration, and the order matters.
+       `overflow-x: hidden` makes the element a scroll container, and a
+       scroll container is what `position: sticky` inside it sticks to --
+       so the services filter scrolled away with the page instead of
+       pinning under the nav. `overflow-x: clip` clips exactly the same
+       way without creating one.
+       Browsers that do not know `clip` ignore the second declaration and
+       keep `hidden`: they still get the clipping, they just do not get
+       sticky, which is what they had before either way. */
     overflow-x: hidden;
+    overflow-x: clip;
     width: 100%;
     position: relative;
   }
@@ -15,8 +25,28 @@
 
 html {
   overflow-x: hidden;
+  overflow-x: clip;
   width: 100%;
   background-color: #020617;
+}
+
+/* Same pairing as a utility, for the app shell -- see the note on body. */
+.clip-x {
+  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+:root {
+  /* Vertical room the floating navigation occupies: a full-width strip on
+     mobile, a compact pill inset from the top on desktop. Anything that pins
+     itself below the nav -- currently the services filter -- offsets by this
+     rather than hard-coding the number in a component. `navClearance()` in
+     ServicesPage.tsx mirrors it for the scroll maths; keep the two together. */
+  --nav-clearance: 64px;
+}
+
+@media (min-width: 768px) {
+  :root { --nav-clearance: 96px; }
 }
 
 

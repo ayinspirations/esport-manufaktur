@@ -1,4 +1,4 @@
-import { serviceSlugs as routableSlugs } from './serviceSlugs';
+import { serviceSlugs as routableSlugs } from './serviceCatalogue';
 
 export interface ServiceCard {
   title: string;
@@ -23,6 +23,16 @@ export interface ServiceFaqItem {
   a: string;
 }
 
+/**
+ * One service's page copy.
+ *
+ * The four pillars fill this out completely. The six services reached only
+ * through the filter carry a shorter version -- hero, Leistungen, "Für wen",
+ * closer -- so everything they do not have is optional and the renderer skips
+ * the section rather than printing an empty heading. Nothing here is faked to
+ * fill a slot: a service without a written case study simply has no case
+ * study section.
+ */
 export interface ServiceContent {
   slug: string;
   path: string;
@@ -36,24 +46,25 @@ export interface ServiceContent {
     headline: string;
     subline: string;
     ctaLabel: string;
-    image: string;
-    imageAlt: string;
+    /** Optional: without one the hero renders the branded placeholder band. */
+    image?: string;
+    imageAlt?: string;
   };
-  pain: {
+  pain?: {
     heading: string;
     text: string;
   };
   leistungenHeading: string;
   leistungen: ServiceLeistungGroup[];
-  vorgehenHeading: string;
-  vorgehen: ServiceStep[];
-  fuerWenHeading: string;
-  fuerWen: string[];
-  bestCase: {
+  vorgehenHeading?: string;
+  vorgehen?: ServiceStep[];
+  fuerWenHeading?: string;
+  fuerWen?: string[];
+  bestCase?: {
     heading: string;
     text: string;
   };
-  faq: ServiceFaqItem[];
+  faq?: ServiceFaqItem[];
   ctaCloser: {
     headline: string;
     primaryLabel: string;
@@ -140,22 +151,22 @@ export const servicesContent: Record<string, ServiceContent> = {
     }
   },
 
-  'content-streaming': {
-    slug: 'content-streaming',
-    path: '/services/content-streaming',
+  'content-live-kommunikation': {
+    slug: 'content-live-kommunikation',
+    path: '/services/content-live-kommunikation',
     seo: {
       title: 'Gaming Content & Live-Streaming Produktion | eSport Manufaktur',
       description:
         'Professionelle Streaming-Produktion, Formatentwicklung und Creator-Kooperationen für authentischen Gaming-Content. Jetzt Projekt starten.',
-      ogImage: 'https://images.unsplash.com/photo-1598550874175-4d0fe4a2c90b?auto=format&fit=crop&q=80&w=1600'
+      ogImage: '/REWExfckoln_1770162125933.jpg'
     },
-    h1: 'Content & Streaming, das die Gaming-Community wirklich erreicht',
+    h1: 'Content & Live-Kommunikation, die die Gaming-Community wirklich erreicht',
     hero: {
       headline: 'Content, der nicht wie Werbung aussieht — weil er keine ist.',
       subline:
         'Live-Produktionen, Streaming-Formate und Creator-Kooperationen, die eure Marke authentisch im Gaming-Umfeld positionieren.',
       ctaLabel: 'Content-Projekt anfragen',
-      image: 'https://images.unsplash.com/photo-1598550874175-4d0fe4a2c90b?auto=format&fit=crop&q=80&w=1600',
+      image: '/REWExfckoln_1770162125933.jpg',
       imageAlt: 'Live-Streaming Produktion und Gaming Content Produktion bei eSport Manufaktur'
     },
     pain: {
@@ -218,16 +229,16 @@ export const servicesContent: Record<string, ServiceContent> = {
     }
   },
 
-  'messen-events': {
-    slug: 'messen-events',
-    path: '/services/messen-events',
+  'events-erlebniswelten': {
+    slug: 'events-erlebniswelten',
+    path: '/services/events-erlebniswelten',
     seo: {
       title: 'Gaming-Aktivierungen für Messen & Events | eSport Manufaktur',
       description:
         'Standkonzeption, technisches Setup und Turniere vor Ort — Gaming-Aktivierungen, die auf Messen und Events wirklich Zielgruppen anziehen.',
       ogImage: '/images/competencies/eventtechnik.jpg'
     },
-    h1: 'Messen & Events mit echter Gaming-Anziehungskraft',
+    h1: 'Events & Erlebniswelten mit echter Gaming-Anziehungskraft',
     hero: {
       headline: 'Ein Stand allein zieht niemanden an. Ein Erlebnis schon.',
       subline:
@@ -376,22 +387,259 @@ export const servicesContent: Record<string, ServiceContent> = {
       primaryLabel: 'Projekt anfragen',
       secondaryLabel: 'Whitelabel-Demo anfragen'
     }
+  },
+
+  // -------------------------------------------------------------------------
+  // The six services reached through the filter.
+  //
+  // Their copy is the company's own wording from the old homepage carousel,
+  // restructured rather than rewritten: each hero subline is the description
+  // that service already carried, and every Leistungen card names something
+  // that description already listed. Nothing is invented to fill a section --
+  // where there is no written Vorgehen, case study or FAQ yet, the section is
+  // simply absent and the page skips it. These are the entries to expand when
+  // real copy for them exists.
+  // -------------------------------------------------------------------------
+  'eventtechnik-produktion': {
+    slug: 'eventtechnik-produktion',
+    path: '/services/eventtechnik-produktion',
+    seo: {
+      title: 'Eventtechnik & Produktion für Gaming-Events | eSport Manufaktur',
+      description:
+        'Gaming-Hardware, Netzwerktechnik, Regie, Streaming- und Veranstaltungstechnik: technische Infrastruktur und Betrieb für Gaming- und eSport-Events.',
+      ogImage: '/images/hagebau/slide-2.jpg'
+    },
+    h1: 'Eventtechnik & Produktion für Gaming- und eSport-Events',
+    hero: {
+      headline: 'Die Technik, auf der das Erlebnis läuft.',
+      subline:
+        'Von Gaming-Hardware und Netzwerktechnik bis zu Regie, Streaming- und Veranstaltungstechnik: Wir planen die technische Infrastruktur und sorgen gemeinsam mit unseren Partnern für einen reibungslosen Betrieb vor Ort.',
+      ctaLabel: 'Technik-Setup anfragen',
+      image: '/images/hagebau/slide-2.jpg',
+      imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von eSport Manufaktur'
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Gaming-Hardware', text: 'PCs, Konsolen und Peripherie in der Konfiguration, die das Format wirklich braucht.' },
+          { title: 'Netzwerktechnik', text: 'Stabile Verbindungen für Turnierbetrieb, Streaming und Besucher-WLAN.' },
+          { title: 'Regie & Streaming-Technik', text: 'Bildregie, Übertragung und Signalwege für die Live-Ausspielung.' },
+          { title: 'Veranstaltungstechnik', text: 'Licht, Ton und Bühnentechnik als Teil desselben Setups statt als Fremdgewerk.' },
+          { title: 'Technische Planung', text: 'Infrastruktur, Stromlast und Aufbaulogik vorab durchgerechnet.' },
+          { title: 'Betrieb vor Ort', text: 'Gemeinsam mit unseren Partnern während der gesamten Laufzeit im Einsatz.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Marken & Unternehmen', 'Messeveranstalter', 'Vereine & Verbände', 'Agenturen'],
+    ctaCloser: {
+      headline: 'Erzählt uns von eurem Setup.',
+      primaryLabel: 'Technik-Setup anfragen'
+    }
+  },
+
+  'art-design-messebau': {
+    slug: 'art-design-messebau',
+    path: '/services/art-design-messebau',
+    seo: {
+      title: 'Art Design & Messebau für Gaming-Events | eSport Manufaktur',
+      description:
+        'Maßgeschneiderte Raum- und Ausstattungskonzepte für Gaming- und eSport-Events — individuelle Möbel, Setups und Infrastruktur, realisiert mit erfahrenen Messebau-Partnern.',
+      ogImage: '/hero-rewe.jpg'
+    },
+    h1: 'Art Design & Messebau für Gaming- und eSport-Events',
+    hero: {
+      headline: 'Ein Raum, der aussieht wie die Marke, die darin steht.',
+      subline:
+        'Du brauchst individuelle Möbel, Setups oder Infrastruktur für dein Gaming- und eSport-Event? Wir entwickeln maßgeschneiderte Raum- und Ausstattungskonzepte und realisieren diese gemeinsam mit erfahrenen Messebau-Partnern.',
+      ctaLabel: 'Raumkonzept anfragen',
+      image: '/hero-rewe.jpg',
+      imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei eSport Manufaktur'
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Individuelle Möbel', text: 'Spielplätze, Theken und Sitzlandschaften, gebaut für das jeweilige Format.' },
+          { title: 'Setups & Infrastruktur', text: 'Die physische Grundlage der Aktivierung, von der Bühne bis zur Spielstation.' },
+          { title: 'Raumkonzepte', text: 'Flächenaufteilung, Wegeführung und Zonierung für den erwarteten Besucherstrom.' },
+          { title: 'Ausstattungskonzepte', text: 'Material, Branding und Ausstattung als ein zusammenhängendes Bild.' },
+          { title: 'Umsetzung mit Partnern', text: 'Realisierung gemeinsam mit erfahrenen Messebau-Partnern.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Marken & Unternehmen', 'Messeaussteller', 'Publisher', 'Agenturen'],
+    ctaCloser: {
+      headline: 'Lasst uns über euren Raum sprechen.',
+      primaryLabel: 'Raumkonzept anfragen'
+    }
+  },
+
+  'foto-video': {
+    slug: 'foto-video',
+    path: '/services/foto-video',
+    seo: {
+      title: 'Foto & Video für Gaming- und eSport-Events | eSport Manufaktur',
+      description:
+        'Erfahrene Foto- und Videoteams begleiten euer Gaming- oder eSport-Event und produzieren Content, der Atmosphäre, Emotionen und Markenbotschaften einfängt.',
+      ogImage: '/REWExfckoln_1770162125933.jpg'
+    },
+    h1: 'Foto & Video für Gaming- und eSport-Events',
+    hero: {
+      headline: 'Was im Raum passiert, bleibt selten im Raum.',
+      subline:
+        'Wir begleiten Gaming- und eSport-Events mit erfahrenen Foto- und Videoteams und produzieren authentischen Content, der Atmosphäre, Emotionen und Markenbotschaften hochwertig einfängt.',
+      ctaLabel: 'Produktion anfragen'
+      // No hero photograph yet -- the branded placeholder band stands in.
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Fotografie vor Ort', text: 'Erfahrene Teams, die das Event über die gesamte Laufzeit begleiten.' },
+          { title: 'Videoproduktion', text: 'Bewegtbild vom Aufbau bis zum Finale, gedreht für die spätere Verwendung.' },
+          { title: 'Atmosphäre & Emotionen', text: 'Die Momente, die ein Event ausmachen — nicht nur die Bühnenbilder.' },
+          { title: 'Markenbotschaften', text: 'Markenauftritt und Aktivierung hochwertig im Bild mitgeführt.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Marken & Unternehmen', 'Vereine & Verbände', 'Messeveranstalter', 'Agenturen'],
+    ctaCloser: {
+      headline: 'Lasst uns euer Event festhalten.',
+      primaryLabel: 'Produktion anfragen'
+    }
+  },
+
+  'creator-talent-activation': {
+    slug: 'creator-talent-activation',
+    path: '/services/creator-talent-activation',
+    seo: {
+      title: 'Creator & Talent Activation im Gaming | eSport Manufaktur',
+      description:
+        'Passende Creator, Hosts, Moderatoren und eSport-Talents für Kampagnen und Events — von der Auswahl über die Konzeption bis zur Community-Aktivierung.',
+      ogImage: '/images/hagebau/slide-1.jpg'
+    },
+    h1: 'Creator & Talent Activation im Gaming-Umfeld',
+    hero: {
+      headline: 'Die richtige Stimme erreicht mehr als die größte Reichweite.',
+      subline:
+        'Wir integrieren passende Creator, Hosts, Moderatoren und eSport-Talents in Kampagnen und Events – von der Auswahl und Konzeption bis zur authentischen Aktivierung der jeweiligen Community.',
+      ctaLabel: 'Creator-Aktivierung anfragen',
+      image: '/images/hagebau/slide-1.jpg',
+      imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei eSport Manufaktur'
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Creator-Auswahl', text: 'Wer wirklich zur Marke und zur Zielgruppe passt — nicht wer gerade groß ist.' },
+          { title: 'Hosts & Moderation', text: 'Bühnenmoderation und Formatführung für Live- und Streaming-Formate.' },
+          { title: 'eSport-Talents', text: 'Spielerinnen und Spieler, die im jeweiligen Titel Glaubwürdigkeit haben.' },
+          { title: 'Konzeption', text: 'Formate, in denen die Beteiligten etwas zu tun haben statt nur dabei zu sein.' },
+          { title: 'Community-Aktivierung', text: 'Ansprache, die in der jeweiligen Community als echt durchgeht.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Marken & Unternehmen', 'Publisher', 'Vereine mit Gaming-Sparte', 'Agenturen'],
+    ctaCloser: {
+      headline: 'Lasst uns die passenden Gesichter finden.',
+      primaryLabel: 'Creator-Aktivierung anfragen'
+    }
+  },
+
+  'scouting-talent-development': {
+    slug: 'scouting-talent-development',
+    path: '/services/scouting-talent-development',
+    seo: {
+      title: 'eSport Scouting & Talent Development | eSport Manufaktur',
+      description:
+        'Ganzheitliche Scouting-Lösungen für Vereine und Verbände — digitale Qualifier, Turnierserien, Scouting-Events und Finals, online und offline verzahnt.',
+      ogImage: '/images/status-quo/rewe-event.jpg'
+    },
+    h1: 'Scouting & Talent Development für Vereine und Verbände',
+    hero: {
+      headline: 'Talente findet man nicht an einem Abend.',
+      subline:
+        'Wir entwickeln ganzheitliche Scouting-Lösungen für Vereine und Verbände – von digitalen Qualifiern und Turnierserien bis zu physischen Scouting-Events und Finals. Online und offline greifen dabei nahtlos ineinander, um Talente gezielt zu erreichen, zu identifizieren und langfristig zu entwickeln.',
+      ctaLabel: 'Scouting-Konzept anfragen',
+      image: '/images/status-quo/rewe-event.jpg',
+      imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei eSport Manufaktur'
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Digitale Qualifier', text: 'Breite Sichtung online, bevor irgendjemand anreisen muss.' },
+          { title: 'Turnierserien', text: 'Wiederkehrende Formate, die über eine Saison hinweg tragen.' },
+          { title: 'Scouting-Events', text: 'Physische Sichtungen, an denen die Auswahl tatsächlich stattfindet.' },
+          { title: 'Finals', text: 'Der Abschluss, der die Serie sichtbar macht — für Talente wie für Partner.' },
+          { title: 'Online & offline verzahnt', text: 'Ein Weg von der ersten Runde bis ins Finale, nicht zwei getrennte Programme.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Vereine', 'Verbände', 'Publisher', 'Marken & Unternehmen'],
+    ctaCloser: {
+      headline: 'Lasst uns euer Scouting aufsetzen.',
+      primaryLabel: 'Scouting-Konzept anfragen'
+    }
+  },
+
+  'recruiting-employer-branding': {
+    slug: 'recruiting-employer-branding',
+    path: '/services/recruiting-employer-branding',
+    seo: {
+      title: 'Recruiting & Employer Branding über Gaming | eSport Manufaktur',
+      description:
+        'Arbeitgebermarken über Gaming, eSport und Gamification erlebbar machen — digitale Challenges, Recruiting-Games, Turniere, Messeaktivierungen und hybride Kampagnen.',
+      ogImage: '/hero-gamechanger.jpg'
+    },
+    h1: 'Recruiting & Employer Branding im Gaming-Umfeld',
+    hero: {
+      headline: 'Junge Zielgruppen lesen keine Stellenanzeigen.',
+      subline:
+        'Wir nutzen Gaming, eSport und Gamification, um Arbeitgebermarken erlebbar zu machen und junge Zielgruppen authentisch zu erreichen – von digitalen Challenges und Recruiting-Games bis zu Turnieren, Messeaktivierungen und hybriden Kampagnen.',
+      ctaLabel: 'Recruiting-Aktivierung anfragen',
+      image: '/hero-gamechanger.jpg',
+      imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei eSport Manufaktur'
+    },
+    leistungenHeading: 'Leistungen im Detail',
+    leistungen: [
+      {
+        cards: [
+          { title: 'Digitale Challenges', text: 'Aufgaben, die Interesse zeigen, bevor jemand ein Formular ausfüllt.' },
+          { title: 'Recruiting-Games', text: 'Spielbare Formate, die die Arbeitgebermarke erlebbar machen.' },
+          { title: 'Turniere', text: 'Wettbewerbsformate als Anlass, mit der Zielgruppe ins Gespräch zu kommen.' },
+          { title: 'Messeaktivierungen', text: 'Der Stand auf der Karrieremesse als Ort, an dem etwas passiert.' },
+          { title: 'Hybride Kampagnen', text: 'Digitale Reichweite und Präsenz vor Ort als eine Kampagne gedacht.' }
+        ]
+      }
+    ],
+    fuerWenHeading: 'Für wen',
+    fuerWen: ['Unternehmen mit Recruiting-Bedarf', 'HR- & Employer-Branding-Teams', 'Hochschulen', 'Agenturen'],
+    ctaCloser: {
+      headline: 'Lasst uns eure Arbeitgebermarke spielbar machen.',
+      primaryLabel: 'Recruiting-Aktivierung anfragen'
+    }
   }
 };
 
-export { serviceSlugs } from './serviceSlugs';
-
-// The router's copy of the slug list lives in `./serviceSlugs` so it can be
-// imported without pulling this file's content in with it. That only stays
-// safe if the two never drift, so the build asserts they match. Stripped from
-// production output -- `import.meta.env.DEV` is a compile-time constant, so
-// the whole block is dead code there and is removed by the minifier.
+// The catalogue in `./serviceCatalogue` is what the router loads on every page
+// view; this file is only pulled in when a service is actually opened. That
+// split only stays safe if the two lists never drift, so development asserts
+// they agree. Stripped from production output -- `import.meta.env.DEV` is a
+// compile-time constant, so the whole block is dead code there and the
+// minifier removes it.
 if (import.meta.env.DEV) {
   const declared = [...routableSlugs].sort().join(',');
   const actual = Object.keys(servicesContent).sort().join(',');
   if (declared !== actual) {
     console.error(
-      `serviceSlugs is out of sync with servicesContent.\n  serviceSlugs:    ${declared}\n  servicesContent: ${actual}`
+      `serviceCatalogue is out of sync with servicesContent.\n  catalogue: ${declared}\n  content:   ${actual}`
     );
   }
 }
