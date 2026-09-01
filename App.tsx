@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
 import { Competencies } from './components/Competencies';
 import { BestCases } from './components/BestCases';
+import { CaseShowcase } from './components/CaseShowcase';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { BlogSection } from './components/BlogSection';
@@ -260,6 +261,11 @@ export default function App() {
             <Purpose onNavigate={navigateTo} />
 
             <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
+
+            {/* The same five cases as a full-viewport stage, directly under the
+                mosaic: the grid above is for comparing them, this is for
+                looking at one. */}
+            <CaseShowcase onNavigate={navigateTo} />
 
             <BlogSection onOpenPost={openBlogPost} />
 
