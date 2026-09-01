@@ -58,14 +58,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
   const desktopBarRef = useRef<HTMLDivElement>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
-  const ground = useNavGround([desktopBarRef, mobileBarRef], scrolled);
+  // Probed at every scroll position, not only once scrolled.
+  //
+  // The desktop bar only needed this to pick which glass it wore, and it wears
+  // none until it scrolls. The phone chrome now needs it from the first pixel:
+  // its band adds no darkness, so at the top of a subpage -- light canvas --
+  // white would be invisible. Throttled to roughly eight reads a second (see
+  // useNavGround), so running it from the top costs nothing worth counting.
+  const ground = useNavGround([desktopBarRef, mobileBarRef], true);
   const glass = GLASS[ground];
   // Only the scrolled *desktop* bar has a ground of its own; unscrolled it is a
   // bare strip over the dark hero, so the white chrome holds there either way.
   const inkOnGlass = ground === 'light' && scrolled;
-  // The phone bar carries its own dark band at every scroll position, so its
-  // chrome is white throughout and needs no tone switch -- only the open menu,
-  // which is the light canvas, takes ink.
+  // The phone band is an untinted blur, so it adds no ground of its own and the
+  // mark and the burger answer to whatever is behind them: white over a dark
+  // backdrop, the dark mark over a light one. The open menu is the light canvas
+  // and always takes ink.
+  const inkOnMobile = ground === 'light';
   const navLinkTone = inkOnGlass
     ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
     : 'text-white/75 hover:text-[#5fd6cf]';
@@ -249,41 +258,29 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           // The open menu stays opaque. It covers most of the viewport rather
           // than skimming across it, so there is no ground behind it worth
           // showing -- and a full menu list needs one of its own.
-          isOpen ? undefined : { background: 'transparent', boxShadow: 'none' }
+          isOpen
+            ? undefined
+            : {
+                // Blur, and nothing else.
+                //
+                // No fill and no tint: the band must not introduce a colour of
+                // its own, so whatever is scrolling underneath shows through at
+                // its own colour, just softened. And no mask fading it out
+                // downward -- that was an attempt to hide the lower edge and it
+                // only drew attention to it. A straight edge on an untinted
+                // blur is barely an edge at all.
+                //
+                // Because the band adds no darkness, the mark and the burger
+                // cannot rely on it: they are toned by what is actually behind
+                // them instead. See `inkOnMobile`.
+                background: 'transparent',
+                backdropFilter: 'blur(6px)',
+                WebkitBackdropFilter: 'blur(6px)',
+                boxShadow: 'none'
+              }
         }
       >
-        {/*
-          The band, as its own layer behind the row rather than a fill on the
-          bar itself.
-
-          That is what lets it be shorter than it looks and still end softly:
-          the layer is taller than the row it sits behind, and a mask fades it
-          out downward, so there is no edge anywhere -- it thins into the page.
-          A background alone could not do that, because the frost would still
-          stop dead on a straight line; masking the layer takes the blur with
-          it.
-
-          It is translucent at every scroll position, not just once scrolled.
-          Whatever is behind stays readable through it, and the mark and the
-          burger can be white throughout -- including at the top of a subpage,
-          where the canvas is light and white chrome had nothing to sit on.
-        */}
-        {!isOpen && (
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-[160%] pointer-events-none"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.62) 38%, rgba(2,6,23,0.28) 70%, rgba(2,6,23,0) 100%)',
-              backdropFilter: 'blur(10px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(10px) saturate(150%)',
-              maskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)'
-            }}
-          />
-        )}
-
-        <div className="relative flex items-center justify-between px-6 py-3.5">
+        <div className="flex items-center justify-between px-6 py-3.5">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center"
@@ -294,20 +291,20 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="eSport Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: isOpen ? 0 : 1 }}
+                style={{ opacity: inkOnMobile || isOpen ? 0 : 1 }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: isOpen ? 1 : 0 }}
+                style={{ opacity: inkOnMobile || isOpen ? 1 : 0 }}
               />
             </span>
           </button>
           <button
             className={`p-2 rounded-full transition-colors ${
-              isOpen
+              inkOnMobile || isOpen
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
