@@ -46,6 +46,7 @@ const FilterPill: React.FC<{
   onSelect: () => void;
 }> = ({ label, active, onSelect }) => (
   <button
+    data-pill
     onClick={onSelect}
     // aria-current rather than aria-pressed: these behave as a set of related
     // links through the same page, and only one is ever the current one.
@@ -118,9 +119,21 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
+    // Measured against the first and last pill, not against scrollLeft.
+    //
+    // The rail is padded at both ends by half-width spacers, which is what lets
+    // a centred first or last pill have somewhere to scroll into. Those spacers
+    // are scrollable distance too, so a raw scrollLeft reading calls the strip
+    // "scrolled left" while the first pill is still perfectly visible, and
+    // offers an arrow that only scrolls into empty space. Asking whether a real
+    // pill is off-screen answers the question the arrows are actually posing.
     const update = () => {
-      setCanLeft(rail.scrollLeft > 4);
-      setCanRight(rail.scrollLeft + rail.clientWidth < rail.scrollWidth - 4);
+      const pills = rail.querySelectorAll<HTMLElement>('[data-pill]');
+      const first = pills[0];
+      const last = pills[pills.length - 1];
+      if (!first || !last) return;
+      setCanLeft(first.offsetLeft < rail.scrollLeft - 4);
+      setCanRight(last.offsetLeft + last.offsetWidth > rail.scrollLeft + rail.clientWidth + 4);
     };
     update();
     rail.addEventListener('scroll', update, { passive: true });
@@ -139,13 +152,29 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: 'smooth' });
   };
 
-  // Keep the selected pill in view when the service changes from anywhere else
-  // -- a homepage tile, a shared link, browser back.
-  useEffect(() => {
+  // Centre the selected pill in the strip.
+  //
+  // It used to be parked a quarter of the way in, which meant the first and
+  // last services simply sat against their edge -- the two you are most likely
+  // to pick, since one is the default and the other ends the list. The spacers
+  // at both ends of the rail are what make a true centre reachable: without
+  // them there is nothing to scroll into, and the browser clamps the position
+  // back to the edge however the maths is written.
+  const centreActive = (behavior: ScrollBehavior) => {
     const rail = railRef.current;
     const pill = rail?.querySelector<HTMLElement>('[aria-current="true"]');
     if (!rail || !pill) return;
-    rail.scrollTo({ left: Math.max(pill.offsetLeft - rail.clientWidth * 0.25, 0), behavior: 'smooth' });
+    const left = pill.offsetLeft - (rail.clientWidth - pill.offsetWidth) / 2;
+    rail.scrollTo({ left: Math.max(left, 0), behavior });
+  };
+
+  // Instant on the first pass, animated afterwards: on mount the strip should
+  // simply already be in the right place, not slide there while the page is
+  // still arriving.
+  const centred = useRef(false);
+  useEffect(() => {
+    centreActive(centred.current ? 'smooth' : 'auto');
+    centred.current = true;
   }, [active]);
 
   const select = useCallback(
@@ -225,9 +254,10 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
               ref={railRef}
               role="tablist"
               aria-label="Services"
-              className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 px-6 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible"
+              className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 md:mx-0 md:flex-wrap md:overflow-visible"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
+              <span aria-hidden="true" className="md:hidden shrink-0 w-1/2" />
               {services.map((s, i) => (
                 <React.Fragment key={s.slug}>
                   {/* On mobile the row scrolls and never wraps, so a rule marks
@@ -243,6 +273,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
                   <FilterPill label={s.title} active={s.slug === active} onSelect={() => select(s.slug)} />
                 </React.Fragment>
               ))}
+              <span aria-hidden="true" className="md:hidden shrink-0 w-1/2" />
             </div>
 
             {/* Fades sit over the scroll edges, so a pill leaving the strip
