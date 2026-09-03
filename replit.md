@@ -1,7 +1,7 @@
-# eSport Manufaktur - Landing Page
+# GG Manufaktur - Landing Page
 
 ## Overview
-A React-based landing page for eSport Manufaktur, featuring a modern Linear-style design. Built with React 19, TypeScript, Vite, and Tailwind CSS.
+A React-based landing page for GG Manufaktur, featuring a modern Linear-style design. Built with React 19, TypeScript, Vite, and Tailwind CSS.
 
 ## Project Structure
 - `App.tsx` - Main application component

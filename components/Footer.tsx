@@ -43,9 +43,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                   href="#home"
                   onClick={(e) => handleNav(e, 'home')}
                   className="flex items-center gap-3 mb-8 group"
-                  aria-label="eSport Manufaktur"
+                  aria-label="GG Manufaktur"
                 >
-                  <img src="/logos/Esport-Manufaktur_Logo-blau.png" alt="eSport Manufaktur" className="h-9 w-auto object-contain" />
+                  <img src="/logos/Esport-Manufaktur_Logo-blau.png" alt="GG Manufaktur" className="h-9 w-auto object-contain" />
                 </a>
                 <p className="text-slate-600 max-w-sm leading-relaxed mb-10 text-lg font-medium tracking-tight">
                   Wir verbinden Gaming, eSport und Gamification mit Strategie, Technologie und echten Erlebnissen – digital, physisch und immer mit dem Ziel, Menschen zu begeistern und Marken erlebbar zu machen.

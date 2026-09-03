@@ -205,7 +205,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
 
             <section className="space-y-8">
               <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
-                Hochwertige Gaming-Setups, riesige Leinwände für Zuschauende und eine Atmosphäre voller Spannung – unser Team von der eSport Manufaktur setzte das Event mit höchster Präzision und Leidenschaft um. Wir konzipierten packende Turniere, installierten interaktive Gaming-Stationen und schufen eine professionelle Bühne für mitreißende Matches und unvergessliche Erlebnisse.
+                Hochwertige Gaming-Setups, riesige Leinwände für Zuschauende und eine Atmosphäre voller Spannung – unser Team von der GG Manufaktur setzte das Event mit höchster Präzision und Leidenschaft um. Wir konzipierten packende Turniere, installierten interaktive Gaming-Stationen und schufen eine professionelle Bühne für mitreißende Matches und unvergessliche Erlebnisse.
               </Reveal>
             </section>
 

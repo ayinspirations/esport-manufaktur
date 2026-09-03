@@ -64,10 +64,13 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
               <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
-              Einblicke in Projekte, die Marken erlebbar machen.
+              Projekte, die wir gemeinsam mit unseren Kunden realisieren durften.
             </Reveal>
             <Reveal as="p" delay={0.4} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-2xl leading-relaxed tracking-tight">
-              Von Gaming, eSport und Gamification über digitale Lösungen bis zu Events und Content zeigen unsere Cases, wie aus Ideen individuelle Aktivierungen mit echter Wirkung entstehen.
+              Ob Konzern, Ministerium, bekannte Marke, Verband oder Verein: Unterschiedlichste Auftraggeber vertrauen uns ihre Projekte an. Gemeinsam entwickeln wir Lösungen, die zu ihren Zielen, Zielgruppen und Rahmenbedingungen passen.
+            </Reveal>
+            <Reveal as="p" delay={0.46} className="text-slate-600 font-medium text-base md:text-lg mt-4 max-w-2xl leading-relaxed tracking-tight">
+              Eine Auswahl dieser Projekte zeigen wir hier. Weitere Arbeiten bleiben auf Wunsch unserer Kunden bewusst vertraulich.
             </Reveal>
           </div>
         </div>
@@ -329,7 +332,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                   whileTap={{ scale: 0.95 }}
                   className="mt-8 px-6 py-3 bg-white text-black rounded-full font-black text-sm uppercase tracking-widest flex items-center gap-2 group-hover:bg-emerald-400 transition-colors duration-300"
                 >
-                  Referenzen ansehen
+                  Projekte ansehen
                   <ArrowDown className="w-4 h-4" />
                 </motion.div>
               </div>

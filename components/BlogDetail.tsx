@@ -18,7 +18,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
     if (!post) return;
 
     const previousTitle = document.title;
-    document.title = `${post.title} | eSport Manufaktur`;
+    document.title = `${post.title} | GG Manufaktur`;
 
     const metaDescription = document.querySelector('meta[name="description"]');
     const previousDescription = metaDescription?.getAttribute('content') ?? '';

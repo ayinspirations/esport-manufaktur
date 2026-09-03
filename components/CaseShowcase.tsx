@@ -27,7 +27,7 @@ const CASES: ShowcaseCase[] = [
     text: 'Eine maßgeschneiderte Gaming-Plattform, die technikaffine Schüler für IT-Berufe begeistert.',
     image: '/images/t-systems/hero.jpg',
     card: '/videos/case-tsystems.jpg',
-    imageAlt: 'Gaming-Aktivierung für T-Systems von eSport Manufaktur'
+    imageAlt: 'Gaming-Aktivierung für T-Systems von GG Manufaktur'
   },
   {
     page: 'hagebau',
@@ -36,7 +36,7 @@ const CASES: ShowcaseCase[] = [
     text: 'Gaming Days am Point of Sale — ein Erlebnis, das Zielgruppen in den Markt holt.',
     image: '/images/hagebau/hero-hagebau.jpg',
     card: '/videos/case-hagebau.jpg',
-    imageAlt: 'Gaming Day Aktivierung für Hagebau von eSport Manufaktur'
+    imageAlt: 'Gaming Day Aktivierung für Hagebau von GG Manufaktur'
   },
   {
     page: 'showdown-0711',
@@ -44,7 +44,7 @@ const CASES: ShowcaseCase[] = [
     title: '0711 Showdown',
     text: 'Ein EA FC25-Turnier als Recruiting-Format: über 100 Teilnehmende, Arbeitgeber auf Augenhöhe.',
     image: '/videos/case-showdown.jpg',
-    imageAlt: '0711 Showdown eSport Recruiting Event von eSport Manufaktur'
+    imageAlt: '0711 Showdown eSport Recruiting Event von GG Manufaktur'
   },
   {
     page: 'bayern-zockt',
@@ -53,14 +53,14 @@ const CASES: ShowcaseCase[] = [
     text: 'Digitale Qualifier und ein physisches Finale — Talentsichtung über einen ganzen Freistaat.',
     image: '/images/bayern-zockt/hero.jpg',
     card: '/videos/case-bayern-zockt.jpg',
-    imageAlt: 'Bayern zockt eSport Turnierserie von eSport Manufaktur'
+    imageAlt: 'Bayern zockt eSport Turnierserie von GG Manufaktur'
   },
   {
     page: 'bfv',
     category: 'eFootball',
     title: 'BFV eFootball',
     text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands.',
-    imageAlt: 'BFV eFootball Plattform von eSport Manufaktur'
+    imageAlt: 'BFV eFootball Plattform von GG Manufaktur'
   }
 ];
 

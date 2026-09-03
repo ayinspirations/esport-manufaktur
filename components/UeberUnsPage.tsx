@@ -22,7 +22,7 @@ const SECTION = 'py-12 md:py-16 lg:py-20';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 const intro = [
-  'Die eSport Manufaktur ist eine Agentur für Gaming, eSport, Gamification und interaktive Markenaktivierung. Wir entwickeln Lösungen für Unternehmen, Marken, Vereine, Verbände und Veranstalter, die ihre Zielgruppen nicht nur erreichen, sondern aktiv einbinden wollen. Dabei denken wir physische und digitale Touchpoints von Anfang an gemeinsam.',
+  'Die GG Manufaktur ist eine Agentur für Gaming, eSport, Gamification und interaktive Markenaktivierung. Wir entwickeln Lösungen für Unternehmen, Marken, Vereine, Verbände und Veranstalter, die ihre Zielgruppen nicht nur erreichen, sondern aktiv einbinden wollen. Dabei denken wir physische und digitale Touchpoints von Anfang an gemeinsam.',
   'Von der ersten strategischen Idee über Konzeption, Design und Technologie bis zur Umsetzung vor Ort begleiten wir Projekte ganzheitlich. Das kann ein einzelnes gamifiziertes Messemodul sein, ein digitaler Eventpass, ein eSport-Turnier, eine Recruiting-Kampagne oder die vollständige Konzeption und Umsetzung eines Events.'
 ];
 
@@ -100,12 +100,12 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
       {/* The same header every other route carries now -- homepage ground,
           white type -- with the team photograph behind it. */}
       <PageHero
-        eyebrow="eSport Manufaktur"
+        eyebrow="GG Manufaktur"
         title="Über"
         accent="uns."
         subline="Wir machen Marken und Botschaften erlebbar."
         image={TEAM_IMAGE}
-        imageAlt="Das Team der eSport Manufaktur"
+        imageAlt="Das Team der GG Manufaktur"
       />
 
       {/* ============ 2. WER WIR SIND ============ */}

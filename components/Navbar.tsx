@@ -166,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center gap-2.5 group"
-            aria-label="eSport Manufaktur"
+            aria-label="GG Manufaktur"
           >
             {/* The two logo files are the same artwork in two inks on the same
                 transparent ground, so the pair can be stacked and cross-faded.
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             <span className="relative block h-8">
               <img
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
-                alt="eSport Manufaktur"
+                alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
@@ -287,12 +287,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center"
-            aria-label="eSport Manufaktur"
+            aria-label="GG Manufaktur"
           >
             <span className="relative block h-9">
               <img
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
-                alt="eSport Manufaktur"
+                alt="GG Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: isOpen ? 0 : 1 }}
               />

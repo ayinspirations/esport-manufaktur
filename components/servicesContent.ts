@@ -86,7 +86,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'strategie-konzeption',
     path: '/services/strategie-konzeption',
     seo: {
-      title: 'Gaming & eSport Strategie-Beratung | eSport Manufaktur',
+      title: 'Gaming & eSport Strategie-Beratung | GG Manufaktur',
       description:
         'Zielgruppenanalyse, Markenpositionierung und Kampagnenstrategie für die Gaming-Community — authentisch statt aufgesetzt. Jetzt Strategiegespräch sichern.',
       ogImage: '/Strategie.jpg'
@@ -98,7 +98,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Wir entwickeln Strategien für Marken im eSport- und Gaming-Umfeld — auf Basis echter Community-Kenntnis, nicht aus dem Werbebaukasten.',
       ctaLabel: 'Strategiegespräch sichern',
       image: '/Strategie.jpg',
-      imageAlt: 'Strategieworkshop für Gaming Marketing Strategie und eSport Markenpositionierung bei eSport Manufaktur'
+      imageAlt: 'Strategieworkshop für Gaming Marketing Strategie und eSport Markenpositionierung bei GG Manufaktur'
     },
     pain: {
       heading: 'Warum klassisches Marketing im Gaming-Umfeld scheitert',
@@ -166,7 +166,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'content-live-kommunikation',
     path: '/services/content-live-kommunikation',
     seo: {
-      title: 'Gaming Content & Live-Streaming Produktion | eSport Manufaktur',
+      title: 'Gaming Content & Live-Streaming Produktion | GG Manufaktur',
       description:
         'Professionelle Streaming-Produktion, Formatentwicklung und Creator-Kooperationen für authentischen Gaming-Content. Jetzt Projekt starten.',
       ogImage: '/REWExfckoln_1770162125933.jpg'
@@ -178,7 +178,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Live-Produktionen, Streaming-Formate und Creator-Kooperationen, die eure Marke authentisch im Gaming-Umfeld positionieren.',
       ctaLabel: 'Content-Projekt anfragen',
       image: '/REWExfckoln_1770162125933.jpg',
-      imageAlt: 'Live-Streaming Produktion und Gaming Content Produktion bei eSport Manufaktur'
+      imageAlt: 'Live-Streaming Produktion und Gaming Content Produktion bei GG Manufaktur'
     },
     pain: {
       heading: 'Warum Standard-Content in der Gaming-Community nicht funktioniert',
@@ -246,7 +246,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'events-erlebniswelten',
     path: '/services/events-erlebniswelten',
     seo: {
-      title: 'Gaming-Aktivierungen für Messen & Events | eSport Manufaktur',
+      title: 'Gaming-Aktivierungen für Messen & Events | GG Manufaktur',
       description:
         'Standkonzeption, technisches Setup und Turniere vor Ort — Gaming-Aktivierungen, die auf Messen und Events wirklich Zielgruppen anziehen.',
       ogImage: '/images/competencies/eventtechnik.jpg'
@@ -258,7 +258,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Von der Standkonzeption bis zur Umsetzung vor Ort — Gaming-Aktivierungen auf Messen und Events, die Zielgruppen wirklich erreichen.',
       ctaLabel: 'Event-Konzept anfragen',
       image: '/images/competencies/eventtechnik.jpg',
-      imageAlt: 'Gaming Messestand und eSport Event Konzeption von eSport Manufaktur'
+      imageAlt: 'Gaming Messestand und eSport Event Konzeption von GG Manufaktur'
     },
     pain: {
       heading: 'Warum Standard-Messestände die Gaming-Zielgruppe verfehlen',
@@ -326,7 +326,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'digitale-loesungen',
     path: '/services/digitale-loesungen',
     seo: {
-      title: 'Digitale Gaming-Lösungen & Whitelabel-Software | eSport Manufaktur',
+      title: 'Digitale Gaming-Lösungen & Whitelabel-Software | GG Manufaktur',
       description:
         'Individuelle digitale Tools, Gamification-Konzepte und Whitelabel-Software für nachhaltige Zielgruppenbindung im Gaming-Umfeld.',
       ogImage: '/Gamification.jpg'
@@ -337,7 +337,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       subline: 'Individuelle Tools, Gamification-Konzepte und eigene Software mit eurem Branding.',
       ctaLabel: 'Digitale Lösung anfragen',
       image: '/Gamification.jpg',
-      imageAlt: 'Gamification Lösung und individuelle Gaming Plattform von eSport Manufaktur'
+      imageAlt: 'Gamification Lösung und individuelle Gaming Plattform von GG Manufaktur'
     },
     pain: {
       heading: 'Warum Standardsoftware selten zur Marke passt',
@@ -421,7 +421,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'eventtechnik-produktion',
     path: '/services/eventtechnik-produktion',
     seo: {
-      title: 'Eventtechnik & Produktion für Gaming-Events | eSport Manufaktur',
+      title: 'Eventtechnik & Produktion für Gaming-Events | GG Manufaktur',
       description:
         'Gaming-Hardware, Netzwerktechnik, Regie, Streaming- und Veranstaltungstechnik: technische Infrastruktur und Betrieb für Gaming- und eSport-Events.',
       ogImage: '/images/hagebau/slide-2.jpg'
@@ -433,7 +433,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Von Gaming-Hardware und Netzwerktechnik bis zu Regie, Streaming- und Veranstaltungstechnik: Wir planen die technische Infrastruktur und sorgen gemeinsam mit unseren Partnern für einen reibungslosen Betrieb vor Ort.',
       ctaLabel: 'Technik-Setup anfragen',
       image: '/images/hagebau/slide-2.jpg',
-      imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von eSport Manufaktur'
+      imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von GG Manufaktur'
     },
     wirkung:
       'Technik, die im Hintergrund bleibt — stabiler Turnierbetrieb, saubere Übertragung und ein Ablauf, der ohne Zwischenfälle durchläuft.',
@@ -462,7 +462,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'art-design-messebau',
     path: '/services/art-design-messebau',
     seo: {
-      title: 'Art Design & Messebau für Gaming-Events | eSport Manufaktur',
+      title: 'Art Design & Messebau für Gaming-Events | GG Manufaktur',
       description:
         'Maßgeschneiderte Raum- und Ausstattungskonzepte für Gaming- und eSport-Events — individuelle Möbel, Setups und Infrastruktur, realisiert mit erfahrenen Messebau-Partnern.',
       ogImage: '/hero-rewe.jpg'
@@ -474,7 +474,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Du brauchst individuelle Möbel, Setups oder Infrastruktur für dein Gaming- und eSport-Event? Wir entwickeln maßgeschneiderte Raum- und Ausstattungskonzepte und realisieren diese gemeinsam mit erfahrenen Messebau-Partnern.',
       ctaLabel: 'Raumkonzept anfragen',
       image: '/hero-rewe.jpg',
-      imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei eSport Manufaktur'
+      imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei GG Manufaktur'
     },
     wirkung:
       'Eine Fläche, die als Markenraum gelesen wird und nicht als Standardstand — gebaut für das Format, das darin stattfindet.',
@@ -502,7 +502,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'foto-video',
     path: '/services/foto-video',
     seo: {
-      title: 'Foto & Video für Gaming- und eSport-Events | eSport Manufaktur',
+      title: 'Foto & Video für Gaming- und eSport-Events | GG Manufaktur',
       description:
         'Erfahrene Foto- und Videoteams begleiten euer Gaming- oder eSport-Event und produzieren Content, der Atmosphäre, Emotionen und Markenbotschaften einfängt.',
       ogImage: '/REWExfckoln_1770162125933.jpg'
@@ -540,7 +540,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'creator-talent-activation',
     path: '/services/creator-talent-activation',
     seo: {
-      title: 'Creator & Talent Activation im Gaming | eSport Manufaktur',
+      title: 'Creator & Talent Activation im Gaming | GG Manufaktur',
       description:
         'Passende Creator, Hosts, Moderatoren und eSport-Talents für Kampagnen und Events — von der Auswahl über die Konzeption bis zur Community-Aktivierung.',
       ogImage: '/images/hagebau/slide-1.jpg'
@@ -552,7 +552,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Wir integrieren passende Creator, Hosts, Moderatoren und eSport-Talents in Kampagnen und Events – von der Auswahl und Konzeption bis zur authentischen Aktivierung der jeweiligen Community.',
       ctaLabel: 'Creator-Aktivierung anfragen',
       image: '/images/hagebau/slide-1.jpg',
-      imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei eSport Manufaktur'
+      imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei GG Manufaktur'
     },
     wirkung:
       'Glaubwürdigkeit, die sich nicht einkaufen lässt — Reichweite über Stimmen, denen die jeweilige Community ohnehin zuhört.',
@@ -580,7 +580,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'scouting-talent-development',
     path: '/services/scouting-talent-development',
     seo: {
-      title: 'eSport Scouting & Talent Development | eSport Manufaktur',
+      title: 'eSport Scouting & Talent Development | GG Manufaktur',
       description:
         'Ganzheitliche Scouting-Lösungen für Vereine und Verbände — digitale Qualifier, Turnierserien, Scouting-Events und Finals, online und offline verzahnt.',
       ogImage: '/images/status-quo/rewe-event.jpg'
@@ -592,7 +592,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Wir entwickeln ganzheitliche Scouting-Lösungen für Vereine und Verbände – von digitalen Qualifiern und Turnierserien bis zu physischen Scouting-Events und Finals. Online und offline greifen dabei nahtlos ineinander, um Talente gezielt zu erreichen, zu identifizieren und langfristig zu entwickeln.',
       ctaLabel: 'Scouting-Konzept anfragen',
       image: '/images/status-quo/rewe-event.jpg',
-      imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei eSport Manufaktur'
+      imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei GG Manufaktur'
     },
     wirkung:
       'Ein Weg, auf dem Talente sichtbar werden und bleiben — von der ersten Onlinerunde bis ins Finale, als Pipeline statt als Einzelaktion.',
@@ -620,7 +620,7 @@ export const servicesContent: Record<string, ServiceContent> = {
     slug: 'recruiting-employer-branding',
     path: '/services/recruiting-employer-branding',
     seo: {
-      title: 'Recruiting & Employer Branding über Gaming | eSport Manufaktur',
+      title: 'Recruiting & Employer Branding über Gaming | GG Manufaktur',
       description:
         'Arbeitgebermarken über Gaming, eSport und Gamification erlebbar machen — digitale Challenges, Recruiting-Games, Turniere, Messeaktivierungen und hybride Kampagnen.',
       ogImage: '/hero-gamechanger.jpg'
@@ -632,7 +632,7 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Wir nutzen Gaming, eSport und Gamification, um Arbeitgebermarken erlebbar zu machen und junge Zielgruppen authentisch zu erreichen – von digitalen Challenges und Recruiting-Games bis zu Turnieren, Messeaktivierungen und hybriden Kampagnen.',
       ctaLabel: 'Recruiting-Aktivierung anfragen',
       image: '/hero-gamechanger.jpg',
-      imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei eSport Manufaktur'
+      imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei GG Manufaktur'
     },
     wirkung:
       'Kontakt zu jungen Zielgruppen, bevor sie eine Stellenanzeige lesen — und eine Arbeitgebermarke, die sie selbst ausprobiert haben.',

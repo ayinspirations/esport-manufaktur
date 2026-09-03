@@ -76,7 +76,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
                 Für T-Systems haben wir eine maßgeschneiderte Gaming-Plattform entwickelt, um das Unternehmen als attraktiven Arbeitgeber im technischen Umfeld zu positionieren. Ziel war es, technikaffine Schüler anzusprechen und sie auf spielerische Weise für IT und technische Berufe zu begeistern.
               </Reveal>
               <Reveal as="p" delay={0.16} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
-                Die Plattform bot digitale Qualifikationsturniere, spannende Inhalte und gezielte Interaktionen - perfekt zugeschnitten auf die junge Zielgruppe. Unser Team der e-Sport Manufaktur kümmerte sich um die gesamte Umsetzung: von der Konzeption und Gestaltung bis hin zur technischen Umsetzung und Betreuung.
+                Die Plattform bot digitale Qualifikationsturniere, spannende Inhalte und gezielte Interaktionen - perfekt zugeschnitten auf die junge Zielgruppe. Unser Team der GG Manufaktur kümmerte sich um die gesamte Umsetzung: von der Konzeption und Gestaltung bis hin zur technischen Umsetzung und Betreuung.
               </Reveal>
             </section>
 

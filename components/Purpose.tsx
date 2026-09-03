@@ -46,7 +46,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             the headline's side of the panel stays the darkest part of it. */}
         <img
           src={TEAM_IMAGE}
-          alt="Das Team der eSport Manufaktur"
+          alt="Das Team der GG Manufaktur"
           loading="lazy"
           decoding="async"
           className="absolute inset-0 z-0 w-full h-full object-cover opacity-25 pointer-events-none"
