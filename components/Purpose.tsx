@@ -13,8 +13,9 @@ interface PurposeProps {
 }
 
 const blocks = [
-  'Unser Leistungsspektrum reicht von individuellen Gaming- und eSport-Konzepten, Turnieren und Eventformaten über digitale Messe- und Eventpässe, Games, Quests und interaktive Plattformlösungen bis hin zu Content-Produktion, Streaming, Messebau, Eventtechnik, Creator-Aktivierung, Scouting sowie Recruiting- und Employer-Branding-Kampagnen.',
-  'Dabei entwickeln wir keine Standardlösungen, sondern Formate, die auf Zielgruppe, Marke und Kommunikationsziel zugeschnitten sind. Online und offline greifen dabei nahtlos ineinander.'
+  'Die GG Manufaktur bringt Strategie, Kreation, Technologie und operative Umsetzung zusammen. Wir begleiten Marken, Unternehmen, Vereine, Verbände und Veranstalter von der ersten Zielsetzung bis zum fertigen Erlebnis – physisch, digital oder als nahtlos verbundenes Hybridformat.',
+  'Dafür kombinieren wir eigene Kompetenzen mit einem gewachsenen Netzwerk spezialisierter Partner. So stellen wir für jedes Projekt genau das Team zusammen, das es für eine kreative, technisch stabile und professionell gesteuerte Umsetzung braucht.',
+  'Wir tun das, weil Markenkommunikation dann am stärksten wirkt, wenn Menschen nicht nur zuschauen, sondern selbst Teil des Erlebnisses werden.'
 ];
 
 export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
@@ -61,7 +62,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           <RevealText
             as="h2"
             by="word"
-            text="Was uns antreibt."
+            text="Das ist die GG Manufaktur."
             delay={0.15}
             className="text-[clamp(38px,6.5vw,90px)] font-black text-white leading-[0.9] tracking-tighter"
           />
@@ -70,10 +71,13 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             delay={0.28}
             className="text-white/60 font-medium text-base md:text-lg lg:text-xl mt-6 max-w-3xl leading-relaxed tracking-tight"
           >
-            Die eSport Manufaktur entwickelt ganzheitliche Aktivierungen, Erlebnisse und digitale Lösungen an der Schnittstelle von Gaming, eSport und Gamification. Wir verbinden Strategie, Kreation, Technologie, Content und Eventproduktion zu physischen, digitalen und hybriden Formaten, die Zielgruppen aktivieren, Marken erlebbar machen und messbare Ergebnisse schaffen.
+            Viele Disziplinen, ein zentraler Ansprechpartner und ein gemeinsames Ziel: Menschen begeistern.
           </Reveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mt-16 md:mt-20 pt-12 md:pt-16 border-t border-white/10">
+          {/* Three columns now, not two: the body is three paragraphs, and a
+              two-column grid would have left the last one alone on a row of
+              its own. */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-10 lg:gap-12 mt-16 md:mt-20 pt-12 md:pt-16 border-t border-white/10">
             {blocks.map((text, i) => (
               <Reveal key={i} delay={i * STAGGER.card} y={28}>
                 <p className="text-white/70 font-medium text-base md:text-lg leading-relaxed tracking-tight">
@@ -83,12 +87,20 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             ))}
           </div>
 
-          <Reveal delay={0.34} className="mt-16 md:mt-20">
+          {/* The closing line carries the section, so it is set as display
+              type on its own rule rather than as a fourth paragraph. */}
+          <Reveal delay={0.3} className="mt-14 md:mt-16 pt-10 md:pt-12 border-t border-white/10">
+            <p className="text-white font-bold text-xl md:text-2xl lg:text-3xl leading-snug tracking-tight max-w-3xl">
+              Von der Idee bis zur Realisierung. Aus einer Hand gesteuert und auf Wirkung ausgerichtet.
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.34} className="mt-10 md:mt-12">
             <button
               onClick={() => onNavigate?.('ueber-uns')}
               className="spring group inline-flex items-center gap-2.5 bg-emerald-400 text-slate-900 px-6 py-3.5 rounded-full font-black text-sm tracking-tighter"
             >
-              Mehr über uns
+              GG Manufaktur kennenlernen
               <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </Reveal>
