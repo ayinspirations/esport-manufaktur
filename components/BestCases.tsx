@@ -315,15 +315,15 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                   It points at what is directly beneath it instead: the same
                   cases as a full-screen viewer. */}
               <div className="relative z-10 flex flex-col items-center">
-                <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase">
-                  ALLE <br />
-                  UNSERE <br />
-                  <span className={HERO_GRADIENT_TEXT}>
-                    REFERENZEN.
-                  </span>
+                {/* Two lines, not four. The tile used to force a break after
+                    every word, which left "ALLE", "UNSERE" and "REFERENZEN."
+                    stacked one word per line. */}
+                <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase max-w-[12ch]">
+                  Alle unsere{' '}
+                  <span className={HERO_GRADIENT_TEXT}>Referenzen.</span>
                 </h3>
 
-                <p className="mt-5 text-white/60 font-medium text-sm md:text-base leading-relaxed tracking-tight max-w-xs">
+                <p className="mt-5 text-white/70 font-medium text-sm md:text-base leading-relaxed tracking-tight max-w-[34ch] text-balance">
                   Jeden Case im Großformat — direkt hier darunter.
                 </p>
 
@@ -344,8 +344,8 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
             a date in the calendar, or a written enquiry -- directly under the
             grid rather than only in the footer form. */}
         <Reveal delay={0.1} y={24} className="mt-14 md:mt-20 flex flex-col items-center text-center">
-          <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug">
-            Genug gesehen? Dann sprechen wir über euer Projekt.
+          <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug text-balance">
+            Genug gesehen? Dann sprechen wir über dein Projekt.
           </p>
           <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <button

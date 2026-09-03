@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Reveal } from './Reveal';
 import { PageHero } from './PageHero';
+import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
 import { servicesContent } from './servicesContent';
@@ -152,7 +153,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         subline="Von der ersten Idee bis zur Umsetzung."
       />
 
-      <div className={`${CONTAINER} pt-10 md:pt-14`}>
+      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
         <Reveal as="p" delay={0.1} className="text-slate-600 font-medium text-base md:text-lg max-w-3xl leading-relaxed tracking-tight">
           Du kannst uns für einzelne Leistungen beauftragen oder als zentralen Partner für dein gesamtes Projekt.
           Gemeinsam klären wir, welche Kompetenzen dein Vorhaben benötigt und in welchen Bereichen wir dich sinnvoll
@@ -179,7 +180,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         announced. The pills wrap at every width now: everything the page
         offers is on screen, which is the whole job of a filter.
       */}
-      <div ref={filterRef} className={`${CONTAINER} pt-8 md:pt-12 pb-2 md:pb-4 scroll-mt-28`}>
+      <div ref={filterRef} className={`${CONTAINER} pt-12 md:pt-16 scroll-mt-28`}>
         {PILL_GROUPS.map((group) => (
           <div key={group.label} className="mb-7 md:mb-8 last:mb-0">
             <Reveal className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[10px] md:text-[11px] mb-3.5 md:mb-4">

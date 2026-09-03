@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { BLOCK_GAP } from './spacing';
 import type { ServiceContent } from './servicesContent';
 
 interface ServiceViewProps {
@@ -12,7 +13,7 @@ interface ServiceViewProps {
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
-const SECTION = 'py-16 md:py-24';
+
 const TILE = 'tile-gradient text-white';
 
 // ---------------------------------------------------------------------------
@@ -50,7 +51,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
   return (
     <div className="w-full">
       {/* ============ 1. Headline, subline, call to action ============ */}
-      <section className={`${CONTAINER} pt-14 md:pt-20 pb-4 md:pb-8`}>
+      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
         <RevealText
           as="h2"
           by="word"
@@ -90,7 +91,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
 
       {/* ============ 2. Ausgangslage ============ */}
       {content.pain && (
-        <section className={`${CONTAINER} ${SECTION}`}>
+        <section className={`${CONTAINER} ${BLOCK_GAP}`}>
           <div className="grid md:grid-cols-12 gap-6 md:gap-16">
             <div className="md:col-span-5">
               <RevealText
@@ -112,8 +113,8 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       )}
 
       {/* ============ 3. Leistungen im Detail ============ */}
-      <section className={`${CONTAINER} ${SECTION}`}>
-        <div className="max-w-2xl mb-12 md:mb-16">
+      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <div className="max-w-2xl mb-8 md:mb-10">
           <RevealText
             as="h2"
             by="word"
@@ -175,7 +176,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       {/* Both routes open in place. Sending someone back to the homepage and
           then scrolling them to the form at the bottom of it lost the service
           they were asking about; the popup carries it along as the subject. */}
-      <section className={`${CONTAINER} pt-10 md:pt-14 pb-20 md:pb-28 text-center`}>
+      <section className={`${CONTAINER} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
         <div className="max-w-2xl mx-auto">
           <RevealText
             as="h2"

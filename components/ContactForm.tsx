@@ -4,6 +4,7 @@ import { HubSpotForm } from './HubSpotForm';
 import { Reveal, RevealText } from './Reveal';
 import { LazyVideo } from './LazyVideo';
 import { DUR, EASE_REVEAL_CSS, STAGGER } from './motion';
+import { SECTION_PADDING } from './spacing';
 
 // The three steps between a first message and a project. Numbered because the
 // order is the point: nobody is asked to commit to anything before step three.
@@ -47,7 +48,7 @@ export const ContactForm: React.FC = () => {
     <div className="w-full flex items-center justify-center px-4 sm:px-6 md:px-14 scroll-mt-32" id="contact">
       <div
         ref={sectionRef}
-        className="w-full max-w-5xl mx-auto py-12 md:py-20 relative"
+        className={`w-full max-w-5xl mx-auto ${SECTION_PADDING} relative`}
         style={{
           opacity: visible ? 1 : 0,
           transform: visible ? 'translateY(0)' : 'translateY(60px)',

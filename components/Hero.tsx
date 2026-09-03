@@ -178,7 +178,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           {/* "Immer authentisch" carries the same teal-to-lime sweep as
               BEGEISTERN -- the one phrase in the subline that is a claim
               rather than a description, so it gets the headline's colour. */}
-          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90">
+          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
             Mit Gamification, Events und Markenaktivierungen, die in Erinnerung bleiben. <br />
             Live. Digital. Messbar. <span className={HERO_GRADIENT_TEXT}>Immer authentisch.</span>
           </p>

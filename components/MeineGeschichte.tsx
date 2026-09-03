@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
+import { BLOCK_GAP } from './spacing';
 import { STORY_LEAD, STORY_INTRO, STORY_CHAPTERS } from './gruenderstory';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 
@@ -34,7 +35,7 @@ export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, on
         subline={STORY_LEAD}
       />
 
-      <article className={`${PROSE} pt-14 md:pt-20 pb-8`}>
+      <article className={`${PROSE} ${BLOCK_GAP}`}>
         {/* The opening paragraph is set larger than the body: it is the
             handover from the headline into the text, and it carries the
             whole piece's tone. */}
@@ -75,7 +76,7 @@ export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, on
 
       {/* Closer. The story ends on "Das ist meine Story." -- what follows is
           the site again, not another chapter, so it sits on its own rule. */}
-      <section className={`${PROSE} pt-10 md:pt-14 pb-24 md:pb-32`}>
+      <section className={`${PROSE} ${BLOCK_GAP} pb-24 md:pb-32`}>
         <div className="border-t border-[#0b0f2a]/15 pt-10 md:pt-12 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
           <button
             onClick={() => onOpenBooking?.()}

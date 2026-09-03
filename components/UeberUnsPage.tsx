@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
+import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 
 interface UeberUnsPageProps {
@@ -28,10 +29,10 @@ const GIANLUCA_IMAGE = '';
     from it would pull the whole "Über uns" chunk into the homepage bundle. */
 const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
 
-// Same three constants the service detail pages are built on, so this page
-// inherits their rhythm rather than inventing its own.
+// The same three constants the service pages are built on, so this page
+// inherits their rhythm rather than inventing its own. BLOCK_GAP is top
+// padding only -- see spacing.ts for why.
 const CANVAS = 'bg-[#badeda]';
-const SECTION = 'py-12 md:py-16 lg:py-20';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 const intro = [
@@ -124,7 +125,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
       {/* The one paragraph that says what the company is, before any of the
           history. It runs the page's width rather than a column, so it reads
           as the answer to the headline above it. */}
-      <section className={`${CANVAS} pt-14 md:pt-20`}>
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
           <Reveal as="p" className="text-[#0b0f2a] text-xl md:text-2xl lg:text-[28px] font-bold leading-snug tracking-tight max-w-4xl">
             Die GG Manufaktur entwickelt Gamification, Events und Markenaktivierungen, die Menschen einbeziehen und in
@@ -135,7 +136,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* ============ 3. WO WIR HERKOMMEN ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-5">
@@ -161,7 +162,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* ============ 4. WIE WIR ARBEITEN ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0`}>
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
           <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-5">
@@ -192,7 +193,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* ============ 5. DAS TEAM ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0 pb-14 md:pb-20`}>
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
           <div className="max-w-3xl mb-10 md:mb-14">
             <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
@@ -251,7 +252,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
         meant to read, not a label on a card, and 60% white over the dark
         ground is below what carries a paragraph.
       */}
-      <section className={`${CANVAS} pb-20 md:pb-28`}>
+      <section className={`${CANVAS} ${BLOCK_GAP} pb-20 md:pb-28`}>
         <div className={CONTAINER}>
           <Reveal
             y={28}

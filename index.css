@@ -21,6 +21,35 @@
     width: 100%;
     position: relative;
   }
+
+  /* ---------------------------------------------------------------------
+     Line breaking
+     ---------------------------------------------------------------------
+     Two rules, applied once here rather than as a class on every element
+     that happened to break badly.
+
+     Headings balance: a two-line headline gets two lines of roughly equal
+     length instead of a full line and a single trailing word. That is what
+     turned "ALLE UNSERE / REFERENZEN." from a stack of one-word lines and
+     "... über euer / Projekt." from an orphan into normal-looking type.
+
+     Paragraphs get `pretty`, which is the same idea applied only to the
+     last line: the browser pulls a word back from the end so a paragraph
+     never finishes on a lone word. Balance would be wrong here -- it is
+     capped at a handful of lines and re-flows long copy oddly.
+
+     Both degrade to today's behaviour where they are not supported, so
+     nothing depends on them. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
 }
 
 html {

@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
+import { SECTION_PADDING } from './spacing';
 import { useInView, useInViewContinuous } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
 
@@ -162,7 +163,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
   // jumping to this section never parks its heading or the first row of
   // tiles underneath the navigation.
   <div className="w-full flex items-center justify-center scroll-mt-28" id="competencies">
-    <section className="w-full pt-6 md:pt-8 lg:pt-10 pb-16 md:pb-24 lg:pb-28 bg-transparent relative overflow-hidden">
+    <section className={`w-full ${SECTION_PADDING} bg-transparent relative overflow-hidden`}>
       {/* Closed at rest, opens on hover -- and the hover rule is fenced
           behind a real pointer on purpose.
 
@@ -191,7 +192,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
       `}</style>
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
-        <div className="mb-16 md:mb-24 lg:mb-28">
+        <div className="mb-10 md:mb-14">
           <div className="max-w-3xl">
             <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-[#0b0f2a] leading-[0.9] tracking-tighter uppercase">
               <RevealText as="span" by="word" text="Unsere" />

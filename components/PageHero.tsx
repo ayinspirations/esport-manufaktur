@@ -80,7 +80,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
 
         {/* Pulled up into the dissolve, where the ground is already canvas --
             the type reads as sitting on the page rather than over the photo. */}
-        <div className={`${CONTAINER} relative z-10 -mt-[9vh] md:-mt-[11vh] pb-12 md:pb-16`}>
+        <div className={`${CONTAINER} relative z-10 -mt-[9vh] md:-mt-[11vh]`}>
           {eyebrow && (
             <Reveal duration={0.6} className="text-[#0a6f6a] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-6">
               {eyebrow}
@@ -93,7 +93,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
           </h1>
 
           {subline && (
-            <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-[#0b0f2a]/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
+            <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-[#0b0f2a]/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight text-balance">
               {subline}
             </Reveal>
           )}
@@ -122,7 +122,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
         </h1>
 
         {subline && (
-          <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-white/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
+          <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-white/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight text-balance">
             {subline}
           </Reveal>
         )}

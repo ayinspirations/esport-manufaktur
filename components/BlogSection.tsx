@@ -99,7 +99,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
               <RevealText as="span" by="word" text="Blog" delay={0.18} />
               <RevealText as="span" by="word" text="& Wissen." delay={0.3} className="text-[#0e958e] italic" />
             </h2>
-            <Reveal delay={0.42} as="p" className="text-white font-bold text-base md:text-lg lg:text-xl mt-6 max-w-xl leading-snug tracking-tight">
+            <Reveal delay={0.42} as="p" className="text-white font-bold text-base md:text-lg lg:text-xl mt-6 max-w-2xl leading-snug tracking-tight text-balance">
               Einblicke, Erfahrungen und Wissen aus unserer täglichen Arbeit.
             </Reveal>
             <Reveal delay={0.5} as="p" className="text-white/60 font-medium text-base md:text-lg mt-4 max-w-3xl leading-relaxed tracking-tight">
