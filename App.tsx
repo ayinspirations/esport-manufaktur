@@ -260,7 +260,7 @@ export default function App() {
 
             <Purpose onNavigate={navigateTo} />
 
-            <BestCases onScroll={scrollToSection} onNavigate={navigateTo} />
+            <BestCases onScroll={scrollToSection} onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />
 
             {/* The same five cases as a full-viewport stage, directly under the
                 mosaic: the grid above is for comparing them, this is for

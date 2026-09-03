@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Reveal, RevealText } from './Reveal';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Reveal } from './Reveal';
+import { PageHero } from './PageHero';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
 import { servicesContent } from './servicesContent';
@@ -80,7 +81,6 @@ const FilterPill: React.FC<{
  */
 export const ServicesPage: React.FC<ServicesPageProps> = ({
   slug,
-  onNavigate,
   onSelectService,
   onOpenBooking,
   onOpenContact,
@@ -203,28 +203,21 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   return (
     <div className="w-full bg-[#badeda]">
       {/* ============ Page header ============ */}
-      <section className={`${CONTAINER} pt-24 md:pt-40 pb-10 md:pb-14`}>
-        <Reveal duration={0.6}>
-          <button
-            onClick={() => onNavigate('home')}
-            className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
-            Zur Startseite
-          </button>
-        </Reveal>
+      {/* The shared header: same dark ground and gradient accent as the
+          homepage hero, so the services page opens the way every other route
+          does instead of with ink type on the bare canvas. */}
+      <PageHero
+        eyebrow="Leistungen"
+        title="Unsere"
+        accent="Services."
+        subline="Von der digitalen Experience bis zum physischen Erlebnis."
+      />
 
-        <h1 className="text-[clamp(40px,7vw,100px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
-          <RevealText as="span" by="word" text="Unsere" />
-          <RevealText as="span" by="word" text="Services." className="text-[#0e958e] italic" delay={0.14} />
-        </h1>
-        <Reveal as="p" delay={0.3} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
-          Von der digitalen Experience bis zum physischen Erlebnis.
-        </Reveal>
-        <Reveal as="p" delay={0.38} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-2xl leading-relaxed tracking-tight">
+      <div className={`${CONTAINER} pt-10 md:pt-14`}>
+        <Reveal as="p" delay={0.1} className="text-slate-600 font-medium text-base md:text-lg max-w-2xl leading-relaxed tracking-tight">
           Wählt einen Bereich — die vier Säulen zuerst, dahinter alles, was wir sonst noch abdecken.
         </Reveal>
-      </section>
+      </div>
 
       {/* ============ Menu bar ============ */}
       {/*

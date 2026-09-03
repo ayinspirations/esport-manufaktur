@@ -1,7 +1,6 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { HeroGround } from './HeroGround';
+import { PageHero } from './PageHero';
 import { STAGGER } from './motion';
 
 interface UeberUnsPageProps {
@@ -11,10 +10,15 @@ interface UeberUnsPageProps {
   onOpenContact?: (subject?: string) => void;
 }
 
+/** The team photograph, behind the page header. Purpose.tsx carries its own
+    copy of the path on purpose -- this module is lazily loaded, and importing
+    from it would pull the whole "Über uns" chunk into the homepage bundle. */
+const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
+
 // Same three constants the service detail pages are built on, so this page
 // inherits their rhythm rather than inventing its own.
 const CANVAS = 'bg-[#badeda]';
-const SECTION = 'py-20 md:py-28 lg:py-32';
+const SECTION = 'py-12 md:py-16 lg:py-20';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 const intro = [
@@ -89,58 +93,25 @@ const Avatar: React.FC<{ member: Member; index: number }> = ({ member, index }) 
     </div>
   );
 
-export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollToSection, onOpenBooking, onOpenContact }) => {
-  const goToContact = () => {
-    onNavigate('home');
-    requestAnimationFrame(() => scrollToSection('contact-section'));
-  };
-
+export const UeberUnsPage: React.FC<UeberUnsPageProps> = () => {
   return (
     <div className="w-full">
       {/* ============ 1. HERO ============ */}
-      {/* Same shape as the service pages: a visual band up top handing over to
-          the canvas, headline in ink below it. The band here is the homepage
-          hero's own ground rather than a photograph -- there is no picture of
-          the agency to run, and a stock crowd shot would be a worse answer
-          than none. Swap in an <img> the day a real team photo exists. */}
-      <section className={`relative w-full ${CANVAS}`}>
-        <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
-          <HeroGround
-            style={{
-              maskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)'
-            }}
-          />
-        </div>
-
-        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
-          <Reveal duration={0.6}>
-            <button
-              onClick={() => onNavigate('home')}
-              className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
-              Zur Startseite
-            </button>
-          </Reveal>
-
-          <h1 className="text-[clamp(44px,8vw,110px)] font-black leading-[0.9] tracking-tighter uppercase text-[#0b0f2a]">
-            <RevealText as="span" by="word" text="Über" delay={0.05} />
-            <RevealText as="span" by="word" text="uns." delay={0.18} className="text-[#0e958e] italic" />
-          </h1>
-
-          <Reveal duration={0.75} delay={0.3}>
-            <p className="mt-6 md:mt-8 text-[#0b0f2a]/70 text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
-              Wir machen Marken und Botschaften erlebbar.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+      {/* The same header every other route carries now -- homepage ground,
+          white type -- with the team photograph behind it. */}
+      <PageHero
+        eyebrow="eSport Manufaktur"
+        title="Über"
+        accent="uns."
+        subline="Wir machen Marken und Botschaften erlebbar."
+        image={TEAM_IMAGE}
+        imageAlt="Das Team der eSport Manufaktur"
+      />
 
       {/* ============ 2. WER WIR SIND ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
+      <section className={`${CANVAS} ${SECTION} pt-16 md:pt-20`}>
         <div className={CONTAINER}>
-          <div className="grid md:grid-cols-12 gap-8 md:gap-16">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-5">
               <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
                 <RevealText as="span" by="word" text="Wer wir" />
@@ -166,12 +137,12 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
       {/* ============ 3. WIE WIR ARBEITEN ============ */}
       <section className={`${CANVAS} ${SECTION} pt-0`}>
         <div className={CONTAINER}>
-          <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a] mb-12 md:mb-16">
+          <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a] mb-8 md:mb-12">
             <RevealText as="span" by="word" text="Wie wir" />
             <RevealText as="span" by="word" text="arbeiten." className="text-[#0e958e] italic" delay={0.14} />
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-12 md:gap-y-16">
+          <div className="grid md:grid-cols-2 gap-x-12 gap-y-10 md:gap-y-12">
             {capabilities.map((item, i) => (
               <Reveal key={item.heading} delay={(i % 2) * STAGGER.card} y={28}>
                 <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter text-[#0b0f2a] mb-4 leading-tight">
@@ -184,7 +155,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
             ))}
           </div>
 
-          <Reveal delay={0.2} className="mt-16 md:mt-20 pt-10 border-t border-[#0b0f2a]/15">
+          <Reveal delay={0.2} className="mt-12 md:mt-14 pt-8 border-t border-[#0b0f2a]/15">
             <p className="text-[#0b0f2a] font-bold text-xl md:text-2xl leading-snug tracking-tight max-w-3xl">
               Unser Anspruch: Strategie, Technologie und Erlebnis so miteinander zu verbinden, dass aus
               Aufmerksamkeit echte Interaktion entsteht.
@@ -194,9 +165,9 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
       </section>
 
       {/* ============ 4. DAS TEAM ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0`}>
+      <section className={`${CANVAS} ${SECTION} pt-0 pb-20 md:pb-28`}>
         <div className={CONTAINER}>
-          <div className="max-w-2xl mb-12 md:mb-16">
+          <div className="max-w-2xl mb-8 md:mb-12">
             <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
               <RevealText as="span" by="word" text="Das Team" />
               <RevealText as="span" by="word" text="dahinter." className="text-[#0e958e] italic" delay={0.14} />
@@ -206,7 +177,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
             </Reveal>
           </div>
 
-          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-y-14">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 md:gap-y-12">
             {team.map((member, i) => (
               <Reveal
                 as="li"
@@ -230,36 +201,6 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
         </div>
       </section>
 
-      {/* ============ 5. CTA-CLOSER ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0 pb-28 md:pb-36`}>
-        <div className={`${CONTAINER} text-center`}>
-          <div className="max-w-2xl mx-auto">
-            <RevealText
-              as="h2"
-              by="word"
-              text="Lernen wir uns kennen."
-              className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-[#0b0f2a]"
-            />
-          </div>
-          <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4 mb-8">
-            <button
-              onClick={() => (onOpenBooking ? onOpenBooking() : goToContact())}
-              className="spring group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight"
-            >
-              Termin vereinbaren
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-            {/* Opens the form in place rather than routing back to the
-                homepage and scrolling to the bottom of it. */}
-            <button
-              onClick={() => (onOpenContact ? onOpenContact('Über uns') : goToContact())}
-              className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight"
-            >
-              Projekt anfragen
-            </button>
-          </Reveal>
-        </div>
-      </section>
     </div>
   );
 };

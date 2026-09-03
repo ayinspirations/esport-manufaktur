@@ -5,6 +5,9 @@ import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
 
+/** The team photograph, shared with the "Über uns" page header. */
+const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
+
 interface PurposeProps {
   onNavigate?: (page: any) => void;
 }
@@ -36,6 +39,21 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
         </div>
+
+        {/* The team, behind the panel's own ground. Held back far enough that
+            the copy on top keeps its contrast, and faded out to the right so
+            the headline's side of the panel stays the darkest part of it. */}
+        <img
+          src={TEAM_IMAGE}
+          alt="Das Team der eSport Manufaktur"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 z-0 w-full h-full object-cover opacity-25 pointer-events-none"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-r from-[#020617] via-[#020617]/85 to-[#020617]/55"
+        />
 
         {/* Contents follow the panel rather than fading with it: the panel
             lands first, then headline and copy build on top of it. */}
