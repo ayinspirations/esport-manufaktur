@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { PageHero } from './PageHero';
 
 interface LegalPageProps {
   type: 'impressum' | 'privacy';
@@ -275,25 +276,27 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
   const activeContent = content[type];
 
   return (
-    <div className="pt-32 md:pt-48 pb-24 md:pb-40 px-6 md:px-14">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="text-[#0a6f6a] font-black tracking-[0.4em] uppercase text-[10px] mb-6">Legal Information</div>
-          <h1 className="text-6xl md:text-[110px] font-bold mb-6 tracking-tighter leading-[0.85] text-[#0b0f2a]">
-            {activeContent.title.split('.')[0]}<span className="text-[#0e958e] italic">.</span>
-          </h1>
-          <p className="text-[#0b0f2a]/70 text-xl md:text-2xl font-bold leading-tight tracking-tight mb-20 max-w-2xl">
-            {activeContent.subtitle}
-          </p>
+    <div className="w-full">
+      {/* Same header as every other route -- the legal pages used to be the
+          only ones opening on bare canvas with no hero ground at all. */}
+      <PageHero
+        eyebrow="Legal Information"
+        title={activeContent.title}
+        subline={activeContent.subtitle}
+      />
 
-          <div className="glass bg-white/60 rounded-shell p-10 md:p-20 shadow-2xl border border-white/40">
-            {activeContent.body}
-          </div>
-        </motion.div>
+      <div className="pt-16 md:pt-24 pb-24 md:pb-32 px-6 md:px-14">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="glass bg-white/60 rounded-shell p-10 md:p-20 shadow-2xl border border-white/40">
+              {activeContent.body}
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );

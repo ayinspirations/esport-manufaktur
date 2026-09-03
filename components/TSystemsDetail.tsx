@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
 
@@ -17,7 +17,7 @@ const images = [
   '/images/t-systems/slide-6.jpg',
 ];
 
-export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
+export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -62,21 +62,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 <RevealText as="span" by="word" text="Gaming." delay={0.24} className="text-[#0e958e] italic" />
               </h1>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-col items-end gap-3 w-full md:w-auto"
-            >
-              <button
-                onClick={onBack}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-transparent hover:bg-[#0b0f2a]/[0.07] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 rounded-full text-[#0b0f2a] text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
-              >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                Zurück
-              </button>
-            </motion.div>
           </div>
         </div>
       </div>
@@ -91,7 +76,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = ({ onBack }) => {
                 Für T-Systems haben wir eine maßgeschneiderte Gaming-Plattform entwickelt, um das Unternehmen als attraktiven Arbeitgeber im technischen Umfeld zu positionieren. Ziel war es, technikaffine Schüler anzusprechen und sie auf spielerische Weise für IT und technische Berufe zu begeistern.
               </Reveal>
               <Reveal as="p" delay={0.16} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700 mt-6">
-                Die Plattform bot digitale Qualifikationsturniere, spannende Inhalte und gezielte Interaktionen - perfekt zugeschnitten auf die junge Zielgruppe. Unser Team der e-Sport Manufaktur kümmerte sich um die gesamte Umsetzung: von der Konzeption und Gestaltung bis hin zur technischen Umsetzung und Betreuung.
+                Die Plattform bot digitale Qualifikationsturniere, spannende Inhalte und gezielte Interaktionen - perfekt zugeschnitten auf die junge Zielgruppe. Unser Team der GG Manufaktur kümmerte sich um die gesamte Umsetzung: von der Konzeption und Gestaltung bis hin zur technischen Umsetzung und Betreuung.
               </Reveal>
             </section>
 

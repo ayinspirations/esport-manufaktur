@@ -51,38 +51,44 @@ export interface ServiceListing {
 
 export const services: ServiceListing[] = [
   // -- The four pillars, in the order they appear on the homepage ------------
+  //
+  // Two of these labels no longer match their slug: "Events & Erlebniswelten"
+  // is now shown as "Markenaktivierung & Events" and "Digitale Lösungen" as
+  // "Gamification & digitale Lösungen". Deliberate -- the slugs are indexed
+  // and linked, and renaming a label is not worth moving a URL for. `title` is
+  // what the site shows, the slug is only its address.
   {
     slug: 'strategie-konzeption',
     title: 'Strategie & Konzeption',
     pillar: true,
     tagline:
-      'Wir entwickeln Aktivierungskonzepte, die Gaming, eSport und Gamification gezielt verbinden – von digitalen Challenges und Quests bis zu physischen Events und Markenerlebnissen.'
+      'Wir entwickeln Aktivierungsstrategien und kreative Leitideen, die Marke, Zielgruppe und Kommunikationsziel präzise miteinander verbinden – mit klaren KPIs von Anfang an.'
   },
   {
     slug: 'events-erlebniswelten',
-    title: 'Events & Erlebniswelten',
+    title: 'Markenaktivierung & Events',
     pillar: true,
     tagline:
-      'Wir entwickeln zielgruppenrelevante Aktivierungen und ganzheitliche Eventkonzepte – vom einzelnen Erlebnis am Messestand bis zur Umsetzung kompletter Messen und Events.'
+      'Vom interaktiven Messetool bis zur vollständigen Erlebniswelt: Wir konzipieren und realisieren Formate, die Menschen ins Mitmachen bringen und nachhaltig in Erinnerung bleiben.'
+  },
+  {
+    slug: 'digitale-loesungen',
+    title: 'Gamification & digitale Lösungen',
+    pillar: true,
+    tagline:
+      'White-Label-Plattformen, Eventpässe, Games, Challenges und Turniersysteme – individuell anpassbar, modular skalierbar und DSGVO-konform.'
   },
   {
     slug: 'content-live-kommunikation',
     title: 'Content & Live-Kommunikation',
     pillar: true,
     tagline:
-      'Live-Produktionen, Streaming-Formate und Creator-Kooperationen, die eure Marke authentisch im Gaming-Umfeld positionieren.'
-  },
-  {
-    slug: 'digitale-loesungen',
-    title: 'Digitale Lösungen',
-    pillar: true,
-    tagline:
-      'Digitale Messe- & Eventpässe, Quizformate, Games, eSport-Turniere oder komplette digitale Eventformate – maßgeschneidert auf Basis unserer modularen Software-Komponenten.'
+      'Streams, Showformate, Creator-Aktivierungen sowie Foto- und Videocontent, die Erlebnisse verlängern, Reichweite schaffen und Communities authentisch erreichen.'
   },
 
   // -- Everything else, reachable through the filter -------------------------
   { slug: 'eventtechnik-produktion', title: 'Eventtechnik & Produktion' },
-  { slug: 'art-design-messebau', title: 'Art Design & Messebau' },
+  { slug: 'art-design-messebau', title: 'Design & Messebau' },
   { slug: 'foto-video', title: 'Foto & Video' },
   { slug: 'creator-talent-activation', title: 'Creator & Talent Activation' },
   { slug: 'scouting-talent-development', title: 'Scouting & Talent Development' },

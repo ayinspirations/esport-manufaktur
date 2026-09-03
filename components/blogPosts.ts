@@ -20,7 +20,7 @@ export const blogPosts: BlogPost[] = [
     date: '12. Nov 2025',
     readTime: '6 min',
     image: '/Gamification.jpg',
-    imageAlt: 'Gamification-Konzept für Markenaktivierung bei eSport Manufaktur',
+    imageAlt: 'Gamification-Konzept für Markenaktivierung bei GG Manufaktur',
     intro: 'Klassische Werbung erreicht Menschen — aber sie bindet sie selten. Gamification dreht dieses Prinzip um: Statt Botschaften nur zu senden, lädt sie Zielgruppen zum Mitmachen ein. Wer spielt, erinnert sich. Wer gewinnt, erzählt davon weiter.',
     sections: [
       {
@@ -54,7 +54,7 @@ export const blogPosts: BlogPost[] = [
     date: '05. Nov 2025',
     readTime: '7 min',
     image: '/images/bayern-zockt/Bayern-zockt-Finale-FOKUS-Robi-080823.jpg',
-    imageAlt: 'eSport-Event-Finale mit Live-Publikum bei eSport Manufaktur',
+    imageAlt: 'eSport-Event-Finale mit Live-Publikum bei GG Manufaktur',
     intro: 'Ein eSport-Event ist mehr als ein Turnier mit Preisgeld. Richtig geplant, wird es zur Bühne für eure Marke — mit einer Zielgruppe, die aktiv zuschaut, mitfiebert und selbst zum Multiplikator wird.',
     sections: [
       {
@@ -115,7 +115,7 @@ export const blogPosts: BlogPost[] = [
     date: '20. Okt 2025',
     readTime: '5 min',
     image: '/Wachstum.jpg',
-    imageAlt: 'Recruiting-Event mit Gaming-Aktivierung bei eSport Manufaktur',
+    imageAlt: 'Recruiting-Event mit Gaming-Aktivierung bei GG Manufaktur',
     intro: 'Stellenanzeigen allein erreichen die Generation Gaming kaum noch. Wer junge Fachkräfte für sich gewinnen will, muss dort präsent sein, wo diese Zielgruppe ihre Freizeit verbringt — im Gaming-Umfeld.',
     sections: [
       {

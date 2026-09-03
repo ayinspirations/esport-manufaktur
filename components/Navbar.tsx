@@ -166,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center gap-2.5 group"
-            aria-label="eSport Manufaktur"
+            aria-label="GG Manufaktur"
           >
             {/* The two logo files are the same artwork in two inks on the same
                 transparent ground, so the pair can be stacked and cross-faded.
@@ -176,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             <span className="relative block h-8">
               <img
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
-                alt="eSport Manufaktur"
+                alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
@@ -192,30 +192,30 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
-        <div className="flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <button
-            onClick={(e) => handleLinkClick(e, 'home')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
-          >
-            Startseite
-          </button>
+        <div className="flex items-center flex-nowrap whitespace-nowrap gap-10 lg:gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Best Cases
+          </button>
+          <button
+            onClick={(e) => handleLinkClick(e, 'blog')}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+          >
+            News &amp; Blog
           </button>
         </div>
 
@@ -287,12 +287,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center"
-            aria-label="eSport Manufaktur"
+            aria-label="GG Manufaktur"
           >
             <span className="relative block h-9">
               <img
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
-                alt="eSport Manufaktur"
+                alt="GG Manufaktur"
                 className="h-9 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: isOpen ? 0 : 1 }}
               />
@@ -329,12 +329,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             >
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
                 <button
-                  onClick={(e) => handleLinkClick(e, 'home')}
-                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
-                >
-                  Startseite
-                </button>
-                <button
                   onClick={(e) => handleLinkClick(e, 'competencies')}
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
@@ -351,6 +345,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
+                </button>
+                <button
+                  onClick={(e) => handleLinkClick(e, 'blog')}
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
+                >
+                  News &amp; Blog
                 </button>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button

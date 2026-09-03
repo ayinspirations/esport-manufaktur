@@ -1,7 +1,8 @@
 import React from 'react';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
-import { HeroGround } from './HeroGround';
+import { PageHero } from './PageHero';
+import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 
 interface UeberUnsPageProps {
@@ -11,34 +12,50 @@ interface UeberUnsPageProps {
   onOpenContact?: (subject?: string) => void;
 }
 
-// Same three constants the service detail pages are built on, so this page
-// inherits their rhythm rather than inventing its own.
+/**
+ * The founder's portrait for the story tile.
+ *
+ * ---- DROP THE PHOTOGRAPH IN HERE ----
+ * Put the file in `public/` and set the path below, e.g.
+ *   const GIANLUCA_IMAGE = '/gianluca.jpg';
+ * Portrait or a working situation, roughly 4:5, 900x1125 covers a 2x screen.
+ * Left empty the tile renders a clearly-marked placeholder instead of a broken
+ * image, so the section is presentable until the photograph exists.
+ */
+const GIANLUCA_IMAGE = '';
+
+/** The team photograph, behind the page header. Purpose.tsx carries its own
+    copy of the path on purpose -- this module is lazily loaded, and importing
+    from it would pull the whole "Über uns" chunk into the homepage bundle. */
+const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
+
+// The same three constants the service pages are built on, so this page
+// inherits their rhythm rather than inventing its own. BLOCK_GAP is top
+// padding only -- see spacing.ts for why.
 const CANVAS = 'bg-[#badeda]';
-const SECTION = 'py-20 md:py-28 lg:py-32';
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 
 const intro = [
-  'Die eSport Manufaktur ist eine Agentur für Gaming, eSport, Gamification und interaktive Markenaktivierung. Wir entwickeln Lösungen für Unternehmen, Marken, Vereine, Verbände und Veranstalter, die ihre Zielgruppen nicht nur erreichen, sondern aktiv einbinden wollen. Dabei denken wir physische und digitale Touchpoints von Anfang an gemeinsam.',
-  'Von der ersten strategischen Idee über Konzeption, Design und Technologie bis zur Umsetzung vor Ort begleiten wir Projekte ganzheitlich. Das kann ein einzelnes gamifiziertes Messemodul sein, ein digitaler Eventpass, ein eSport-Turnier, eine Recruiting-Kampagne oder die vollständige Konzeption und Umsetzung eines Events.'
+  'Die GG Manufaktur ist aus der eSport Manufaktur entstanden. Unsere Wurzeln liegen in Gaming und eSport – in einer Welt, in der Beteiligung, Gemeinschaft und echte Begeisterung entscheidend sind.',
+  'Mit unseren Projekten und den Anforderungen unserer Kunden ist auch unser Leistungsfeld gewachsen. Heute entwickeln wir weit über Gaming und eSport hinaus Lösungen für Aktivierung, Engagement und Kommunikation. Denn nicht jede Aufgabe braucht ein digitales Tool, ein Turnier oder eine Gaming-Mechanik. Manchmal ist ein Kartenspiel, ein Quiz, eine Live-Challenge oder ein ganz anderer Ansatz die bessere Lösung.',
+  'Entscheidend ist für uns nicht, welche Leistung wir verkaufen können, sondern was das jeweilige Vorhaben wirklich braucht.'
 ];
 
-const capabilities = [
-  {
-    heading: 'Eigene Software, angepasst statt von der Stange',
-    body: 'Unsere modularen Software-Komponenten ermöglichen es uns, digitale Lösungen flexibel auf Marken, Zielgruppen und Anwendungsfälle anzupassen. Wo Standardmodule nicht ausreichen, entwickeln wir individuelle Funktionen und Experiences.'
-  },
-  {
-    heading: 'Operative Erfahrung vor Ort',
-    body: 'Gemeinsam mit spezialisierten Partnern realisieren wir Gaming-Setups, Messebau, Veranstaltungstechnik, Streaming, Foto- und Videoproduktion sowie komplette Event-Infrastrukturen. Konzepte bleiben bei uns nicht auf der Folie.'
-  },
-  {
-    heading: 'Content, der aktiviert statt begleitet',
-    body: 'Wir übersetzen Produkte und Markenbotschaften in interaktive und gamifizierte Formate, die unterhalten, aktivieren und im Gedächtnis bleiben. Creator, Hosts und eSport-Talents integrieren wir dort, wo sie einen echten Mehrwert für Zielgruppe und Kampagne schaffen.'
-  },
-  {
-    heading: 'Scouting, Talente und Employer Branding',
-    body: 'Für Vereine und Verbände entwickeln wir digitale und physische Scouting- und Talent-Development-Lösungen. Unternehmen unterstützen wir dabei, Gaming, eSport und Gamification für Employer Branding und Recruiting einzusetzen und neue Zugänge zu jungen, digital affinen Zielgruppen zu schaffen.'
-  }
+/** "Wie wir arbeiten" -- a lead line, then the body. */
+const ARBEIT_LEAD = 'Wir starten nicht mit einem fertigen Produkt, sondern mit dem Ziel.';
+
+const arbeit = [
+  'Was soll erreicht werden? Wen wollen wir einbeziehen? Und welches Format passt wirklich zur Aufgabe? Auf dieser Grundlage entwickeln wir die passende Lösung – unabhängig davon, ob daraus ein Event, eine Kampagne, ein digitales Tool oder eine ganz andere Form der Aktivierung entsteht.',
+  'Dabei verbinden wir Strategie, Kreation, Technologie und operative Umsetzung. Unser Kernteam übernimmt die zentrale Steuerung und ergänzt die benötigten Kompetenzen durch ein gewachsenes Netzwerk spezialisierter Partner.',
+  'So erhalten unsere Kunden einen festen Ansprechpartner, klare Verantwortlichkeiten und genau die Expertise, die das jeweilige Projekt benötigt. Und wenn wir für ein Vorhaben nicht der richtige Partner sind, sagen wir das offen.'
+];
+
+/** "Das Team dahinter" -- same shape: a lead line, then the body. */
+const TEAM_LEAD = 'Unterschiedliche Kompetenzen. Ein gemeinsames Verständnis.';
+
+const teamIntro = [
+  'Hinter der GG Manufaktur stehen Menschen aus Strategie, Projektmanagement, Entwicklung, Design, Produktion, Content und Community Management. Was uns verbindet, ist der Anspruch, gute Ideen nicht nur zu entwickeln, sondern sie auch zuverlässig in die Realität zu bringen.',
+  'Wir arbeiten direkt, verbindlich und auf Augenhöhe – untereinander genauso wie mit unseren Kunden und Partnern. Die Menschen, die ein Projekt konzipieren, bleiben auch während der Umsetzung ansprechbar. So gehen keine Informationen verloren und aus einer ersten Idee kann Schritt für Schritt ein funktionierendes Ergebnis entstehen.'
 ];
 
 interface Member {
@@ -89,62 +106,43 @@ const Avatar: React.FC<{ member: Member; index: number }> = ({ member, index }) 
     </div>
   );
 
-export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollToSection, onOpenBooking, onOpenContact }) => {
-  const goToContact = () => {
-    onNavigate('home');
-    requestAnimationFrame(() => scrollToSection('contact-section'));
-  };
-
+export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
   return (
     <div className="w-full">
       {/* ============ 1. HERO ============ */}
-      {/* Same shape as the service pages: a visual band up top handing over to
-          the canvas, headline in ink below it. The band here is the homepage
-          hero's own ground rather than a photograph -- there is no picture of
-          the agency to run, and a stock crowd shot would be a worse answer
-          than none. Swap in an <img> the day a real team photo exists. */}
-      <section className={`relative w-full ${CANVAS}`}>
-        <div data-nav-ground="dark" className="relative w-full h-[38vh] md:h-[48vh] overflow-hidden">
-          <HeroGround
-            style={{
-              maskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, #000 0%, #000 52%, transparent 100%)'
-            }}
-          />
-        </div>
+      {/* The same header every other route carries now -- homepage ground,
+          white type -- with the team photograph behind it. */}
+      <PageHero
+        eyebrow="GG Manufaktur"
+        title="Über"
+        accent="uns."
+        subline="Wir kommen aus Gaming und eSport. Geblieben ist, was uns von Anfang an antreibt: Wir wollen Menschen begeistern."
+        image={TEAM_IMAGE}
+        imageAlt="Das Team der GG Manufaktur"
+      />
 
-        <div className={`relative z-10 w-full ${CONTAINER} pb-16 md:pb-24 pt-10 md:pt-14`}>
-          <Reveal duration={0.6}>
-            <button
-              onClick={() => onNavigate('home')}
-              className="group inline-flex items-center gap-2 mb-8 md:mb-12 text-[#0b0f2a]/60 hover:text-[#0e958e] text-xs font-bold uppercase tracking-[0.2em] transition-colors duration-300"
-            >
-              <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform duration-300" />
-              Zur Startseite
-            </button>
-          </Reveal>
-
-          <h1 className="text-[clamp(44px,8vw,110px)] font-black leading-[0.9] tracking-tighter uppercase text-[#0b0f2a]">
-            <RevealText as="span" by="word" text="Über" delay={0.05} />
-            <RevealText as="span" by="word" text="uns." delay={0.18} className="text-[#0e958e] italic" />
-          </h1>
-
-          <Reveal duration={0.75} delay={0.3}>
-            <p className="mt-6 md:mt-8 text-[#0b0f2a]/70 text-lg sm:text-xl md:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight">
-              Wir machen Marken und Botschaften erlebbar.
-            </p>
+      {/* ============ 2. DER AUFSCHLAG ============ */}
+      {/* The one paragraph that says what the company is, before any of the
+          history. It runs the page's width rather than a column, so it reads
+          as the answer to the headline above it. */}
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
+        <div className={CONTAINER}>
+          <Reveal as="p" className="text-[#0b0f2a] text-xl md:text-2xl lg:text-[28px] font-bold leading-snug tracking-tight max-w-4xl">
+            Die GG Manufaktur entwickelt Gamification, Events und Markenaktivierungen, die Menschen einbeziehen und in
+            Erinnerung bleiben. Dabei verbinden wir Strategie, Kreation, Technologie und Umsetzung – mit einem klaren
+            Blick auf das Ziel und die Menschen, die erreicht werden sollen.
           </Reveal>
         </div>
       </section>
 
-      {/* ============ 2. WER WIR SIND ============ */}
-      <section className={`${CANVAS} ${SECTION}`}>
+      {/* ============ 3. WO WIR HERKOMMEN ============ */}
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
-          <div className="grid md:grid-cols-12 gap-8 md:gap-16">
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
             <div className="md:col-span-5">
               <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
-                <RevealText as="span" by="word" text="Wer wir" />
-                <RevealText as="span" by="word" text="sind." className="text-[#0e958e] italic" delay={0.14} />
+                <RevealText as="span" by="word" text="Wo wir" />
+                <RevealText as="span" by="word" text="herkommen." className="text-[#0e958e] italic" delay={0.14} />
               </h2>
             </div>
             <div className="md:col-span-7 space-y-6">
@@ -163,50 +161,63 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
         </div>
       </section>
 
-      {/* ============ 3. WIE WIR ARBEITEN ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0`}>
+      {/* ============ 4. WIE WIR ARBEITEN ============ */}
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
-          <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a] mb-12 md:mb-16">
-            <RevealText as="span" by="word" text="Wie wir" />
-            <RevealText as="span" by="word" text="arbeiten." className="text-[#0e958e] italic" delay={0.14} />
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-x-12 gap-y-12 md:gap-y-16">
-            {capabilities.map((item, i) => (
-              <Reveal key={item.heading} delay={(i % 2) * STAGGER.card} y={28}>
-                <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter text-[#0b0f2a] mb-4 leading-tight">
-                  {item.heading}
-                </h3>
-                <p className="text-[#0b0f2a]/70 text-base md:text-lg leading-relaxed font-medium tracking-tight">
-                  {item.body}
-                </p>
+          <div className="grid md:grid-cols-12 gap-8 md:gap-12">
+            <div className="md:col-span-5">
+              <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
+                <RevealText as="span" by="word" text="Wie wir" />
+                <RevealText as="span" by="word" text="arbeiten." className="text-[#0e958e] italic" delay={0.14} />
+              </h2>
+            </div>
+            <div className="md:col-span-7">
+              <Reveal as="p" className="text-[#0b0f2a] font-bold text-xl md:text-2xl leading-snug tracking-tight mb-6">
+                {ARBEIT_LEAD}
               </Reveal>
-            ))}
+              <div className="space-y-6">
+                {arbeit.map((paragraph, i) => (
+                  <Reveal
+                    key={i}
+                    as="p"
+                    delay={(i + 1) * STAGGER.line}
+                    className="text-[#0b0f2a]/75 text-lg md:text-xl leading-relaxed font-medium tracking-tight"
+                  >
+                    {paragraph}
+                  </Reveal>
+                ))}
+              </div>
+            </div>
           </div>
-
-          <Reveal delay={0.2} className="mt-16 md:mt-20 pt-10 border-t border-[#0b0f2a]/15">
-            <p className="text-[#0b0f2a] font-bold text-xl md:text-2xl leading-snug tracking-tight max-w-3xl">
-              Unser Anspruch: Strategie, Technologie und Erlebnis so miteinander zu verbinden, dass aus
-              Aufmerksamkeit echte Interaktion entsteht.
-            </p>
-          </Reveal>
         </div>
       </section>
 
-      {/* ============ 4. DAS TEAM ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0`}>
+      {/* ============ 5. DAS TEAM ============ */}
+      <section className={`${CANVAS} ${BLOCK_GAP}`}>
         <div className={CONTAINER}>
-          <div className="max-w-2xl mb-12 md:mb-16">
+          <div className="max-w-3xl mb-10 md:mb-14">
             <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
               <RevealText as="span" by="word" text="Das Team" />
               <RevealText as="span" by="word" text="dahinter." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
-            <Reveal as="p" delay={0.3} className="text-[#0b0f2a]/70 text-base md:text-lg mt-5 leading-relaxed font-medium tracking-tight">
-              Strategie, Technik, Produktion und Content sitzen bei uns am selben Tisch.
+            <Reveal as="p" delay={0.24} className="text-[#0b0f2a] font-bold text-xl md:text-2xl mt-5 leading-snug tracking-tight">
+              {TEAM_LEAD}
             </Reveal>
+            <div className="mt-5 space-y-5">
+              {teamIntro.map((paragraph, i) => (
+                <Reveal
+                  key={i}
+                  as="p"
+                  delay={0.3 + i * STAGGER.line}
+                  className="text-[#0b0f2a]/75 text-base md:text-lg leading-relaxed font-medium tracking-tight"
+                >
+                  {paragraph}
+                </Reveal>
+              ))}
+            </div>
           </div>
 
-          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12 md:gap-y-14">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 md:gap-y-12">
             {team.map((member, i) => (
               <Reveal
                 as="li"
@@ -230,36 +241,105 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, scrollTo
         </div>
       </section>
 
-      {/* ============ 5. CTA-CLOSER ============ */}
-      <section className={`${CANVAS} ${SECTION} pt-0 pb-28 md:pb-36`}>
-        <div className={`${CONTAINER} text-center`}>
-          <div className="max-w-2xl mx-auto">
-            <RevealText
-              as="h2"
-              by="word"
-              text="Lernen wir uns kennen."
-              className="text-[clamp(30px,4.5vw,56px)] font-black leading-[1.05] tracking-tighter mb-10 text-[#0b0f2a]"
-            />
-          </div>
-          <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4 mb-8">
-            <button
-              onClick={() => (onOpenBooking ? onOpenBooking() : goToContact())}
-              className="spring group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight"
-            >
-              Termin vereinbaren
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-            {/* Opens the form in place rather than routing back to the
-                homepage and scrolling to the bottom of it. */}
-            <button
-              onClick={() => (onOpenContact ? onOpenContact('Über uns') : goToContact())}
-              className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight"
-            >
-              Projekt anfragen
-            </button>
+      {/* ============ 6. MEINE GESCHICHTE ============ */}
+      {/*
+        The founder's story, as a tile on the site's own dark ground -- the
+        same surface as the Blog panel on the homepage, so it reads as part of
+        the set rather than as a banner dropped onto the page.
+
+        One deliberate difference from that panel: the type here is white and
+        white/80 rather than white/60. This is a piece of writing somebody is
+        meant to read, not a label on a card, and 60% white over the dark
+        ground is below what carries a paragraph.
+      */}
+      <section className={`${CANVAS} ${BLOCK_GAP} pb-20 md:pb-28`}>
+        <div className={CONTAINER}>
+          <Reveal
+            y={28}
+            data-nav-ground="dark"
+            className="relative w-full rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10"
+          >
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <div className="absolute inset-0 bg-[#020617]" />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background:
+                    'radial-gradient(circle at 20% 16%, rgba(0,129,141,0.42) 0%, rgba(0,129,141,0.20) 26%, rgba(0,129,141,0.06) 46%, transparent 64%)'
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
+              <div
+                className="absolute top-0 right-0 w-[75%] h-full opacity-50"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(115deg, transparent, transparent 38px, rgba(20, 184, 166, 0.6) 38px, rgba(20, 184, 166, 0.6) 40px)',
+                  maskImage:
+                    'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 55%, transparent 100%)',
+                  WebkitMaskImage:
+                    'linear-gradient(to bottom, transparent 0%, white 22%, white 72%, transparent 100%), linear-gradient(to left, white 0%, white 55%, transparent 100%)',
+                  maskComposite: 'intersect',
+                  WebkitMaskComposite: 'source-in'
+                }}
+              />
+            </div>
+
+            {/* Two columns from md, photograph above the text below that. */}
+            <div className="relative z-10 grid md:grid-cols-12 gap-8 md:gap-10 lg:gap-14 p-6 sm:p-8 md:p-10 lg:p-14 items-center">
+              <div className="md:col-span-5">
+                {GIANLUCA_IMAGE ? (
+                  <img
+                    src={GIANLUCA_IMAGE}
+                    alt="Gianluca Crepaldi, Gründer und Geschäftsführer der GG Manufaktur"
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full aspect-[4/5] object-cover rounded-card"
+                  />
+                ) : (
+                  <div className="w-full aspect-[4/5] rounded-card border border-white/15 bg-white/[0.04] flex flex-col items-center justify-center gap-3 text-center px-6">
+                    <ImageIcon className="w-8 h-8 text-white/25" />
+                    <span className="text-white/45 text-[9px] font-black uppercase tracking-[0.25em] border border-white/15 rounded-full px-2.5 py-1">
+                      Foto folgt
+                    </span>
+                    <span className="text-white/35 text-xs font-medium leading-snug max-w-[22ch]">
+                      Porträt von Gianluca Crepaldi
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="md:col-span-7">
+                <Reveal className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-5">
+                  Meine Geschichte
+                </Reveal>
+                <RevealText
+                  as="h2"
+                  by="word"
+                  text="Von FIFA-Turnieren mit Stift und Papier zur GG Manufaktur."
+                  className="text-white text-[clamp(24px,3vw,38px)] font-black leading-[1.08] tracking-tighter"
+                />
+                <Reveal as="p" delay={0.16} className="mt-5 md:mt-6 text-white/80 text-base md:text-lg leading-relaxed font-medium tracking-tight">
+                  Vor rund 15 Jahren begann alles in einer Garage: mit Beamer, Leinwand, Stift und Papier – und mit der
+                  Idee, Gaming-Wettbewerbe einfacher zu machen. Daraus entstanden eine App, die eSport Manufaktur,
+                  zahlreiche Projekte und schließlich die GG Manufaktur. Ich erzähle, welche Zufälle Türen geöffnet
+                  haben, was wir aus Rückschlägen gelernt haben und warum nach fünf Jahren der richtige Zeitpunkt für
+                  einen neuen Namen und den nächsten Schritt gekommen ist.
+                </Reveal>
+                <Reveal delay={0.24} className="mt-7 md:mt-9">
+                  <button
+                    onClick={() => onNavigate('meine-geschichte')}
+                    className="spring group inline-flex items-center gap-2.5 bg-emerald-400 hover:bg-white text-slate-900 px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-300"
+                  >
+                    Mehr lesen
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                  </button>
+                </Reveal>
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>
+
     </div>
   );
 };

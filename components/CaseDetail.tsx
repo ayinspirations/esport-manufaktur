@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import { CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
 
@@ -132,13 +132,6 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
               >
                 Boost Your Idea
               </button>
-              <button 
-                onClick={onBack}
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-transparent hover:bg-[#0b0f2a]/[0.07] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 rounded-full text-[#0b0f2a] text-[11px] md:text-base font-black uppercase tracking-[0.2em] transition-all group w-fit md:w-auto min-w-[150px] md:min-w-0"
-              >
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                Zurück
-              </button>
             </motion.div>
           </div>
         </div>
@@ -212,7 +205,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = ({ onBack }) => {
 
             <section className="space-y-8">
               <Reveal as="p" delay={0.24} className="text-lg md:text-xl text-slate-600 leading-relaxed">
-                Hochwertige Gaming-Setups, riesige Leinwände für Zuschauende und eine Atmosphäre voller Spannung – unser Team von der eSport Manufaktur setzte das Event mit höchster Präzision und Leidenschaft um. Wir konzipierten packende Turniere, installierten interaktive Gaming-Stationen und schufen eine professionelle Bühne für mitreißende Matches und unvergessliche Erlebnisse.
+                Hochwertige Gaming-Setups, riesige Leinwände für Zuschauende und eine Atmosphäre voller Spannung – unser Team von der GG Manufaktur setzte das Event mit höchster Präzision und Leidenschaft um. Wir konzipierten packende Turniere, installierten interaktive Gaming-Stationen und schufen eine professionelle Bühne für mitreißende Matches und unvergessliche Erlebnisse.
               </Reveal>
             </section>
 

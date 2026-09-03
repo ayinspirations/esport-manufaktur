@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { HeroGround, HERO_GRADIENT_TEXT } from './HeroGround';
@@ -43,7 +43,14 @@ const TILE_TEXT_VARIANTS = {
 // tile waits on the delay of one sitting above it in a different row.
 const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
 
-export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?: (page: any) => void }> = ({ onScroll, onNavigate }) => {
+interface BestCasesProps {
+  onScroll?: (id: string) => void;
+  onNavigate?: (page: any) => void;
+  onOpenBooking?: () => void;
+  onOpenContact?: (subject?: string) => void;
+}
+
+export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOpenBooking, onOpenContact }) => {
   return (
     <section id="best-cases" className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
       {/* The section wrapper no longer animates: it used to fade the whole
@@ -57,10 +64,13 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
               <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
-              Einblicke in Projekte, die Marken erlebbar machen.
+              Projekte, die wir gemeinsam mit unseren Kunden realisieren durften.
             </Reveal>
             <Reveal as="p" delay={0.4} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-2xl leading-relaxed tracking-tight">
-              Von Gaming, eSport und Gamification über digitale Lösungen bis zu Events und Content zeigen unsere Cases, wie aus Ideen individuelle Aktivierungen mit echter Wirkung entstehen.
+              Ob Konzern, Ministerium, bekannte Marke, Verband oder Verein: Unterschiedlichste Auftraggeber vertrauen uns ihre Projekte an. Gemeinsam entwickeln wir Lösungen, die zu ihren Zielen, Zielgruppen und Rahmenbedingungen passen.
+            </Reveal>
+            <Reveal as="p" delay={0.46} className="text-slate-600 font-medium text-base md:text-lg mt-4 max-w-2xl leading-relaxed tracking-tight">
+              Eine Auswahl dieser Projekte zeigen wir hier. Weitere Arbeiten bleiben auf Wunsch unserer Kunden bewusst vertraulich.
             </Reveal>
           </div>
         </div>
@@ -287,7 +297,7 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
 
           <div className="col-span-1 aspect-[4/3] lg:col-span-3 lg:row-span-3 lg:aspect-auto">
             <motion.button
-              onClick={() => onScroll?.('contact-section')}
+              onClick={() => onScroll?.('case-showcase')}
               variants={TILE_VARIANTS}
               custom={TILE_DELAY[5]}
               initial="hidden"
@@ -300,28 +310,59 @@ export const BestCases: React.FC<{ onScroll?: (id: string) => void; onNavigate?:
                   a button, and this is the only feedback it has. */}
               <HeroGround className="opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
 
+              {/* The tile closing the mosaic no longer sends people to the
+                  contact form -- the two buttons under the grid do that now.
+                  It points at what is directly beneath it instead: the same
+                  cases as a full-screen viewer. */}
               <div className="relative z-10 flex flex-col items-center">
-                <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase">
-                  TAKE YOUR <br />
-                  PROJECT <br />
-                  TO THE <br />
-                  <span className={HERO_GRADIENT_TEXT}>
-                    NEXT LEVEL.
-                  </span>
+                {/* Two lines, not four. The tile used to force a break after
+                    every word, which left "ALLE", "UNSERE" and "REFERENZEN."
+                    stacked one word per line. */}
+                <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase max-w-[12ch]">
+                  Alle unsere{' '}
+                  <span className={HERO_GRADIENT_TEXT}>Referenzen.</span>
                 </h3>
-                
-                <motion.div 
+
+                <p className="mt-5 text-white/70 font-medium text-sm md:text-base leading-relaxed tracking-tight max-w-[34ch] text-balance">
+                  Jeden Case im Großformat — direkt hier darunter.
+                </p>
+
+                <motion.div
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="mt-8 px-6 py-3 bg-white text-black rounded-full font-black text-sm uppercase tracking-widest flex items-center gap-2 group-hover:bg-emerald-400 transition-colors duration-300"
                 >
-                  Get Started
-                  <ArrowUpRight className="w-4 h-4" />
+                  Projekte ansehen
+                  <ArrowDown className="w-4 h-4" />
                 </motion.div>
               </div>
             </motion.button>
           </div>
         </div>
+
+        {/* The step after the cases: talk to us. Two ways of doing that --
+            a date in the calendar, or a written enquiry -- directly under the
+            grid rather than only in the footer form. */}
+        <Reveal delay={0.1} y={24} className="mt-14 md:mt-20 flex flex-col items-center text-center">
+          <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug text-balance">
+            Genug gesehen? Dann sprechen wir über dein Projekt.
+          </p>
+          <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <button
+              onClick={() => (onOpenBooking ? onOpenBooking() : onScroll?.('contact-section'))}
+              className="spring group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-300"
+            >
+              Termin vereinbaren
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </button>
+            <button
+              onClick={() => (onOpenContact ? onOpenContact('Best Cases') : onScroll?.('contact-section'))}
+              className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-colors duration-300"
+            >
+              Kontakt aufnehmen
+            </button>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { BLOCK_GAP } from './spacing';
 import type { ServiceContent } from './servicesContent';
 
 interface ServiceViewProps {
@@ -12,7 +13,7 @@ interface ServiceViewProps {
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
-const SECTION = 'py-16 md:py-24';
+
 const TILE = 'tile-gradient text-white';
 
 // ---------------------------------------------------------------------------
@@ -23,9 +24,10 @@ const TILE = 'tile-gradient text-white';
 // and the closer.
 //
 // Deliberately not here, and not coming back: the FAQ, the "Unser Vorgehen"
-// accordion, "Was es bewirkt" and "Für wen". Their copy is still in
-// servicesContent -- `wirkung`, `fuerWen`, `vorgehen`, `faq` are simply not
-// read any more -- so none of it has to be rewritten if it is ever wanted back.
+// accordion, "Was es bewirkt" and "Für wen". They were kept unread in
+// servicesContent for a while in case they were wanted back; the rewrite of
+// all ten services made that copy stale rather than dormant, so it is gone
+// from the content file and from its interface with it.
 //
 // Two things from the interim version are kept. The Leistungen are a grid
 // rather than the horizontal carousel they were: with at most eight entries
@@ -49,7 +51,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
   return (
     <div className="w-full">
       {/* ============ 1. Headline, subline, call to action ============ */}
-      <section className={`${CONTAINER} pt-14 md:pt-20 pb-4 md:pb-8`}>
+      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
         <RevealText
           as="h2"
           by="word"
@@ -82,14 +84,14 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Kostenlose Anfrage starten
+            Kostenloses Erstgespräch vereinbaren
           </button>
         </Reveal>
       </section>
 
       {/* ============ 2. Ausgangslage ============ */}
       {content.pain && (
-        <section className={`${CONTAINER} ${SECTION}`}>
+        <section className={`${CONTAINER} ${BLOCK_GAP}`}>
           <div className="grid md:grid-cols-12 gap-6 md:gap-16">
             <div className="md:col-span-5">
               <RevealText
@@ -99,18 +101,20 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
                 className="text-[clamp(26px,3.2vw,40px)] font-black leading-[1.08] tracking-tighter text-[#0b0f2a]"
               />
             </div>
-            <Reveal delay={0.1} className="md:col-span-7">
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
-                {content.pain.text}
-              </p>
+            <Reveal delay={0.1} className="md:col-span-7 space-y-5 md:space-y-6">
+              {(Array.isArray(content.pain.text) ? content.pain.text : [content.pain.text]).map((para, i) => (
+                <p key={i} className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
+                  {para}
+                </p>
+              ))}
             </Reveal>
           </div>
         </section>
       )}
 
       {/* ============ 3. Leistungen im Detail ============ */}
-      <section className={`${CONTAINER} ${SECTION}`}>
-        <div className="max-w-2xl mb-12 md:mb-16">
+      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <div className="max-w-2xl mb-8 md:mb-10">
           <RevealText
             as="h2"
             by="word"
@@ -122,11 +126,13 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <div className="flex flex-col gap-14 md:gap-16">
           {content.leistungen.map((group, gi) => (
             <div key={gi}>
-              {group.heading && (
-                <Reveal className="max-w-2xl mb-8 md:mb-10">
-                  <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter mb-3 text-[#0b0f2a]">
-                    {group.heading}
-                  </h3>
+              {(group.heading || group.text) && (
+                <Reveal className="max-w-3xl mb-8 md:mb-10">
+                  {group.heading && (
+                    <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter mb-3 text-[#0b0f2a]">
+                      {group.heading}
+                    </h3>
+                  )}
                   {group.text && (
                     <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
                       {group.text}
@@ -170,15 +176,21 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       {/* Both routes open in place. Sending someone back to the homepage and
           then scrolling them to the form at the bottom of it lost the service
           they were asking about; the popup carries it along as the subject. */}
-      <section className={`${CONTAINER} pt-10 md:pt-14 pb-20 md:pb-28 text-center`}>
+      <section className={`${CONTAINER} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
         <div className="max-w-2xl mx-auto">
           <RevealText
             as="h2"
             by="word"
             text={content.ctaCloser.headline}
-            className="text-[clamp(28px,4vw,50px)] font-black leading-[1.05] tracking-tighter mb-9 md:mb-11 text-[#0b0f2a]"
+            className="text-[clamp(28px,4vw,50px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]"
           />
+          {content.ctaCloser.text && (
+            <Reveal as="p" delay={0.12} className="mt-5 md:mt-6 text-slate-600 text-base md:text-lg leading-relaxed font-medium">
+              {content.ctaCloser.text}
+            </Reveal>
+          )}
         </div>
+        <div className="h-9 md:h-11" />
         <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4">
           <button
             onClick={requestProject}
@@ -192,7 +204,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Kostenlose Anfrage starten
+            Kostenloses Erstgespräch vereinbaren
           </button>
         </Reveal>
       </section>
