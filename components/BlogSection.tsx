@@ -99,8 +99,13 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
               <RevealText as="span" by="word" text="Blog" delay={0.18} />
               <RevealText as="span" by="word" text="& Wissen." delay={0.3} className="text-[#0e958e] italic" />
             </h2>
-            <Reveal delay={0.42} as="p" className="text-white/60 font-bold text-base md:text-lg mt-6 max-w-xl leading-tight tracking-tight">
-              Praxiswissen zu Gaming, eSport-Events und digitaler Markenaktivierung.
+            <Reveal delay={0.42} as="p" className="text-white font-bold text-base md:text-lg lg:text-xl mt-6 max-w-xl leading-snug tracking-tight">
+              Einblicke, Erfahrungen und Wissen aus unserer täglichen Arbeit.
+            </Reveal>
+            <Reveal delay={0.5} as="p" className="text-white/60 font-medium text-base md:text-lg mt-4 max-w-3xl leading-relaxed tracking-tight">
+              Hier teilen wir, was uns beschäftigt, was wir in unseren Projekten lernen und wie wir aktuelle
+              Entwicklungen rund um Gamification, Events, Markenaktivierung, Gaming, eSport und digitale Lösungen
+              einordnen.
             </Reveal>
           </div>
 
@@ -161,7 +166,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
               {showAllMobile ? (
                 <>Weniger anzeigen <ChevronUp className="w-4 h-4" /></>
               ) : (
-                <>Alle Artikel anzeigen <ChevronDown className="w-4 h-4" /></>
+                <>Alle Beiträge ansehen <ChevronDown className="w-4 h-4" /></>
               )}
             </button>
           </motion.div>
