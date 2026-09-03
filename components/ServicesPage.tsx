@@ -210,7 +210,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         eyebrow="Leistungen"
         title="Unsere"
         accent="Services."
-        subline="Von der digitalen Experience bis zum physischen Erlebnis."
+        subline="Wir entwickeln Lösungen, die aus Aufmerksamkeit echte Interaktion machen."
       />
 
       <div className={`${CONTAINER} pt-10 md:pt-14`}>

@@ -198,10 +198,10 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
               <RevealText as="span" by="word" text="Services." className="text-[#0e958e] italic" delay={0.16} />
             </h2>
             <Reveal as="p" delay={0.34} className="text-slate-900 font-bold text-lg md:text-xl mt-5 max-w-xl leading-snug tracking-tight">
-              Von der digitalen Experience bis zum physischen Erlebnis.
+              Wir entwickeln Lösungen, die aus Aufmerksamkeit echte Interaktion machen.
             </Reveal>
-            <Reveal as="p" delay={0.42} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-xl leading-tight tracking-tight">
-              Wir verbinden Strategie, Kreation, Technologie und Content zu ganzheitlichen Gaming-, eSport- und Gamification-Lösungen – digital, vor Ort und nahtlos miteinander verknüpft.
+            <Reveal as="p" delay={0.42} className="text-slate-600 font-medium text-base md:text-lg mt-3 max-w-2xl leading-relaxed tracking-tight">
+              Von der strategischen Idee bis zur Umsetzung im physischen und digitalen Raum: Wir verbinden Kreation, Technologie und Produktion zu Aktivierungen, die Menschen erreichen, Marken erlebbar machen und messbare Wirkung schaffen.
             </Reveal>
           </div>
         </div>
@@ -220,7 +220,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
             onClick={() => onNavigate?.('services')}
             className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
-            Alle Leistungen ansehen
+            Alle Leistungen entdecken
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
           </button>
         </Reveal>
