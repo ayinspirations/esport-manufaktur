@@ -175,9 +175,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
         </h1>
 
         <div ref={belowRef}>
-          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-2xl mx-auto leading-[1.3] tracking-tight opacity-90">
-            Mit Gaming, eSport &amp; Gamification. <br />
-            Live. Digital. Messbar. Immer authentisch.
+          {/* "Immer authentisch" carries the same teal-to-lime sweep as
+              BEGEISTERN -- the one phrase in the subline that is a claim
+              rather than a description, so it gets the headline's colour. */}
+          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90">
+            Mit Gamification, Events und Markenaktivierungen, die in Erinnerung bleiben. <br />
+            Live. Digital. Messbar. <span className={HERO_GRADIENT_TEXT}>Immer authentisch.</span>
           </p>
 
           <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
@@ -201,7 +204,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
               onClick={() => scrollToSection?.('competencies')}
               className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-300 tracking-tighter"
             >
-              Mehr erfahren
+              Leistungen entdecken
               <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
             </button>
           </div>

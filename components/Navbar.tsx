@@ -192,7 +192,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
-        <div className="flex items-center gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="flex items-center gap-9 lg:gap-11 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
@@ -216,6 +216,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Best Cases
+          </button>
+          <button
+            onClick={(e) => handleLinkClick(e, 'blog')}
+            className={`nav-link whitespace-nowrap text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+          >
+            News &amp; Blog
           </button>
         </div>
 
@@ -351,6 +357,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
+                </button>
+                <button
+                  onClick={(e) => handleLinkClick(e, 'blog')}
+                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
+                >
+                  News &amp; Blog
                 </button>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
