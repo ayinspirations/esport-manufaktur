@@ -13,25 +13,14 @@ export interface ServiceLeistungGroup {
   groupCta?: string;
 }
 
-export interface ServiceStep {
-  title: string;
-  text: string;
-}
-
-export interface ServiceFaqItem {
-  q: string;
-  a: string;
-}
-
 /**
  * One service's page copy.
  *
- * The four pillars fill this out completely. The six services reached only
- * through the filter carry a shorter version -- hero, Leistungen, "Für wen",
- * closer -- so everything they do not have is optional and the renderer skips
- * the section rather than printing an empty heading. Nothing here is faked to
- * fill a slot: a service without a written case study simply has no case
- * study section.
+ * All ten now carry the same four blocks -- hero, Ausgangslage, six Leistungen,
+ * closer -- so the pages read as one set rather than four full ones and six
+ * short ones. Anything genuinely absent (a service without artwork) is
+ * optional, and the renderer skips the block rather than printing an empty
+ * heading.
  */
 export interface ServiceContent {
   slug: string;
@@ -57,24 +46,6 @@ export interface ServiceContent {
   };
   leistungenHeading: string;
   leistungen: ServiceLeistungGroup[];
-  /**
-   * What the service achieves -- the third of the three blocks the services
-   * page shows (what it is / scope / effect).
-   *
-   * NEW COPY, written from each service's own listed Leistungen and not yet
-   * signed off. No figures, no claims that are not already implied by what the
-   * service does; still, this is the block to read before it goes live.
-   */
-  wirkung?: string;
-  vorgehenHeading?: string;
-  vorgehen?: ServiceStep[];
-  fuerWenHeading?: string;
-  fuerWen?: string[];
-  bestCase?: {
-    heading: string;
-    text: string;
-  };
-  faq?: ServiceFaqItem[];
   ctaCloser: {
     headline: string;
     /** Optional line between the closing headline and the buttons. */
@@ -111,8 +82,6 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Wir arbeiten losgelöst von starren Formaten und stellen für jedes Vorhaben die Leistungen und Kompetenzen zusammen, die tatsächlich benötigt werden. Wenn wir dabei feststellen, dass ein anderer Ansatz sinnvoller ist oder wir nicht der richtige Partner für die Umsetzung sind, sagen wir das offen. Denn gute Beratung bedeutet für uns, die beste Lösung für dein Projekt zu finden – nicht zwangsläufig die beste Lösung für uns.'
       ]
     },
-    wirkung:
-      'Eine Positionierung, die in der Community trägt: klare Zielgruppen, ein definierter Platz für eure Marke und Ziele, an denen sich jede folgende Aktivierung ausrichten lässt.',
     leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
@@ -146,33 +115,6 @@ export const servicesContent: Record<string, ServiceContent> = {
         ]
       }
     ],
-    vorgehenHeading: 'Unser Vorgehen',
-    vorgehen: [
-      { title: 'Analyse', text: 'Zielgruppe, Wettbewerb und aktuelle Markenwahrnehmung im Gaming-Umfeld erfassen.' },
-      { title: 'Strategieworkshop', text: 'Gemeinsam Positionierung, Ziele und Leitplanken erarbeiten.' },
-      { title: 'Konzept & Roadmap', text: 'Konkreter Fahrplan mit Kanälen, Formaten und Meilensteinen.' },
-      { title: 'Umsetzungsbegleitung', text: 'Wir bleiben an eurer Seite, bis die Strategie im Alltag funktioniert.' }
-    ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken & Unternehmen', 'Publisher', 'Vereine mit Gaming-Sparte', 'Agenturen ohne Gaming-Expertise'],
-    bestCase: {
-      heading: 'So sieht das in der Praxis aus',
-      text: 'Platzhalter für 1 Referenz-Case mit konkretem Ergebnis (z. B. Reichweite, Engagement-Rate).'
-    },
-    faq: [
-      {
-        q: 'Brauchen wir schon eine Gaming-Präsenz, bevor wir mit euch starten?',
-        a: 'Nein. Wir arbeiten sowohl mit Marken, die bei null starten, als auch mit solchen, die ihre bestehende Präsenz schärfen wollen.'
-      },
-      {
-        q: 'Wie lange dauert ein Strategieprojekt?',
-        a: 'Je nach Umfang zwischen 4 und 8 Wochen, von der Analyse bis zur fertigen Roadmap.'
-      },
-      {
-        q: 'Setzt ihr die Strategie auch selbst um?',
-        a: 'Ja, nahtlos über unsere Bereiche Content & Streaming sowie Digitale Lösungen — oder als Übergabe an euer Team.'
-      }
-    ],
     ctaCloser: {
       headline: 'Lass uns die passende Lösung für dein Vorhaben finden.',
       text:
@@ -192,72 +134,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Content & Live-Kommunikation, die die Gaming-Community wirklich erreicht',
     hero: {
-      headline: 'Content, der nicht wie Werbung aussieht — weil er keine ist.',
+      headline: 'Guter Content beginnt mit einer guten Geschichte.',
       subline:
-        'Live-Produktionen, Streaming-Formate und Creator-Kooperationen, die eure Marke authentisch im Gaming-Umfeld positionieren.',
-      ctaLabel: 'Content-Projekt anfragen',
+        'Wir entwickeln Content- und Live-Formate, die zur Marke, zum Kanal und zu den Menschen passen, die du erreichen möchtest.',
+      ctaLabel: 'Contentprojekt unverbindlich besprechen',
       image: '/REWExfckoln_1770162125933.jpg',
       imageAlt: 'Live-Streaming Produktion und Gaming Content Produktion bei GG Manufaktur'
     },
     pain: {
-      heading: 'Warum Standard-Content in der Gaming-Community nicht funktioniert',
-      text: 'Content, der sichtbar "von außen produziert" wirkt, wird von der Community sofort abgestraft. Gleichzeitig überfordert professionelles Streaming-Setup, Formatentwicklung und Creator-Auswahl viele Teams intern. Das Ergebnis: entweder gar kein Content oder Content ohne Wirkung.'
+      heading: 'Vom einzelnen Moment zum wiedererkennbaren Format',
+      text: [
+        'Content soll nicht nur dokumentieren, dass etwas stattgefunden hat. Er soll erklären, unterhalten, Nähe schaffen oder Menschen zum Mitmachen bewegen. Deshalb denken wir Thema, Format, Produktion und spätere Ausspielung von Anfang an gemeinsam.',
+        'Unsere Erfahrung stammt aus Live-Produktionen, Gaming, eSport und Community-Kommunikation. Dieses Wissen setzen wir ebenso für Events, Markenformate, Interviews, Shows und Social Content ein. Je nach Bedarf entwickeln wir ein neues Format, produzieren einzelne Inhalte oder übernehmen die redaktionelle und technische Gesamtsteuerung.'
+      ]
     },
-    wirkung:
-      'Reichweite, die aus dem Format kommt und nicht aus dem Mediabudget — Inhalte, die in der Gaming-Community geteilt werden, weil sie dort hingehören.',
-    leistungenHeading: 'Leistungen im Detail',
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Unsere Leistungen reichen von der ersten Themenidee bis zur fertigen Ausspielung und Auswertung.',
         cards: [
           {
-            title: 'Live-Produktion & Streaming-Setup',
-            text: 'Technisch sauber, visuell hochwertig, auf Twitch, YouTube und Co. produziert.'
+            title: 'Contentstrategie',
+            text:
+              'Wir definieren Themen, Zielgruppen, Kanäle und Ziele als Grundlage für die weitere Produktion.'
           },
           {
             title: 'Formatentwicklung',
-            text: 'Shows, Turnier-Formate und Behind-the-Scenes-Content, die zur Marke und zur Community passen.'
+            text:
+              'Wir entwickeln wiedererkennbare Shows, Serien, Interviews und redaktionelle Formate.'
           },
           {
-            title: 'Creator- & Influencer-Kooperationen',
-            text: 'Passende Persönlichkeiten finden und Kooperationen aufsetzen, die glaubwürdig wirken.'
+            title: 'Redaktion & Storytelling',
+            text:
+              'Wir strukturieren Inhalte, Botschaften, Moderationen und Abläufe zu einer verständlichen Geschichte.'
           },
           {
-            title: 'Social-Cutdowns & Distribution',
-            text: 'Aus einer Produktion wird Content für alle relevanten Kanäle — ohne Qualitätsverlust.'
+            title: 'Live-Formate & Broadcast',
+            text:
+              'Wir konzipieren Livestreams, Bühnenkommunikation und hybride Formate für relevante Plattformen.'
+          },
+          {
+            title: 'Social Content & Cutdowns',
+            text:
+              'Wir verlängern Produktionen mit plattformgerechten Kurzformaten, Clips und begleitenden Inhalten.'
+          },
+          {
+            title: 'Distribution & Auswertung',
+            text:
+              'Wir planen die Ausspielung und bewerten Reichweite, Interaktionen, Verweildauer und weitere KPIs.'
           }
         ]
       }
     ],
-    vorgehenHeading: 'Unser Vorgehen',
-    vorgehen: [
-      { title: 'Formatentwicklung', text: 'Konzept, Ton und Aufbau des Contents gemeinsam definieren.' },
-      { title: 'Produktion', text: 'Live oder aufgezeichnet, mit professionellem technischen Setup.' },
-      { title: 'Postproduktion', text: 'Schnitt, Grading und Cutdowns für alle Kanäle.' },
-      { title: 'Distribution & Reporting', text: 'Ausspielung, Monitoring und Learnings für die nächste Produktion.' }
-    ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken mit eigenem Content-Bedarf', 'Vereine & Teams', 'Publisher (Launch-Content)', 'Event-Veranstalter'],
-    bestCase: {
-      heading: 'Ein Blick auf eine unserer Produktionen',
-      text: 'Platzhalter für 1 Referenz-Case (z. B. Zuschauerzahlen, Watch-Time, Engagement).'
-    },
-    faq: [
-      {
-        q: 'Braucht ihr unser eigenes Equipment oder bringt ihr alles mit?',
-        a: 'Wir bringen das komplette technische Setup mit oder integrieren uns in eure bestehende Infrastruktur — je nach Projekt.'
-      },
-      {
-        q: 'Könnt ihr auch einmalige Produktionen übernehmen, nicht nur laufende Formate?',
-        a: 'Ja, von Einzelproduktionen bis zu regelmäßigen Formaten ist alles möglich.'
-      },
-      {
-        q: 'Wie findet ihr passende Creator für unsere Marke?',
-        a: 'Über Community-Fit, nicht nur Reichweite — wir prüfen Tonalität, Zielgruppen-Überschneidung und Glaubwürdigkeit.'
-      }
-    ],
     ctaCloser: {
-      headline: 'Lasst uns euren nächsten Content produzieren.',
-      primaryLabel: 'Jetzt Projekt anfragen'
+      headline: 'Lass uns über dein nächstes Contentformat sprechen.',
+      text:
+        'Im kostenlosen Erstgespräch klären wir, welche Inhalte und Kanäle für dein Ziel sinnvoll sind.',
+      primaryLabel: 'Contentprojekt unverbindlich besprechen'
     }
   },
 
@@ -272,72 +206,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Events & Erlebniswelten mit echter Gaming-Anziehungskraft',
     hero: {
-      headline: 'Ein Stand allein zieht niemanden an. Ein Erlebnis schon.',
+      headline: 'Aus einem Ort wird ein Erlebnis.',
       subline:
-        'Von der Standkonzeption bis zur Umsetzung vor Ort — Gaming-Aktivierungen auf Messen und Events, die Zielgruppen wirklich erreichen.',
-      ctaLabel: 'Event-Konzept anfragen',
+        'Wir konzipieren und realisieren Events und Markenaktivierungen, die Menschen nicht nur besuchen, sondern aktiv erleben. Vom einzelnen Modul am Messestand bis zur vollständigen Veranstaltung.',
+      ctaLabel: 'Eventprojekt unverbindlich besprechen',
       image: '/images/competencies/eventtechnik.jpg',
       imageAlt: 'Gaming Messestand und eSport Event Konzeption von GG Manufaktur'
     },
     pain: {
-      heading: 'Warum Standard-Messestände die Gaming-Zielgruppe verfehlen',
-      text: 'Ein klassischer Messestand mit ein paar Bildschirmen reicht nicht, um eine Gaming-Zielgruppe zu binden. Gleichzeitig werden technische Komplexität — Konsolen, PCs, Netzwerk, Streaming vor Ort — und Logistik häufig unterschätzt. Ergebnis: hoher Aufwand, wenig Wirkung.'
+      heading: 'Erlebnisse, die zur Aufgabe passen',
+      text: [
+        'Am Anfang steht die Frage, was dein Event erreichen soll: Aufmerksamkeit erzeugen, Menschen zusammenbringen, ein Produkt erlebbar machen oder eine Community aktivieren. Daraus entwickeln wir ein Format, das zur Zielgruppe, zur Marke und zu den Rahmenbedingungen passt.',
+        'Wir begleiten Projekte von der ersten Idee über Dramaturgie, Flächenplanung und Programm bis zur Umsetzung vor Ort. Du kannst uns für einzelne Bausteine beauftragen oder uns die zentrale Steuerung des Gesamtprojekts übertragen. Dabei setzen wir nicht automatisch auf Gaming oder digitale Technik, sondern auf die Lösung, die für das konkrete Ziel sinnvoll ist.'
+      ]
     },
-    wirkung:
-      'Ein Auftritt, an dem die Zielgruppe stehenbleibt statt vorbeizugehen — mit Aktivierungen, die vor Ort funktionieren und über den Veranstaltungstag hinaus nachwirken.',
-    leistungenHeading: 'Leistungen im Detail',
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Je nach Projekt übernehmen wir einzelne Leistungsbereiche oder verbinden sie zu einem ganzheitlich gesteuerten Eventkonzept.',
         cards: [
           {
-            title: 'Standkonzeption & Gaming-Aktivierung',
-            text: 'Erlebnisorientiertes Standdesign, das zur Marke passt und Besucher aktiv einbindet.'
+            title: 'Eventstrategie & Konzeption',
+            text:
+              'Wir übersetzen Ziele, Zielgruppen und Rahmenbedingungen in ein tragfähiges Veranstaltungskonzept.'
           },
           {
-            title: 'Technisches Setup',
-            text: 'Konsolen, PCs, VR und Netzwerktechnik — zuverlässig aufgebaut und betreut.'
+            title: 'Dramaturgie & Besucherführung',
+            text:
+              'Wir planen Abläufe, Programmpunkte, Flächen und Touchpoints entlang eines schlüssigen Gesamterlebnisses.'
           },
           {
-            title: 'Turniere & Wettbewerbe vor Ort',
-            text: 'Live-Turniere als Publikumsmagnet, inklusive Moderation und Ablaufplanung.'
+            title: 'Markenaktivierungen',
+            text:
+              'Wir entwickeln Mitmachformate, Challenges und Erlebnisse, die Besucher aktiv mit der Marke verbinden.'
           },
           {
-            title: 'Personal, Moderation & Promotion',
-            text: 'Geschultes Standpersonal, das die Zielgruppe versteht und anspricht.'
+            title: 'Shows, Turniere & Rahmenprogramm',
+            text:
+              'Wir konzipieren Bühnenprogramme, Wettbewerbe und begleitende Inhalte für Publikum und Teilnehmende.'
+          },
+          {
+            title: 'Projektsteuerung & Logistik',
+            text:
+              'Wir koordinieren Gewerke, Partner, Timings, Genehmigungen und die operative Vorbereitung.'
+          },
+          {
+            title: 'Umsetzung & Betrieb vor Ort',
+            text:
+              'Wir steuern Aufbau, Proben, Veranstaltung und Abbau und bleiben während der gesamten Laufzeit ansprechbar.'
           }
         ]
       }
     ],
-    vorgehenHeading: 'Unser Vorgehen',
-    vorgehen: [
-      { title: 'Konzeption', text: 'Standidee, Aktivierung und Ablauf gemeinsam entwickeln.' },
-      { title: 'Planung & Logistik', text: 'Technik, Personal und Zeitplan bis ins Detail vorbereiten.' },
-      { title: 'Auf- & Abbau vor Ort', text: 'Reibungslose Umsetzung während der gesamten Veranstaltung.' },
-      { title: 'Nachbereitung & Reporting', text: 'Ergebnisse, Learnings und Foto-/Videodokumentation.' }
-    ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Messeaussteller', 'Unternehmen mit Firmenevents', 'Kommunen & Institutionen', 'Vereine (Turniere & Fanevents)'],
-    bestCase: {
-      heading: 'Eine unserer Aktivierungen in Aktion',
-      text: 'Platzhalter für 1 Referenz-Case (z. B. Standbesucher, Turnier-Teilnehmer).'
-    },
-    faq: [
-      {
-        q: 'Übernehmt ihr auch die komplette technische Ausstattung?',
-        a: 'Ja, von Konsolen und PCs bis zur Netzwerkinfrastruktur — alles aus einer Hand.'
-      },
-      {
-        q: 'Wie weit im Voraus sollten wir planen?',
-        a: 'Für größere Messeauftritte empfehlen wir mindestens 8-12 Wochen Vorlauf.'
-      },
-      {
-        q: 'Könnt ihr auch kurzfristige Firmenevents umsetzen?',
-        a: 'Bei kleineren Formaten sind auch kürzere Vorlaufzeiten möglich — sprecht uns einfach an.'
-      }
-    ],
     ctaCloser: {
-      headline: 'Lasst uns euer nächstes Event planen.',
-      primaryLabel: 'Jetzt Konzept anfragen'
+      headline: 'Lass uns dein nächstes Erlebnis gemeinsam planen.',
+      text:
+        'Im kostenlosen Erstgespräch sprechen wir über dein Vorhaben und die passende Form der Zusammenarbeit.',
+      primaryLabel: 'Eventprojekt unverbindlich besprechen'
     }
   },
 
@@ -352,76 +278,65 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Digitale Lösungen für nachhaltige Zielgruppenbindung',
     hero: {
-      headline: 'Digitale Lösungen, die eure Zielgruppe binden — nicht nur unterhalten.',
-      subline: 'Individuelle Tools, Gamification-Konzepte und eigene Software mit eurem Branding.',
-      ctaLabel: 'Digitale Lösung anfragen',
+      headline: 'Digitale Lösungen, die sich deinem Projekt anpassen.',
+      subline:
+        'Wir entwickeln individuelle Tools, White-Label-Plattformen und Gamification-Lösungen, ohne dass du dafür ein eigenes Entwicklerteam aufbauen musst.',
+      ctaLabel: 'Digitale Lösung unverbindlich besprechen',
       image: '/Gamification.jpg',
       imageAlt: 'Gamification Lösung und individuelle Gaming Plattform von GG Manufaktur'
     },
     pain: {
-      heading: 'Warum Standardsoftware selten zur Marke passt',
-      text: 'Fertige Tools und Gamification-Ansätze von der Stange wirken oft aufgesetzt und binden die Zielgruppe nicht wirklich. Gleichzeitig fehlt vielen Unternehmen das eigene Entwicklerteam, um individuelle digitale Lösungen selbst zu bauen und zu betreiben.'
+      heading: 'Eigene Lösung, ohne bei null anzufangen',
+      text: [
+        'Unsere modulare Softwarebasis ermöglicht es, digitale Anwendungen schneller und wirtschaftlicher an Marken, Prozesse und Zielgruppen anzupassen. Benötigt dein Projekt darüber hinaus individuelle Funktionen, entwickeln wir diese gezielt weiter.',
+        'So entstehen beispielsweise digitale Eventpässe, Quizzes, Games, Challenges, Turniersysteme, Community-Plattformen oder Recruiting-Lösungen. Wir betrachten dabei nicht nur die Oberfläche, sondern auch Registrierung, Datenstruktur, Schnittstellen, Betrieb und Erfolgsmessung. Datenschutz, DSGVO-konforme Prozesse und Hosting in Deutschland werden von Beginn an berücksichtigt.'
+      ]
     },
-    wirkung:
-      'Aktivierungen, die sich skalieren und auswerten lassen: jede Interaktion erfasst, jedes Format wiederverwendbar, jeder Durchlauf messbar.',
-    leistungenHeading: 'Was wir bauen und betreiben',
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
-        heading: 'Individuelle Tools & Gamification',
-        text: 'Wir entwickeln digitale Tools und Gamification-Mechaniken, die zu eurer Marke und eurer Zielgruppe passen — von der Idee bis zur laufenden Anwendung.',
+        text:
+          'Die technische Lösung wird aus erprobten Modulen und projektspezifischen Funktionen zusammengestellt.',
         cards: [
-          { title: 'Individuelle Tools & Apps', text: 'Digitale Anwendungen, exakt auf euren Anwendungsfall zugeschnitten.' },
-          { title: 'Gamification-Konzepte', text: 'Mechaniken, die Nutzer aktiv einbinden statt nur zu unterhalten.' },
-          { title: 'Community-Plattformen', text: 'Digitale Räume, in denen sich eure Zielgruppe organisiert und austauscht.' }
-        ]
-      },
-      {
-        heading: 'Eure eigene Plattform, ohne eigenes Entwicklerteam',
-        text: 'Für Unternehmen, die eine eigene digitale Plattform wollen, ohne diese selbst zu entwickeln und zu betreiben: Wir stellen unsere Software-Basis mit eurem Branding, eurer Domain und euren Inhalten bereit.',
-        cards: [
-          { title: 'Whitelabel-Plattform', text: 'Eure Marke, eure Domain, eure Inhalte — auf einer erprobten technischen Basis.' },
-          { title: 'Individuelle Anpassung', text: 'Funktionsumfang und Design an eure Anforderungen angepasst.' },
-          { title: 'Onboarding & Support', text: 'Laufende Betreuung, Weiterentwicklung und technischer Support.' }
+          {
+            title: 'Individuelle Tools & Anwendungen',
+            text:
+              'Wir entwickeln digitale Anwendungen, die exakt auf den jeweiligen Anwendungsfall zugeschnitten sind.'
+          },
+          {
+            title: 'White-Label-Plattformen',
+            text:
+              'Unsere technische Basis erscheint mit deiner Marke, Domain, Gestaltung und den benötigten Funktionen.'
+          },
+          {
+            title: 'Gamification & Games',
+            text:
+              'Wir entwickeln Quizzes, Challenges, Belohnungssysteme und spielerische Mechaniken für konkrete Kommunikationsziele.'
+          },
+          {
+            title: 'Turniere & Communities',
+            text:
+              'Registrierung, Bracketing, Rankings und Community-Funktionen werden zentral abgebildet und verwaltet.'
+          },
+          {
+            title: 'Leadgenerierung & CRM',
+            text:
+              'Einwilligungsbasierte Datenerfassung und Schnittstellen ermöglichen strukturierte Übergaben an bestehende Systeme.'
+          },
+          {
+            title: 'Hosting, Support & Betrieb',
+            text:
+              'Wir übernehmen Hosting, technische Betreuung, Updates und die laufende Weiterentwicklung der Lösung.'
+          }
         ],
         groupCta: 'Whitelabel-Demo anfragen'
       }
     ],
-    vorgehenHeading: 'Unser Vorgehen',
-    vorgehen: [
-      { title: 'Bedarfsklärung', text: 'Anwendungsfall, Ziel und Rahmenbedingungen definieren.' },
-      { title: 'Konzept', text: 'Funktionsumfang, Design und technische Basis festlegen.' },
-      { title: 'Umsetzung', text: 'Entwicklung bzw. Einrichtung der Whitelabel-Lösung.' },
-      { title: 'Onboarding & Betrieb', text: 'Übergabe, Schulung und laufende Betreuung.' }
-    ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: [
-      'Marken mit Bedarf an individuellen Tools',
-      'Vereine & Verbände',
-      'Unternehmen ohne eigenes Dev-Team',
-      'Publisher & Plattformbetreiber'
-    ],
-    bestCase: {
-      heading: 'Eine digitale Lösung aus der Praxis',
-      text: 'Platzhalter für 1 Referenz-Case.'
-    },
-    faq: [
-      {
-        q: 'Was ist der Unterschied zwischen einem individuellen Tool und einer Whitelabel-Lösung?',
-        a: 'Ein individuelles Tool wird komplett für euch neu entwickelt. Eine Whitelabel-Lösung basiert auf einer bestehenden Software, die mit eurem Branding versehen wird — schneller verfügbar, dafür etwas weniger flexibel.'
-      },
-      {
-        q: 'Können wir die Whitelabel-Plattform später erweitern?',
-        a: 'Ja, die Plattform wächst mit euren Anforderungen mit.'
-      },
-      {
-        q: 'Wie viel Aufwand entsteht bei uns intern?',
-        a: 'Minimal — wir übernehmen Einrichtung, technischen Betrieb und Support.'
-      }
-    ],
     ctaCloser: {
-      headline: 'Lasst uns eure digitale Lösung besprechen.',
-      primaryLabel: 'Projekt anfragen',
-      secondaryLabel: 'Whitelabel-Demo anfragen'
+      headline: 'Lass uns deine digitale Lösung gemeinsam einordnen.',
+      text:
+        'Im kostenlosen Erstgespräch prüfen wir, welche bestehenden Module passen und wo individuelle Entwicklung sinnvoll ist.',
+      primaryLabel: 'Digitale Lösung unverbindlich besprechen'
     }
   },
 
@@ -447,33 +362,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Eventtechnik & Produktion für Gaming- und eSport-Events',
     hero: {
-      headline: 'Die Technik, auf der das Erlebnis läuft.',
+      headline: 'Technik, die funktioniert, wenn es darauf ankommt.',
       subline:
-        'Von Gaming-Hardware und Netzwerktechnik bis zu Regie, Streaming- und Veranstaltungstechnik: Wir planen die technische Infrastruktur und sorgen gemeinsam mit unseren Partnern für einen reibungslosen Betrieb vor Ort.',
-      ctaLabel: 'Technik-Setup anfragen',
+        'Wir planen und koordinieren die technische Infrastruktur für Events, Markenaktivierungen, Gaming-Setups und Live-Produktionen.',
+      ctaLabel: 'Technikprojekt unverbindlich besprechen',
       image: '/images/hagebau/slide-2.jpg',
       imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von GG Manufaktur'
     },
-    wirkung:
-      'Technik, die im Hintergrund bleibt — stabiler Turnierbetrieb, saubere Übertragung und ein Ablauf, der ohne Zwischenfälle durchläuft.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Verlässlich geplant und professionell betrieben',
+      text: [
+        'Gute Eventtechnik beginnt lange vor dem Aufbau. Wir prüfen Anforderungen, Flächen, Strom, Netzwerk, Signalwege und Abläufe und entwickeln daraus ein Setup, das zum Format und zum Budget passt.',
+        'Gemeinsam mit spezialisierten Technikpartnern koordinieren wir Hardware, Veranstaltungstechnik, Regie und Betrieb. Dabei behalten wir alle Schnittstellen im Blick und planen notwendige Redundanzen, Tests und Proben ein. So entsteht eine technische Grundlage, auf die sich Produktion, Teilnehmende und Veranstalter verlassen können.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Wir stellen das technische Setup passend zum tatsächlichen Bedarf des Projekts zusammen.',
         cards: [
-          { title: 'Gaming-Hardware', text: 'PCs, Konsolen und Peripherie in der Konfiguration, die das Format wirklich braucht.' },
-          { title: 'Netzwerktechnik', text: 'Stabile Verbindungen für Turnierbetrieb, Streaming und Besucher-WLAN.' },
-          { title: 'Regie & Streaming-Technik', text: 'Bildregie, Übertragung und Signalwege für die Live-Ausspielung.' },
-          { title: 'Veranstaltungstechnik', text: 'Licht, Ton und Bühnentechnik als Teil desselben Setups statt als Fremdgewerk.' },
-          { title: 'Technische Planung', text: 'Infrastruktur, Stromlast und Aufbaulogik vorab durchgerechnet.' },
-          { title: 'Betrieb vor Ort', text: 'Gemeinsam mit unseren Partnern während der gesamten Laufzeit im Einsatz.' }
+          {
+            title: 'Technische Planung',
+            text:
+              'Wir planen Infrastruktur, Stromlasten, Signalwege, Aufbauzeiten und technische Schnittstellen.'
+          },
+          {
+            title: 'Gaming-Hardware',
+            text:
+              'PCs, Konsolen, Displays und Peripherie werden passend zum Format konfiguriert und betreut.'
+          },
+          {
+            title: 'Netzwerk & Internet',
+            text:
+              'Wir konzipieren stabile Verbindungen für Spielbetrieb, Produktion, Streaming und Besucher.'
+          },
+          {
+            title: 'Licht, Ton, LED & Bühne',
+            text:
+              'Veranstaltungstechnik wird als Teil des Gesamterlebnisses geplant und mit den Gewerken abgestimmt.'
+          },
+          {
+            title: 'Regie, Streaming & Broadcast',
+            text:
+              'Wir koordinieren Kameras, Bildregie, Ton, Einspieler, Streaming und die technische Ausspielung.'
+          },
+          {
+            title: 'Aufbau & Betrieb vor Ort',
+            text:
+              'Technische Teams begleiten Aufbau, Proben, Veranstaltung, Störungsmanagement und Abbau.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken & Unternehmen', 'Messeveranstalter', 'Vereine & Verbände', 'Agenturen'],
     ctaCloser: {
-      headline: 'Erzählt uns von eurem Setup.',
-      primaryLabel: 'Technik-Setup anfragen'
+      headline: 'Lass uns dein technisches Setup durchsprechen.',
+      text:
+        'Im kostenlosen Erstgespräch klären wir Anforderungen, Rahmenbedingungen und notwendige Gewerke.',
+      primaryLabel: 'Technikprojekt unverbindlich besprechen'
     }
   },
 
@@ -488,32 +434,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Art Design & Messebau für Gaming- und eSport-Events',
     hero: {
-      headline: 'Ein Raum, der aussieht wie die Marke, die darin steht.',
+      headline: 'Räume und Designs, die Marken erlebbar machen.',
       subline:
-        'Du brauchst individuelle Möbel, Setups oder Infrastruktur für dein Gaming- und eSport-Event? Wir entwickeln maßgeschneiderte Raum- und Ausstattungskonzepte und realisieren diese gemeinsam mit erfahrenen Messebau-Partnern.',
-      ctaLabel: 'Raumkonzept anfragen',
+        'Wir entwickeln visuelle Auftritte, Flächen und individuelle Bauten, die Funktion, Markenbild und Besuchererlebnis sinnvoll miteinander verbinden.',
+      ctaLabel: 'Raumkonzept unverbindlich besprechen',
       image: '/hero-rewe.jpg',
       imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei GG Manufaktur'
     },
-    wirkung:
-      'Eine Fläche, die als Markenraum gelesen wird und nicht als Standardstand — gebaut für das Format, das darin stattfindet.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Mehr als eine schöne Fläche',
+      text: [
+        'Ein guter Markenraum muss nicht nur gut aussehen. Er muss Orientierung geben, Abläufe ermöglichen, Menschen anziehen und die geplante Aktivierung unterstützen. Deshalb denken wir Gestaltung, Besucherführung, Technik und Nutzung von Anfang an zusammen.',
+        'Von der ersten visuellen Idee über Raum- und Ausstattungskonzepte bis zur Produktion und Montage begleiten wir den gesamten Prozess. Für Messebau und Sonderanfertigungen arbeiten wir mit erfahrenen Partnern zusammen und koordinieren die Umsetzung zentral.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Je nach Projekt entwickeln wir einzelne Gestaltungselemente oder den vollständigen räumlichen Auftritt.',
         cards: [
-          { title: 'Individuelle Möbel', text: 'Spielplätze, Theken und Sitzlandschaften, gebaut für das jeweilige Format.' },
-          { title: 'Setups & Infrastruktur', text: 'Die physische Grundlage der Aktivierung, von der Bühne bis zur Spielstation.' },
-          { title: 'Raumkonzepte', text: 'Flächenaufteilung, Wegeführung und Zonierung für den erwarteten Besucherstrom.' },
-          { title: 'Ausstattungskonzepte', text: 'Material, Branding und Ausstattung als ein zusammenhängendes Bild.' },
-          { title: 'Umsetzung mit Partnern', text: 'Realisierung gemeinsam mit erfahrenen Messebau-Partnern.' }
+          {
+            title: 'Creative Direction',
+            text:
+              'Wir übersetzen Marke, Botschaft und Aktivierungsidee in eine klare visuelle Richtung.'
+          },
+          {
+            title: 'Raum- & Flächenkonzeption',
+            text:
+              'Wir planen Zonierung, Besucherführung, Funktionsbereiche und die sinnvolle Nutzung der verfügbaren Fläche.'
+          },
+          {
+            title: 'Set- & Bühnendesign',
+            text:
+              'Wir gestalten Bühnen, Studios, Kulissen und Erlebnisräume passend zu Format und Produktion.'
+          },
+          {
+            title: 'Messebau & Sonderbauten',
+            text:
+              'Messestände, Spielstationen, Möbel und individuelle Bauteile werden projektspezifisch realisiert.'
+          },
+          {
+            title: 'Branding & Orientierung',
+            text:
+              'Grafiken, Beschilderungen, Wegeführung und Markenflächen schaffen einen konsistenten Gesamtauftritt.'
+          },
+          {
+            title: 'Produktion, Aufbau & Logistik',
+            text:
+              'Wir koordinieren Fertigung, Transport, Montage, Abnahme und Rückbau mit den beteiligten Partnern.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken & Unternehmen', 'Messeaussteller', 'Publisher', 'Agenturen'],
     ctaCloser: {
-      headline: 'Lasst uns über euren Raum sprechen.',
-      primaryLabel: 'Raumkonzept anfragen'
+      headline: 'Lass uns über deine Fläche und ihre Aufgabe sprechen.',
+      text:
+        'Im kostenlosen Erstgespräch klären wir, was der Raum leisten soll und welche Umsetzung dafür sinnvoll ist.',
+      primaryLabel: 'Raumkonzept unverbindlich besprechen'
     }
   },
 
@@ -528,30 +506,62 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Foto & Video für Gaming- und eSport-Events',
     hero: {
-      headline: 'Was im Raum passiert, bleibt selten im Raum.',
+      headline: 'Wir halten fest, was dein Projekt besonders macht.',
       subline:
-        'Wir begleiten Gaming- und eSport-Events mit erfahrenen Foto- und Videoteams und produzieren authentischen Content, der Atmosphäre, Emotionen und Markenbotschaften hochwertig einfängt.',
-      ctaLabel: 'Produktion anfragen'
-      // No hero photograph yet -- the branded placeholder band stands in.
+        'Wir begleiten Events, Aktivierungen und Kampagnen mit Foto- und Videoproduktionen, die Atmosphäre, Menschen und Markenbotschaften authentisch einfangen.',
+      ctaLabel: 'Foto- oder Videoprojekt besprechen'
     },
-    wirkung:
-      'Material, das nach dem Event weiterarbeitet: Bilder und Bewegtbild für Social, Presse, Vertrieb und die nächste Kampagne.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Content, der über den Moment hinaus wirkt',
+      text: [
+        'Bevor die Kamera läuft, klären wir, wofür das Material später benötigt wird. Daraus entstehen Motivplanung, Shotlists, Interviewfragen und ein Produktionsablauf, der zum Event oder zur Kampagne passt.',
+        'Unsere Teams kennen die Dynamik von Live-Events, Gaming-Produktionen, Bühnen und Community-Formaten. Sie arbeiten aufmerksam im Hintergrund und sind gleichzeitig dort, wo die entscheidenden Momente entstehen. Das Material bereiten wir passend für Dokumentation, Presse, Social Media, interne Kommunikation oder die nächste Kampagne auf.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Der Produktionsumfang wird auf Anlass, Kanäle und gewünschte Weiterverwendung abgestimmt.',
         cards: [
-          { title: 'Fotografie vor Ort', text: 'Erfahrene Teams, die das Event über die gesamte Laufzeit begleiten.' },
-          { title: 'Videoproduktion', text: 'Bewegtbild vom Aufbau bis zum Finale, gedreht für die spätere Verwendung.' },
-          { title: 'Atmosphäre & Emotionen', text: 'Die Momente, die ein Event ausmachen — nicht nur die Bühnenbilder.' },
-          { title: 'Markenbotschaften', text: 'Markenauftritt und Aktivierung hochwertig im Bild mitgeführt.' }
+          {
+            title: 'Eventfotografie',
+            text:
+              'Wir dokumentieren Menschen, Atmosphäre, Aktivierungen, Branding und entscheidende Programmmomente.'
+          },
+          {
+            title: 'Eventfilm & Aftermovie',
+            text:
+              'Wir verdichten den Verlauf und die Stimmung eines Projekts zu einem hochwertigen Bewegtbildformat.'
+          },
+          {
+            title: 'Interviews & Statements',
+            text:
+              'Wir planen und produzieren Gespräche, O-Töne und kurze Statements für unterschiedliche Kanäle.'
+          },
+          {
+            title: 'Kampagnen- & Produktcontent',
+            text:
+              'Wir erstellen Foto- und Videoinhalte für Markenkommunikation, Produkte und begleitende Kampagnen.'
+          },
+          {
+            title: 'Social-Media-Content',
+            text:
+              'Hochkantformate, Reels, Shorts und schnelle Cutdowns werden direkt für die jeweilige Plattform geplant.'
+          },
+          {
+            title: 'Postproduktion & Assets',
+            text:
+              'Auswahl, Schnitt, Farbkorrektur, Tonbearbeitung und strukturierte Bereitstellung erfolgen aus einer Produktion.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken & Unternehmen', 'Vereine & Verbände', 'Messeveranstalter', 'Agenturen'],
     ctaCloser: {
-      headline: 'Lasst uns euer Event festhalten.',
-      primaryLabel: 'Produktion anfragen'
+      headline: 'Lass uns festhalten, was dein Projekt besonders macht.',
+      text:
+        'Im kostenlosen Erstgespräch klären wir Anlass, benötigte Formate und den passenden Produktionsumfang.',
+      primaryLabel: 'Foto- oder Videoprojekt besprechen'
     }
   },
 
@@ -566,32 +576,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Creator & Talent Activation im Gaming-Umfeld',
     hero: {
-      headline: 'Die richtige Stimme erreicht mehr als die größte Reichweite.',
+      headline: 'Die richtige Persönlichkeit ist wichtiger als die größte Reichweite.',
       subline:
-        'Wir integrieren passende Creator, Hosts, Moderatoren und eSport-Talents in Kampagnen und Events – von der Auswahl und Konzeption bis zur authentischen Aktivierung der jeweiligen Community.',
-      ctaLabel: 'Creator-Aktivierung anfragen',
+        'Wir finden und integrieren Creator, Hosts, Moderatoren und eSport-Talents, die glaubwürdig zur Marke, zur Zielgruppe und zur Aufgabe passen.',
+      ctaLabel: 'Creator-Aktivierung unverbindlich besprechen',
       image: '/images/hagebau/slide-1.jpg',
       imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei GG Manufaktur'
     },
-    wirkung:
-      'Glaubwürdigkeit, die sich nicht einkaufen lässt — Reichweite über Stimmen, denen die jeweilige Community ohnehin zuhört.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Menschen mit einer klaren Rolle im Konzept',
+      text: [
+        'Eine bekannte Person allein macht noch keine gute Aktivierung. Entscheidend ist, warum sie Teil des Projekts ist, was sie dort tut und welchen Mehrwert sie für Community und Marke schafft.',
+        'Wir unterstützen von der Auswahl über Ansprache und Buchung bis zur inhaltlichen Einbindung und Betreuung. Dabei betrachten wir Reichweite, Community-Fit, Tonalität, Plattformen und Brand Safety. So entstehen Kooperationen, die nicht aufgesetzt wirken und über einen kurzen Auftritt hinaus funktionieren.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Je nach Projekt übernehmen wir einzelne Schritte oder das vollständige Talentmanagement.',
         cards: [
-          { title: 'Creator-Auswahl', text: 'Wer wirklich zur Marke und zur Zielgruppe passt — nicht wer gerade groß ist.' },
-          { title: 'Hosts & Moderation', text: 'Bühnenmoderation und Formatführung für Live- und Streaming-Formate.' },
-          { title: 'eSport-Talents', text: 'Spielerinnen und Spieler, die im jeweiligen Titel Glaubwürdigkeit haben.' },
-          { title: 'Konzeption', text: 'Formate, in denen die Beteiligten etwas zu tun haben statt nur dabei zu sein.' },
-          { title: 'Community-Aktivierung', text: 'Ansprache, die in der jeweiligen Community als echt durchgeht.' }
+          {
+            title: 'Recherche & Auswahl',
+            text:
+              'Wir identifizieren Creator, Hosts, Moderatoren und Talents, die zur Zielgruppe und zum Format passen.'
+          },
+          {
+            title: 'Community-Fit & Brand Safety',
+            text:
+              'Wir bewerten Inhalte, Tonalität, Umfeld und mögliche Risiken vor einer Zusammenarbeit.'
+          },
+          {
+            title: 'Rollen- & Formatentwicklung',
+            text:
+              'Wir entwickeln eine klare Aufgabe für die beteiligten Persönlichkeiten innerhalb des Gesamtkonzepts.'
+          },
+          {
+            title: 'Ansprache, Buchung & Rechte',
+            text:
+              'Wir koordinieren Verfügbarkeiten, Konditionen, Nutzungsrechte und die vertragliche Abstimmung.'
+          },
+          {
+            title: 'Integration & Betreuung',
+            text:
+              'Wir briefen Beteiligte, begleiten Proben und Produktion und sichern eine reibungslose Einbindung.'
+          },
+          {
+            title: 'Content & Auswertung',
+            text:
+              'Wir planen verwertbare Inhalte und bewerten Reichweite, Interaktionen und weitere vereinbarte KPIs.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Marken & Unternehmen', 'Publisher', 'Vereine mit Gaming-Sparte', 'Agenturen'],
     ctaCloser: {
-      headline: 'Lasst uns die passenden Gesichter finden.',
-      primaryLabel: 'Creator-Aktivierung anfragen'
+      headline: 'Lass uns die passenden Persönlichkeiten für dein Projekt finden.',
+      text:
+        'Im kostenlosen Erstgespräch sprechen wir über Zielgruppe, Format, Rolle und mögliche Besetzung.',
+      primaryLabel: 'Creator-Aktivierung unverbindlich besprechen'
     }
   },
 
@@ -606,32 +648,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Scouting & Talent Development für Vereine und Verbände',
     hero: {
-      headline: 'Talente findet man nicht an einem Abend.',
+      headline: 'Talente finden. Potenziale entwickeln.',
       subline:
-        'Wir entwickeln ganzheitliche Scouting-Lösungen für Vereine und Verbände – von digitalen Qualifiern und Turnierserien bis zu physischen Scouting-Events und Finals. Online und offline greifen dabei nahtlos ineinander, um Talente gezielt zu erreichen, zu identifizieren und langfristig zu entwickeln.',
-      ctaLabel: 'Scouting-Konzept anfragen',
+        'Wir entwickeln Scouting- und Entwicklungsformate für Vereine, Verbände und Organisationen, die Talente strukturiert erreichen, auswählen und langfristig begleiten möchten.',
+      ctaLabel: 'Scouting-Konzept unverbindlich besprechen',
       image: '/images/status-quo/rewe-event.jpg',
       imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei GG Manufaktur'
     },
-    wirkung:
-      'Ein Weg, auf dem Talente sichtbar werden und bleiben — von der ersten Onlinerunde bis ins Finale, als Pipeline statt als Einzelaktion.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Scouting ist mehr als ein einzelnes Turnier',
+      text: [
+        'Ein erfolgreiches Scouting beginnt mit klaren Auswahlkriterien und einem nachvollziehbaren Weg von der ersten Teilnahme bis zur finalen Entscheidung. Dafür verbinden wir digitale Qualifier, Turnierserien, physische Sichtungen und Finals zu einem zusammenhängenden Prozess.',
+        'Neben der sportlichen oder spielerischen Leistung können Teamfähigkeit, Kommunikation, Auftreten und Entwicklungspotenzial berücksichtigt werden. Wir unterstützen bei Organisation, Plattform, Bewertung und Dokumentation und beachten dabei Datenschutz, Einwilligungen und besondere Anforderungen bei minderjährigen Teilnehmenden.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Die einzelnen Bausteine werden passend zu Ziel, Titel, Region und gewünschter Talentstruktur kombiniert.',
         cards: [
-          { title: 'Digitale Qualifier', text: 'Breite Sichtung online, bevor irgendjemand anreisen muss.' },
-          { title: 'Turnierserien', text: 'Wiederkehrende Formate, die über eine Saison hinweg tragen.' },
-          { title: 'Scouting-Events', text: 'Physische Sichtungen, an denen die Auswahl tatsächlich stattfindet.' },
-          { title: 'Finals', text: 'Der Abschluss, der die Serie sichtbar macht — für Talente wie für Partner.' },
-          { title: 'Online & offline verzahnt', text: 'Ein Weg von der ersten Runde bis ins Finale, nicht zwei getrennte Programme.' }
+          {
+            title: 'Scoutingstrategie',
+            text:
+              'Wir definieren Zielbild, Teilnahmebedingungen, Auswahlkriterien und den vollständigen Scoutingprozess.'
+          },
+          {
+            title: 'Digitale Qualifier',
+            text:
+              'Online-Wettbewerbe ermöglichen eine breite und ortsunabhängige erste Sichtung potenzieller Talente.'
+          },
+          {
+            title: 'Physische Scouting-Events',
+            text:
+              'Vor-Ort-Formate schaffen Raum für persönliche Bewertung, Interviews und ergänzende Aufgaben.'
+          },
+          {
+            title: 'Turnierserien & Finals',
+            text:
+              'Wiederkehrende Wettbewerbe und Finalevents geben dem Prozess Struktur, Sichtbarkeit und einen klaren Abschluss.'
+          },
+          {
+            title: 'Bewertung & Dokumentation',
+            text:
+              'Ergebnisse, Beobachtungen und Einwilligungen werden nachvollziehbar und datenschutzkonform erfasst.'
+          },
+          {
+            title: 'Talententwicklung & Teambuilding',
+            text:
+              'Trainings, Workshops und begleitende Programme unterstützen ausgewählte Talente nach dem Scouting.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Vereine', 'Verbände', 'Publisher', 'Marken & Unternehmen'],
     ctaCloser: {
-      headline: 'Lasst uns euer Scouting aufsetzen.',
-      primaryLabel: 'Scouting-Konzept anfragen'
+      headline: 'Lass uns dein Scouting strukturiert aufsetzen.',
+      text:
+        'Im kostenlosen Erstgespräch klären wir Zielbild, Zielgruppe und den passenden Auswahlprozess.',
+      primaryLabel: 'Scouting-Konzept unverbindlich besprechen'
     }
   },
 
@@ -646,32 +720,64 @@ export const servicesContent: Record<string, ServiceContent> = {
     },
     h1: 'Recruiting & Employer Branding im Gaming-Umfeld',
     hero: {
-      headline: 'Junge Zielgruppen lesen keine Stellenanzeigen.',
+      headline: 'Arbeitgebermarken werden stark, wenn Menschen sie erleben.',
       subline:
-        'Wir nutzen Gaming, eSport und Gamification, um Arbeitgebermarken erlebbar zu machen und junge Zielgruppen authentisch zu erreichen – von digitalen Challenges und Recruiting-Games bis zu Turnieren, Messeaktivierungen und hybriden Kampagnen.',
-      ctaLabel: 'Recruiting-Aktivierung anfragen',
+        'Wir nutzen Gamification, Gaming, eSport und interaktive Formate, um Arbeitgeber mit jungen und digital affinen Zielgruppen ins Gespräch zu bringen.',
+      ctaLabel: 'Recruiting-Aktivierung besprechen',
       image: '/hero-gamechanger.jpg',
       imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei GG Manufaktur'
     },
-    wirkung:
-      'Kontakt zu jungen Zielgruppen, bevor sie eine Stellenanzeige lesen — und eine Arbeitgebermarke, die sie selbst ausprobiert haben.',
-    leistungenHeading: 'Leistungen im Detail',
+    pain: {
+      heading: 'Vom ersten Kontakt zum echten Austausch',
+      text: [
+        'Gerade auf Ausbildungs- und Karrieremessen reicht es nicht, Informationen auszulegen und auf Gespräche zu warten. Eine passende Aktivierung schafft einen natürlichen Einstieg, erhöht die Verweildauer und macht Unternehmen, Aufgaben und Kultur erlebbar.',
+        'Dabei muss nicht jedes Recruiting-Projekt ein eSport-Turnier sein. Je nach Zielgruppe und Anlass können ein Quiz, ein Recruiting-Game, eine Team-Challenge, ein Simulator oder ein einfaches analoges Mitmachformat die bessere Lösung sein. Wir verbinden die Aktivierung auf Wunsch mit Registrierung, Leadgenerierung, CRM-Übergabe und einer nachvollziehbaren Erfolgsmessung. Datenschutz und transparente Einwilligungen werden von Anfang an mitgedacht.'
+      ]
+    },
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Wir entwickeln einzelne Messeaktivierungen ebenso wie längerfristige Recruiting- und Employer-Branding-Kampagnen.',
         cards: [
-          { title: 'Digitale Challenges', text: 'Aufgaben, die Interesse zeigen, bevor jemand ein Formular ausfüllt.' },
-          { title: 'Recruiting-Games', text: 'Spielbare Formate, die die Arbeitgebermarke erlebbar machen.' },
-          { title: 'Turniere', text: 'Wettbewerbsformate als Anlass, mit der Zielgruppe ins Gespräch zu kommen.' },
-          { title: 'Messeaktivierungen', text: 'Der Stand auf der Karrieremesse als Ort, an dem etwas passiert.' },
-          { title: 'Hybride Kampagnen', text: 'Digitale Reichweite und Präsenz vor Ort als eine Kampagne gedacht.' }
+          {
+            title: 'Strategie & Zielgruppenansprache',
+            text:
+              'Wir definieren Ziele, Botschaften und geeignete Zugänge zu Bewerbern, Schülern und Nachwuchstalenten.'
+          },
+          {
+            title: 'Messe- & Eventaktivierungen',
+            text:
+              'Interaktive Formate erleichtern den Gesprächseinstieg und erhöhen Aufmerksamkeit und Verweildauer am Stand.'
+          },
+          {
+            title: 'Games, Quizzes & Challenges',
+            text:
+              'Spielerische Aufgaben vermitteln Arbeitgebermarke, Berufsbilder und Unternehmensinhalte auf verständliche Weise.'
+          },
+          {
+            title: 'Gaming- & eSport-Formate',
+            text:
+              'Turniere und Gaming-Erlebnisse schaffen authentische Anknüpfungspunkte für digital affine Zielgruppen.'
+          },
+          {
+            title: 'Candidate Journey & Leadgenerierung',
+            text:
+              'Registrierung, Einwilligungen und Follow-ups werden entlang eines klaren Kontaktprozesses geplant.'
+          },
+          {
+            title: 'CRM & Erfolgsmessung',
+            text:
+              'Schnittstellen und KPI-Tracking machen Kontakte, Teilnahmen, Interaktionen und Conversion nachvollziehbar.'
+          }
         ]
       }
     ],
-    fuerWenHeading: 'Für wen',
-    fuerWen: ['Unternehmen mit Recruiting-Bedarf', 'HR- & Employer-Branding-Teams', 'Hochschulen', 'Agenturen'],
     ctaCloser: {
-      headline: 'Lasst uns eure Arbeitgebermarke spielbar machen.',
-      primaryLabel: 'Recruiting-Aktivierung anfragen'
+      headline: 'Lass uns deine Arbeitgebermarke erlebbar machen.',
+      text:
+        'Im kostenlosen Erstgespräch sprechen wir über Zielgruppe, Anlass und die passende Aktivierung.',
+      primaryLabel: 'Recruiting-Aktivierung besprechen'
     }
   }
 };

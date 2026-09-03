@@ -23,9 +23,10 @@ const TILE = 'tile-gradient text-white';
 // and the closer.
 //
 // Deliberately not here, and not coming back: the FAQ, the "Unser Vorgehen"
-// accordion, "Was es bewirkt" and "Für wen". Their copy is still in
-// servicesContent -- `wirkung`, `fuerWen`, `vorgehen`, `faq` are simply not
-// read any more -- so none of it has to be rewritten if it is ever wanted back.
+// accordion, "Was es bewirkt" and "Für wen". They were kept unread in
+// servicesContent for a while in case they were wanted back; the rewrite of
+// all ten services made that copy stale rather than dormant, so it is gone
+// from the content file and from its interface with it.
 //
 // Two things from the interim version are kept. The Leistungen are a grid
 // rather than the horizontal carousel they were: with at most eight entries
