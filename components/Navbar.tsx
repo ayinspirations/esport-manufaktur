@@ -192,34 +192,28 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
-        <div className="flex items-center gap-9 lg:gap-11 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <button
-            onClick={(e) => handleLinkClick(e, 'home')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
-          >
-            Startseite
-          </button>
+        <div className="flex items-center flex-nowrap whitespace-nowrap gap-10 lg:gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className={`nav-link text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             Best Cases
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'blog')}
-            className={`nav-link whitespace-nowrap text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
           >
             News &amp; Blog
           </button>
@@ -334,12 +328,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
-                <button
-                  onClick={(e) => handleLinkClick(e, 'home')}
-                  className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
-                >
-                  Startseite
-                </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'competencies')}
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
