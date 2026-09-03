@@ -52,7 +52,8 @@ export interface ServiceContent {
   };
   pain?: {
     heading: string;
-    text: string;
+    /** One paragraph, or several -- the renderer handles both. */
+    text: string | string[];
   };
   leistungenHeading: string;
   leistungen: ServiceLeistungGroup[];
@@ -76,6 +77,8 @@ export interface ServiceContent {
   faq?: ServiceFaqItem[];
   ctaCloser: {
     headline: string;
+    /** Optional line between the closing headline and the buttons. */
+    text?: string;
     primaryLabel: string;
     secondaryLabel?: string;
   };
@@ -91,40 +94,54 @@ export const servicesContent: Record<string, ServiceContent> = {
         'Zielgruppenanalyse, Markenpositionierung und Kampagnenstrategie für die Gaming-Community — authentisch statt aufgesetzt. Jetzt Strategiegespräch sichern.',
       ogImage: '/Strategie.jpg'
     },
-    h1: 'Strategie & Konzeption für eure Marke im Gaming-Umfeld',
+    h1: 'Strategie & Konzeption: vom Ziel aus gedacht',
     hero: {
-      headline: 'Bevor ihr Gaming-Marketing macht, versteht Gaming-Marketing euch.',
+      headline: 'Wir denken vom Ziel aus. Nicht vom Format.',
       subline:
-        'Wir entwickeln Strategien für Marken im eSport- und Gaming-Umfeld — auf Basis echter Community-Kenntnis, nicht aus dem Werbebaukasten.',
-      ctaLabel: 'Strategiegespräch sichern',
+        'Unsere Wurzeln liegen im Gaming, eSport und in der Gamification. Dort haben wir gelernt, wie Aktivierung, Wettbewerb und echtes Engagement entstehen. Diese Erfahrung prägt unsere Arbeit, ohne unsere Lösungen darauf zu beschränken.',
+      ctaLabel: 'Projekt anfragen',
       image: '/Strategie.jpg',
       imageAlt: 'Strategieworkshop für Gaming Marketing Strategie und eSport Markenpositionierung bei GG Manufaktur'
     },
     pain: {
-      heading: 'Warum klassisches Marketing im Gaming-Umfeld scheitert',
-      text: 'Die Gaming-Community erkennt sofort, wenn eine Marke mit alten Werbelogiken auf neue Zielgruppen trifft. Plumpe Logo-Platzierungen, generische Botschaften und fehlende Kultur-Kenntnis kosten mehr Glaubwürdigkeit, als sie Reichweite bringen. Wer im Gaming-Umfeld ernst genommen werden will, braucht eine Strategie, die aus der Zielgruppe heraus gedacht ist — nicht eine, die ihr übergestülpt wird.'
+      heading: 'Die passende Lösung muss nicht digital sein',
+      text: [
+        'Am Anfang stehen für uns nicht das Tool, die Plattform oder ein fertiger Projektbaustein, sondern dein Ziel: Wen möchtest du erreichen? Was sollen die Menschen erleben oder tun? Und was soll das Projekt für dein Unternehmen oder deine Organisation bewirken?',
+        'Erst wenn diese Fragen geklärt sind, entwickeln wir den passenden Ansatz. Das kann ein Gaming- oder eSport-Format, eine digitale Gamification-Lösung oder ein interaktives Event sein. Genauso können ein Kartenspiel, ein Quiz, ein Escape Game, eine Live-Challenge oder ein ganz anderer Mechanismus die richtige Lösung sein.',
+        'Wir arbeiten losgelöst von starren Formaten und stellen für jedes Vorhaben die Leistungen und Kompetenzen zusammen, die tatsächlich benötigt werden. Wenn wir dabei feststellen, dass ein anderer Ansatz sinnvoller ist oder wir nicht der richtige Partner für die Umsetzung sind, sagen wir das offen. Denn gute Beratung bedeutet für uns, die beste Lösung für dein Projekt zu finden – nicht zwangsläufig die beste Lösung für uns.'
+      ]
     },
     wirkung:
       'Eine Positionierung, die in der Community trägt: klare Zielgruppen, ein definierter Platz für eure Marke und Ziele, an denen sich jede folgende Aktivierung ausrichten lässt.',
-    leistungenHeading: 'Leistungen im Detail',
+    leistungenHeading: 'Unsere Leistungen im Detail',
     leistungen: [
       {
+        text:
+          'Je nach Ausgangslage begleiten wir dich punktuell als strategischer Sparringspartner oder entwickeln gemeinsam mit dir die vollständige Grundlage für dein Projekt.',
         cards: [
           {
-            title: 'Zielgruppenanalyse',
-            text: 'Gamer-Personas, Plattformverhalten und Community-Dynamiken verstehen, bevor die erste Kampagne startet.'
+            title: 'Strategy-Workshops & Sparring',
+            text: 'In strukturierten Workshops schärfen wir gemeinsam die Aufgabenstellung, entwickeln erste Ansätze und schaffen eine belastbare Grundlage für die nächsten Entscheidungen.'
           },
           {
-            title: 'Markenpositionierung im Gaming-Kontext',
-            text: 'Wo passt eure Marke glaubwürdig hin? Wir definieren die Rolle, die ihr in der Community einnehmen könnt.'
+            title: 'Ziel- & Zielgruppenanalyse',
+            text: 'Wir definieren Ziele, Zielgruppen, Bedürfnisse und relevante Rahmenbedingungen, damit die spätere Lösung nicht an den Menschen vorbeientwickelt wird.'
           },
           {
-            title: 'Kanal- & Kampagnenstrategie',
-            text: 'Von Twitch bis Discord: welcher Kanal für welches Ziel, mit klarer Content- und Format-Logik.'
+            title: 'Kreative Leitidee & Storytelling',
+            text: 'Wir entwickeln eine verständliche Leitidee und ein Narrativ, das dein Projekt inhaltlich zusammenhält und zur Marke sowie zur Zielgruppe passt.'
           },
           {
-            title: 'KPI-Framework & Erfolgsmessung',
-            text: 'Messbare Ziele statt Bauchgefühl — abgestimmt auf Reichweite, Engagement und Markenwirkung.'
+            title: 'Formate & Aktivierungsmechaniken',
+            text: 'Wir prüfen unterschiedliche Formate und Mechaniken und entwickeln den Ansatz, der Menschen am besten zum Mitmachen, Wiederkommen oder Weitererzählen bewegt.'
+          },
+          {
+            title: 'Machbarkeit & Umsetzungsplanung',
+            text: 'Wir betrachten Budget, Timing, technische Anforderungen, notwendige Kompetenzen und mögliche Partner und übersetzen die Idee in eine realistische Roadmap.'
+          },
+          {
+            title: 'KPIs & Erfolgsmessung',
+            text: 'Wir legen fest, woran der Erfolg gemessen werden soll – beispielsweise an Teilnahmen, Leads, Verweildauer, Interaktionen, Conversion oder Markenwirkung.'
           }
         ]
       }
@@ -157,8 +174,10 @@ export const servicesContent: Record<string, ServiceContent> = {
       }
     ],
     ctaCloser: {
-      headline: 'Lasst uns eure Gaming-Strategie aufsetzen.',
-      primaryLabel: 'Jetzt Gespräch vereinbaren'
+      headline: 'Lass uns die passende Lösung für dein Vorhaben finden.',
+      text:
+        'Im kostenlosen Erstgespräch lernen wir deine Aufgabenstellung kennen und klären, welcher nächste Schritt für dein Projekt sinnvoll ist.',
+      primaryLabel: 'Projekt anfragen'
     }
   },
 

@@ -88,7 +88,7 @@ export const services: ServiceListing[] = [
 
   // -- Everything else, reachable through the filter -------------------------
   { slug: 'eventtechnik-produktion', title: 'Eventtechnik & Produktion' },
-  { slug: 'art-design-messebau', title: 'Art Design & Messebau' },
+  { slug: 'art-design-messebau', title: 'Design & Messebau' },
   { slug: 'foto-video', title: 'Foto & Video' },
   { slug: 'creator-talent-activation', title: 'Creator & Talent Activation' },
   { slug: 'scouting-talent-development', title: 'Scouting & Talent Development' },

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { PageHero } from './PageHero';
 import { ServiceView } from './ServiceView';
@@ -36,8 +35,15 @@ const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
  */
 const navClearance = () => (window.innerWidth >= 768 ? 96 : 64);
 
-/** Number of pillars, so the filter can put a divider after them. */
-const PILLAR_COUNT = pillars.length;
+/**
+ * The filter, as the client describes the offering: four central fields, then
+ * everything else. Both groups come from the one catalogue, so a service added
+ * there appears here without a second edit.
+ */
+const PILL_GROUPS = [
+  { label: 'Zentrale Leistungsbereiche', items: pillars },
+  { label: 'Weitere Kompetenzen', items: services.filter((s) => !s.pillar) }
+];
 
 // ---------------------------------------------------------------------------
 
@@ -52,7 +58,7 @@ const FilterPill: React.FC<{
     // aria-current rather than aria-pressed: these behave as a set of related
     // links through the same page, and only one is ever the current one.
     aria-current={active ? 'true' : undefined}
-    className={`shrink-0 snap-start whitespace-nowrap rounded-full px-3 py-2 md:px-5 md:py-2.5 text-[10.5px] md:text-[13px] font-black uppercase tracking-[0.06em] md:tracking-[0.08em] transition-colors duration-300 border ${
+    className={`shrink-0 whitespace-nowrap rounded-full px-3 py-2 md:px-5 md:py-2.5 text-[10.5px] md:text-[13px] font-black uppercase tracking-[0.06em] md:tracking-[0.08em] transition-colors duration-300 border ${
       active
         ? 'bg-[#0b0f2a] text-white border-[#0b0f2a]'
         : 'bg-white/50 text-[#0b0f2a]/70 border-[#0b0f2a]/10 hover:bg-white hover:text-[#0b0f2a] hover:border-[#0b0f2a]/25'
@@ -97,12 +103,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   // services someone looked at, for free.
   const active = (slug && serviceSlugs.includes(slug) ? slug : serviceSlugs[0]) as string;
   const filterRef = useRef<HTMLDivElement>(null);
-  // The pill strip scrolls on a phone. These say whether there is anything left
-  // to reach in either direction, which is what the arrows and the edge fades
-  // are driven by.
-  const railRef = useRef<HTMLDivElement>(null);
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(false);
   // Distinguishes a switch the visitor made from the initial render and from
   // browser back/forward, which must not steal the scroll position.
   const userSwitched = useRef(false);
@@ -115,67 +115,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     ogImage: content.seo.ogImage,
     canonicalPath: content.path
   });
-
-  useEffect(() => {
-    const rail = railRef.current;
-    if (!rail) return;
-    // Measured against the first and last pill, not against scrollLeft.
-    //
-    // The rail is padded at both ends by half-width spacers, which is what lets
-    // a centred first or last pill have somewhere to scroll into. Those spacers
-    // are scrollable distance too, so a raw scrollLeft reading calls the strip
-    // "scrolled left" while the first pill is still perfectly visible, and
-    // offers an arrow that only scrolls into empty space. Asking whether a real
-    // pill is off-screen answers the question the arrows are actually posing.
-    const update = () => {
-      const pills = rail.querySelectorAll<HTMLElement>('[data-pill]');
-      const first = pills[0];
-      const last = pills[pills.length - 1];
-      if (!first || !last) return;
-      setCanLeft(first.offsetLeft < rail.scrollLeft - 4);
-      setCanRight(last.offsetLeft + last.offsetWidth > rail.scrollLeft + rail.clientWidth + 4);
-    };
-    update();
-    rail.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update, { passive: true });
-    return () => {
-      rail.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
-  }, []);
-
-  // Roughly a screenful at a time, so a page always lands on a pill boundary
-  // rather than halfway through a label.
-  const page = (dir: 1 | -1) => {
-    const rail = railRef.current;
-    if (!rail) return;
-    rail.scrollBy({ left: dir * rail.clientWidth * 0.8, behavior: 'smooth' });
-  };
-
-  // Centre the selected pill in the strip.
-  //
-  // It used to be parked a quarter of the way in, which meant the first and
-  // last services simply sat against their edge -- the two you are most likely
-  // to pick, since one is the default and the other ends the list. The spacers
-  // at both ends of the rail are what make a true centre reachable: without
-  // them there is nothing to scroll into, and the browser clamps the position
-  // back to the edge however the maths is written.
-  const centreActive = (behavior: ScrollBehavior) => {
-    const rail = railRef.current;
-    const pill = rail?.querySelector<HTMLElement>('[aria-current="true"]');
-    if (!rail || !pill) return;
-    const left = pill.offsetLeft - (rail.clientWidth - pill.offsetWidth) / 2;
-    rail.scrollTo({ left: Math.max(left, 0), behavior });
-  };
-
-  // Instant on the first pass, animated afterwards: on mount the strip should
-  // simply already be in the right place, not slide there while the page is
-  // still arriving.
-  const centred = useRef(false);
-  useEffect(() => {
-    centreActive(centred.current ? 'smooth' : 'auto');
-    centred.current = true;
-  }, [active]);
 
   const select = useCallback(
     (next: string) => {
@@ -209,99 +148,55 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       <PageHero
         eyebrow="Leistungen"
         title="Unsere"
-        accent="Services."
-        subline="Wir entwickeln Lösungen, die aus Aufmerksamkeit echte Interaktion machen."
+        accent="Leistungen."
+        subline="Von der ersten Idee bis zur Umsetzung."
       />
 
       <div className={`${CONTAINER} pt-10 md:pt-14`}>
-        <Reveal as="p" delay={0.1} className="text-slate-600 font-medium text-base md:text-lg max-w-2xl leading-relaxed tracking-tight">
-          Wählt einen Bereich — die vier Säulen zuerst, dahinter alles, was wir sonst noch abdecken.
+        <Reveal as="p" delay={0.1} className="text-slate-600 font-medium text-base md:text-lg max-w-3xl leading-relaxed tracking-tight">
+          Du kannst uns für einzelne Leistungen beauftragen oder als zentralen Partner für dein gesamtes Projekt.
+          Gemeinsam klären wir, welche Kompetenzen dein Vorhaben benötigt und in welchen Bereichen wir dich sinnvoll
+          unterstützen können.
+        </Reveal>
+        <Reveal as="p" delay={0.18} className="text-[#0b0f2a] font-bold text-base md:text-lg mt-5 tracking-tight">
+          Wähle einen Leistungsbereich, um mehr zu erfahren.
         </Reveal>
       </div>
 
       {/* ============ Menu bar ============ */}
       {/*
-        A menu bar, and deliberately not a sticky one any more.
+        A menu bar, and deliberately not a sticky one: pinned under the
+        navigation it sat over whatever was being read, and on a narrow window
+        two rows of pills ate a third of the viewport for the whole length of
+        the page. A menu belongs at the top of what it controls -- you go to
+        it, it does not follow you.
 
-        Pinned under the navigation it was permanently in the way: it sat over
-        whatever was being read, the service's own artwork ran into it while
-        scrolling, and on a narrow window two rows of pills ate a third of the
-        viewport for the entire length of the page. A menu belongs at the top of
-        what it controls -- you go to it, it does not follow you.
-
-        With the service view cut down to three rows it is also never far: the
-        whole of a service now fits in roughly a screen and a half.
+        Two labelled groups rather than one strip. The four central fields and
+        the six further competencies are not a flat list of ten, and saying so
+        costs one line of type each. This also replaced a horizontal scroll
+        rail on the phone -- with edge fades, paging arrows and a centring
+        effect -- that hid seven of the ten entries behind a gesture nothing
+        announced. The pills wrap at every width now: everything the page
+        offers is on screen, which is the whole job of a filter.
       */}
-      <div ref={filterRef} className="pb-2 md:pb-4">
-        <div className={`${CONTAINER} py-4 md:py-5`}>
-          {/*
-            On a phone the strip scrolls, and it used to give no sign of that:
-            two and a bit pills were visible, the third sliced by the viewport
-            edge, and nothing said the other seven existed. The pills are
-            smaller here, the cut edge is turned into a deliberate fade, and a
-            pair of arrows both announces the overflow and pages through it.
-            From md the pills simply wrap and none of this applies.
-          */}
-          <div className="relative">
-            <div
-              ref={railRef}
-              role="tablist"
-              aria-label="Services"
-              className="services-filter flex gap-x-2 gap-y-1.5 md:gap-x-2.5 md:gap-y-2 overflow-x-auto snap-x pb-1 -mx-6 md:mx-0 md:flex-wrap md:overflow-visible"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              <span aria-hidden="true" className="md:hidden shrink-0 w-1/2" />
-              {services.map((s, i) => (
-                <React.Fragment key={s.slug}>
-                  {/* On mobile the row scrolls and never wraps, so a rule marks
-                      where the four pillars end and the rest begin.
-
-                      Desktop had a forced line break here doing the same job,
-                      and it is gone: a full-width item forms a flex line of its
-                      own, so the pillars were separated from the row below by
-                      two vertical gaps where every other row had one. */}
-                  {i === PILLAR_COUNT && (
-                    <span aria-hidden="true" className="md:hidden shrink-0 self-center w-px h-6 bg-[#0b0f2a]/15 mx-1" />
-                  )}
-                  <FilterPill label={s.title} active={s.slug === active} onSelect={() => select(s.slug)} />
-                </React.Fragment>
+      <div ref={filterRef} className={`${CONTAINER} pt-8 md:pt-12 pb-2 md:pb-4 scroll-mt-28`}>
+        {PILL_GROUPS.map((group) => (
+          <div key={group.label} className="mb-7 md:mb-8 last:mb-0">
+            <Reveal className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[10px] md:text-[11px] mb-3.5 md:mb-4">
+              {group.label}
+            </Reveal>
+            <div role="tablist" aria-label={group.label} className="flex flex-wrap gap-x-2 gap-y-2 md:gap-x-2.5">
+              {group.items.map((item) => (
+                <FilterPill
+                  key={item.slug}
+                  label={item.title}
+                  active={item.slug === active}
+                  onSelect={() => select(item.slug)}
+                />
               ))}
-              <span aria-hidden="true" className="md:hidden shrink-0 w-1/2" />
             </div>
-
-            {/* Fades sit over the scroll edges, so a pill leaving the strip
-                dissolves instead of being chopped in half. They are shown only
-                when there is actually something in that direction. */}
-            <div
-              aria-hidden="true"
-              className={`md:hidden pointer-events-none absolute inset-y-0 -left-6 w-10 bg-gradient-to-r from-[#badeda] to-transparent transition-opacity duration-300 ${canLeft ? 'opacity-100' : 'opacity-0'}`}
-            />
-            <div
-              aria-hidden="true"
-              className={`md:hidden pointer-events-none absolute inset-y-0 -right-6 w-10 bg-gradient-to-l from-[#badeda] to-transparent transition-opacity duration-300 ${canRight ? 'opacity-100' : 'opacity-0'}`}
-            />
           </div>
-
-          {/* Phone only: the pills wrap from md and there is nothing to page. */}
-          <div className="md:hidden flex items-center justify-end gap-2 mt-3">
-            <button
-              onClick={() => page(-1)}
-              disabled={!canLeft}
-              aria-label="Vorherige Services"
-              className="w-9 h-9 rounded-full border border-[#0b0f2a]/20 flex items-center justify-center text-[#0b0f2a] disabled:opacity-25 transition-opacity"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => page(1)}
-              disabled={!canRight}
-              aria-label="Weitere Services"
-              className="w-9 h-9 rounded-full border border-[#0b0f2a]/20 flex items-center justify-center text-[#0b0f2a] disabled:opacity-25 transition-opacity"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* ============ The selected service ============ */}
@@ -332,7 +227,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           rather than tearing down and rebuilding its cards on every click. */}
       <BlogSection onOpenPost={onOpenPost} />
 
-      <style>{`.services-filter::-webkit-scrollbar { display: none; }`}</style>
     </div>
   );
 };

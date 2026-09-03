@@ -82,7 +82,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Kostenlose Anfrage starten
+            Kostenloses Erstgespräch vereinbaren
           </button>
         </Reveal>
       </section>
@@ -99,10 +99,12 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
                 className="text-[clamp(26px,3.2vw,40px)] font-black leading-[1.08] tracking-tighter text-[#0b0f2a]"
               />
             </div>
-            <Reveal delay={0.1} className="md:col-span-7">
-              <p className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
-                {content.pain.text}
-              </p>
+            <Reveal delay={0.1} className="md:col-span-7 space-y-5 md:space-y-6">
+              {(Array.isArray(content.pain.text) ? content.pain.text : [content.pain.text]).map((para, i) => (
+                <p key={i} className="text-slate-600 text-lg md:text-xl leading-relaxed font-medium">
+                  {para}
+                </p>
+              ))}
             </Reveal>
           </div>
         </section>
@@ -122,11 +124,13 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <div className="flex flex-col gap-14 md:gap-16">
           {content.leistungen.map((group, gi) => (
             <div key={gi}>
-              {group.heading && (
-                <Reveal className="max-w-2xl mb-8 md:mb-10">
-                  <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter mb-3 text-[#0b0f2a]">
-                    {group.heading}
-                  </h3>
+              {(group.heading || group.text) && (
+                <Reveal className="max-w-3xl mb-8 md:mb-10">
+                  {group.heading && (
+                    <h3 className="text-[clamp(20px,2.4vw,28px)] font-black tracking-tighter mb-3 text-[#0b0f2a]">
+                      {group.heading}
+                    </h3>
+                  )}
                   {group.text && (
                     <p className="text-slate-600 text-base md:text-lg leading-relaxed font-medium">
                       {group.text}
@@ -176,9 +180,15 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             as="h2"
             by="word"
             text={content.ctaCloser.headline}
-            className="text-[clamp(28px,4vw,50px)] font-black leading-[1.05] tracking-tighter mb-9 md:mb-11 text-[#0b0f2a]"
+            className="text-[clamp(28px,4vw,50px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]"
           />
+          {content.ctaCloser.text && (
+            <Reveal as="p" delay={0.12} className="mt-5 md:mt-6 text-slate-600 text-base md:text-lg leading-relaxed font-medium">
+              {content.ctaCloser.text}
+            </Reveal>
+          )}
         </div>
+        <div className="h-9 md:h-11" />
         <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4">
           <button
             onClick={requestProject}
@@ -192,7 +202,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
           >
             <CalendarDays className="w-4 h-4" />
-            Kostenlose Anfrage starten
+            Kostenloses Erstgespräch vereinbaren
           </button>
         </Reveal>
       </section>
