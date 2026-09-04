@@ -4,10 +4,7 @@
 
 @layer base {
   body {
-    /* Archivo, standing in for the CI's Helvetica Neue -- see index.html for
-       why, and for how to swap the licensed face in. Named once here; nothing
-       else in the codebase repeats it. */
-    font-family: 'Archivo', 'Helvetica Neue', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #020617;
     color: #000000;
     /* Paired declaration, and the order matters.
@@ -48,28 +45,6 @@
   h3,
   h4 {
     text-wrap: balance;
-  }
-
-  /* ---------------------------------------------------------------------
-     The CI's three levels
-     ---------------------------------------------------------------------
-     Headline: Condensed Black. Zwischenheadline: Bold. Content: Regular.
-
-     The width axis is set here rather than as a class on every headline,
-     because "which elements are headlines" is a fact about the document,
-     not a decision each component should be making. h1 and h2 are the
-     page's headlines and get the condensed cut; h3 and h4 are
-     sub-headings and stay at normal width, which is what keeps the two
-     levels distinguishable at a glance.
-
-     Weight stays with the components: they set font-black / font-bold
-     through Tailwind, and Archivo has real cuts at both, so nothing is
-     synthesised any more. Both properties are given in the modern
-     percentage form and the older keyword-compatible one, so a browser
-     that only knows font-stretch still narrows the type. */
-  h1,
-  h2 {
-    font-stretch: 79%;
   }
 
   p {

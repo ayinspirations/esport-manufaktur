@@ -44,15 +44,30 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
   if (image) {
     return (
       <section className="relative w-full bg-[#badeda]">
-        {/* Tall on purpose. A page header's worth of height across a 3:2
-            photograph crops it to a letterbox strip of torsos; this keeps
-            enough of the frame for it to read as a picture of a team. */}
-        <div className="relative w-full h-[62vh] md:h-[74vh] min-h-[420px] max-h-[860px] overflow-hidden">
+        {/*
+          Two different jobs at two widths, so two different measurements.
+
+          On a phone the band is sized by the photograph's own proportions
+          rather than by the viewport. A fixed 62vh on a 390px-wide screen is
+          a portrait box holding a landscape picture, and `object-cover`
+          answers that by throwing away half the width -- which is where the
+          people are. At 4:3 the box is only slightly narrower than the 3:2
+          frame, so the crop takes a little off each side and everyone in the
+          picture stays in it.
+
+          From md the viewport is wider than the picture is tall, the crop
+          runs the other way, and a viewport-relative height is right again:
+          it keeps the header in proportion to the screen instead of growing
+          to 900px on a wide monitor.
+        */}
+        <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-auto md:h-[74vh] md:min-h-[420px] md:max-h-[860px] overflow-hidden">
           <img
             src={image}
             alt={imageAlt ?? ''}
-            // Framed slightly above centre: heads sit in the upper half of the
-            // frame, and a centred crop cuts them off at this aspect.
+            // Vertically this only bites from md, where the box is shorter
+            // than the frame: heads sit in the upper half, and a centred crop
+            // takes them off. Below md the full height is shown and the
+            // position is ignored.
             className="absolute inset-0 w-full h-full object-cover object-[center_38%]"
           />
 
@@ -62,7 +77,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
               and gone well before the picture proper. */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-32 md:h-40 pointer-events-none"
+            className="absolute inset-x-0 top-0 h-24 md:h-40 pointer-events-none"
             style={{ background: `linear-gradient(to bottom, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.22) 55%, rgba(2,6,23,0) 100%)` }}
           />
 

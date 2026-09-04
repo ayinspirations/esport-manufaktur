@@ -18,22 +18,10 @@
          parallel with the HTML rather than after the stylesheet is discovered. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Weights deliberately stop at 700. font-black (900) therefore renders as
+         a browser-synthesised bold -- that is the intended look here; do not
+         add 800/900 to this URL without checking the headlines first. -->
     <!--
-      Archivo, variable, on two axes: weight 100-900 and width 62-125.
-
-      It stands in for the CI's Helvetica Neue. Helvetica Neue is a licensed
-      face -- a webfont licence is bought per domain and per traffic tier, and
-      until one exists it cannot be served from here. Archivo is the closest
-      free equivalent: a neo-grotesque built in the Helvetica/Univers
-      tradition, and the only one on Google Fonts carrying both a real Black
-      and a real condensed width, which is what the CI's three levels need
-      (Condensed Black for headlines, Bold for sub-headings, Regular for copy).
-
-      To switch to the licensed face later: drop the woff2 files in
-      public/fonts, declare them with @font-face, and change the family name in
-      index.css -- both the family and the two axes are used through that one
-      declaration, so nothing else has to move.
-
       Loaded asynchronously. A plain <link rel="stylesheet"> to Google Fonts is
       render-blocking on a chain two hops long -- fonts.googleapis.com for the
       CSS, then fonts.gstatic.com for the woff2 it names -- and the page paints
@@ -42,13 +30,13 @@
 
       media="print" makes the browser fetch the sheet at low priority without
       applying it; the onload flips it to "all" the moment it arrives. Text is
-      painted immediately in the fallback stack below and re-flows when the
-      face swaps in (the URL already carries display=swap).
+      painted immediately in the fallback stack below and re-flows to Inter
+      when it swaps in (the URL already carries display=swap).
     -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     </noscript>
 
     <style>
@@ -56,10 +44,10 @@
         background-color: #020617;
       }
       body {
-        /* The fallback the first paint actually uses. Helvetica Neue is named
-           before the system stack: on a Mac it is installed, so those visitors
-           see the CI face itself while the webfont is still in flight. */
-        font-family: 'Archivo', 'Helvetica Neue', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+        /* The system stack is the fallback the first paint actually uses, and
+           on every target platform it is a humanist sans with metrics close
+           enough to Inter that the swap does not visibly re-flow the page. */
+        font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         color: #0f172a;
         overflow-x: hidden;
       }
