@@ -118,7 +118,7 @@ export const InterwettenDetail: React.FC<InterwettenDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="Mit Virtual Reality Tennisfans am Stand aktivieren und qualifizierte Leads für Interwetten gewinnen."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

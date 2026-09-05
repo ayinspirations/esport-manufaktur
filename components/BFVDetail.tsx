@@ -127,7 +127,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="Das bayerische Verbands- und Vereinsleben nachhaltig in den digitalen Fußball verlängern."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

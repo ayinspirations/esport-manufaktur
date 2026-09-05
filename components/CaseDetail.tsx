@@ -109,7 +109,7 @@ export const CaseDetail: React.FC<CaseDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="Mit Gaming junge Talente auf Ausbildungsmessen und im eigenen Markt erreichen."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

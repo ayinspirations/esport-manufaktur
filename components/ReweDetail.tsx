@@ -114,7 +114,7 @@ export const ReweDetail: React.FC<ReweDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="Mit eSport-Sponsoring Nachwuchstalente scouten und junge Menschen für REWE als Arbeitgeber begeistern."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

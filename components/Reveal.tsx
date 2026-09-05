@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useInView } from '../hooks/useInView';
-import { EASE_REVEAL_CSS, DUR, STAGGER } from './motion';
+import { EASE_REVEAL_CSS, DUR } from './motion';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal primitives
@@ -87,17 +87,21 @@ interface RevealTextProps {
   delay?: number;
   duration?: number;
   /**
-   * Seconds between units. Defaults to the shared per-word/per-character step.
+   * Sekunden zwischen zwei Einheiten. Standard ist 0: die ganze Zeile kommt
+   * als eine Bewegung von unten herein, die Maske je Wort bleibt.
    *
-   * Pass 0 to move the whole string as one gesture while keeping the masked
-   * slide-up. On a headline that wraps over several lines the default stagger
-   * reads as the text arriving line by line, which is wrong for a hero -- the
-   * statement should land in one piece.
+   * Der Wort-fuer-Wort-Aufbau war einmal der Standard und ist an der
+   * Hausschrift gescheitert. Die Ueberschriften hier sind kursiv, fett und
+   * eng gesetzt; jedes Wort haengt nach rechts ueber. Kommen die Woerter
+   * nacheinander an, steht der Ueberhang des einen neben der Luecke des
+   * naechsten, und die Zeile bricht optisch auseinander, statt als Satz zu
+   * landen. Ueber mehrere Zeilen liest sich derselbe Effekt als Text, der
+   * Zeile fuer Zeile eintrudelt -- fuer einen Aufmacher genau falsch.
    *
-   * Jede kursive Zeile bekommt 0. Der Schnitt laesst jedes Wort nach rechts
-   * ueberhaengen, und wenn die Woerter nacheinander ankommen, sieht man den
-   * Ueberhang eines Wortes neben der Luecke des naechsten -- die Zeile bricht
-   * optisch auseinander, statt als eine Bewegung von unten hereinzukommen.
+   * Der Rhythmus zwischen zwei Zeilen kommt weiterhin ueber `delay`: erst
+   * die Tinte, dann der Akzent. Das ist ein Takt, kein Aufbau.
+   *
+   * Ein Wert groeszer 0 ist damit die Ausnahme und braucht einen Grund.
    */
   stagger?: number;
   as?: React.ElementType;
@@ -121,13 +125,13 @@ export const RevealText: React.FC<RevealTextProps> = ({
   className = '',
   delay = 0,
   duration = DUR.slow,
-  stagger,
+  stagger = 0,
   as = 'span'
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
 
   const lines = text.split('\n');
-  const step = stagger ?? (by === 'char' ? STAGGER.char : STAGGER.word);
+  const step = stagger;
   let unitIndex = 0;
 
   const mask = (content: React.ReactNode, key: string) => {

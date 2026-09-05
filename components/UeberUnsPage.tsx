@@ -204,7 +204,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
             <div className="md:col-span-5">
               <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
                 <RevealText as="span" by="word" text="Wo wir" />
-                <RevealText as="span" by="word" stagger={0} text="herkommen." className="text-[#0e958e] italic" delay={0.14} />
+                <RevealText as="span" by="word" text="herkommen." className="text-[#0e958e] italic" delay={0.14} />
               </h2>
             </div>
             <div className="md:col-span-7 space-y-6">
@@ -230,7 +230,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
             <div className="md:col-span-5">
               <h2 className="text-[clamp(28px,3.6vw,44px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
                 <RevealText as="span" by="word" text="Wie wir" />
-                <RevealText as="span" by="word" stagger={0} text="arbeiten." className="text-[#0e958e] italic" delay={0.14} />
+                <RevealText as="span" by="word" text="arbeiten." className="text-[#0e958e] italic" delay={0.14} />
               </h2>
             </div>
             <div className="md:col-span-7">
@@ -260,7 +260,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
           <div className="max-w-3xl mb-10 md:mb-14">
             <h2 className="text-[clamp(30px,4vw,52px)] font-black leading-[1.05] tracking-tighter text-[#0b0f2a]">
               <RevealText as="span" by="word" text="Das Team" />
-              <RevealText as="span" by="word" stagger={0} text="dahinter." className="text-[#0e958e] italic" delay={0.14} />
+              <RevealText as="span" by="word" text="dahinter." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.24} className="text-[#0b0f2a] font-bold text-xl md:text-2xl mt-5 leading-snug tracking-tight">
               {TEAM_LEAD}

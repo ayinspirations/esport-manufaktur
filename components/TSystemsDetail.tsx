@@ -105,7 +105,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="Mit Gaming Tech-Talente erreichen und aktiv für T-Systems begeistern."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

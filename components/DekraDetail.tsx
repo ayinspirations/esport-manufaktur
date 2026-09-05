@@ -125,7 +125,7 @@ export const DekraDetail: React.FC<DekraDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word" stagger={0}
+                by="word"
                 text="DTM-Besucher standortübergreifend aktivieren, qualifizierte Leads gewinnen und Promotionflächen digital verbinden."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />
