@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Reveal } from './Reveal';
-import { DUR, EASE_REVEAL, smoothScrollTo } from './motion';
+import { DUR, EASE_REVEAL } from './motion';
 import { PageHero } from './PageHero';
 import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
@@ -383,9 +383,6 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   // services someone looked at, for free.
   const active = (slug && serviceSlugs.includes(slug) ? slug : serviceSlugs[0]) as string;
   const anchorRef = useRef<HTMLDivElement>(null);
-  // Distinguishes a switch the visitor made from the initial render and from
-  // browser back/forward, which must not steal the scroll position.
-  const userSwitched = useRef(false);
 
   const content = servicesContent[active];
   const sidebar = SERVICES_LAYOUT === 'sidebar';
@@ -397,36 +394,37 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     canonicalPath: content.path
   });
 
+  // Erst springen, dann tauschen -- und zwar sofort, nicht animiert.
+  //
+  // Andersherum war beides falsch. Der Tausch zuerst macht die Seite kuerzer
+  // (jede Leistung ist unterschiedlich lang), und eine Seite, die kuerzer wird
+  // als die aktuelle Scrollposition erlaubt, klemmt der Browser nach oben: ein
+  // Ruck, den niemand ausgeloest hat, und die klebende Spalte rutscht mit.
+  // Erst danach lief die Animation ueber zweitausend Pixel Inhalt, den niemand
+  // sehen wollte.
+  //
+  // Vom Kopf des Rasters aus gibt es nichts zu klemmen, egal wie kurz die neue
+  // Leistung ist. Und der Sprung selbst ist unsichtbar: die Sidebar klebt
+  // vorher wie nachher an derselben Stelle unter der Navigation -- sie steht
+  // still, waehrend daneben die neue Leistung erscheint.
   const select = useCallback(
     (next: string) => {
       if (next === active) return;
-      userSwitched.current = true;
+
+      const el = anchorRef.current;
+      if (el) {
+        const top = Math.max(el.getBoundingClientRect().top + window.scrollY - navClearance() - 12, 0);
+        // Nur nach oben. Wer die Auswahl von weiter oben trifft, steht schon
+        // vor dem Anfang und soll nicht nach unten gerissen werden.
+        if (window.scrollY > top) {
+          window.scrollTo({ top, behavior: 'instant' as ScrollBehavior });
+        }
+      }
+
       onSelectService(next);
     },
     [active, onSelectService]
   );
-
-  // Nach jedem Wechsel zurueck an den Kopf: die neue Leistung beginnt an
-  // ihrem Anfang, nicht in der Mitte eines Textes, den niemand gelesen hat.
-  //
-  // Das galt eine Weile nur, solange die Sidebar noch nicht klebte -- damit
-  // sie beim Antippen nicht sichtbar wandert. Der Preis war zu hoch: wer weit
-  // unten in einer langen Leistung steht und nebenan eine andere waehlt,
-  // landet mitten in ihr. Die Spalte darf sich dafuer bewegen.
-  //
-  // Nur fuer einen Wechsel, den der Besucher gemacht hat: beim ersten Aufbau
-  // steht die Seite ohnehin oben, und bei Vor/Zurueck stellt der Browser
-  // seine eigene Position wieder her.
-  useEffect(() => {
-    if (!userSwitched.current) return;
-    userSwitched.current = false;
-    const el = anchorRef.current;
-    if (!el) return;
-    // Der eigene Smooth-Scroll der Seite, nicht der des Browsers: er passt
-    // seine Dauer an die Strecke an, und aus einer langen Leistung heraus ist
-    // die Strecke lang.
-    smoothScrollTo(Math.max(el.getBoundingClientRect().top + window.scrollY - navClearance() - 12, 0));
-  }, [active]);
 
   /*
     Zwei Wechsel, aus einem Grund verschieden.
