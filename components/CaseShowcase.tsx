@@ -21,16 +21,17 @@ interface ShowcaseCase {
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV has none -- /images/cases/bfv.jpg
-// is referenced elsewhere in the site but has never existed in the repository --
-// so it runs on the site's own dark ground rather than borrowing a photo from
-// another project and captioning it as BFV.
+// The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days,
+// DEKRA, Interwetten und die Consumenta haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
+// Projekt --, also laufen sie auf der eigenen dunklen Flaeche der Seite,
+// statt sich eine Aufnahme aus einem anderen Projekt zu leihen und sie als
+// ihre auszugeben.
 const CASES: ShowcaseCase[] = [
   {
     page: 'tsystems',
     category: 'Employer Branding',
     title: 'T-Systems',
-    text: 'Eine maßgeschneiderte Gaming-Plattform, die technikaffine Schüler für IT-Berufe begeistert.',
+    text: 'Eine deutschlandweite Gaming-Aktivierung, die junge Tech-Talente für den Arbeitgeber T-Systems gewinnt.',
     image: '/images/t-systems/hero.jpg',
     card: '/videos/case-tsystems.jpg',
     imageAlt: 'Gaming-Aktivierung für T-Systems von GG Manufaktur'
@@ -39,7 +40,7 @@ const CASES: ShowcaseCase[] = [
     page: 'hagebau',
     category: 'Retail Activation',
     title: 'Hagebau',
-    text: 'Gaming Days am Point of Sale — ein Erlebnis, das Zielgruppen in den Markt holt.',
+    text: 'Recruiting-Game, Messeaktivierung und eigene Gaming Days — ein Kreislauf, der bis zur Bewerbung führt.',
     image: '/images/hagebau/hero-hagebau.jpg',
     card: '/videos/case-hagebau.jpg',
     imageAlt: 'Gaming Day Aktivierung für Hagebau von GG Manufaktur'
@@ -48,7 +49,7 @@ const CASES: ShowcaseCase[] = [
     page: 'showdown-0711',
     category: 'Recruiting Event',
     title: '0711 Showdown',
-    text: 'Ein EA FC25-Turnier als Recruiting-Format: über 100 Teilnehmende, Arbeitgeber auf Augenhöhe.',
+    text: 'Fünf Arbeitgeber, 64 junge Talente, ein EA SPORTS FC-Turnier — und die Vorstufe der XP Days.',
     image: '/videos/case-showdown.jpg',
     imageAlt: '0711 Showdown eSport Recruiting Event von GG Manufaktur'
   },
@@ -56,7 +57,7 @@ const CASES: ShowcaseCase[] = [
     page: 'bayern-zockt',
     category: 'Verbandsformat',
     title: 'Bayern zockt',
-    text: 'Digitale Qualifier und ein physisches Finale — Talentsichtung über einen ganzen Freistaat.',
+    text: 'Eine digitale EM im Originalmodus, mit Finale im Stadion des 1. FC Augsburg.',
     image: '/images/bayern-zockt/hero.jpg',
     card: '/videos/case-bayern-zockt.jpg',
     imageAlt: 'Bayern zockt eSport Turnierserie von GG Manufaktur'
@@ -65,8 +66,50 @@ const CASES: ShowcaseCase[] = [
     page: 'bfv',
     category: 'eFootball',
     title: 'BFV eFootball',
-    text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands.',
+    text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands — Kunde seit unserer Gründung.',
     imageAlt: 'BFV eFootball Plattform von GG Manufaktur'
+  },
+  {
+    page: 'intersport',
+    category: 'Retail Activation',
+    title: 'INTERSPORT',
+    text: 'Sechs Wochen Pop-up-Gaming im Clubhouse Berlin, mit eigenem EA SPORTS FC 26-Turnier.',
+    imageAlt: 'INTERSPORT Clubhouse Gaming-Aktivierung von GG Manufaktur'
+  },
+  {
+    page: 'rewe',
+    category: 'Sponsoring-Aktivierung',
+    title: 'REWE',
+    text: 'Scouting für den 1. FC Köln, Community-Turniere und Recruiting — aus einem Sponsoring wird eine Plattform.',
+    imageAlt: 'REWE eSport-Aktivierung mit dem 1. FC Köln von GG Manufaktur'
+  },
+  {
+    page: 'xp-days',
+    category: 'Eigenes Format',
+    title: 'XP Days',
+    text: 'Unsere eigene Karrieremesse: Plattform, XP-System, Videocontent und Gaming-Erlebniswelt in einem Format.',
+    imageAlt: 'XP Days gamifizierte Karrieremesse von GG Manufaktur'
+  },
+  {
+    page: 'dekra',
+    category: 'Digitale Lösung',
+    title: 'DEKRA Motorsport',
+    text: 'Digitaler Wallet-Pass statt Stempelkarte: sechs DTM-Standorte, QR-Tracking und messbare Leads.',
+    imageAlt: 'DEKRA Motorsport Event-Pass von GG Manufaktur'
+  },
+  {
+    page: 'interwetten',
+    category: 'Markenaktivierung',
+    title: 'Interwetten',
+    text: 'Virtual Tennis beim BOSS OPEN: gebrandeter Court, Live-Ranking und Leads aus dem Spiel heraus.',
+    imageAlt: 'Interwetten Virtual-Tennis-Aktivierung von GG Manufaktur'
+  },
+  {
+    page: 'consumenta',
+    category: 'Multi-Brand-Aktivierung',
+    title: 'NIVEA MEN // EFFECT // CRACKZ',
+    text: 'Drei Marken, drei Mechaniken, eine Messefläche — Gaming, Sampling und Leads auf der Consumenta.',
+    imageAlt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ von GG Manufaktur'
   }
 ];
 
@@ -92,7 +135,7 @@ const FallbackGround: React.FC = () => (
  *
  * One case fills the screen behind a rail of cards; picking a card swaps the
  * backdrop to it and brings that card to the front of the rail. The mosaic
- * above shows all five at once and is the way to compare them; this is the way
+ * above shows them all at once and is the way to compare them; this is the way
  * to look at one.
  *
  * Only the active backdrop is mounted -- five full-bleed photographs held in
@@ -238,7 +281,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
         */}
         <div
           ref={railRef}
-          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
+          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto overscroll-x-contain pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {CASES.map((c, i) => {

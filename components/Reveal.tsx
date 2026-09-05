@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useInView } from '../hooks/useInView';
-import { EASE_REVEAL_CSS, DUR, STAGGER } from './motion';
+import { EASE_REVEAL_CSS, DUR } from './motion';
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal primitives
@@ -87,12 +87,21 @@ interface RevealTextProps {
   delay?: number;
   duration?: number;
   /**
-   * Seconds between units. Defaults to the shared per-word/per-character step.
+   * Sekunden zwischen zwei Einheiten. Standard ist 0: die ganze Zeile kommt
+   * als eine Bewegung von unten herein, die Maske je Wort bleibt.
    *
-   * Pass 0 to move the whole string as one gesture while keeping the masked
-   * slide-up. On a headline that wraps over several lines the default stagger
-   * reads as the text arriving line by line, which is wrong for a hero -- the
-   * statement should land in one piece.
+   * Der Wort-fuer-Wort-Aufbau war einmal der Standard und ist an der
+   * Hausschrift gescheitert. Die Ueberschriften hier sind kursiv, fett und
+   * eng gesetzt; jedes Wort haengt nach rechts ueber. Kommen die Woerter
+   * nacheinander an, steht der Ueberhang des einen neben der Luecke des
+   * naechsten, und die Zeile bricht optisch auseinander, statt als Satz zu
+   * landen. Ueber mehrere Zeilen liest sich derselbe Effekt als Text, der
+   * Zeile fuer Zeile eintrudelt -- fuer einen Aufmacher genau falsch.
+   *
+   * Der Rhythmus zwischen zwei Zeilen kommt weiterhin ueber `delay`: erst
+   * die Tinte, dann der Akzent. Das ist ein Takt, kein Aufbau.
+   *
+   * Ein Wert groeszer 0 ist damit die Ausnahme und braucht einen Grund.
    */
   stagger?: number;
   as?: React.ElementType;
@@ -116,13 +125,13 @@ export const RevealText: React.FC<RevealTextProps> = ({
   className = '',
   delay = 0,
   duration = DUR.slow,
-  stagger,
+  stagger = 0,
   as = 'span'
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
 
   const lines = text.split('\n');
-  const step = stagger ?? (by === 'char' ? STAGGER.char : STAGGER.word);
+  const step = stagger;
   let unitIndex = 0;
 
   const mask = (content: React.ReactNode, key: string) => {
@@ -186,6 +195,56 @@ export const RevealText: React.FC<RevealTextProps> = ({
       </span>
     );
   };
+
+  // -------------------------------------------------------------------------
+  // Kursiv wird nicht in Woerter zerlegt, sondern in Zeilen
+  // -------------------------------------------------------------------------
+  // Der Aufbau zerschneidet eine Zeile sonst in ein inline-block je Wort. Bei
+  // aufrechter Schrift ist das folgenlos; beim kursiven Schnitt nicht. Jedes
+  // Wort haengt nach rechts aus seinem Kasten heraus, der Umbruch rechnet aber
+  // mit dem Kasten: das letzte Wort einer Zeile gilt als passend und wird dann
+  // ueber den Rand hinaus gemalt, wo der naechste Container es abschneidet.
+  // Steht die Zeile still, stimmt alles wieder -- der Fehler gehoert allein
+  // dem Moment des Erscheinens, und genau der ist das Erste, was jemand sieht.
+  //
+  // Dagegen hilft kein besserer Zuschnitt der Maske: solange die Zeile aus
+  // Kaesten besteht, rechnet der Umbruch mit Kaesten. Die Maske sitzt deshalb
+  // eine Ebene hoeher -- um die ganze Zeile statt um jedes Wort. Innen steht
+  // gewoehnlicher Fliesztext, der umbricht wie jeder andere auch, und darum
+  // ein Kasten, der unten abschneidet. Die Bewegung bleibt damit exakt die
+  // von vorher: die Zeile faehrt hinter ihrer eigenen Unterkante hervor nach
+  // oben, nur eben als ein Stueck.
+  //
+  // Die Regel greift ueber die Klasse, nicht ueber ein Extra-Attribut: was
+  // `italic` traegt, faehrt als Zeile herein. Damit gilt sie auch fuer jede
+  // kursive Ueberschrift, die es hier noch nicht gibt.
+  // -------------------------------------------------------------------------
+  if (/(^|\s)italic(\s|$)/.test(className)) {
+    return React.createElement(
+      as,
+      { ref, className },
+      lines.map((line, li) => (
+        <span
+          key={`l-${li}`}
+          className="block"
+          // Schneidet nur unten. Die drei anderen Seiten stehen auf -100%,
+          // damit Oberlaengen, Umlaute und der kursive Ueberhang frei malen.
+          style={{ clipPath: 'inset(-100% -100% -0.14em -100%)' }}
+        >
+          <span
+            className="block"
+            style={{
+              transform: inView ? 'translateY(0)' : 'translateY(115%)',
+              opacity: inView ? 1 : 0,
+              transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s`
+            }}
+          >
+            {line}
+          </span>
+        </span>
+      ))
+    );
+  }
 
   return React.createElement(
     as,

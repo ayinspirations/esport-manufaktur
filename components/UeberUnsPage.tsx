@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
@@ -13,16 +13,15 @@ interface UeberUnsPageProps {
 }
 
 /**
- * The founder's portrait for the story tile.
+ * Das Portraet des Gruenders fuer die Geschichten-Kachel.
  *
- * ---- DROP THE PHOTOGRAPH IN HERE ----
- * Put the file in `public/` and set the path below, e.g.
- *   const GIANLUCA_IMAGE = '/gianluca.jpg';
- * Portrait or a working situation, roughly 4:5, 900x1125 covers a 2x screen.
- * Left empty the tile renders a clearly-marked placeholder instead of a broken
- * image, so the section is presentable until the photograph exists.
+ * Dieselbe Datei, die auch seine Team-Kachel traegt -- eine Aufnahme, ein Pfad,
+ * und ein Austausch wirkt an beiden Stellen.
+ *
+ * Leer gelassen zeigt die Kachel einen sichtbar markierten Platzhalter statt
+ * eines kaputten Bildes; so war sie presentabel, bis das Foto da war.
  */
-const GIANLUCA_IMAGE = '';
+const GIANLUCA_IMAGE = '/team/gianluca.jpg';
 
 /** The team photograph, behind the page header. Purpose.tsx carries its own
     copy of the path on purpose -- this module is lazily loaded, and importing
@@ -63,20 +62,36 @@ interface Member {
   role: string;
   /** Drop a file in here when a portrait exists; the monogram is the fallback. */
   image?: string;
+  /**
+   * Wo im Bild die Person steht, als object-position.
+   *
+   * Voreingestellt ist die Mitte auf einem Viertel Hoehe -- das passt fuer ein
+   * Portraet. Nicht jede Aufnahme ist eines: Gianlucas Foto ist eine
+   * Buehnensituation im Querformat, auf der er rechts steht, und ein
+   * mittiger Zuschnitt zeigt die Wand hinter ihm.
+   */
+  focus?: string;
 }
 
 // Founders first, then the rest of the team. Plain array -- reorder here.
+//
+// Die Portraets liegen unter /team/<vorname>.jpg -- klein geschrieben, ohne
+// Umlaute und ohne Leerzeichen. Dateinamen wie "Sandra Weiser.JPG" gehen in
+// einer URL zwar auch, aber das Leerzeichen muss kodiert werden und die
+// Groszschreibung der Endung ist auf manchen Servern signifikant; beides ist
+// ein Fehler, den niemand sucht. Wer kein Bild hat, bekommt sein Monogramm --
+// dafuer ist nichts weiter zu tun als die Zeile hier ohne `image` zu lassen.
 const team: Member[] = [
-  { name: 'Gianluca', role: 'Founder & CEO' },
+  { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '68% 16%' },
   { name: 'Sandro', role: 'Co-Founder & Operations' },
   { name: 'Patrick', role: 'Sales & Partnerships' },
-  { name: 'Sandra', role: 'Operations' },
+  { name: 'Sandra', role: 'Operations', image: '/team/sandra.jpg' },
   { name: 'Manuela', role: 'Backoffice' },
   { name: 'Shayan', role: 'Developer' },
-  { name: 'Akan', role: 'Website' },
-  { name: 'Mark', role: 'Graphics & Designs' },
-  { name: 'Yannik', role: 'Bilder & Videomacher' },
-  { name: 'Chris', role: 'Community Support' },
+  { name: 'Akan', role: 'Website', image: '/team/akan.jpg' },
+  { name: 'Mark', role: 'Graphics & Designs', image: '/team/mark.jpg' },
+  { name: 'Yannik', role: 'Bilder & Videomacher', image: '/team/yannik.jpg' },
+  { name: 'Chris', role: 'Community Support', image: '/team/chris.jpg' },
   { name: 'Silas', role: 'Helping Hand' }
 ];
 
@@ -88,23 +103,70 @@ const AVATAR_TONES = [
   'bg-[#0e958e] text-[#0b0f2a]'
 ];
 
-const Avatar: React.FC<{ member: Member; index: number }> = ({ member, index }) =>
-  member.image ? (
-    <img
-      src={member.image}
-      alt={member.name}
-      className="w-20 h-20 md:w-24 md:h-24 rounded-full object-cover ring-1 ring-[#0b0f2a]/10"
-    />
-  ) : (
+/**
+ * Eine Person als Kachel.
+ *
+ * Vorher war es ein rundes Bildchen mit Name und Rolle darunter -- elf Zeilen
+ * Text in einem Raster, das dadurch mehr nach Adressbuch aussah als nach Team.
+ * Jetzt traegt die Kachel das Bild in voller Flaeche, und der Name liegt darin:
+ * beim Zeigen faehrt das Bild eine Spur heran und der Name kommt mit dem
+ * Schleier von unten herauf.
+ *
+ * Auf dem Telefon gibt es kein Zeigen, also steht dort beides von Anfang an --
+ * ein Name, den man nur mit einer Maus sehen kann, ist auf einem Touchgeraet
+ * kein Name.
+ *
+ * Wer kein Portraet hat, bekommt sein Monogramm auf demselben Zuschnitt. Die
+ * Kachel bleibt dieselbe Form, damit das Raster nicht auseinanderfaellt.
+ */
+const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index }) => {
+  // Faellt auf das Monogramm zurueck, wenn die Datei fehlt oder anders heiszt.
+  // Ohne das steht in der Kachel ein kaputtes Bildsymbol mit dem Alt-Text
+  // daneben -- und zwar so lange, bis es jemandem auffaellt.
+  const [failed, setFailed] = useState(false);
+  const showImage = Boolean(member.image) && !failed;
+
+  return (
+  <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
+    {showImage ? (
+      <img
+        src={member.image}
+        alt={member.name}
+        loading="lazy"
+        decoding="async"
+        onError={() => setFailed(true)}
+        style={{ objectPosition: member.focus ?? 'center 25%' }}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-reveal group-hover:scale-[1.06]"
+      />
+    ) : (
+      <div
+        aria-hidden="true"
+        className={`absolute inset-0 flex items-center justify-center font-black text-5xl md:text-6xl tracking-tighter select-none transition-transform duration-700 ease-reveal group-hover:scale-[1.06] ${
+          AVATAR_TONES[index % AVATAR_TONES.length]
+        }`}
+      >
+        {member.name.charAt(0)}
+      </div>
+    )}
+
+    {/* Der Schleier traegt die Schrift. Auf dem Telefon steht er, am Desktop
+        kommt er mit dem Zeiger. */}
     <div
       aria-hidden="true"
-      className={`w-20 h-20 md:w-24 md:h-24 rounded-full flex items-center justify-center font-black text-2xl md:text-3xl tracking-tighter select-none ring-1 ring-[#0b0f2a]/10 ${
-        AVATAR_TONES[index % AVATAR_TONES.length]
-      }`}
-    >
-      {member.name.charAt(0)}
+      className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#020617] via-[#020617]/55 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 ease-reveal"
+    />
+
+    <div className="absolute inset-x-0 bottom-0 p-4 md:p-5 text-left md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-[transform,opacity] duration-500 ease-reveal">
+      <div className="font-black text-lg md:text-xl tracking-tighter text-white leading-none">
+        {member.name}
+      </div>
+      <div className="mt-1.5 text-[10px] md:text-[11px] font-black uppercase tracking-[0.18em] text-white/70 leading-snug">
+        {member.role}
+      </div>
     </div>
+  </div>
   );
+};
 
 export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
   return (
@@ -217,7 +279,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10 md:gap-y-12">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
             {team.map((member, i) => (
               <Reveal
                 as="li"
@@ -226,15 +288,8 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 // grid unzipping one tile at a time down eleven people.
                 delay={(i % 4) * STAGGER.card}
                 y={24}
-                className="flex flex-col items-center text-center"
               >
-                <Avatar member={member} index={i} />
-                <div className="mt-5 font-black text-lg md:text-xl tracking-tighter text-[#0b0f2a]">
-                  {member.name}
-                </div>
-                <div className="mt-1 text-[#0a6f6a] text-[11px] md:text-xs font-black uppercase tracking-[0.18em] leading-snug">
-                  {member.role}
-                </div>
+                <MemberTile member={member} index={i} />
               </Reveal>
             ))}
           </ul>
@@ -293,6 +348,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                     alt="Gianluca Crepaldi, Gründer und Geschäftsführer der GG Manufaktur"
                     loading="lazy"
                     decoding="async"
+                    style={{ objectPosition: '68% 16%' }}
                     className="w-full aspect-[4/5] object-cover rounded-card"
                   />
                 ) : (

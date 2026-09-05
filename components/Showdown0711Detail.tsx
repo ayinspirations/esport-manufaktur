@@ -1,26 +1,104 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Award, Zap, Users, ShieldCheck, Trophy, Target, ChevronLeft, ChevronRight, Lightbulb } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Target, Users } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { CaseHero } from './CaseHero';
+import { CaseSlider } from './CaseSlider';
 import { STAGGER, DUR } from './motion';
 
 interface CaseDetailProps {
   onBack: () => void;
 }
 
+// Liegen die Bilder unter public/images/showdown-0711, erscheinen sie von
+// selbst -- fehlt eines, faellt es aus der Reihe (siehe CaseSlider). Bis eben
+// standen hier zwei Stockfotografien von Unsplash als Platzhalter.
 const images = [
-  '/images/cases/0711.jpg',
-  // Placeholder images for now since user didn't provide specific gallery images
-  'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1200',
-  'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=1200',
+  '/images/showdown-0711/slide-1.jpg',
+  '/images/showdown-0711/slide-2.jpg',
+  '/images/showdown-0711/slide-3.jpg',
+  '/images/showdown-0711/slide-4.jpg',
+];
+
+// ---------------------------------------------------------------------------
+// Die Inhalte dieses Cases
+// ---------------------------------------------------------------------------
+// Wie bei den anderen Best Cases: alles, was auf der Seite steht, steht hier
+// oben, in der freigegebenen Reihenfolge.
+// ---------------------------------------------------------------------------
+
+const EINLEITUNG = [
+  'Wie schafft man ein Recruiting-Event, bei dem junge Menschen und Unternehmen nicht in formellen Gesprächssituationen aufeinandertreffen, sondern über ein gemeinsames Erlebnis miteinander in Kontakt kommen? Mit dem 0711 SHOWDOWN entwickelten wir ein gamifiziertes Recruiting-Format, das Employer Branding, Gaming und persönliche Begegnungen miteinander verband.',
+  'In der CLUTCH23 eArena in Fellbach brachten wir 64 ausgewählte, ausbildungsinteressierte Jugendliche mit ZÜBLIN, FI-TS, hagebau Bolay, Klingele Paper & Packaging und der Techniker Krankenkasse zusammen. Ein professionelles Gaming-Turnier, frei zugängliche Spielstationen und aktivierende Unternehmensflächen schufen den Rahmen für einen Austausch ohne klassische Bewerbungssituation.'
+];
+
+const PROJEKTBESCHREIBUNG = [
+  'Ausgangspunkt für den 0711 SHOWDOWN war eine zentrale Herausforderung im Ausbildungsrecruiting: Viele Unternehmen möchten junge Menschen frühzeitig erreichen, erleben aber, dass klassische Karrieremessen und formelle Recruiting-Formate nur begrenzt zu einem offenen und persönlichen Austausch führen.',
+  'Gleichzeitig ist Gaming ein selbstverständlicher Bestandteil der Lebenswelt vieler Jugendlicher. Genau diese gemeinsame Leidenschaft nutzten wir als verbindendes Element – nicht als Selbstzweck, sondern als authentischen Einstieg in Gespräche über Ausbildung, Karriere und Zukunftsperspektiven.',
+  'Mit dem 0711 SHOWDOWN entwickelten wir ein eigenes Eventformat, das junge Talente und regionale Arbeitgeber in einem professionellen Gaming-Umfeld zusammenbrachte.',
+  'Als Partner beteiligten sich ZÜBLIN, FI-TS, hagebau Bolay, Klingele Paper & Packaging sowie die Techniker Krankenkasse. Damit trafen unterschiedliche Branchen und Berufsbilder auf eine gemeinsame Zielgruppe aus ausbildungsinteressierten Jugendlichen und jungen Gaming-Fans.',
+  'Über eine zielgerichtete Kommunikations- und Bewerbungsphase wurden 64 Teilnehmende für das Event ausgewählt. Der Fokus lag darauf, junge Menschen einzuladen, die sich sowohl für Gaming als auch für ihre beruflichen Perspektiven interessierten.',
+  'Austragungsort war die CLUTCH23 eArena in Fellbach. Die professionelle Gaming-Location bot den passenden Rahmen, um aus einem Recruiting-Event ein hochwertiges Erlebnis zu machen und den teilnehmenden Unternehmen eine glaubwürdige Präsentationsplattform innerhalb der Gaming-Kultur zu bieten.',
+  'Im Mittelpunkt stand ein professionell organisiertes EA SPORTS FC-Turnier. Der Wettbewerb sorgte für Spannung, gemeinsame Erlebnisse und wiederkehrende Kontaktmomente zwischen Jugendlichen, Unternehmensvertreterinnen und Unternehmensvertretern.',
+  'Ergänzend standen frei zugängliche Gaming-Stationen zur Verfügung. Dadurch konnten auch abseits des Turniers gemeinsame Spielsituationen entstehen, in denen Gespräche deutlich natürlicher begannen als in einer klassischen Bewerbungssituation.',
+  'Die beteiligten Unternehmen wurden aktiv in das Event eingebunden. Sie konnten sich und ihre Ausbildungsangebote präsentieren, eigene Impulse setzen und gleichzeitig direkt am Veranstaltungsgeschehen teilnehmen. So entstand keine räumliche Trennung zwischen Ausstellern und Zielgruppe, sondern eine gemeinsame Erlebnisfläche.',
+  'Die Techniker Krankenkasse ergänzte das Format mit Impulsen rund um Gesundheit, Ernährung und Leistungsfähigkeit. Damit wurde das Event um Themen erweitert, die sowohl für Gaming als auch für Ausbildung und Berufsalltag relevant sind.',
+  'Für die Jugendlichen entstand ein Tag mit Wettbewerb, Unterhaltung und konkreten beruflichen Perspektiven. Die Unternehmen erhielten Zugang zu einer Zielgruppe, die über klassische Recruiting-Kanäle häufig nur schwer erreichbar ist, und konnten sich in einem authentischen und emotionalen Umfeld als potenzielle Arbeitgeber präsentieren.',
+  'Die Reaktionen, Gespräche und Emotionen auf beiden Seiten zeigten, wie wirkungsvoll die Verbindung von Gaming und Recruiting sein kann. Der 0711 SHOWDOWN wurde dadurch zum Proof of Concept für einen größeren Ansatz.',
+  'Die gewonnenen Erkenntnisse bildeten die Grundlage für die Entwicklung der XP Days. Was beim 0711 SHOWDOWN erstmals mit fünf Unternehmen und 64 jungen Talenten erprobt wurde, entwickelten wir anschließend zu einer umfassenden gamifizierten Karriere- und Erlebnismesse weiter.'
+];
+
+const FACTS = [
+  {
+    title: '5 Unternehmen × 64 Talente',
+    icon: <Users className="w-6 h-6" />,
+    text: 'ZÜBLIN, FI-TS, hagebau Bolay, Klingele Paper & Packaging und die Techniker Krankenkasse trafen auf 64 ausgewählte, ausbildungsinteressierte Jugendliche.'
+  },
+  {
+    title: 'Turnier × Recruiting Experience',
+    icon: <Target className="w-6 h-6" />,
+    text: 'Ein professionelles EA SPORTS FC-Turnier, freie Gaming-Stationen und aktivierende Unternehmensflächen schufen Raum für persönliche Gespräche und authentisches Employer Branding.'
+  }
+];
+
+const LEISTUNGEN = [
+  {
+    title: 'Strategie & Formatentwicklung',
+    desc: 'Entwicklung eines eigenen Recruiting-Formats, das Gaming als authentischen Zugang zu jungen und ausbildungsinteressierten Zielgruppen nutzt.'
+  },
+  {
+    title: 'Partner- & Unternehmensintegration',
+    desc: 'Einbindung von fünf Unternehmen mit unterschiedlichen Ausbildungsangeboten in eine gemeinsame Event- und Aktivierungsstruktur.'
+  },
+  {
+    title: 'Teilnehmergewinnung & Eventkommunikation',
+    desc: 'Zielgerichtete Ansprache, Bewerbung und Auswahl von 64 interessierten Jugendlichen für das Recruiting-Event.'
+  },
+  {
+    title: 'Gaming- & Turnierkonzept',
+    desc: 'Konzeption und Durchführung eines professionellen EA SPORTS FC-Turniers sowie Integration frei zugänglicher Gaming-Stationen.'
+  },
+  {
+    title: 'Eventplanung & Produktion',
+    desc: 'Ganzheitliche Organisation und operative Umsetzung des Events in der CLUTCH23 eArena in Fellbach.'
+  },
+  {
+    title: 'Employer-Branding-Aktivierung',
+    desc: 'Entwicklung eines Umfelds, in dem Unternehmen ihre Arbeitgebermarken und Ausbildungsangebote ohne klassische Messesituation präsentieren konnten.'
+  },
+  {
+    title: 'Analyse & Formatweiterentwicklung',
+    desc: 'Auswertung der Erfahrungen, Reaktionen und qualitativen Insights als Grundlage für die anschließende Entwicklung der XP Days.'
+  }
+];
+
+const IMPACT = [
+  { label: 'Zielgruppe', value: 'Ausbildungsinteressierte Jugendliche und junge Gaming-Fans aus der Region Stuttgart.' },
+  { label: 'Aktivierung', value: 'Gemeinsames Spielen, Wettbewerb und persönliche Begegnungen statt formeller Erstgespräche.' },
+  { label: 'Arbeitgeberwirkung', value: 'Fünf Unternehmen konnten ihre Ausbildungsangebote in einem authentischen und emotionalen Umfeld präsentieren.' },
+  { label: 'Formatwirkung', value: 'Die Erkenntnisse aus dem 0711 SHOWDOWN bildeten die konzeptionelle Grundlage für die Entwicklung der XP Days.' }
 ];
 
 export const Showdown0711Detail: React.FC<CaseDetailProps> = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.style.overflow = 'hidden';
@@ -29,167 +107,48 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = () => {
     };
   }, []);
 
-  const nextSlide = useCallback(() => {
-    setDirection(1);
-    setCurrentIndex((prev) => (prev + 1) % images.length);
-  }, []);
-
-  const prevSlide = useCallback(() => {
-    setDirection(-1);
-    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, []);
-
-  const handleDragEnd = (e: any, { offset, velocity }: any) => {
-    const swipeThreshold = 50;
-    const velocityThreshold = 500;
-    
-    if (offset.x < -swipeThreshold || velocity.x < -velocityThreshold) {
-      nextSlide();
-    } else if (offset.x > swipeThreshold || velocity.x > velocityThreshold) {
-      prevSlide();
-    }
-  };
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-    }),
-    center: {
-      zIndex: 1,
-      x: 0,
-    },
-    exit: (direction: number) => ({
-      zIndex: 0,
-      x: direction < 0 ? '100%' : '-100%',
-    })
-  };
-
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
-      {/* Hero Section */}
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-        <img 
-          src="/images/cases/0711.jpg" 
-          alt="0711 Showdown" 
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        />
-        {/* The photograph hands over to the canvas before the headline
-            starts, so the title sits on the site's own ground and can be set
-            in the same ink-then-accent pair as every heading on the homepage.
-            The old overlay only reached the canvas at the very bottom edge,
-            which left the headline on the picture and forced it to be white. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(186,222,218,0) 34%, rgba(186,222,218,0.9) 60%, #badeda 76%)'
-          }}
-        />
-        {/* Tells the nav where the photograph ends and the canvas begins. The
-            bar crosses both halves of this hero on the way down, and the img
-            underneath would otherwise report "dark" for the canvas half too.
-            Decorative and empty -- it exists to be hit-tested. */}
-        <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[52%]" />
-
-        
-        <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
-          <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
-            <div className="flex flex-col w-full md:w-auto">
-              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
-                <RevealText as="span" by="word" text="0711" delay={0.1} />
-                <RevealText as="span" by="word" text="Showdown." delay={0.24} className="text-[#0e958e] italic" />
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CaseHero
+        image="/videos/case-showdown.jpg"
+        alt="0711 SHOWDOWN – gamifiziertes Recruiting-Event in der CLUTCH23 eArena"
+        title="0711 Showdown"
+        accent="Recruiting. Gamified."
+      />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-14 py-16 md:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-24">
           {/* Main Content */}
           <div className="lg:col-span-8 space-y-12 md:space-y-16">
             <section>
-              <RevealText as="h2" by="word" text="Innovatives Recruiting durch Gaming - Employer Branding für Tech-Talente" className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]" />
+              <RevealText
+                as="h2"
+                by="word"
+                text="Fünf Arbeitgeber mit 64 jungen Talenten über Gaming auf Augenhöhe zusammenbringen."
+                className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
+              />
               <div className="space-y-6">
-                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
-                  Über 200 Bewerbungen, 64 Spieler:innen und 2.000 € Preisgeld für die besten Gamer. Wer junge Talente heute erreichen möchte, muss ihre Lebenswelt verstehen: Gaming, Gamification und persönliche Begegnung auf Augenhöhe.
-                </Reveal>
-                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
-                  Am 29. März 2025 haben wir mit dem 0711 Showdown in der CLUTCH23 eArena Fellbach gezeigt, wie innovatives Recruiting funktioniert: Über 100 Teilnehmende erwarteten ein professionell organisiertes EA FC25-Turnier, persönliche Gespräche mit Top-Arbeitgebern aus der Region und ein zielgerichtetes Gesundheitsangebot der Techniker Krankenkasse (TK).
-                </Reveal>
-                <Reveal as="p" delay={0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
-                  Die Generation Z sucht nach Arbeitgeber:innen, die Haltung zeigen, flexibel agieren und mehr bieten als Floskeln und Flyer. Statt formeller Bewerbungsgespräche setzten wir auf echte Begegnung bei einem gemeinsamen Spiel oder im partnerschaftlichen Austausch am Spielfeldrand.
-                </Reveal>
+                {EINLEITUNG.map((para, i) => (
+                  <Reveal key={i} as="p" delay={0.08 + i * 0.08} className="text-lg md:text-2xl font-medium leading-relaxed text-slate-700">
+                    {para}
+                  </Reveal>
+                ))}
               </div>
             </section>
 
-            {/* Image Slider */}
-            <div 
-              className="relative group rounded-shell overflow-hidden aspect-video bg-[#badeda] shadow-2xl touch-none"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <div className="absolute inset-0">
-                {images.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`Slide ${i + 1}`}
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                    style={{ opacity: i === currentIndex ? 1 : 0 }}
-                  />
-                ))}
-              </div>
+            <CaseSlider images={images} alt="Eindruck vom 0711 SHOWDOWN" />
 
-              {/* Navigation Arrows */}
-              <button 
-                onClick={(e) => { e.stopPropagation(); prevSlide(); }}
-                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button 
-                onClick={(e) => { e.stopPropagation(); nextSlide(); }}
-                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-
-              {/* Dots */}
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-                {images.map((_, i) => (
-                  <button 
-                    key={i} 
-                    onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-                    className={`h-2 rounded-full transition-all duration-500 ${
-                      i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <section className="space-y-8">
-              <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium">
-                Arbeitgeber präsentierten sich nahbar, glaubwürdig und einprägsam durch interaktive Formate, Challenges und authentische Markenkommunikation. Durch ein umfassendes Eventpaket haben wir beim 0711 Showdown ermöglicht, potenzielle Talente auf eine moderne und interaktive Weise anzusprechen.
-              </p>
-              
-              <div className="mt-12">
-                <h3 className="text-2xl font-black uppercase tracking-tighter mb-6">Unsere Partner</h3>
-                <p className="text-lg text-slate-600 font-medium leading-relaxed">
-                  Als Partner waren mit dabei: ZÜBLIN, FI-TS, hagebau Bolay, Klingele Paper & Packaging sowie die Techniker Krankenkasse, die mit Vorträgen, Brainfood und konkreten Impulsen zur Leistungsfähigkeit und gesunder Ernährung beitrug.
-                </p>
-              </div>
+            <section className="space-y-6">
+              {PROJEKTBESCHREIBUNG.map((para, i) => (
+                <Reveal key={i} as="p" y={20} className="text-lg md:text-xl text-slate-600 leading-relaxed">
+                  {para}
+                </Reveal>
+              ))}
             </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-16">
-              {[
-                { title: 'Konzept und Umsetzung', icon: <Target className="w-6 h-6" />, text: 'Entwicklung einer Gaming-Plattform, die speziell auf die Zielgruppe zugeschnitten ist.' },
-                { title: 'Qualifikationsturniere', icon: <Award className="w-6 h-6" />, text: 'Organisation und Durchführung der digitalen Turniere zur Steigerung des Engagements.' },
-                { title: 'Finale vor Ort', icon: <Users className="w-6 h-6" />, text: 'Spannendes Live-Finale mit aktiven Gaming-Stationen für Zuschauer und Community-Erlebnisse.' },
-                { title: 'Employer Branding', icon: <Lightbulb className="w-6 h-6" />, text: 'Modernes Eventformat, das Partner als innovative Arbeitgebermarken positioniert.' },
-              ].map((item, i) => (
-                <Reveal key={i} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {FACTS.map((item, i) => (
+                <Reveal key={item.title} delay={i * STAGGER.card} y={26} className="bg-white/50 backdrop-blur-xl p-8 rounded-surface border border-slate-900/5 shadow-sm">
                   <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-600 mb-6">
                     {item.icon}
                   </div>
@@ -200,37 +159,32 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = () => {
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Projekt-Steckbrief */}
           <div className="lg:col-span-4 space-y-12 order-last lg:order-none">
             <div className="sticky top-32">
               <Reveal y={28} duration={DUR.slow} className="bg-slate-900 text-white p-10 rounded-shell shadow-2xl">
                 <div className="space-y-10">
-                  {/* Format Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-4">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
                       <h3 className="text-xl font-black uppercase tracking-tighter">Format</h3>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-lg font-black text-[#0e958e] leading-tight">Gaming- & Recruiting-Plattform</h4>
-                      <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">Digital + Live-Arena | 0711 Showdown</p>
+                      <h4 className="text-lg font-black text-[#0e958e] leading-tight">Gamifiziertes Recruiting-Event</h4>
+                      <p className="text-white/70 font-bold uppercase tracking-widest text-[10px]">
+                        Employer Branding + Gaming + persönliche Begegnung | fünf Unternehmen | 64 junge Talente
+                      </p>
                     </div>
                   </section>
 
-                  {/* Leistungen Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
                       <h3 className="text-xl font-black uppercase tracking-tighter">Leistungen</h3>
                     </div>
                     <ul className="space-y-6">
-                      {[
-                        { title: 'Konzeption & Strategie', desc: 'Recruiting-Format auf Augenhöhe für die Gen Z' },
-                        { title: 'Turnier-Management', desc: 'Vollständige Organisation von Qualifikation bis zum Finale' },
-                        { title: 'Employer Branding', desc: 'Nahbare Präsentation von Top-Arbeitgebern' },
-                        { title: 'Event-Logistik', desc: 'Live-Finale in der CLUTCH23 eArena Fellbach' }
-                      ].map((item, i) => (
-                        <li key={i}>
+                      {LEISTUNGEN.map((item) => (
+                        <li key={item.title}>
                           <h5 className="font-black uppercase tracking-widest text-[10px] text-[#0e958e] mb-1">{item.title}</h5>
                           <p className="text-white/80 font-bold leading-snug">{item.desc}</p>
                         </li>
@@ -238,41 +192,47 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = () => {
                     </ul>
                   </section>
 
-                  {/* Impact Section */}
                   <section>
                     <div className="flex items-center gap-3 mb-6">
                       <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
                       <h3 className="text-xl font-black uppercase tracking-tighter">Impact</h3>
                     </div>
                     <ul className="space-y-4">
-                      <li>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Bewerbungen:</div>
-                        <div className="text-white font-black">Über 200 Teilnehmeranfragen</div>
-                      </li>
-                      <li>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Live-Teilnehmer:</div>
-                        <div className="text-white font-black">Über 100 Gamer & Partner vor Ort</div>
-                      </li>
-                      <li>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">Recruiting:</div>
-                        <div className="text-white font-black">Echte Begegnungen statt Flyer</div>
-                      </li>
+                      {IMPACT.map((item) => (
+                        <li key={item.label}>
+                          <div className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-1">{item.label}</div>
+                          <div className="text-white font-black leading-snug">{item.value}</div>
+                        </li>
+                      ))}
                     </ul>
                   </section>
 
-                  {/* Status Section */}
+                  <section>
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-1.5 h-6 bg-emerald-500 rounded-full" />
+                      <h3 className="text-xl font-black uppercase tracking-tighter">Ergebnis</h3>
+                    </div>
+                    <div className="space-y-2">
+                      <h4 className="text-white font-black leading-snug">Der Proof of Concept für gamifiziertes Recruiting</h4>
+                      <p className="text-white/60 text-sm font-medium leading-relaxed">
+                        Der 0711 SHOWDOWN zeigte, dass Gaming echte Begegnungen zwischen jungen Menschen und Unternehmen
+                        ermöglichen kann. Aus dem erfolgreichen Pilotformat entstand die Grundlage für eine umfassende
+                        gamifizierte Karrieremesse.
+                      </p>
+                    </div>
+                  </section>
+
                   <div className="pt-10 border-t border-white/10">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 rounded-2xl bg-emerald-500 flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/20">
-                        <Trophy className="w-8 h-8" />
-                      </div>
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status</div>
-                        <div className="text-lg font-black text-white leading-tight">Event-Serie erfolgreich gestartet</div>
+                    <div className="mb-6">
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status</div>
+                      <div className="text-lg font-black text-white leading-tight">Erfolgreich umgesetzt</div>
+                      <div className="text-white/60 text-sm font-medium leading-snug mt-1">
+                        Eigenentwickeltes Recruiting-Event und konzeptionelle Vorstufe der XP Days.
                       </div>
                     </div>
                     <p className="text-emerald-400 text-sm font-black leading-relaxed italic">
-                      "Innovatives Recruiting auf Augenhöhe"
+                      „Der 0711 SHOWDOWN hat gezeigt, wie aus gemeinsamem Spielen echte Gespräche entstehen – und aus
+                      einer Eventidee ein neues Messekonzept wachsen kann.“
                     </p>
                   </div>
                 </div>

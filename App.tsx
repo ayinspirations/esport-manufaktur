@@ -41,6 +41,12 @@ const TSystemsDetail = lazy(() => import('./components/TSystemsDetail').then(m =
 const BayernZocktDetail = lazy(() => import('./components/BayernZocktDetail').then(m => ({ default: m.BayernZocktDetail })));
 const Showdown0711Detail = lazy(() => import('./components/Showdown0711Detail').then(m => ({ default: m.Showdown0711Detail })));
 const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
+const IntersportDetail = lazy(() => import('./components/IntersportDetail').then(m => ({ default: m.IntersportDetail })));
+const ReweDetail = lazy(() => import('./components/ReweDetail').then(m => ({ default: m.ReweDetail })));
+const XpDaysDetail = lazy(() => import('./components/XpDaysDetail').then(m => ({ default: m.XpDaysDetail })));
+const DekraDetail = lazy(() => import('./components/DekraDetail').then(m => ({ default: m.DekraDetail })));
+const InterwettenDetail = lazy(() => import('./components/InterwettenDetail').then(m => ({ default: m.InterwettenDetail })));
+const NiveaEffectCrackzDetail = lazy(() => import('./components/NiveaEffectCrackzDetail').then(m => ({ default: m.NiveaEffectCrackzDetail })));
 const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazy(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
@@ -59,7 +65,7 @@ const ContactModal = lazy(() => import('./components/ContactModal').then(m => ({
 const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidden="true" />;
 
 type Page =
-  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
+  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
   | 'ueber-uns' | 'meine-geschichte' | 'webdesign';
 
@@ -112,7 +118,7 @@ const resolveRoute = (): Route => {
   }
 
   const currentHash = window.location.hash.replace('#', '');
-  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', ...blogSlugs];
+  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', 'dekra', 'interwetten', 'consumenta', ...blogSlugs];
   if (validPages.includes(currentHash)) {
     return { page: currentHash as Page };
   }
@@ -310,6 +316,12 @@ export default function App() {
         {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'intersport' && <IntersportDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'rewe' && <ReweDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'xp-days' && <XpDaysDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'dekra' && <DekraDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'interwetten' && <InterwettenDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'consumenta' && <NiveaEffectCrackzDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}
