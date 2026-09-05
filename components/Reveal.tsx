@@ -196,6 +196,48 @@ export const RevealText: React.FC<RevealTextProps> = ({
     );
   };
 
+  // -------------------------------------------------------------------------
+  // Kursiv wird nie zerlegt
+  // -------------------------------------------------------------------------
+  // Der Aufbau zerschneidet eine Zeile in ein inline-block je Wort. Bei
+  // aufrechter Schrift ist das folgenlos; beim kursiven Schnitt nicht. Jedes
+  // Wort haengt nach rechts aus seinem Kasten heraus, der Umbruch rechnet aber
+  // mit dem Kasten: das letzte Wort einer Zeile gilt als passend und wird dann
+  // ueber den Rand hinaus gemalt, wo es der naechste Container abschneidet.
+  // Steht die Zeile still, stimmt alles wieder -- der Fehler gehoert allein
+  // dem Moment des Erscheinens, und genau der ist das Erste, was jemand sieht.
+  //
+  // Dagegen hilft kein besserer Zuschnitt der Maske. Solange die Zeile aus
+  // Kaesten besteht, rechnet der Umbruch mit Kaesten. Kursive Zeilen kommen
+  // deshalb als ein Stueck Text herein: ein Element, ein Aufblenden, ein
+  // kurzer Weg von unten. Kein inline-block, keine Maske, keine eigene
+  // Compositing-Ebene je Wort -- also auch keine der Stellen, an denen Tinte
+  // verloren gehen kann.
+  //
+  // Die Regel greift ueber die Klasse, nicht ueber ein Extra-Attribut: was
+  // `italic` traegt, wird eingeblendet. Damit gilt sie auch fuer jede kursive
+  // Ueberschrift, die es hier noch nicht gibt.
+  // -------------------------------------------------------------------------
+  if (/(^|\s)italic(\s|$)/.test(className)) {
+    return React.createElement(
+      as,
+      {
+        ref,
+        className,
+        style: {
+          opacity: inView ? 1 : 0,
+          transform: inView ? 'translateY(0)' : 'translateY(0.16em)',
+          transition: `opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s, transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s`
+        }
+      },
+      lines.map((line, li) => (
+        <span key={`l-${li}`} className="block">
+          {line}
+        </span>
+      ))
+    );
+  }
+
   return React.createElement(
     as,
     { ref, className, 'aria-label': text.replace(/\n/g, ' ') },
