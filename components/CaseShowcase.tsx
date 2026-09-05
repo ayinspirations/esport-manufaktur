@@ -22,7 +22,7 @@ interface ShowcaseCase {
 }
 
 // The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days,
-// DEKRA und Interwetten haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
+// DEKRA, Interwetten und die Consumenta haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
 // Projekt --, also laufen sie auf der eigenen dunklen Flaeche der Seite,
 // statt sich eine Aufnahme aus einem anderen Projekt zu leihen und sie als
 // ihre auszugeben.
@@ -103,6 +103,13 @@ const CASES: ShowcaseCase[] = [
     title: 'Interwetten',
     text: 'Virtual Tennis beim BOSS OPEN: gebrandeter Court, Live-Ranking und Leads aus dem Spiel heraus.',
     imageAlt: 'Interwetten Virtual-Tennis-Aktivierung von GG Manufaktur'
+  },
+  {
+    page: 'consumenta',
+    category: 'Multi-Brand-Aktivierung',
+    title: 'NIVEA MEN // EFFECT // CRACKZ',
+    text: 'Drei Marken, drei Mechaniken, eine Messefläche — Gaming, Sampling und Leads auf der Consumenta.',
+    imageAlt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ von GG Manufaktur'
   }
 ];
 
