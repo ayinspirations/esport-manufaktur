@@ -31,6 +31,10 @@ import { EASE_REVEAL, SPRING_SHELL } from '../motion';
 //   3. Die beiden Wege kommen aus einer Spur kleiner heraus hoch, einen
 //      Hauch spaeter, sodass sie in die schon oeffnende Schale hineinwachsen.
 //
+// Auf jeder Breite dieselbe Bewegung: die Wege stehen immer nebeneinander,
+// die Schale dehnt sich immer nur zur Seite. Ein Umbruch auf dem Telefon
+// haette daraus zwei Bewegungen gemacht -- Breite und Hoehe zugleich.
+//
 // Ein Zwischenversuch liesz die Schale per Zeitplan laufen und blendete die
 // Inhalte per CSS gegeneinander. Das war korrekt und leblos: eine Kurve mit
 // festem Ende bremst sichtbar ab, und zwei ineinander verblassende Bloecke
@@ -113,8 +117,11 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   const shell = light
     ? 'bg-white text-[#0b0f2a] shadow-[0_18px_50px_-28px_rgba(0,0,0,0.65)]'
     : 'bg-[#0b0f2a] text-white shadow-[0_18px_50px_-28px_rgba(11,15,42,0.6)]';
+  // Auf dem Telefon enger gesetzt und eine Spur kleiner: zwei ausgeschriebene
+  // Wege nebeneinander muessen in die Breite eines schmalen Schirms passen,
+  // ohne dass einer von beiden zu "Termin" verkuerzt werden muss.
   const wayBase =
-    'inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
+    'inline-flex items-center justify-center rounded-full px-3.5 py-2.5 text-[11.5px] sm:px-6 sm:py-3 sm:text-sm font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
   const wayPrimary = light
     ? 'bg-[#0b0f2a] text-white hover:bg-[#0e958e]'
     : 'bg-white text-[#0b0f2a] hover:bg-emerald-400';
@@ -127,10 +134,13 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
       <motion.div
         layout
         transition={SPRING_SHELL}
-        // Rund, solange eine Zeile steht; auf dem Telefon stapeln sich die
-        // beiden Wege, und eine Kapselform um zwei Zeilen sieht aus wie ein
-        // Versehen -- dort wird die Pille zur Karte.
-        className={`relative flex items-center overflow-hidden rounded-[26px] sm:rounded-full ${shell}`}
+        // Eine Zeile, auf jeder Breite. Die beiden Wege standen auf dem
+        // Telefon uebereinander, und damit dehnte sich die Pille nicht mehr
+        // zur Seite, sondern klappte nach unten auf: statt einer Bewegung
+        // zwei, Breite und Hoehe zugleich, und die Feder arbeitete gegen den
+        // Umbruch. Nebeneinander bleibt es dieselbe Bewegung wie am Desktop --
+        // die Schrift wird kleiner, nicht der Aufbau ein anderer.
+        className={`relative flex items-center overflow-hidden rounded-full ${shell}`}
       >
         <AnimatePresence initial={false} mode="popLayout">
           {!open ? (
@@ -143,7 +153,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={SWAP}
-              className="group inline-flex items-center gap-2.5 px-7 py-4 text-sm sm:text-base font-black tracking-tight"
+              className="group inline-flex items-center gap-2.5 px-6 py-3.5 sm:px-7 sm:py-4 text-[13px] sm:text-base font-black tracking-tight"
             >
               {label}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
@@ -158,14 +168,14 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               // bereits oeffnende Flaeche hineinwachsen statt gegen ihren Rand
               // zu laufen.
               transition={{ ...SWAP, delay: 0.08 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 p-1.5"
+              className="flex flex-row items-center gap-0.5 sm:gap-1 p-1 sm:p-1.5"
             >
               <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>
                 {bookingLabel}
               </button>
               <span
                 aria-hidden="true"
-                className={`hidden sm:block w-px h-6 mx-1 ${light ? 'bg-[#0b0f2a]/15' : 'bg-white/20'}`}
+                className={`w-px h-5 sm:h-6 mx-0.5 sm:mx-1 ${light ? 'bg-[#0b0f2a]/15' : 'bg-white/20'}`}
               />
               <button type="button" onClick={() => choose(onContact)} className={`${wayBase} ${waySecondary}`}>
                 {contactLabel}

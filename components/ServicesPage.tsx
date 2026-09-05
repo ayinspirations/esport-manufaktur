@@ -42,6 +42,7 @@ const WIDE_CONTAINER = 'max-w-[1440px] mx-auto px-6 md:px-14';
  */
 const navClearance = () => (window.innerWidth >= 768 ? 96 : 78);
 
+
 /**
  * The filter, as the client describes the offering: four central fields, then
  * everything else. Both groups come from the one catalogue, so a service added
@@ -56,8 +57,15 @@ const PILL_GROUPS = [
 interface LayoutProps {
   active: string;
   select: (slug: string) => void;
-  /** Der Scroll-Anker: wohin die Seite nach einem Wechsel zurueckspringt. */
+  /**
+   * Die Scroll-Anker: worauf die Seite nach einem Wechsel zielt.
+   *
+   * Zwei, weil die Auswahl je nach Breite woanders steht -- ab lg als Spalte
+   * neben dem Panel, darunter als Knopf darueber. Gezielt wird immer auf die
+   * Klebeposition der Auswahl, damit sie beim Wechsel exakt stehen bleibt.
+   */
   anchorRef: React.RefObject<HTMLDivElement>;
+  menuRef: React.RefObject<HTMLDivElement>;
   /** Die ausgewaehlte Leistung, fertig gerendert. */
   panel: React.ReactNode;
 }
@@ -295,14 +303,23 @@ const MobileServiceMenu: React.FC<{
   Unter `lg` gibt es keine zweite Spalte, in die eine Sidebar passt: dort
   uebernimmt das eingeklappte Menue oben dieselbe Aufgabe.
 */
-const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel }) => (
-  <div ref={anchorRef} className={`${WIDE_CONTAINER} pt-12 md:pt-16 scroll-mt-28`}>
+const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, menuRef, panel }) => (
+  <div className={`${WIDE_CONTAINER} pt-12 md:pt-16 scroll-mt-28`}>
     {/* Bis lg: die Auswahl als mitlaufender Knopf ueber dem Inhalt. Sie steht
         auszerhalb des Rasters, damit sie ueber dessen ganze Hoehe klebt und
         nicht nur ueber die Hoehe der Spalte, in der sie sonst saesze. */}
+    {/* Der Anker fuer den Sprung auf dem Telefon: eine Marke im Fluss, genau
+        dort, wo das Menue steht.
+        Nicht das Menue selbst -- das klebt, und ein klebendes Element meldet
+        auch ueber offsetTop seine Klebeposition, nicht seine Position im
+        Dokument. Ein daraus gerechnetes Ziel ist immer die Stelle, an der man
+        ohnehin schon steht, und der Sprung faellt still aus. */}
+    <div ref={menuRef} aria-hidden="true" className="lg:hidden" />
     <MobileServiceMenu active={active} select={select} />
 
-    <div className="lg:grid lg:grid-cols-[268px_minmax(0,1fr)] lg:gap-10 xl:gap-14 lg:items-start">
+    {/* Der Anker sitzt am Raster, nicht am Container darum: gezielt wird die
+        Oberkante der Spalte, nicht die des Kopfabstands ueber ihr. */}
+    <div ref={anchorRef} className="lg:grid lg:grid-cols-[268px_minmax(0,1fr)] lg:gap-10 xl:gap-14 lg:items-start">
       {/* ---- Auswahl ---- */}
       <aside className="hidden lg:block lg:sticky lg:top-[calc(var(--nav-clearance,96px)+16px)] lg:max-h-[calc(100dvh-var(--nav-clearance,96px)-40px)] lg:overflow-y-auto lg:pr-1 lg:pb-2">
         <nav aria-label="Leistungen">
@@ -383,6 +400,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   // services someone looked at, for free.
   const active = (slug && serviceSlugs.includes(slug) ? slug : serviceSlugs[0]) as string;
   const anchorRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const content = servicesContent[active];
   const sidebar = SERVICES_LAYOUT === 'sidebar';
@@ -411,9 +429,22 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     (next: string) => {
       if (next === active) return;
 
-      const el = anchorRef.current;
+      // Ab lg klebt die Spalte, darunter der Knopf -- gezielt wird auf das,
+      // was gerade da ist.
+      const wide = window.innerWidth >= 1024;
+      const el = wide ? anchorRef.current : menuRef.current ?? anchorRef.current;
       if (el) {
-        const top = Math.max(el.getBoundingClientRect().top + window.scrollY - navClearance() - 12, 0);
+        // Ziel ist die Stelle, an der die Auswahl klebt -- nicht irgendein
+        // Abstand unter der Navigation.
+        //
+        // Vorher landete der Sprung 60 Pixel darueber, weil er den Kopfabstand
+        // des Containers mitzaehlte: die Spalte stand danach unterhalb ihres
+        // eigenen Klebepunkts und rutschte beim naechsten Scrollen erst dorthin
+        // hoch. Wer sie ansieht, sieht sie wandern -- obwohl nur nebenan
+        // getippt wurde. Auf ihren Klebepunkt gezielt, steht sie vor und nach
+        // dem Wechsel exakt gleich.
+        const stickyTop = sidebar ? navClearance() + (wide ? 16 : 8) : navClearance() + 12;
+        const top = Math.max(el.getBoundingClientRect().top + window.scrollY - stickyTop, 0);
         // Nur nach oben. Wer die Auswahl von weiter oben trifft, steht schon
         // vor dem Anfang und soll nicht nach unten gerissen werden.
         if (window.scrollY > top) {
@@ -423,53 +454,49 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       onSelectService(next);
     },
-    [active, onSelectService]
+    [active, onSelectService, sidebar]
   );
 
   /*
-    Zwei Wechsel, aus einem Grund verschieden.
+    Der Wechsel im Panel.
 
-    Im Pillen-Layout haelt `mode="wait"` den alten Inhalt fest, bis er
-    ausgeblendet ist: ein Kreuzblenden legt beide Leistungen gleichzeitig aus
-    und die Seitenhoehe springt auf die groeszere der beiden.
+    Er war ein harter Schnitt: der alte Inhalt verschwand in dem Moment, in
+    dem der neue erschien. Das lag an einem Problem, das es nicht mehr gibt --
+    `mode="wait"` haelt den alten fest, bis er ausgeblendet ist, und dazwischen
+    ist das Panel leer und die Seite kuerzer als die Scrollposition erlaubt.
+    Weil die Seite inzwischen an den Kopf des Rasters springt, bevor getauscht
+    wird, steht sie beim Wechsel ohnehin oben; da ist nichts mehr zu klemmen.
 
-    Im Sidebar-Layout ist genau dieses Warten das Problem. Zwischen Aus- und
-    Einblendung ist das Panel fuer einen Moment leer, die Seite damit kuerzer
-    als die aktuelle Scrollposition erlaubt -- der Browser zieht sie nach oben,
-    und die klebende Spalte rutscht sichtbar mit. Ohne AnimatePresence tauscht
-    React den Knoten am key-Wechsel direkt aus: es gibt keinen leeren Moment,
-    die Hoehe faellt nie auf null, die Sidebar steht.
+    Bleibt der Leerlauf selbst, und den loest `mode="popLayout"`: der
+    abtretende Inhalt wird aus dem Fluss genommen und blendet dort aus,
+    waehrend der neue schon die Hoehe des Panels bestimmt und aufsteigt. Nichts
+    faellt auf null, nichts wartet -- die beiden ueberlagern sich fuer einen
+    Moment, und genau das macht aus dem Schnitt eine Blende.
 
-    In beiden Faellen nur Deckkraft und ein kurzes Steigen. Das sind lange
-    Dokumente, und alles, was schwerer ist als eine Compositor-Eigenschaft,
-    macht aus einem Klick ein Stottern.
+    Nur Deckkraft und ein kurzer Weg. Das sind lange Dokumente, und alles, was
+    schwerer ist als eine Compositor-Eigenschaft, macht aus einem Klick ein
+    Stottern.
   */
-  // Im Panel begrenzt und polstert schon die Spalte -- die Ansicht bekommt
-  // dort keinen zweiten Container.
-  const view = (
-    <ServiceView
-      content={content}
-      container={sidebar ? 'w-full' : undefined}
-      cardColumns={sidebar ? 2 : 3}
-      onOpenBooking={onOpenBooking}
-      onOpenContact={onOpenContact}
-    />
-  );
-
-  const motionProps = {
-    initial: { opacity: 0, y: 12 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: DUR.panel, ease: EASE_REVEAL }
-  } as const;
-
-  const panel = sidebar ? (
-    <motion.div key={active} {...motionProps}>
-      {view}
-    </motion.div>
-  ) : (
-    <AnimatePresence mode="wait" initial={false}>
-      <motion.div key={active} {...motionProps} exit={{ opacity: 0, y: -8 }}>
-        {view}
+  const panel = (
+    <AnimatePresence mode="popLayout" initial={false}>
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        // Schneller hinaus als herein: der neue Inhalt ist das, was gelesen
+        // werden soll, der alte nur noch im Weg.
+        exit={{ opacity: 0, transition: { duration: 0.22, ease: EASE_REVEAL } }}
+        transition={{ duration: DUR.reveal, ease: EASE_REVEAL }}
+      >
+        {/* Im Panel begrenzt und polstert schon die Spalte -- die Ansicht
+            bekommt dort keinen zweiten Container. */}
+        <ServiceView
+          content={content}
+          container={sidebar ? 'w-full' : undefined}
+          cardColumns={sidebar ? 2 : 3}
+          onOpenBooking={onOpenBooking}
+          onOpenContact={onOpenContact}
+        />
       </motion.div>
     </AnimatePresence>
   );
@@ -501,7 +528,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
         </Reveal>
       </div>
 
-      <Layout active={active} select={select} anchorRef={anchorRef} panel={panel} />
+      <Layout active={active} select={select} anchorRef={anchorRef} menuRef={menuRef} panel={panel} />
 
       {/* The homepage's Blog section, at the foot of every service.
           Outside the layout on purpose: it is identical for all ten services,
