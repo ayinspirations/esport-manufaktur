@@ -21,8 +21,8 @@ interface ShowcaseCase {
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV, INTERSPORT, REWE und die XP
-// Days haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
+// The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days
+// und DEKRA haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
 // Projekt --, also laufen sie auf der eigenen dunklen Flaeche der Seite,
 // statt sich eine Aufnahme aus einem anderen Projekt zu leihen und sie als
 // ihre auszugeben.
@@ -89,6 +89,13 @@ const CASES: ShowcaseCase[] = [
     title: 'XP Days',
     text: 'Unsere eigene Karrieremesse: Plattform, XP-System, Videocontent und Gaming-Erlebniswelt in einem Format.',
     imageAlt: 'XP Days gamifizierte Karrieremesse von GG Manufaktur'
+  },
+  {
+    page: 'dekra',
+    category: 'Digitale Lösung',
+    title: 'DEKRA Motorsport',
+    text: 'Digitaler Wallet-Pass statt Stempelkarte: sechs DTM-Standorte, QR-Tracking und messbare Leads.',
+    imageAlt: 'DEKRA Motorsport Event-Pass von GG Manufaktur'
   }
 ];
 
