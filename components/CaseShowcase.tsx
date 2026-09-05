@@ -5,6 +5,12 @@ import { useInView } from '../hooks/useInView';
 
 interface ShowcaseCase {
   page: string;
+  /**
+   * Das Schlagwort zum Case. Steht aktuell nicht auf der Kachel -- die Pille
+   * darueber nahm dem Titel den Auftakt und sagte in zwei Woertern, was die
+   * Zeile darunter ohnehin sagt. Das Feld bleibt, weil es die Cases
+   * beschreibt, nicht ihre Darstellung.
+   */
   category: string;
   title: string;
   text: string;
@@ -201,9 +207,6 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-xl"
           >
-            <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white mb-6">
-              {current.category}
-            </span>
             <h3 className="text-white text-[clamp(34px,5.5vw,68px)] font-black leading-[0.92] tracking-tighter uppercase mb-5 drop-shadow-2xl">
               {current.title}
             </h3>
