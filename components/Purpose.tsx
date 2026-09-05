@@ -4,9 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
-
-/** The team photograph, shared with the "Über uns" page header. */
-const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
+import { TEAM_PHOTO } from './teamPhoto';
 
 interface PurposeProps {
   onNavigate?: (page: any) => void;
@@ -59,8 +57,12 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             unten statt zur Seite und uebergibt an die dunkle Flaeche, auf der
             die Headline steht. */}
         <img
-          src={TEAM_IMAGE}
-          alt="Das Team der GG Manufaktur"
+          src={TEAM_PHOTO.src}
+          srcSet={TEAM_PHOTO.srcSet}
+          // Auf dem Telefon ein Band ueber die Kachelbreite, ab md die volle
+          // Flaeche -- der Browser waehlt danach seine Datei.
+          sizes="(min-width: 768px) 1440px, 100vw"
+          alt={TEAM_PHOTO.alt}
           loading="lazy"
           decoding="async"
           className="absolute inset-x-0 top-0 h-[220px] md:inset-0 md:h-full w-full object-cover object-[center_32%] md:object-center opacity-60 md:opacity-25 z-0 pointer-events-none"

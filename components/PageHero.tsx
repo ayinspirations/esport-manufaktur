@@ -13,6 +13,9 @@ interface PageHeroProps {
   eyebrow?: string;
   /** A photograph to open the page with. Omitted where none exists. */
   image?: string;
+  /** Dieselbe Aufnahme in mehreren Breiten, damit der Browser waehlen kann. */
+  imageSrcSet?: string;
+  imageSizes?: string;
   imageAlt?: string;
 }
 
@@ -40,7 +43,7 @@ const CONTAINER = 'w-full max-w-[1200px] mx-auto px-6 md:px-14';
  *   dissolving into the canvas along its bottom edge, and the type sits in
  *   that dissolve in ink rather than on top of the image in white.
  */
-export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyebrow, image, imageAlt }) => {
+export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyebrow, image, imageSrcSet, imageSizes, imageAlt }) => {
   if (image) {
     return (
       <section className="relative w-full bg-[#badeda]">
@@ -50,6 +53,8 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
         <div className="relative w-full h-[62vh] md:h-[74vh] min-h-[420px] max-h-[860px] overflow-hidden">
           <img
             src={image}
+            srcSet={imageSrcSet}
+            sizes={imageSizes ?? '100vw'}
             alt={imageAlt ?? ''}
             // Framed slightly above centre: heads sit in the upper half of the
             // frame, and a centred crop cuts them off at this aspect.

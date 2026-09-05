@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
+import { TEAM_PHOTO } from './teamPhoto';
 import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 
@@ -27,7 +28,7 @@ const GIANLUCA_IMAGE = '';
 /** The team photograph, behind the page header. Purpose.tsx carries its own
     copy of the path on purpose -- this module is lazily loaded, and importing
     from it would pull the whole "Über uns" chunk into the homepage bundle. */
-const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
+
 
 // The same three constants the service pages are built on, so this page
 // inherits their rhythm rather than inventing its own. BLOCK_GAP is top
@@ -117,7 +118,9 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
         title="Über"
         accent="uns."
         subline="Wir kommen aus Gaming und eSport. Geblieben ist, was uns von Anfang an antreibt: Wir wollen Menschen begeistern."
-        image={TEAM_IMAGE}
+        image={TEAM_PHOTO.src}
+        imageSrcSet={TEAM_PHOTO.srcSet}
+        imageSizes="100vw"
         imageAlt="Das Team der GG Manufaktur"
       />
 
