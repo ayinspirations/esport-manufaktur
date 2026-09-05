@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { PageHero } from './PageHero';
-import { HOSTING_PROVIDER } from './hosting';
+import { HOST } from './hosting';
 
 interface LegalPageProps {
   type: 'impressum' | 'privacy';
@@ -10,8 +10,9 @@ interface LegalPageProps {
 
 export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
   // Welcher Hoster im Text steht, entscheidet nicht die Absicht, sondern der
-  // Betrieb -- siehe components/hosting.ts.
-  const onNetlify = HOSTING_PROVIDER === 'netlify';
+  // Betrieb -- Name, Anschrift und Infrastrukturaussage kommen aus
+  // components/hosting.ts, damit hier nichts eingetippt steht, was dort
+  // umgeschaltet wird.
   const content = {
     impressum: {
       title: "Impressum.",
@@ -154,20 +155,10 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
 
           <section>
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">2. Hosting und technische Bereitstellung</h3>
-            {onNetlify ? (
-              <p>
-                Diese Website wird bei <span className="font-bold">Netlify (Netlify, Inc., San Francisco,
-                Kalifornien, USA)</span> gehostet und über dessen Content-Delivery-Netzwerk ausgeliefert. Die
-                Auslieferung erfolgt aus Rechenzentren in der Europäischen Union.
-              </p>
-            ) : (
-              <p>
-                Diese Website wird bei <span className="font-bold">Vercel (Vercel Inc., 440 N Barranca Avenue #4133,
-                Covina, CA 91723, USA)</span> gehostet und über dessen Content-Delivery-Netzwerk ausgeliefert. Vercel
-                betreibt eine globale Infrastruktur; eine Verarbeitung außerhalb der Europäischen Union kann daher
-                stattfinden.
-              </p>
-            )}
+            <p>
+              Diese Website wird bei <span className="font-bold">{HOST.name} ({HOST.legalEntity})</span> gehostet
+              und über dessen Content-Delivery-Netzwerk ausgeliefert. {HOST.infrastructure}
+            </p>
             <p className="mt-3">Beim Aufruf werden technisch erforderliche Zugriffsdaten verarbeitet. Dazu gehören insbesondere:</p>
             <ul className="list-disc pl-5 mt-3 space-y-1">
               <li>IP-Adresse,</li>
@@ -186,19 +177,16 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             </p>
             <p className="mt-3">
               Server- und Zugriffsprotokolle werden nur so lange gespeichert, wie dies für Betrieb, Fehleranalyse und
-              Sicherheit erforderlich ist. Mit {onNetlify ? 'Netlify' : 'Vercel'} besteht ein Vertrag zur
+              Sicherheit erforderlich ist. Mit {HOST.name} besteht ein Vertrag zur
               Auftragsverarbeitung nach Art. 28 DSGVO beziehungsweise ist das jeweils verfügbare Data Processing
               Addendum einbezogen. Da das Unternehmen seinen Sitz in den USA hat, lässt sich ein Zugriff aus einem
               Drittland nicht vollständig ausschließen; die Übermittlung wird auf das EU-US Data Privacy Framework
               und, soweit erforderlich, auf die Standardvertragsklauseln der Europäischen Kommission gestützt.
             </p>
-            {!onNetlify && (
-              <p className="mt-3">
-                Optionale Vercel-Produkte wie Web Analytics oder Speed Insights sind auf dieser Website nicht
-                aktiviert. Die Auslieferung wird auf Netlify umgestellt; dieser Abschnitt wird mit der Umstellung
-                angepasst.
-              </p>
-            )}
+            <p className="mt-3">
+              Optionale Zusatzprodukte des Hosters – etwa Web Analytics oder Performance-Messung – sind auf dieser
+              Website nicht aktiviert.
+            </p>
             <p className="mt-3">
               Die Domain und ihre DNS-Verwaltung liegen bei der{' '}
               <span className="font-bold">Hetzner Online GmbH, Industriestraße 25, 91710 Gunzenhausen,
@@ -209,7 +197,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             </p>
             <p className="mt-2 text-slate-500">
               Weitere Informationen: hetzner.com/legal/privacy-policy sowie{' '}
-              {onNetlify ? 'netlify.com/privacy' : 'vercel.com/legal/privacy-notice und vercel.com/legal/dpa'}
+              {HOST.privacyUrl}
             </p>
           </section>
 
@@ -308,7 +296,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             <p>Personenbezogene Daten erhalten nur Stellen, die sie für den jeweiligen Zweck benötigen. Auf dieser Website sind das:</p>
             <ul className="list-disc pl-5 mt-3 space-y-1">
               <li>Hetzner für Domain, DNS und unsere übrigen Systeme,</li>
-              <li>{onNetlify ? 'Netlify' : 'Vercel'} als Hosting- und CDN-Dienstleister,</li>
+              <li>{HOST.name} als Hosting- und CDN-Dienstleister,</li>
               <li>HubSpot für Formulare, Terminbuchung und CRM,</li>
               <li>IT-, Entwicklungs- und Supportdienstleister,</li>
               <li>Rechts-, Steuer- und sonstige Berater sowie</li>
@@ -324,7 +312,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">8. Übermittlungen in Drittländer</h3>
             <p>
-              Bei {onNetlify ? 'Netlify' : 'Vercel'} und HubSpot kann eine Verarbeitung außerhalb der Europäischen Union oder des
+              Bei {HOST.name} und HubSpot kann eine Verarbeitung außerhalb der Europäischen Union oder des
               Europäischen Wirtschaftsraums erfolgen. Eine Übermittlung erfolgt nur, wenn die Voraussetzungen der
               Art. 44 ff. DSGVO erfüllt sind – insbesondere über einen Angemessenheitsbeschluss, eine gültige
               Zertifizierung nach dem EU-US Data Privacy Framework, die Standardvertragsklauseln der Europäischen

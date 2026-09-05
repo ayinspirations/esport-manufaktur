@@ -190,7 +190,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             zentriert steht die Headline hoeher und der Hero traegt als ein
             Block. */}
         <div ref={belowRef} className="w-full">
-          <p className="hero-subtext mt-8 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
+          <p className="hero-subtext mt-8 md:mt-11 text-white text-lg sm:text-xl xl:text-2xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
             Mit Gamification, Events und Markenaktivierungen.
           </p>
 
@@ -213,7 +213,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             </button>
             <button
               onClick={() => scrollToSection?.('competencies')}
-              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-500 tracking-tighter"
+              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-xs sm:text-base transition-colors duration-500 tracking-tighter"
             >
               Leistungen entdecken
               <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
