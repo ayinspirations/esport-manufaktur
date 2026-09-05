@@ -80,7 +80,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
 
         {/* Pulled up into the dissolve, where the ground is already canvas --
             the type reads as sitting on the page rather than over the photo. */}
-        <div className={`${CONTAINER} relative z-10 -mt-[9vh] md:-mt-[11vh]`}>
+        <div className={`${CONTAINER} relative z-10 -mt-[6vh] md:-mt-[8vh] pb-4 md:pb-6`}>
           {eyebrow && (
             <Reveal duration={0.6} className="text-[#0a6f6a] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-4 md:mb-6">
               {eyebrow}
@@ -105,7 +105,10 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
   return (
     <section
       data-nav-ground="dark"
-      className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[52vh] md:min-h-[62vh] pt-32 md:pt-40 pb-14 md:pb-20"
+      // Bewusst hoch und unten ausgerichtet: der Kopfraum ueber der Headline
+      // ist gross genug, dass die Schrift nicht gegen das Navi-Band oben
+      // draengt, und die Zeile faellt tief in die Flaeche.
+      className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[64vh] md:min-h-[76vh] pt-44 md:pt-56 pb-16 md:pb-24"
     >
       <HeroGround />
 
