@@ -271,14 +271,21 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         {!isOpen && (
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-[160%] pointer-events-none"
+            // Die Hoehe ist mit Absicht knapp: 130% der Zeile heiszt, die
+            // Zeile selbst endet bei 77% des Streifens. Bis dorthin traegt er
+            // volle Deckung -- Logo und Burger stehen ueber einer geschlossenen
+            // Flaeche, nicht ueber einem Verlauf, der schon auf ihrer Hoehe
+            // duenn wird -- und erst die letzten knapp 20 Pixel darunter
+            // laufen aus. Vorher begann beides, Farbe wie Maske, bei rund 40%
+            // und damit mitten im Logo.
+            className="absolute inset-x-0 top-0 h-[130%] pointer-events-none"
             style={{
               background:
-                'linear-gradient(to bottom, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.62) 38%, rgba(2,6,23,0.28) 70%, rgba(2,6,23,0) 100%)',
+                'linear-gradient(to bottom, rgba(2,6,23,0.82) 0%, rgba(2,6,23,0.82) 77%, rgba(2,6,23,0) 100%)',
               backdropFilter: 'blur(10px) saturate(150%)',
               WebkitBackdropFilter: 'blur(10px) saturate(150%)',
-              maskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)'
+              maskImage: 'linear-gradient(to bottom, black 0%, black 77%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 77%, transparent 100%)'
             }}
           />
         )}
