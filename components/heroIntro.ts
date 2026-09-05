@@ -1,7 +1,7 @@
 // Shared premium entrance timing between Hero.tsx (GSAP timeline) and
 // Navbar.tsx (Framer Motion), so the nav's own fade-in reads as one beat of
 // the same choreographed sequence rather than a separate animation.
-export const HERO_REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
+export const HERO_REVEAL_EASE = [0.22, 1, 0.36, 1] as const;
 
 // Nav, subline, and both CTAs fade in together as one beat -- only once the
 // full headline (including BEGEISTERN) has landed. Kept in sync with the
@@ -14,4 +14,4 @@ export const HERO_REVEAL_EASE = [0.16, 1, 0.3, 1] as const;
 // CTAs appeared to race the headline rather than answer it. 2.75 leaves a
 // clear beat of held headline before anything else moves.
 export const HERO_GROUP_DELAY = 2.75;
-export const HERO_GROUP_DURATION = 0.75;
+export const HERO_GROUP_DURATION = 1.05;

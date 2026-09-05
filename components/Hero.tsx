@@ -45,15 +45,15 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
           // Phase 3 -- "Wir wollen" / "Menschen": one clean, restrained fade+lift, not
           // a masked flip -- these two lines stay quiet so BEGEISTERN can stand out.
-          .from('.hero-line-1', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.4)
-          .from('.hero-line-2', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.55)
+          .from('.hero-line-1', { opacity: 0, y: 28, duration: 1.25, ease: 'power2.out' }, 0.4)
+          .from('.hero-line-2', { opacity: 0, y: 28, duration: 1.25, ease: 'power2.out' }, 0.6)
 
           // Phase 4 -- BEGEISTERN animates on its own, independent beat: a plain
           // per-character fade-in (opacity only, no follow-up), matching the
           // reference exactly. Gradient/colors are untouched.
           .from(
             '.hero-begeistern-char',
-            { opacity: 0, duration: 0.5, stagger: 0.125, ease: 'power1.in' },
+            { opacity: 0, duration: 0.7, stagger: 0.145, ease: 'power1.in' },
             0.75
           )
 

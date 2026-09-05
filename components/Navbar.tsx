@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
-import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
+import { EASE_REVEAL, EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 import { useNavGround } from '../hooks/useNavGround';
 
 // Two glasses, one per ground the bar crosses. Which one is showing is decided
@@ -324,7 +324,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">

@@ -149,7 +149,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
           initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ opacity: { duration: 0.6 }, scale: { duration: 1.2, ease: [0.16, 1, 0.3, 1] } }}
+          transition={{ opacity: { duration: 0.9 }, scale: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }}
           className="absolute inset-0"
         >
           {current.image ? (
@@ -198,7 +198,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             className="max-w-xl"
           >
             <span className="inline-block px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white mb-6">

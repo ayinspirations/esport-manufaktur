@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Reveal } from './Reveal';
+import { DUR, EASE_REVEAL } from './motion';
 import { PageHero } from './PageHero';
 import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
@@ -217,7 +218,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
         >
           <ServiceView content={content} onOpenBooking={onOpenBooking} onOpenContact={onOpenContact} />
         </motion.div>

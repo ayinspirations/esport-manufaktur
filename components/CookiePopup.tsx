@@ -62,7 +62,7 @@ export const CookiePopup: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.35, ease: EASE_REVEAL }}
+          transition={{ duration: 0.55, ease: EASE_REVEAL }}
           className="fixed inset-0 flex items-center justify-center z-[9999] px-6"
           role="dialog"
           aria-modal="true"
@@ -74,7 +74,7 @@ export const CookiePopup: React.FC = () => {
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
-            transition={{ duration: 0.45, ease: EASE_REVEAL }}
+            transition={{ duration: 0.7, ease: EASE_REVEAL }}
             className="relative overflow-hidden bg-[#badeda] border border-[#0b0f2a]/10 rounded-shell p-8 md:p-10 shadow-[0_32px_64px_-16px_rgba(11,15,42,0.3)] max-w-[560px] w-full max-h-[85vh] overflow-y-auto"
           >
             <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-48 h-48 bg-[#0e958e]/20 blur-[80px] rounded-full pointer-events-none" />

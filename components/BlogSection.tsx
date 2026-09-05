@@ -121,9 +121,9 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
                 initial={{ opacity: 0, y: 24 }}
                 animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
                 transition={{
-                  duration: 0.8,
+                  duration: 1.1,
                   delay: CARDS_AFTER_HEADING + i * STAGGER.card,
-                  ease: [0.16, 1, 0.3, 1]
+                  ease: [0.22, 1, 0.36, 1]
                 }}
               >
                 <BlogCard post={post} onOpenPost={onOpenPost} className="w-full h-full" />
@@ -137,7 +137,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             className="sm:hidden"
             initial={{ opacity: 0, y: 24 }}
             animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: CARDS_AFTER_HEADING, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 1.1, delay: CARDS_AFTER_HEADING, ease: [0.22, 1, 0.36, 1] }}
           >
             {!showAllMobile ? (
               <>
