@@ -6,6 +6,16 @@ import type { ServiceContent } from './servicesContent';
 
 interface ServiceViewProps {
   content: ServiceContent;
+  /**
+   * Die Klassen, die jede Sektion horizontal begrenzen.
+   *
+   * Voreingestellt ist der eigene Seitencontainer -- so verhaelt sich die
+   * Ansicht wie bisher, wenn sie ueber die volle Seitenbreite laeuft. Im
+   * Sidebar-Layout steckt sie in einer Spalte, die ihre Breite und ihr
+   * Padding schon vom Panel bekommt; dort wird 'w-full' uebergeben, damit
+   * nicht zweimal begrenzt und zweimal gepolstert wird.
+   */
+  container?: string;
   /** Opens the booking popup. */
   onOpenBooking: () => void;
   /** Opens the contact-form popup, told which service it is about. */
@@ -44,14 +54,15 @@ const TILE = 'tile-gradient text-white';
 export const ServiceView: React.FC<ServiceViewProps> = ({
   content,
   onOpenBooking,
-  onOpenContact
+  onOpenContact,
+  container = CONTAINER
 }) => {
   const requestProject = () => onOpenContact(content.h1);
 
   return (
     <div className="w-full">
       {/* ============ 1. Headline, subline, call to action ============ */}
-      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+      <section className={`${container} ${BLOCK_GAP}`}>
         <RevealText
           as="h2"
           by="word"
@@ -91,7 +102,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
 
       {/* ============ 2. Ausgangslage ============ */}
       {content.pain && (
-        <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <section className={`${container} ${BLOCK_GAP}`}>
           <div className="grid md:grid-cols-12 gap-6 md:gap-16">
             <div className="md:col-span-5">
               <RevealText
@@ -113,7 +124,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       )}
 
       {/* ============ 3. Leistungen im Detail ============ */}
-      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+      <section className={`${container} ${BLOCK_GAP}`}>
         <div className="max-w-2xl mb-8 md:mb-10">
           <RevealText
             as="h2"
@@ -176,7 +187,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       {/* Both routes open in place. Sending someone back to the homepage and
           then scrolling them to the form at the bottom of it lost the service
           they were asking about; the popup carries it along as the subject. */}
-      <section className={`${CONTAINER} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
+      <section className={`${container} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
         <div className="max-w-2xl mx-auto">
           <RevealText
             as="h2"
