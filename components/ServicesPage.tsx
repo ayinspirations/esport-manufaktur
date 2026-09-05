@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { DUR, EASE_REVEAL } from './motion';
 import { PageHero } from './PageHero';
@@ -147,6 +148,109 @@ const SidebarItem: React.FC<{
   </button>
 );
 
+// ---------------------------------------------------------------------------
+
+/*
+  Die Sidebar auf dem Telefon: eingeklappt auf eine Zeile, die mitlaeuft.
+
+  Ein Streifen aus zehn Pillen und zwei Gruppenzeilen ueber dem Inhalt ist
+  auf einem schmalen Schirm keine Auswahl, sondern eine Wand: er fuellt den
+  halben ersten Bildschirm, schiebt die Leistung darunter aus dem Bild und
+  ist, sobald man liest, weg. Eine Sidebar loest genau das -- sie steht immer
+  bereit, ohne Platz vom Inhalt zu nehmen. Neben dem Text ist dafuer kein
+  Platz, also darunter: ein Knopf, der die aktuelle Leistung nennt, unter der
+  Navigation kleben bleibt und die volle Liste ueber den Inhalt legt.
+
+  Der aufgeklappte Zustand liegt bewusst UEBER dem Inhalt statt ihn zu
+  schieben: sonst springt beim Auf- und Zuklappen die halbe Seite.
+*/
+const MobileServiceMenu: React.FC<{
+  active: string;
+  select: (slug: string) => void;
+}> = ({ active, select }) => {
+  const [open, setOpen] = useState(false);
+  const boxRef = useRef<HTMLDivElement>(null);
+  const activeTitle = services.find((s) => s.slug === active)?.title ?? '';
+
+  // Zu, sobald daneben getippt oder Escape gedrueckt wird -- ein Menue, das
+  // nur der eigene Knopf wieder schlieszt, faengt den naechsten Tipp ab.
+  useEffect(() => {
+    if (!open) return;
+    const onPointer = (e: PointerEvent) => {
+      if (!boxRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={boxRef}
+      className="lg:hidden sticky top-[calc(var(--nav-clearance,64px)+8px)] z-30 mb-8"
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        aria-haspopup="menu"
+        className="w-full flex items-center justify-between gap-4 rounded-card bg-[#0b0f2a] text-white px-5 py-3.5 text-left shadow-lg shadow-[#0b0f2a]/10"
+      >
+        <span className="min-w-0">
+          <span className="block text-[9px] font-black uppercase tracking-[0.22em] text-white/45">
+            Leistung
+          </span>
+          <span className="block truncate text-[15px] font-black tracking-tight">
+            {activeTitle}
+          </span>
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 shrink-0 transition-transform duration-500 ${open ? 'rotate-180' : ''}`}
+          aria-hidden="true"
+        />
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
+            className="absolute inset-x-0 top-full mt-2 max-h-[62vh] overflow-y-auto rounded-card bg-white border border-[#0b0f2a]/10 shadow-2xl p-3"
+          >
+            {PILL_GROUPS.map((group, gi) => (
+              <div key={group.label} className={gi > 0 ? 'mt-5' : undefined}>
+                <p className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[9.5px] mb-2 px-3">
+                  {group.label}
+                </p>
+                <div role="menu" aria-label={group.label} className="flex flex-col gap-0.5">
+                  {group.items.map((item) => (
+                    <SidebarItem
+                      key={item.slug}
+                      label={item.title}
+                      active={item.slug === active}
+                      onSelect={() => {
+                        setOpen(false);
+                        select(item.slug);
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 /*
   Die Auswahl steht links und bleibt stehen, der Inhalt laeuft rechts durch.
 
@@ -158,36 +262,19 @@ const SidebarItem: React.FC<{
   Trackpad-Bedienung und faellt auf dem Telefon ohnehin in sich zusammen.
 
   Unter `lg` gibt es keine zweite Spalte, in die eine Sidebar passt: dort
-  stehen dieselben Eintraege als umbrechende Pillen ueber dem Panel.
+  uebernimmt das eingeklappte Menue oben dieselbe Aufgabe.
 */
 const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel }) => (
   <div ref={anchorRef} className={`${WIDE_CONTAINER} pt-12 md:pt-16 scroll-mt-28`}>
+    {/* Bis lg: die Auswahl als mitlaufender Knopf ueber dem Inhalt. Sie steht
+        auszerhalb des Rasters, damit sie ueber dessen ganze Hoehe klebt und
+        nicht nur ueber die Hoehe der Spalte, in der sie sonst saesze. */}
+    <MobileServiceMenu active={active} select={select} />
+
     <div className="lg:grid lg:grid-cols-[268px_minmax(0,1fr)] lg:gap-10 xl:gap-14 lg:items-start">
       {/* ---- Auswahl ---- */}
-      <aside className="lg:sticky lg:top-[calc(var(--nav-clearance,96px)+16px)] lg:max-h-[calc(100dvh-var(--nav-clearance,96px)-40px)] lg:overflow-y-auto lg:pr-1 lg:pb-2">
-        {/* Phone und Tablet: dieselbe Liste, als Pillen */}
-        <div className="lg:hidden">
-          {PILL_GROUPS.map((group) => (
-            <div key={group.label} className="mb-7 md:mb-8 last:mb-0">
-              <Reveal className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[10px] md:text-[11px] mb-3.5 md:mb-4">
-                {group.label}
-              </Reveal>
-              <div role="tablist" aria-label={group.label} className="flex flex-wrap gap-x-2 gap-y-2 md:gap-x-2.5">
-                {group.items.map((item) => (
-                  <FilterPill
-                    key={item.slug}
-                    label={item.title}
-                    active={item.slug === active}
-                    onSelect={() => select(item.slug)}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Desktop: die eigentliche Sidebar */}
-        <nav aria-label="Leistungen" className="hidden lg:block">
+      <aside className="hidden lg:block lg:sticky lg:top-[calc(var(--nav-clearance,96px)+16px)] lg:max-h-[calc(100dvh-var(--nav-clearance,96px)-40px)] lg:overflow-y-auto lg:pr-1 lg:pb-2">
+        <nav aria-label="Leistungen">
           {PILL_GROUPS.map((group, gi) => (
             <div key={group.label} className={gi > 0 ? 'mt-8' : undefined}>
               <p className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[10px] mb-3 px-4">
@@ -212,12 +299,12 @@ const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel
       {/* `min-w-0`, sonst zwingt der breiteste Inhalt (eine Kachelreihe, eine
           lange Zeile) die Spalte ueber ihren Anteil hinaus -- ein Grid-Kind
           hat als Mindestbreite sonst seinen eigenen Inhalt. */}
-      <div className="min-w-0 mt-10 lg:mt-0 lg:min-h-[calc(100dvh-var(--nav-clearance,96px)-40px)]">
+      <div className="min-w-0 lg:min-h-[calc(100dvh-var(--nav-clearance,96px)-40px)]">
         {/* Die erste Sektion bringt den Seitenabstand von BLOCK_GAP mit --
             im Panel sitzt sie damit ein Drittel Bildschirmhoehe unter dem
             eigenen Rand. Hier wird nur ihr Kopfabstand zurueckgenommen, der
             Rhythmus zwischen den Sektionen bleibt. */}
-        <div className="rounded-shell bg-white/45 border border-white/60 px-6 md:px-10 lg:px-12 pb-2 overflow-hidden [&_section:first-of-type]:pt-10 md:[&_section:first-of-type]:pt-14">
+        <div className="lg:rounded-shell lg:bg-white/45 lg:border lg:border-white/60 lg:px-12 pb-2 overflow-hidden [&_section:first-of-type]:pt-6 lg:[&_section:first-of-type]:pt-14">
           {panel}
         </div>
       </div>
@@ -306,7 +393,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     const el = anchorRef.current;
     if (!el) return;
     const distanceFromNav = el.getBoundingClientRect().top - navClearance();
-    if (sidebar && distanceFromNav <= 12) return;
+    if (sidebar && window.innerWidth >= 1024 && distanceFromNav <= 12) return;
     const top = el.getBoundingClientRect().top + window.scrollY - navClearance() - 12;
     window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
   }, [active, sidebar]);
