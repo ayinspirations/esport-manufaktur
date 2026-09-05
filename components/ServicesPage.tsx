@@ -212,7 +212,7 @@ const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel
       {/* `min-w-0`, sonst zwingt der breiteste Inhalt (eine Kachelreihe, eine
           lange Zeile) die Spalte ueber ihren Anteil hinaus -- ein Grid-Kind
           hat als Mindestbreite sonst seinen eigenen Inhalt. */}
-      <div className="min-w-0 mt-10 lg:mt-0">
+      <div className="min-w-0 mt-10 lg:mt-0 lg:min-h-[calc(100dvh-var(--nav-clearance,96px)-40px)]">
         {/* Die erste Sektion bringt den Seitenabstand von BLOCK_GAP mit --
             im Panel sitzt sie damit ein Drittel Bildschirmhoehe unter dem
             eigenen Rand. Hier wird nur ihr Kopfabstand zurueckgenommen, der
@@ -293,41 +293,67 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   // the middle of a page they have not seen. Only for a switch the visitor
   // made: on first render the page is already at the top, and on back/forward
   // the browser restores its own position.
+  //
+  // Im Sidebar-Layout gilt das nur, solange der Kopf des Rasters noch unter
+  // der Navigation steht -- also bevor die Sidebar klebt. Ist sie einmal
+  // angedockt, waere dieser Sprung genau das, was er verhindern soll: die
+  // Spalte loest sich, wandert ein Stueck und dockt neu an, obwohl der
+  // Besucher nur nebenan eine andere Leistung angetippt hat. Die Auswahl
+  // steht dann still und nur das Panel wechselt.
   useEffect(() => {
     if (!userSwitched.current) return;
     userSwitched.current = false;
     const el = anchorRef.current;
     if (!el) return;
+    const distanceFromNav = el.getBoundingClientRect().top - navClearance();
+    if (sidebar && distanceFromNav <= 12) return;
     const top = el.getBoundingClientRect().top + window.scrollY - navClearance() - 12;
     window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
-  }, [active]);
+  }, [active, sidebar]);
 
   /*
-    `mode="wait"` so the outgoing service is gone before the next arrives:
-    cross-fading two full service pages means both are laid out at once and the
-    page height jumps to whichever is taller.
+    Zwei Wechsel, aus einem Grund verschieden.
 
-    Opacity and a short rise only. These are long documents, and animating
-    anything heavier than compositor properties across one is what turns a
-    filter click into a stutter.
+    Im Pillen-Layout haelt `mode="wait"` den alten Inhalt fest, bis er
+    ausgeblendet ist: ein Kreuzblenden legt beide Leistungen gleichzeitig aus
+    und die Seitenhoehe springt auf die groeszere der beiden.
+
+    Im Sidebar-Layout ist genau dieses Warten das Problem. Zwischen Aus- und
+    Einblendung ist das Panel fuer einen Moment leer, die Seite damit kuerzer
+    als die aktuelle Scrollposition erlaubt -- der Browser zieht sie nach oben,
+    und die klebende Spalte rutscht sichtbar mit. Ohne AnimatePresence tauscht
+    React den Knoten am key-Wechsel direkt aus: es gibt keinen leeren Moment,
+    die Hoehe faellt nie auf null, die Sidebar steht.
+
+    In beiden Faellen nur Deckkraft und ein kurzes Steigen. Das sind lange
+    Dokumente, und alles, was schwerer ist als eine Compositor-Eigenschaft,
+    macht aus einem Klick ein Stottern.
   */
-  const panel = (
+  // Im Panel begrenzt und polstert schon die Spalte -- die Ansicht bekommt
+  // dort keinen zweiten Container.
+  const view = (
+    <ServiceView
+      content={content}
+      container={sidebar ? 'w-full' : undefined}
+      onOpenBooking={onOpenBooking}
+      onOpenContact={onOpenContact}
+    />
+  );
+
+  const motionProps = {
+    initial: { opacity: 0, y: 12 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: DUR.panel, ease: EASE_REVEAL }
+  } as const;
+
+  const panel = sidebar ? (
+    <motion.div key={active} {...motionProps}>
+      {view}
+    </motion.div>
+  ) : (
     <AnimatePresence mode="wait" initial={false}>
-      <motion.div
-        key={active}
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
-      >
-        {/* Im Panel begrenzt und polstert schon die Spalte -- die Ansicht
-            bekommt dort keinen zweiten Container. */}
-        <ServiceView
-          content={content}
-          container={sidebar ? 'w-full' : undefined}
-          onOpenBooking={onOpenBooking}
-          onOpenContact={onOpenContact}
-        />
+      <motion.div key={active} {...motionProps} exit={{ opacity: 0, y: -8 }}>
+        {view}
       </motion.div>
     </AnimatePresence>
   );
