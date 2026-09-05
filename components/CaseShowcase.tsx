@@ -21,8 +21,8 @@ interface ShowcaseCase {
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days
-// und DEKRA haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
+// The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days,
+// DEKRA und Interwetten haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
 // Projekt --, also laufen sie auf der eigenen dunklen Flaeche der Seite,
 // statt sich eine Aufnahme aus einem anderen Projekt zu leihen und sie als
 // ihre auszugeben.
@@ -96,6 +96,13 @@ const CASES: ShowcaseCase[] = [
     title: 'DEKRA Motorsport',
     text: 'Digitaler Wallet-Pass statt Stempelkarte: sechs DTM-Standorte, QR-Tracking und messbare Leads.',
     imageAlt: 'DEKRA Motorsport Event-Pass von GG Manufaktur'
+  },
+  {
+    page: 'interwetten',
+    category: 'Markenaktivierung',
+    title: 'Interwetten',
+    text: 'Virtual Tennis beim BOSS OPEN: gebrandeter Court, Live-Ranking und Leads aus dem Spiel heraus.',
+    imageAlt: 'Interwetten Virtual-Tennis-Aktivierung von GG Manufaktur'
   }
 ];
 
