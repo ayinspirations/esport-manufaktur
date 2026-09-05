@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { EASE_REVEAL } from '../motion';
+import { EASE_REVEAL, SPRING_SHELL } from '../motion';
 
 // ---------------------------------------------------------------------------
 // Die aufklappende Handlungsaufforderung
@@ -23,9 +23,10 @@ import { EASE_REVEAL } from '../motion';
 // Drei Dinge passieren gleichzeitig, und genau ihre Gleichzeitigkeit ist der
 // Effekt:
 //
-//   1. Die Schale geht auf ihre neue Breite -- eine Feder, kein Ablaufplan.
-//      Eine Feder kennt kein Ende ihrer Dauer, sie kommt an; das laesst die
-//      Bewegung getragen wirken statt abgezaehlt.
+//   1. Die Schale geht auf ihre neue Breite -- eine Feder, kein Ablaufplan,
+//      und eine ueberdaempfte: sie kommt an, statt ueber die Zielbreite
+//      hinauszuschieszen. Eine Feder kennt kein Ende ihrer Dauer; das laesst
+//      die Bewegung getragen wirken statt abgezaehlt.
 //   2. Das Label steigt nach oben aus der Pille heraus.
 //   3. Die beiden Wege kommen aus einer Spur kleiner heraus hoch, einen
 //      Hauch spaeter, sodass sie in die schon oeffnende Schale hineinwachsen.
@@ -61,17 +62,14 @@ interface ExpandingCTAProps {
 }
 
 /**
- * Die Feder der Schale.
+ * Der Wechsel der Inhalte.
  *
- * Weicher als die Vorlage (300/25): deren Ueberschwingen gehoert zu einem
- * Knopf, der "Share" sagt, nicht zu einem, der nach einem Projekt fragt. Bei
- * 220/30 liegt die Daempfung praktisch auf dem kritischen Wert -- die Pille
- * federt nicht nach, kommt aber wie eine Feder an und nicht wie ein Timer.
+ * Laenger und mit kleinerem Weg als in der Vorlage (0.2s, 20px, scale 0.9):
+ * deren Betrag gehoert zu einer Feder, die selbst schnappt. Unter einer
+ * ruhigen Schale wirkt ein Inhalt, der 20 Pixel weit springt und aus 90
+ * Prozent aufzieht, wie ein zweiter, schnellerer Vorgang im selben Knopf.
  */
-const SHELL_SPRING = { type: 'spring', stiffness: 220, damping: 30, mass: 1 } as const;
-
-/** Der Wechsel der Inhalte: kurz, damit er in die Bewegung der Schale passt. */
-const SWAP = { duration: 0.22, ease: EASE_REVEAL } as const;
+const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
 
 export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   label,
@@ -128,7 +126,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     <div ref={boxRef} className={`inline-flex ${className}`}>
       <motion.div
         layout
-        transition={SHELL_SPRING}
+        transition={SPRING_SHELL}
         // Rund, solange eine Zeile steht; auf dem Telefon stapeln sich die
         // beiden Wege, und eine Kapselform um zwei Zeilen sieht aus wie ein
         // Versehen -- dort wird die Pille zur Karte.
@@ -141,9 +139,9 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               type="button"
               onClick={() => setOpen(true)}
               aria-expanded={false}
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -18 }}
+              exit={{ opacity: 0, y: -12 }}
               transition={SWAP}
               className="group inline-flex items-center gap-2.5 px-7 py-4 text-sm sm:text-base font-black tracking-tight"
             >
@@ -153,13 +151,13 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
           ) : (
             <motion.div
               key="ways"
-              initial={{ opacity: 0, scale: 0.94 }}
+              initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.94 }}
+              exit={{ opacity: 0, scale: 0.97 }}
               // Einen Hauch spaeter als die Schale, damit die Wege in eine
               // bereits oeffnende Flaeche hineinwachsen statt gegen ihren Rand
               // zu laufen.
-              transition={{ ...SWAP, delay: 0.06 }}
+              transition={{ ...SWAP, delay: 0.08 }}
               className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 p-1.5"
             >
               <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>

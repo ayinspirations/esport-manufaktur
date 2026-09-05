@@ -50,6 +50,18 @@ export const DUR = {
   slow: 1.5,      // large surfaces, hero-scale moments
 } as const;
 
+/**
+ * Die Feder, auf der sich aufklappende Schalen dehnen -- die CTA-Pille und der
+ * Social-Knopf.
+ *
+ * Ueberdaempft: bei stiffness 130 liegt der kritische Wert bei knapp 23, die
+ * Daempfung darueber. Die Schale kommt damit an, ohne ueber ihre Zielbreite
+ * hinauszuschieszen -- eine Feder, die schwingt, liest sich als Aufschnappen,
+ * und aufschnappen soll hier nichts. Dass es trotzdem eine Feder ist und kein
+ * Ablaufplan, ist der Unterschied zwischen ankommen und abbremsen.
+ */
+export const SPRING_SHELL = { type: 'spring', stiffness: 130, damping: 26, mass: 1 } as const;
+
 /** Stagger steps in seconds. */
 export const STAGGER = {
   char: 0.038,  // per character in a split headline
