@@ -66,12 +66,12 @@ html {
 }
 
 :root {
-  /* Vertical room the floating navigation occupies: a full-width strip on
-     mobile, a compact pill inset from the top on desktop. Anything that pins
-     itself below the nav -- currently the services filter -- offsets by this
-     rather than hard-coding the number in a component. `navClearance()` in
+  /* Vertical room the floating navigation occupies: a pill inset from the top
+     edge, on the phone as on the desktop. Anything that pins itself below the
+     nav -- currently the services menu -- offsets by this rather than
+     hard-coding the number in a component. `navClearance()` in
      ServicesPage.tsx mirrors it for the scroll maths; keep the two together. */
-  --nav-clearance: 64px;
+  --nav-clearance: 78px;
 }
 
 @media (min-width: 768px) {

@@ -63,9 +63,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   // Only the scrolled *desktop* bar has a ground of its own; unscrolled it is a
   // bare strip over the dark hero, so the white chrome holds there either way.
   const inkOnGlass = ground === 'light' && scrolled;
-  // The phone bar carries its own dark band at every scroll position, so its
-  // chrome is white throughout and needs no tone switch -- only the open menu,
-  // which is the light canvas, takes ink.
+  // Die Telefonleiste ist eine schwebende Glaspille: sie hat keinen eigenen
+  // Grund mehr, durch den weisze Chrome ueberall traegt, sondern zeigt den der
+  // Seite. Also entscheidet allein der Grund, ob Marke und Burger hell oder
+  // dunkel stehen -- und das offene Menue, das die helle Flaeche selbst ist,
+  // nimmt Tinte.
+  const mobileInk = isOpen || ground === 'light';
   const navLinkTone = inkOnGlass
     ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
     : 'text-white/75 hover:text-[#5fd6cf]';
@@ -133,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
       initial={{ opacity: 0, y: -10, scale: 0.985 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: HERO_GROUP_DURATION, delay: HERO_GROUP_DELAY, ease: HERO_REVEAL_EASE }}
-      className="fixed top-0 left-0 right-0 z-[100] md:px-14 md:py-8 pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-[100] px-4 py-3 md:px-14 md:py-8 pointer-events-none"
     >
       {/* Desktop bar -- morphs from a full-width, near-transparent strip over
           the hero into a compact floating pill of frosted glass once scrolling
@@ -230,84 +233,73 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         </div>
       </div>
 
-      {/* Mobile header -- no bar chrome at rest, just logo + menu button. When
-          opened, this same block (not a separate floating card) grows a panel
-          flush with the top edge, so the nav visibly emerges from the burger
-          button instead of popping up elsewhere. The toggle button never
-          moves -- it just swaps icon -- so it doubles as the close (X) button
-          in the exact top-right spot where it always sits.
+      {/* Mobile header -- eine schwebende Glaspille wie auf dem Desktop, nur
+          mit Marke und Burger statt einer Linkreihe. Vorher lag hier ein
+          dunkler Streifen ueber die volle Breite, der die Seite oben
+          abschnitt; die Pille sitzt eingerueckt, die Seite laeuft an ihr
+          vorbei und ist durch sie hindurch zu sehen.
 
-          The open panel is the site's canvas with ink chrome, the same three
-          colours as everything behind it. It used to be a dark slab, which
-          was the last surface still running the old palette. */}
+          Aufgeklappt waechst dieselbe Karte (kein zweites Element) nach
+          unten, sodass das Menue sichtbar aus dem Burger kommt statt
+          anderswo aufzutauchen. Der Knopf bewegt sich nie -- er tauscht nur
+          das Icon -- und ist damit auch das X an genau der Stelle, an der er
+          immer sitzt.
+
+          Das offene Panel ist die Leinwand der Seite mit Tinte darauf, also
+          dieselben drei Farben wie alles dahinter. */}
       <div
         ref={mobileBarRef}
-        className={`md:hidden pointer-events-auto relative ${
-          isOpen ? 'bg-[#badeda] border border-[#0b0f2a]/10 overflow-hidden' : ''
-        }`}
+        className="md:hidden pointer-events-auto relative rounded-[26px] overflow-hidden"
         style={
-          // The open menu stays opaque. It covers most of the viewport rather
-          // than skimming across it, so there is no ground behind it worth
-          // showing -- and a full menu list needs one of its own.
-          isOpen ? undefined : { background: 'transparent', boxShadow: 'none' }
+          // Zu: dasselbe Glas wie die Desktop-Pille, aus denselben Tokens --
+          // ein duenner Schleier, ein moderater Blur, ein heller Innenrand
+          // oben, der die Flaeche als Scheibe lesen laesst statt als Loch in
+          // der Seite. Was dahinter vorbeizieht, bleibt erkennbar.
+          //
+          // Offen bleibt das Menue undurchsichtig. Es deckt den halben Schirm,
+          // da ist kein Grund dahinter, den zu zeigen sich lohnt -- und eine
+          // volle Liste braucht einen eigenen.
+          isOpen
+            ? {
+                background: '#badeda',
+                border: '1px solid rgba(11,15,42,0.10)',
+                boxShadow: '0 24px 60px -28px rgba(11,15,42,0.45)'
+              }
+            : {
+                background: glass.fill,
+                backdropFilter: glass.filter,
+                WebkitBackdropFilter: glass.filter,
+                border: `1px solid ${glass.border}`,
+                boxShadow: glass.shadow,
+                transition: `background 600ms ${EASE_REVEAL_CSS}, backdrop-filter 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}`
+              }
         }
       >
-        {/*
-          The band, as its own layer behind the row rather than a fill on the
-          bar itself.
-
-          That is what lets it be shorter than it looks and still end softly:
-          the layer is taller than the row it sits behind, and a mask fades it
-          out downward, so there is no edge anywhere -- it thins into the page.
-          A background alone could not do that, because the frost would still
-          stop dead on a straight line; masking the layer takes the blur with
-          it.
-
-          It is translucent at every scroll position, not just once scrolled.
-          Whatever is behind stays readable through it, and the mark and the
-          burger can be white throughout -- including at the top of a subpage,
-          where the canvas is light and white chrome had nothing to sit on.
-        */}
-        {!isOpen && (
-          <div
-            aria-hidden="true"
-            className="absolute inset-x-0 top-0 h-[160%] pointer-events-none"
-            style={{
-              background:
-                'linear-gradient(to bottom, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.62) 38%, rgba(2,6,23,0.28) 70%, rgba(2,6,23,0) 100%)',
-              backdropFilter: 'blur(10px) saturate(150%)',
-              WebkitBackdropFilter: 'blur(10px) saturate(150%)',
-              maskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 0%, black 42%, rgba(0,0,0,0.55) 68%, transparent 100%)'
-            }}
-          />
-        )}
-
-        <div className="relative flex items-center justify-between px-6 py-3.5">
+        <div className="relative flex items-center justify-between pl-5 pr-3 py-2.5">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center"
             aria-label="GG Manufaktur"
           >
-            <span className="relative block h-9">
+            <span className="relative block h-8">
               <img
                 src="/logos/Esport-Manufaktur_Logo-weiss.png"
                 alt="GG Manufaktur"
-                className="h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: isOpen ? 0 : 1 }}
+                className="h-8 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: mobileInk ? 0 : 1 }}
               />
               <img
                 src="/logos/Esport-Manufaktur_Logo-blau.png"
                 alt=""
                 aria-hidden="true"
-                className="absolute inset-0 h-9 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: isOpen ? 1 : 0 }}
+                className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
+                style={{ opacity: mobileInk ? 1 : 0 }}
               />
             </span>
           </button>
           <button
-            className={`p-2 rounded-full transition-colors ${
-              isOpen
+            className={`p-2.5 rounded-full transition-colors duration-500 ${
+              mobileInk
                 ? 'text-[#0b0f2a] hover:bg-[#0b0f2a]/10'
                 : 'text-white hover:bg-white/10'
             }`}
