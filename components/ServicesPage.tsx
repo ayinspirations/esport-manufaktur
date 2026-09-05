@@ -137,20 +137,12 @@ const SidebarItem: React.FC<{
   <button
     onClick={onSelect}
     aria-current={active ? 'true' : undefined}
-    className={`group relative w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
+    className={`w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
       active
         ? 'bg-[#0b0f2a] text-white'
         : 'text-[#0b0f2a]/65 hover:bg-white/60 hover:text-[#0b0f2a]'
     }`}
   >
-    {/* Die aktive Marke sitzt auszerhalb des Textflusses, damit die Zeilen
-        beim Wechsel nicht um ihre Breite springen. */}
-    <span
-      aria-hidden="true"
-      className={`absolute left-0 top-1/2 -translate-y-1/2 w-[3px] rounded-full bg-[#0e958e] transition-all duration-500 ${
-        active ? 'h-6 opacity-100' : 'h-0 opacity-0'
-      }`}
-    />
     {label}
   </button>
 );
