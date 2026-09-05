@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RevealText } from './Reveal';
 
 interface CaseHeroProps {
@@ -32,10 +32,24 @@ interface CaseHeroProps {
 // darf in Tinte gesetzt sein, statt gegen ein Foto anzuleuchten.
 // ---------------------------------------------------------------------------
 
-export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent }) => (
+export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent }) => {
+  // Fehlt das Bild, bleibt die dunkle Flaeche darunter stehen. Ohne das
+  // stuende hier ein zerbrochenes Bildsymbol ueber dem Alternativtext --
+  // fuer eine Seite, deren erster Eindruck der Aufmacher ist, der schlechtere
+  // von beiden Ausfaellen.
+  const [failed, setFailed] = useState(false);
+
+  return (
   <header className="relative">
-    <div className="relative h-[70vh] md:h-[80vh] overflow-hidden">
-      <img src={image} alt={alt} className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
+    <div className="relative h-[70vh] md:h-[80vh] overflow-hidden bg-[#0b0f2a]">
+      {!failed && (
+        <img
+          src={image}
+          alt={alt}
+          onError={() => setFailed(true)}
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        />
+      )}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -58,4 +72,5 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
       </h1>
     </div>
   </header>
-);
+  );
+};

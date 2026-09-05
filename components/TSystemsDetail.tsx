@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Trophy, Target, Users, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { Trophy, Target, Users } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { CaseHero } from './CaseHero';
+import { CaseSlider } from './CaseSlider';
 import { STAGGER, DUR } from './motion';
 
 interface TSystemsDetailProps {
@@ -80,8 +81,6 @@ const IMPACT = [
 ];
 
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     document.body.style.overflow = 'hidden';
@@ -89,9 +88,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
       document.body.style.overflow = 'unset';
     };
   }, []);
-
-  const nextSlide = () => setCurrentIndex((prev) => (prev + 1) % images.length);
-  const prevSlide = () => setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
 
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
@@ -122,48 +118,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
               </div>
             </section>
 
-            {/* Image Slider — pure CSS, no AnimatePresence */}
-            <div className="relative group rounded-shell overflow-hidden aspect-video bg-[#badeda] shadow-2xl">
-              <div className="absolute inset-0">
-                {images.map((src, i) => (
-                  <img
-                    key={i}
-                    src={src}
-                    alt={`Eindruck ${i + 1} aus der T-Systems-Aktivierung`}
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                    style={{ opacity: i === currentIndex ? 1 : 0 }}
-                  />
-                ))}
-              </div>
-
-              <button
-                onClick={prevSlide}
-                aria-label="Vorheriges Bild"
-                className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                onClick={nextSlide}
-                aria-label="Nächstes Bild"
-                className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all z-30 opacity-0 group-hover:opacity-100"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-
-              <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-30">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentIndex(i)}
-                    aria-label={`Bild ${i + 1} anzeigen`}
-                    className={`h-2 rounded-full transition-all duration-500 ${
-                      i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
+            <CaseSlider images={images} alt="Eindruck aus der T-Systems-Aktivierung" />
 
             <section className="space-y-6">
               {PROJEKTBESCHREIBUNG.map((para, i) => (
