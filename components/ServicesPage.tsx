@@ -4,6 +4,7 @@ import { ChevronDown } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { DUR, EASE_REVEAL } from './motion';
 import { PageHero } from './PageHero';
+import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
@@ -134,19 +135,28 @@ const SidebarItem: React.FC<{
   label: string;
   active: boolean;
   onSelect: () => void;
-}> = ({ label, active, onSelect }) => (
-  <button
-    onClick={onSelect}
-    aria-current={active ? 'true' : undefined}
-    className={`w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
-      active
-        ? 'bg-[#0b0f2a] text-white'
-        : 'text-[#0b0f2a]/65 hover:bg-white/60 hover:text-[#0b0f2a]'
-    }`}
-  >
-    {label}
-  </button>
-);
+  /** 'ink' steht auf der hellen Flaeche, 'light' auf dem dunklen Hero-Grund. */
+  tone?: 'ink' | 'light';
+}> = ({ label, active, onSelect, tone = 'ink' }) => {
+  const ink = active
+    ? 'bg-[#0b0f2a] text-white'
+    : 'text-[#0b0f2a]/65 hover:bg-white/60 hover:text-[#0b0f2a]';
+  const light = active
+    ? 'bg-white text-[#0b0f2a]'
+    : 'text-white/70 hover:bg-white/10 hover:text-white';
+
+  return (
+    <button
+      onClick={onSelect}
+      aria-current={active ? 'true' : undefined}
+      className={`w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
+        tone === 'light' ? light : ink
+      }`}
+    >
+      {label}
+    </button>
+  );
+};
 
 // ---------------------------------------------------------------------------
 
@@ -222,28 +232,41 @@ const MobileServiceMenu: React.FC<{
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
-            className="absolute inset-x-0 top-full mt-2 max-h-[62vh] overflow-y-auto rounded-card bg-white border border-[#0b0f2a]/10 shadow-2xl p-3"
+            className="absolute inset-x-0 top-full mt-2 rounded-card border border-white/15 shadow-2xl overflow-hidden"
           >
-            {PILL_GROUPS.map((group, gi) => (
-              <div key={group.label} className={gi > 0 ? 'mt-5' : undefined}>
-                <p className="text-[#0a6f6a] font-black uppercase tracking-[0.2em] text-[9.5px] mb-2 px-3">
-                  {group.label}
-                </p>
-                <div role="menu" aria-label={group.label} className="flex flex-col gap-0.5">
-                  {group.items.map((item) => (
-                    <SidebarItem
-                      key={item.slug}
-                      label={item.title}
-                      active={item.slug === active}
-                      onSelect={() => {
-                        setOpen(false);
-                        select(item.slug);
-                      }}
-                    />
-                  ))}
+            {/* Derselbe Grund wie der Hero der Startseite, nur leiser: der
+                Glanz und das Raster liegen unter einem Schleier aus der
+                Grundfarbe, damit das Menue mit der Seite zusammengehoert
+                statt sich vor sie zu stellen. */}
+            <HeroGround />
+            <div aria-hidden="true" className="absolute inset-0 bg-[#020617]/55" />
+
+            {/* Der Grund haengt am stehenden Rahmen, das Scrollen passiert
+                eine Ebene tiefer -- sonst deckt er nur die erste Bildhoehe
+                der Liste ab und scrollt darunter weg. */}
+            <div className="relative z-10 max-h-[62vh] overflow-y-auto p-3">
+              {PILL_GROUPS.map((group, gi) => (
+                <div key={group.label} className={gi > 0 ? 'mt-5' : undefined}>
+                  <p className="text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-[9.5px] mb-2 px-3">
+                    {group.label}
+                  </p>
+                  <div role="menu" aria-label={group.label} className="flex flex-col gap-0.5">
+                    {group.items.map((item) => (
+                      <SidebarItem
+                        key={item.slug}
+                        label={item.title}
+                        active={item.slug === active}
+                        tone="light"
+                        onSelect={() => {
+                          setOpen(false);
+                          select(item.slug);
+                        }}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
