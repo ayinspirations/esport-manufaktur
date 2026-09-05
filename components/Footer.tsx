@@ -97,7 +97,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-900/10 text-[11px] md:text-xs text-slate-500 font-bold text-center md:text-left gap-6">
-              <p>GG Manufaktur GmbH – 2026</p>
+              {/* Der Auszenauftritt, ohne Rechtsform: die eingetragene Firma
+                  heiszt bis zur Umfirmierung eSport Manufaktur GmbH und steht
+                  so im Impressum. */}
+              <p>GG Manufaktur – 2026</p>
               <p className="md:text-right">
                 {/* Die Zeile fuehrt nicht mehr nach auszen, sondern auf die
                     eigene Seite: wer sie anklickt, hat gerade gesehen, was
