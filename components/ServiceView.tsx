@@ -210,11 +210,19 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
             {content.ctaCloser.primaryLabel}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
           </button>
+          {/* Auf dem Telefon keine zweite Pille.
+              "Kostenloses Erstgespräch vereinbaren" ist dreimal so lang wie
+              "Projekt anfragen": in derselben Pillenform bricht der Text auf
+              zwei Zeilen und der Nebenweg wird zum groeszten Element der
+              Seite -- optisch das Gegenteil der Rangfolge, die gemeint ist.
+              Bis sm steht er deshalb als schlichte Zeile mit Icon und
+              kleinerer Schrift unter der Hauptaktion, ab sm wieder als Pille
+              neben ihr. */}
           <button
             onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
+            className="inline-flex items-center gap-2 text-[#0b0f2a] font-bold text-[13px] tracking-tight underline-offset-4 hover:underline transition-all duration-500 sm:gap-2.5 sm:text-base sm:no-underline sm:hover:no-underline sm:bg-transparent sm:hover:bg-[#0b0f2a]/[0.06] sm:border sm:border-[#0b0f2a]/20 sm:hover:border-[#0b0f2a]/35 sm:px-7 sm:py-4 sm:rounded-full"
           >
-            <CalendarDays className="w-4 h-4" />
+            <CalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Kostenloses Erstgespräch vereinbaren
           </button>
         </Reveal>
