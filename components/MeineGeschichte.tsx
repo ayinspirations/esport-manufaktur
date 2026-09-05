@@ -2,11 +2,14 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
+import { ExpandingCTA } from './ui/expanding-cta';
 import { BLOCK_GAP } from './spacing';
 import { STORY_LEAD, STORY_INTRO, STORY_CHAPTERS } from './gruenderstory';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 
 interface MeineGeschichteProps {
+  /** Öffnet das Kontaktformular -- der zweite Weg hinter der Pille. */
+  onOpenContact?: (subject?: string) => void;
   onNavigate: (page: any) => void;
   onOpenBooking?: () => void;
 }
@@ -18,7 +21,7 @@ const CANVAS = 'bg-[#badeda]';
 // reads comfortably.
 const PROSE = 'max-w-[720px] mx-auto px-6 md:px-8';
 
-export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, onOpenBooking }) => {
+export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, onOpenBooking, onOpenContact }) => {
   useDocumentHead({
     title: 'Meine Geschichte | GG Manufaktur',
     description:
@@ -78,13 +81,11 @@ export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, on
           the site again, not another chapter, so it sits on its own rule. */}
       <section className={`${PROSE} ${BLOCK_GAP} pb-24 md:pb-32`}>
         <div className="border-t border-[#0b0f2a]/15 pt-10 md:pt-12 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
-          <button
-            onClick={() => onOpenBooking?.()}
-            className="spring group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-500"
-          >
-            Kostenloses Erstgespräch vereinbaren
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-          </button>
+          <ExpandingCTA
+            label="Kostenloses Erstgespräch vereinbaren"
+            onBooking={() => onOpenBooking?.()}
+            onContact={() => onOpenContact?.('Meine Geschichte')}
+          />
           <button
             onClick={() => onNavigate('ueber-uns')}
             className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-colors duration-500"

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Instagram, Linkedin, Youtube, Share2 } from 'lucide-react';
+import { Instagram, Linkedin, Youtube, Mail, Share2 } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION, HERO_REVEAL_EASE } from '../heroIntro';
 
 interface SocialStackLink {
@@ -14,6 +14,11 @@ interface SocialStackLink {
 
 // Same URLs as components/Footer.tsx -- kept in sync manually, not imported,
 // since Footer doesn't export them as a shared constant.
+//
+// Der vierte Eintrag ist kein Profil, sondern der direkte Weg: ein mailto, das
+// das Mailprogramm des Besuchers mit unserer Adresse oeffnet. Er steht ganz
+// oben im Stapel, also am weitesten vom Daumen entfernt und zuletzt gelesen --
+// die Stelle fuer den Weg, den nimmt, wer die Profile schon hinter sich hat.
 const SOCIAL_LINKS: SocialStackLink[] = [
   {
     href: 'https://www.instagram.com/esport.manufaktur',
@@ -38,6 +43,14 @@ const SOCIAL_LINKS: SocialStackLink[] = [
     closedClass: 'translate-y-0 scale-90 opacity-0 pointer-events-none',
     openClass: '-translate-y-48 scale-100 opacity-100 pointer-events-auto',
     zClass: 'z-[1]'
+  },
+  {
+    href: 'mailto:info@esport-manufaktur.com',
+    label: 'E-Mail schreiben',
+    Icon: Mail,
+    closedClass: 'translate-y-0 scale-90 opacity-0 pointer-events-none',
+    openClass: '-translate-y-64 scale-100 opacity-100 pointer-events-auto',
+    zClass: 'z-[0]'
   }
 ];
 
@@ -169,8 +182,10 @@ export const SocialStack: React.FC = () => {
           <a
             key={label}
             href={href}
-            target="_blank"
-            rel="noopener noreferrer"
+            // Ein mailto oeffnet das Mailprogramm, kein Dokument: ein
+            // target="_blank" davor liesze einen leeren Tab zurueck.
+            target={href.startsWith('mailto:') ? undefined : '_blank'}
+            rel={href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
             aria-label={label}
             tabIndex={effectiveOpen ? 0 : -1}
             className={`${SOLID_CLASS} absolute inset-0 ${zClass} flex h-14 w-14 items-center justify-center rounded-card border transition-[transform,opacity,box-shadow] duration-500 ease-out ${
