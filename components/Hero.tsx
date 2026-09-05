@@ -174,13 +174,17 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           </span>
         </h1>
 
-        <div ref={belowRef}>
-          {/* "Immer authentisch" carries the same teal-to-lime sweep as
-              BEGEISTERN -- the one phrase in the subline that is a claim
-              rather than a description, so it gets the headline's colour. */}
+        {/* Mobile: the block below the headline is taken out of the flow so the
+            centred content column measures the headline alone -- that puts
+            "WIR WOLLEN MENSCHEN BEGEISTERN" exactly on the vertical centre of
+            the viewport, with subline and CTAs hanging underneath it. From md
+            up it flows normally again. */}
+        <div
+          ref={belowRef}
+          className="absolute top-full inset-x-0 px-6 md:static md:px-0"
+        >
           <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
-            Mit Gamification, Events und Markenaktivierungen, die in Erinnerung bleiben. <br />
-            Live. Digital. Messbar. <span className={HERO_GRADIENT_TEXT}>Immer authentisch.</span>
+            Mit Gamification, Events und Markenaktivierungen.
           </p>
 
           <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
