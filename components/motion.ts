@@ -19,28 +19,43 @@
 // page feels authored.
 // ---------------------------------------------------------------------------
 
-/** Calm ease-out-expo. Content reveals, page-load beats. */
-export const EASE_REVEAL = [0.16, 1, 0.3, 1] as const;
-export const EASE_REVEAL_CSS = 'cubic-bezier(0.16, 1, 0.3, 1)';
+/**
+ * Calm ease-out-quart. Content reveals, page-load beats.
+ *
+ * This was an ease-out-expo (0.16, 1, 0.3, 1), which spends ~87% of its travel
+ * in the first third of its time: however long the duration says, the movement
+ * itself is over almost immediately and the rest of the curve is an invisible
+ * crawl. That is what made the reveals read as snapping into place rather than
+ * arriving. Quart keeps the soft landing but spreads the motion across the
+ * whole duration, so a longer duration actually reads as slower.
+ */
+export const EASE_REVEAL = [0.22, 1, 0.36, 1] as const;
+export const EASE_REVEAL_CSS = 'cubic-bezier(0.22, 1, 0.36, 1)';
 
 /** Springy, slightly overshooting. Interactive elements only. */
 export const EASE_SPRING = [0.67, 0.13, 0.14, 1.04] as const;
 export const EASE_SPRING_CSS = 'cubic-bezier(0.67, 0.13, 0.14, 1.04)';
 
 /** Durations in seconds. */
+// Both registers are unhurried now. They stay separate in *curve* -- hover
+// keeps the springy overshoot, content keeps the calm quart -- but a hover
+// that snapped in 0.3s next to a reveal that unfolds over a second read as
+// two different websites. Half a second is still an immediate answer to the
+// pointer; it just no longer arrives before the eye does.
 export const DUR = {
-  micro: 0.15,    // underlines, colour swaps
-  interact: 0.3,  // hover lifts, arrow nudges, icon swaps
-  reveal: 0.75,   // standard content reveal
-  slow: 1.1,      // large surfaces, hero-scale moments
+  micro: 0.25,    // underlines, colour swaps
+  interact: 0.5,  // hover lifts, arrow nudges, icon swaps
+  panel: 0.55,    // panels and menus opening, view swaps
+  reveal: 1.05,   // standard content reveal
+  slow: 1.5,      // large surfaces, hero-scale moments
 } as const;
 
 /** Stagger steps in seconds. */
 export const STAGGER = {
-  char: 0.028,  // per character in a split headline
-  word: 0.055,  // per word in a split headline
-  line: 0.09,   // per line / paragraph block
-  card: 0.08,   // per card in a grid or carousel
+  char: 0.038,  // per character in a split headline
+  word: 0.075,  // per word in a split headline
+  line: 0.12,   // per line / paragraph block
+  card: 0.11,   // per card in a grid or carousel
 } as const;
 
 /**

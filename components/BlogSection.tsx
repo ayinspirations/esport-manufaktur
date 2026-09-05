@@ -13,7 +13,9 @@ import { useInView } from '../hooks/useInView';
 // in rather than fully settled: waiting for the last pixel put 2.4s between
 // the section arriving and its first tile, which reads as a stall. This still
 // lands the headline first and the tiles second, as two clear beats.
-const CARDS_AFTER_HEADING = 0.42 + DUR.reveal;
+// Die Karten setzen ein, waehrend die Ueberschrift noch laeuft -- auf die
+// volle Reveal-Dauer zu warten liesz den Blog spuerbar spaeter laden.
+const CARDS_AFTER_HEADING = 0.42 + DUR.reveal * 0.5;
 
 interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
@@ -121,9 +123,9 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
                 initial={{ opacity: 0, y: 24 }}
                 animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
                 transition={{
-                  duration: 0.8,
+                  duration: 0.85,
                   delay: CARDS_AFTER_HEADING + i * STAGGER.card,
-                  ease: [0.16, 1, 0.3, 1]
+                  ease: [0.22, 1, 0.36, 1]
                 }}
               >
                 <BlogCard post={post} onOpenPost={onOpenPost} className="w-full h-full" />
@@ -137,7 +139,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             className="sm:hidden"
             initial={{ opacity: 0, y: 24 }}
             animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-            transition={{ duration: 0.8, delay: CARDS_AFTER_HEADING, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.85, delay: CARDS_AFTER_HEADING, ease: [0.22, 1, 0.36, 1] }}
           >
             {!showAllMobile ? (
               <>
@@ -161,7 +163,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
 
             <button
               onClick={() => setShowAllMobile((v) => !v)}
-              className="mt-8 w-full flex items-center justify-center gap-2 rounded-full border border-white/20 py-3.5 text-white text-xs font-black uppercase tracking-widest transition-colors duration-300 hover:bg-emerald-400 hover:border-emerald-400 hover:text-slate-950"
+              className="mt-8 w-full flex items-center justify-center gap-2 rounded-full border border-white/20 py-3.5 text-white text-xs font-black uppercase tracking-widest transition-colors duration-500 hover:bg-emerald-400 hover:border-emerald-400 hover:text-slate-950"
             >
               {showAllMobile ? (
                 <>Weniger anzeigen <ChevronUp className="w-4 h-4" /></>

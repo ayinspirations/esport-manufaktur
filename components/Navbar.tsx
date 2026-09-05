@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HERO_REVEAL_EASE, HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
-import { EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
+import { EASE_REVEAL, EASE_REVEAL_CSS, EASE_SPRING_CSS, DUR } from './motion';
 import { useNavGround } from '../hooks/useNavGround';
 
 // Two glasses, one per ground the bar crosses. Which one is showing is decided
@@ -195,27 +195,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center flex-nowrap whitespace-nowrap gap-10 lg:gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
-            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
-            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
-            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Best Cases
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'blog')}
-            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-300 ${navLinkTone}`}
+            className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
-            News &amp; Blog
+            Blog &amp; Wissen
           </button>
         </div>
 
@@ -324,7 +324,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
@@ -350,7 +350,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   onClick={(e) => handleLinkClick(e, 'blog')}
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
-                  News &amp; Blog
+                  Blog &amp; Wissen
                 </button>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button

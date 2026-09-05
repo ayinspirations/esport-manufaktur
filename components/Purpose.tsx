@@ -101,7 +101,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
               className="spring group inline-flex items-center gap-2.5 bg-emerald-400 text-slate-900 px-6 py-3.5 rounded-full font-black text-sm tracking-tighter"
             >
               GG Manufaktur kennenlernen
-              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </Reveal>
         </div>

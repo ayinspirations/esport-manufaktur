@@ -14,7 +14,7 @@ export const ScrollToCasesCTA: React.FC<ScrollToCasesCTAProps> = ({ onScroll }) 
         initial={{ opacity: 0, scale: 0.95 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center"
       >
         <motion.button

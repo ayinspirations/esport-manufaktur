@@ -6,6 +6,16 @@ import type { ServiceContent } from './servicesContent';
 
 interface ServiceViewProps {
   content: ServiceContent;
+  /**
+   * Die Klassen, die jede Sektion horizontal begrenzen.
+   *
+   * Voreingestellt ist der eigene Seitencontainer -- so verhaelt sich die
+   * Ansicht wie bisher, wenn sie ueber die volle Seitenbreite laeuft. Im
+   * Sidebar-Layout steckt sie in einer Spalte, die ihre Breite und ihr
+   * Padding schon vom Panel bekommt; dort wird 'w-full' uebergeben, damit
+   * nicht zweimal begrenzt und zweimal gepolstert wird.
+   */
+  container?: string;
   /** Opens the booking popup. */
   onOpenBooking: () => void;
   /** Opens the contact-form popup, told which service it is about. */
@@ -44,14 +54,15 @@ const TILE = 'tile-gradient text-white';
 export const ServiceView: React.FC<ServiceViewProps> = ({
   content,
   onOpenBooking,
-  onOpenContact
+  onOpenContact,
+  container = CONTAINER
 }) => {
   const requestProject = () => onOpenContact(content.h1);
 
   return (
     <div className="w-full">
       {/* ============ 1. Headline, subline, call to action ============ */}
-      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+      <section className={`${container} ${BLOCK_GAP}`}>
         <RevealText
           as="h2"
           by="word"
@@ -74,14 +85,14 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 hidden md:flex flex-wrap items-center gap-4">
           <button
             onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
           >
             {content.hero.ctaLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
           </button>
           <button
             onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
           >
             <CalendarDays className="w-4 h-4" />
             Kostenloses Erstgespräch vereinbaren
@@ -91,7 +102,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
 
       {/* ============ 2. Ausgangslage ============ */}
       {content.pain && (
-        <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <section className={`${container} ${BLOCK_GAP}`}>
           <div className="grid md:grid-cols-12 gap-6 md:gap-16">
             <div className="md:col-span-5">
               <RevealText
@@ -113,7 +124,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       )}
 
       {/* ============ 3. Leistungen im Detail ============ */}
-      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+      <section className={`${container} ${BLOCK_GAP}`}>
         <div className="max-w-2xl mb-8 md:mb-10">
           <RevealText
             as="h2"
@@ -144,7 +155,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {group.cards.map((card, ci) => (
                   <Reveal key={ci} delay={Math.min(ci, 5) * 0.05}>
-                    <div className={`h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-transform duration-300 hover:scale-[1.02]`}>
+                    <div className={`h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-transform duration-500 hover:scale-[1.02]`}>
                       <div className="w-9 h-9 rounded-full bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-xs font-black mb-6">
                         {String(ci + 1).padStart(2, '0')}
                       </div>
@@ -161,7 +172,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
                 <Reveal delay={0.2} className="mt-9 md:mt-11">
                   <button
                     onClick={requestProject}
-                    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+                    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
                   >
                     {group.groupCta}
                   </button>
@@ -176,7 +187,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
       {/* Both routes open in place. Sending someone back to the homepage and
           then scrolling them to the form at the bottom of it lost the service
           they were asking about; the popup carries it along as the subject. */}
-      <section className={`${CONTAINER} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
+      <section className={`${container} ${BLOCK_GAP} pb-20 md:pb-28 text-center`}>
         <div className="max-w-2xl mx-auto">
           <RevealText
             as="h2"
@@ -194,14 +205,14 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4">
           <button
             onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
           >
             {content.ctaCloser.primaryLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
           </button>
           <button
             onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
           >
             <CalendarDays className="w-4 h-4" />
             Kostenloses Erstgespräch vereinbaren

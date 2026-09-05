@@ -45,15 +45,15 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
           // Phase 3 -- "Wir wollen" / "Menschen": one clean, restrained fade+lift, not
           // a masked flip -- these two lines stay quiet so BEGEISTERN can stand out.
-          .from('.hero-line-1', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.4)
-          .from('.hero-line-2', { opacity: 0, y: 28, duration: 0.9, ease: 'power2.out' }, 0.55)
+          .from('.hero-line-1', { opacity: 0, y: 28, duration: 1.25, ease: 'power2.out' }, 0.4)
+          .from('.hero-line-2', { opacity: 0, y: 28, duration: 1.25, ease: 'power2.out' }, 0.6)
 
           // Phase 4 -- BEGEISTERN animates on its own, independent beat: a plain
           // per-character fade-in (opacity only, no follow-up), matching the
           // reference exactly. Gradient/colors are untouched.
           .from(
             '.hero-begeistern-char',
-            { opacity: 0, duration: 0.5, stagger: 0.125, ease: 'power1.in' },
+            { opacity: 0, duration: 0.7, stagger: 0.145, ease: 'power1.in' },
             0.75
           )
 
@@ -116,7 +116,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
   const handleCtaEnter = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
     if (e.pointerType !== 'mouse' || !ctaBtnRef.current) return;
-    gsap.to(ctaBtnRef.current, { scale: 1.03, duration: 0.35, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { scale: 1.03, duration: 0.5, ease: 'power3.out' });
   });
 
   const handleCtaMove = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
@@ -124,12 +124,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
     const rect = ctaBtnRef.current.getBoundingClientRect();
     const relX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
     const relY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-    gsap.to(ctaBtnRef.current, { x: relX * 5, y: relY * 5, duration: 0.4, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { x: relX * 5, y: relY * 5, duration: 0.55, ease: 'power3.out' });
   });
 
   const handleCtaLeave = contextSafe(() => {
     if (!ctaBtnRef.current) return;
-    gsap.to(ctaBtnRef.current, { x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { x: 0, y: 0, scale: 1, duration: 0.65, ease: 'power3.out' });
   });
 
   return (
@@ -174,13 +174,17 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           </span>
         </h1>
 
-        <div ref={belowRef}>
-          {/* "Immer authentisch" carries the same teal-to-lime sweep as
-              BEGEISTERN -- the one phrase in the subline that is a claim
-              rather than a description, so it gets the headline's colour. */}
+        {/* Mobile: the block below the headline is taken out of the flow so the
+            centred content column measures the headline alone -- that puts
+            "WIR WOLLEN MENSCHEN BEGEISTERN" exactly on the vertical centre of
+            the viewport, with subline and CTAs hanging underneath it. From md
+            up it flows normally again. */}
+        <div
+          ref={belowRef}
+          className="absolute top-full inset-x-0 px-6 md:static md:px-0"
+        >
           <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
-            Mit Gamification, Events und Markenaktivierungen, die in Erinnerung bleiben. <br />
-            Live. Digital. Messbar. <span className={HERO_GRADIENT_TEXT}>Immer authentisch.</span>
+            Mit Gamification, Events und Markenaktivierungen.
           </p>
 
           <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
@@ -196,13 +200,13 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
                 aria-hidden="true"
                 className="absolute inset-0 -translate-x-full skew-x-[-20deg] bg-white/25 transition-transform duration-700 ease-out group-hover:translate-x-full"
               />
-              <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-px">
+              <span className="relative inline-block transition-transform duration-500 group-hover:-translate-y-px">
                 Termin vereinbaren
               </span>
             </button>
             <button
               onClick={() => scrollToSection?.('competencies')}
-              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-300 tracking-tighter"
+              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-500 tracking-tighter"
             >
               Leistungen entdecken
               <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

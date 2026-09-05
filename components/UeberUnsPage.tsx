@@ -328,10 +328,10 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 <Reveal delay={0.24} className="mt-7 md:mt-9">
                   <button
                     onClick={() => onNavigate('meine-geschichte')}
-                    className="spring group inline-flex items-center gap-2.5 bg-emerald-400 hover:bg-white text-slate-900 px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-300"
+                    className="spring group inline-flex items-center gap-2.5 bg-emerald-400 hover:bg-white text-slate-900 px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-500"
                   >
                     Mehr lesen
-                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
                   </button>
                 </Reveal>
               </div>
