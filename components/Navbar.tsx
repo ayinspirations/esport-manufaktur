@@ -215,7 +215,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             onClick={(e) => handleLinkClick(e, 'blog')}
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
-            News &amp; Blog
+            Blog &amp; Wissen
           </button>
         </div>
 
@@ -350,7 +350,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   onClick={(e) => handleLinkClick(e, 'blog')}
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
-                  News &amp; Blog
+                  Blog &amp; Wissen
                 </button>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
