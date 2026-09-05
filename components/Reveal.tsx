@@ -1,6 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useInView } from '../hooks/useInView';
 import { EASE_REVEAL_CSS, DUR, STAGGER } from './motion';
+
+/**
+ * Wahr, sobald die Schriften stehen -- oder nach einer kurzen Frist ohnehin.
+ *
+ * Nur die maskierten Headlines brauchen das. Ihre Maske schneidet an der
+ * Layoutbox des Wortes, und solange die Systemschrift einspringt, ist diese
+ * Box eine andere: der Browser schert die Ersatzschrift fuer den kursiven
+ * Akzent selbst, und eine geschraegte Glyphe ragt aus ihrer Box heraus. Was
+ * herausragt, faellt beim Rastern der laufenden Bewegung weg -- am Wortende
+ * fehlt dann ein Stueck vom R oder vom G, bis die echte Schrift da ist.
+ *
+ * Also wird nicht der Text zurueckgehalten, sondern nur sein Auftritt. Die
+ * Frist deckelt das: kommt die Schrift nicht, laeuft der Reveal trotzdem, und
+ * wer die Seite schon einmal besucht hat, wartet gar nicht -- dann steht sie
+ * beim ersten Bild bereits im Cache.
+ */
+const FONT_GRACE_MS = 600;
+
+const useFontsReady = () => {
+  const [ready, setReady] = useState(
+    () => typeof document === 'undefined' || !('fonts' in document) || document.fonts.status === 'loaded'
+  );
+
+  useEffect(() => {
+    if (ready) return;
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      setReady(true);
+    };
+    document.fonts.ready.then(finish).catch(finish);
+    const timer = setTimeout(finish, FONT_GRACE_MS);
+    return () => clearTimeout(timer);
+  }, [ready]);
+
+  return ready;
+};
 
 // ---------------------------------------------------------------------------
 // Scroll-reveal primitives
@@ -120,6 +158,8 @@ export const RevealText: React.FC<RevealTextProps> = ({
   as = 'span'
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
+  const fontsReady = useFontsReady();
+  const show = inView && fontsReady;
 
   const lines = text.split('\n');
   const step = stagger ?? (by === 'char' ? STAGGER.char : STAGGER.word);
@@ -164,8 +204,8 @@ export const RevealText: React.FC<RevealTextProps> = ({
             // below the box so descenders survive, and the resting position
             // has to clear that gap or a sliver of the word shows through
             // before the reveal starts.
-            transform: inView ? 'translateY(0)' : 'translateY(130%)',
-            opacity: inView ? 1 : 0,
+            transform: show ? 'translateY(0)' : 'translateY(130%)',
+            opacity: show ? 1 : 0,
             transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${d}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${d}s`
             // Deliberately no `will-change` here.
             //
