@@ -146,8 +146,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       {/* The shared header: same dark ground and gradient accent as the
           homepage hero, so the services page opens the way every other route
           does instead of with ink type on the bare canvas. */}
+      {/* Kein Eyebrow: "Leistungen" stand hier doppelt -- einmal als Kicker,
+          einmal in der Headline selbst. */}
       <PageHero
-        eyebrow="Leistungen"
         title="Unsere"
         accent="Leistungen."
         subline="Von der ersten Idee bis zur Umsetzung."

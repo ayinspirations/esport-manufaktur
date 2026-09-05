@@ -48,7 +48,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                   <img src="/logos/Esport-Manufaktur_Logo-blau.png" alt="GG Manufaktur" className="h-9 w-auto object-contain" />
                 </a>
                 <p className="text-slate-600 max-w-sm leading-relaxed mb-10 text-lg font-medium tracking-tight">
-                  Wir verbinden Gaming, eSport und Gamification mit Strategie, Technologie und echten Erlebnissen – digital, physisch und immer mit dem Ziel, Menschen zu begeistern und Marken erlebbar zu machen.
+                  Wir entwickeln Gamification, Events und Markenaktivierungen – von der ersten Idee bis zur Umsetzung. Live, digital und immer mit dem Ziel, Menschen zu begeistern.
                 </p>
                 <div className="flex gap-4">
                   {socialLinks.map(({ Icon, href }, i) => (
