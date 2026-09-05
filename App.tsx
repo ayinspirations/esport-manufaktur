@@ -43,6 +43,7 @@ const Showdown0711Detail = lazy(() => import('./components/Showdown0711Detail').
 const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
 const IntersportDetail = lazy(() => import('./components/IntersportDetail').then(m => ({ default: m.IntersportDetail })));
 const ReweDetail = lazy(() => import('./components/ReweDetail').then(m => ({ default: m.ReweDetail })));
+const XpDaysDetail = lazy(() => import('./components/XpDaysDetail').then(m => ({ default: m.XpDaysDetail })));
 const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazy(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
@@ -61,7 +62,7 @@ const ContactModal = lazy(() => import('./components/ContactModal').then(m => ({
 const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidden="true" />;
 
 type Page =
-  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe'
+  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days'
   | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
   | 'ueber-uns' | 'meine-geschichte' | 'webdesign';
 
@@ -114,7 +115,7 @@ const resolveRoute = (): Route => {
   }
 
   const currentHash = window.location.hash.replace('#', '');
-  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', ...blogSlugs];
+  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', ...blogSlugs];
   if (validPages.includes(currentHash)) {
     return { page: currentHash as Page };
   }
@@ -314,6 +315,7 @@ export default function App() {
         {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'intersport' && <IntersportDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'rewe' && <ReweDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'xp-days' && <XpDaysDetail onBack={() => scrollToSection('best-cases')} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}

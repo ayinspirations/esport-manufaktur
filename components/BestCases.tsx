@@ -41,7 +41,7 @@ const TILE_TEXT_VARIANTS = {
 // Stagger restarts on each row of the mosaic, so no tile waits on the delay of
 // one sitting above it in a different row. Die letzte Reihe traegt nur noch
 // eine Kachel und faengt deshalb wieder bei null an.
-const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0];
+const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
 
 interface BestCasesProps {
   onNavigate?: (page: any) => void;
@@ -83,7 +83,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             tiles exactly: rows 1-3 take the wide tile and the portrait beside
             it, rows 4-5 the square and the panorama, rows 6-8 die hochkante
             Kachel und die breite daneben -- gespiegelt zum ersten Band --,
-            rows 9-11 ein Abschluss ueber die volle Breite. No gaps, no
+            rows 9-10 zwei gleich breite Haelften als Abschluss. No gaps, no
             dense-packing heuristics, no tile left orphaned on its own row at
             a smaller width.
 
@@ -94,9 +94,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             nach denselben Regeln, damit das Mosaik ein Mosaik bleibt:
 
               1. Ein Band ist voll, wenn die Spalten darin sechs ergeben.
-                 Erlaubte Paare: 4+2 (breit neben hochkant) und 2+4
-                 (quadratisch neben Panorama); 6 allein traegt ein Band
-                 ueber die volle Breite.
+                 Erlaubte Paare: 4+2 (breit neben hochkant), 2+4
+                 (quadratisch neben Panorama) und 3+3 (zwei gleich
+                 breite Haelften); 6 allein traegt ein Band ueber die
+                 volle Breite.
               2. Die Form wechselt: nie zweimal hintereinander dasselbe
                  Format. Reihenfolge im Zweifel 4x3 -> 2x3 -> 2x2 -> 4x2
                  -> 6x3 und von vorn.
@@ -107,7 +108,8 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                  Panorama).
               4. Die Schriftgroesse der Ueberschrift folgt der Flaeche:
                  grosse Kacheln clamp(24px,3.2vw,38px), Panorama
-                 clamp(26px,3.4vw,42px), kleine clamp(20px,2.2vw,30px).
+                 clamp(26px,3.4vw,42px), halbe Baender und volle Breite
+                 clamp(22px,2.8vw,34px), kleine clamp(20px,2.2vw,30px).
               5. TILE_DELAY bekommt einen Eintrag je Kachel und faengt in
                  jedem Band wieder bei 0 an. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
@@ -329,9 +331,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 9-11 — REWE ueber die volle Breite. Ein Band allein, weil
-              das Format nach zwei Paaren wechseln soll. */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
+          {/* Rows 9-10 — REWE und XP Days teilen sich das Band zu gleichen
+              Teilen. Drei Spalten je Kachel ist die einzige Paarung, die
+              das Mosaik bis hierhin nicht kennt. */}
+          <div className="col-span-1 aspect-[16/9] lg:col-span-3 lg:row-span-2 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -360,6 +363,42 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                   <div>
                     <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       REWE
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="col-span-1 aspect-[16/9] lg:col-span-3 lg:row-span-2 lg:aspect-auto">
+            <motion.div
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[7]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <div
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('xp-days')}
+              >
+                <img
+                  src="/images/xp-days/hero.jpg"
+                  alt="XP Days"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      XP Days
                     </h3>
                   </div>
                 </div>
