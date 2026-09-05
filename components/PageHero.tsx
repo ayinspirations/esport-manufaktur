@@ -70,15 +70,15 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
               along the bottom edge, so the photograph dissolves into the
               section below instead of ending on a ruled line.
 
-              Ueber dem unteren Viertel, nicht ueber dem unteren Drittel: der
-              Verlauf soll ein Uebergang sein und kein Schleier. Er lag zu
-              hoch und hat das Bild schon dort aufgehellt, wo es noch etwas
-              zu zeigen hatte. */}
+              Auf den letzten sechzehn Prozent, nicht ueber dem unteren
+              Drittel: der Verlauf soll eine Naht sein und kein Schleier. Er
+              lag zu hoch und hat das Bild schon dort aufgehellt, wo es noch
+              etwas zu zeigen hatte. */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-[26%] pointer-events-none"
+            className="absolute inset-x-0 bottom-0 h-[16%] pointer-events-none"
             style={{
-              background: `linear-gradient(to bottom, rgba(186,222,218,0) 0%, rgba(186,222,218,0.5) 52%, rgba(186,222,218,0.95) 85%, ${CANVAS} 100%)`
+              background: `linear-gradient(to bottom, rgba(186,222,218,0) 0%, rgba(186,222,218,0.5) 50%, rgba(186,222,218,0.9) 82%, ${CANVAS} 100%)`
             }}
           />
         </div>

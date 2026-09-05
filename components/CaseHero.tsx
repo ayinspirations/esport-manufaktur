@@ -25,11 +25,11 @@ interface CaseHeroProps {
 // bleibt das Bild bis rund 70 Prozent seiner Hoehe unangetastet und blendet
 // erst auf dem letzten Drittel ab.
 //
-// Der Verlauf ist ein Uebergang, kein Schleier. Er lag bis eben ueber dem
-// unteren Drittel und hat das Foto schon dort aufgehellt, wo es noch etwas zu
-// zeigen hatte -- Gesichter, Aufbau, Raum. Jetzt beginnt er erst bei 76
-// Prozent: darueber ist das Bild unberuehrt, darunter loest es sich in die
-// Seitenflaeche auf.
+// Der Verlauf ist eine Naht, kein Schleier. Er lag zuerst ueber dem unteren
+// Drittel, dann ueber dem unteren Viertel -- beides hat das Foto noch dort
+// aufgehellt, wo es etwas zu zeigen hatte. Jetzt liegt er auf den letzten
+// sechzehn Prozent: darueber ist das Bild unberuehrt, darunter geht es in die
+// Seitenflaeche ueber. Mehr soll er nicht tun.
 //
 // Die Ueberschrift wandert mit. Sie sitzt auf der Naht: die obere Haelfte im
 // Bild, die untere schon auf der Flaeche. Sie klebt damit weder als
@@ -64,7 +64,7 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 15%, rgba(186,222,218,0) 76%, rgba(186,222,218,0.62) 88%, rgba(186,222,218,0.97) 96%, #badeda 100%)'
+            'linear-gradient(to bottom, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0) 15%, rgba(186,222,218,0) 84%, rgba(186,222,218,0.5) 92%, rgba(186,222,218,0.9) 97%, #badeda 100%)'
         }}
       />
       {/* Sagt der Navigationsleiste, wo das Foto aufhoert und die Flaeche
@@ -72,10 +72,10 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
           und das Bild darunter wuerde sonst auch fuer die helle Haelfte
           "dunkel" melden. Leer und dekorativ -- es existiert, um getroffen
           zu werden. */}
-      <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[74%]" />
+      <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[86%]" />
     </div>
 
-    <div className="relative z-20 -mt-[15vh] md:-mt-[16vh] px-6 md:px-14 pb-6 md:pb-10">
+    <div className="relative z-20 -mt-[8vh] md:-mt-[9vh] px-6 md:px-14 pb-6 md:pb-10">
       <h1
         className="text-[clamp(28px,5vw,64px)] font-black leading-[0.92] tracking-tighter uppercase text-[#0b0f2a]"
         style={{ filter: 'drop-shadow(0 1px 6px rgba(186,222,218,0.7)) drop-shadow(0 1px 2px rgba(186,222,218,0.55))' }}
