@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { Reveal } from './Reveal';
-import { DUR, EASE_REVEAL } from './motion';
+import { DUR, EASE_REVEAL, smoothScrollTo } from './motion';
 import { PageHero } from './PageHero';
 import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
@@ -406,28 +406,27 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     [active, onSelectService]
   );
 
-  // After a switch, bring the menu back to just under the navigation, so the
-  // new service starts at its beginning instead of dropping the reader into
-  // the middle of a page they have not seen. Only for a switch the visitor
-  // made: on first render the page is already at the top, and on back/forward
-  // the browser restores its own position.
+  // Nach jedem Wechsel zurueck an den Kopf: die neue Leistung beginnt an
+  // ihrem Anfang, nicht in der Mitte eines Textes, den niemand gelesen hat.
   //
-  // Im Sidebar-Layout gilt das nur, solange der Kopf des Rasters noch unter
-  // der Navigation steht -- also bevor die Sidebar klebt. Ist sie einmal
-  // angedockt, waere dieser Sprung genau das, was er verhindern soll: die
-  // Spalte loest sich, wandert ein Stueck und dockt neu an, obwohl der
-  // Besucher nur nebenan eine andere Leistung angetippt hat. Die Auswahl
-  // steht dann still und nur das Panel wechselt.
+  // Das galt eine Weile nur, solange die Sidebar noch nicht klebte -- damit
+  // sie beim Antippen nicht sichtbar wandert. Der Preis war zu hoch: wer weit
+  // unten in einer langen Leistung steht und nebenan eine andere waehlt,
+  // landet mitten in ihr. Die Spalte darf sich dafuer bewegen.
+  //
+  // Nur fuer einen Wechsel, den der Besucher gemacht hat: beim ersten Aufbau
+  // steht die Seite ohnehin oben, und bei Vor/Zurueck stellt der Browser
+  // seine eigene Position wieder her.
   useEffect(() => {
     if (!userSwitched.current) return;
     userSwitched.current = false;
     const el = anchorRef.current;
     if (!el) return;
-    const distanceFromNav = el.getBoundingClientRect().top - navClearance();
-    if (sidebar && window.innerWidth >= 1024 && distanceFromNav <= 12) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - navClearance() - 12;
-    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
-  }, [active, sidebar]);
+    // Der eigene Smooth-Scroll der Seite, nicht der des Browsers: er passt
+    // seine Dauer an die Strecke an, und aus einer langen Leistung heraus ist
+    // die Strecke lang.
+    smoothScrollTo(Math.max(el.getBoundingClientRect().top + window.scrollY - navClearance() - 12, 0));
+  }, [active]);
 
   /*
     Zwei Wechsel, aus einem Grund verschieden.
