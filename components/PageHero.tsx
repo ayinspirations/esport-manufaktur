@@ -66,14 +66,19 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
             style={{ background: `linear-gradient(to bottom, rgba(2,6,23,0.55) 0%, rgba(2,6,23,0.22) 55%, rgba(2,6,23,0) 100%)` }}
           />
 
-          {/* The handover to the page. The canvas colour itself, faded in over
-              the bottom third, so the photograph dissolves into the section
-              below instead of ending on a ruled line. */}
+          {/* The handover to the page. The canvas colour itself, faded in
+              along the bottom edge, so the photograph dissolves into the
+              section below instead of ending on a ruled line.
+
+              Ueber dem unteren Viertel, nicht ueber dem unteren Drittel: der
+              Verlauf soll ein Uebergang sein und kein Schleier. Er lag zu
+              hoch und hat das Bild schon dort aufgehellt, wo es noch etwas
+              zu zeigen hatte. */}
           <div
             aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-[42%] pointer-events-none"
+            className="absolute inset-x-0 bottom-0 h-[26%] pointer-events-none"
             style={{
-              background: `linear-gradient(to bottom, rgba(186,222,218,0) 0%, rgba(186,222,218,0.55) 42%, rgba(186,222,218,0.92) 76%, ${CANVAS} 100%)`
+              background: `linear-gradient(to bottom, rgba(186,222,218,0) 0%, rgba(186,222,218,0.5) 52%, rgba(186,222,218,0.95) 85%, ${CANVAS} 100%)`
             }}
           />
         </div>
