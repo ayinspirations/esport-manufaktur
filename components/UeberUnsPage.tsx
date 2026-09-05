@@ -13,16 +13,15 @@ interface UeberUnsPageProps {
 }
 
 /**
- * The founder's portrait for the story tile.
+ * Das Portraet des Gruenders fuer die Geschichten-Kachel.
  *
- * ---- DROP THE PHOTOGRAPH IN HERE ----
- * Put the file in `public/` and set the path below, e.g.
- *   const GIANLUCA_IMAGE = '/gianluca.jpg';
- * Portrait or a working situation, roughly 4:5, 900x1125 covers a 2x screen.
- * Left empty the tile renders a clearly-marked placeholder instead of a broken
- * image, so the section is presentable until the photograph exists.
+ * Dieselbe Datei, die auch seine Team-Kachel traegt -- eine Aufnahme, ein Pfad,
+ * und ein Austausch wirkt an beiden Stellen.
+ *
+ * Leer gelassen zeigt die Kachel einen sichtbar markierten Platzhalter statt
+ * eines kaputten Bildes; so war sie presentabel, bis das Foto da war.
  */
-const GIANLUCA_IMAGE = '';
+const GIANLUCA_IMAGE = '/team/gianluca.jpg';
 
 /** The team photograph, behind the page header. Purpose.tsx carries its own
     copy of the path on purpose -- this module is lazily loaded, and importing
@@ -63,6 +62,15 @@ interface Member {
   role: string;
   /** Drop a file in here when a portrait exists; the monogram is the fallback. */
   image?: string;
+  /**
+   * Wo im Bild die Person steht, als object-position.
+   *
+   * Voreingestellt ist die Mitte auf einem Viertel Hoehe -- das passt fuer ein
+   * Portraet. Nicht jede Aufnahme ist eines: Gianlucas Foto ist eine
+   * Buehnensituation im Querformat, auf der er rechts steht, und ein
+   * mittiger Zuschnitt zeigt die Wand hinter ihm.
+   */
+  focus?: string;
 }
 
 // Founders first, then the rest of the team. Plain array -- reorder here.
@@ -74,7 +82,7 @@ interface Member {
 // ein Fehler, den niemand sucht. Wer kein Bild hat, bekommt sein Monogramm --
 // dafuer ist nichts weiter zu tun als die Zeile hier ohne `image` zu lassen.
 const team: Member[] = [
-  { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg' },
+  { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '68% 16%' },
   { name: 'Sandro', role: 'Co-Founder & Operations' },
   { name: 'Patrick', role: 'Sales & Partnerships' },
   { name: 'Sandra', role: 'Operations', image: '/team/sandra.jpg' },
@@ -127,7 +135,8 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
         loading="lazy"
         decoding="async"
         onError={() => setFailed(true)}
-        className="absolute inset-0 h-full w-full object-cover object-[center_25%] transition-transform duration-700 ease-reveal group-hover:scale-[1.06]"
+        style={{ objectPosition: member.focus ?? 'center 25%' }}
+        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-reveal group-hover:scale-[1.06]"
       />
     ) : (
       <div
@@ -339,6 +348,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                     alt="Gianluca Crepaldi, Gründer und Geschäftsführer der GG Manufaktur"
                     loading="lazy"
                     decoding="async"
+                    style={{ objectPosition: '68% 16%' }}
                     className="w-full aspect-[4/5] object-cover rounded-card"
                   />
                 ) : (
