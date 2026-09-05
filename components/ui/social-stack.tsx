@@ -33,7 +33,14 @@ const SOLID_CLASS =
   'tile-gradient border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] hover:shadow-[0_0_50px_rgba(52,211,153,0.3)]';
 
 /** Derselbe Wechsel wie in der CTA-Pille -- ein Bauteil, eine Bewegung. */
-const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
+const SWAP = { duration: 0.26, ease: EASE_REVEAL } as const;
+
+/**
+ * Hinaus geht es schneller als herein: der abtretende Inhalt ist im Weg,
+ * sobald die Schale faehrt -- man soll ihn nicht noch lesen koennen, waehrend
+ * daneben schon der neue steht.
+ */
+const SWAP_OUT = { duration: 0.14, ease: EASE_REVEAL } as const;
 
 const WIDGET_SIZE = 56; // px, matches h-14/w-14
 const DRAG_THRESHOLD = 10; // px of movement before a touch counts as a drag, not a tap
@@ -46,7 +53,6 @@ export const SocialStack: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dragState = useRef({ dragging: false, moved: false, startX: 0, startY: 0, originLeft: 0, originTop: 0 });
   const justDraggedRef = useRef(false);
-  const hoverLeaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Both hover (desktop) and click/tap (mobile, and desktop pin) drive the
   // same boolean -- no CSS :hover is used, so there's no "stuck open" state
@@ -138,17 +144,31 @@ export const SocialStack: React.FC = () => {
   // on leave (cancelled by the next enter) absorbs that transit.
   const handlePointerEnter = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    if (hoverLeaveTimeoutRef.current) {
-      clearTimeout(hoverLeaveTimeoutRef.current);
-      hoverLeaveTimeoutRef.current = null;
-    }
     setIsHovered(true);
   };
-  const handlePointerLeave = (e: React.PointerEvent) => {
-    if (e.pointerType !== 'mouse') return;
-    if (hoverLeaveTimeoutRef.current) clearTimeout(hoverLeaveTimeoutRef.current);
-    hoverLeaveTimeoutRef.current = setTimeout(() => setIsHovered(false), 200);
-  };
+  // Kein pointerleave, sondern die tatsaechliche Position des Zeigers -- wie
+  // bei der CTA-Pille. Verschwindet das Zeichen unter ihm, meldet der Browser
+  // einen Austritt, den niemand gemacht hat, und mit leerem relatedTarget ist
+  // der Fall nicht zu erkennen. Wo der Zeiger steht, weisz nur er selbst.
+  useEffect(() => {
+    if (!isHovered) return;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = containerRef.current?.getBoundingClientRect();
+      if (!r) return;
+      const slack = 28;
+      if (
+        e.clientX < r.left - slack ||
+        e.clientX > r.right + slack ||
+        e.clientY < r.top - slack ||
+        e.clientY > r.bottom + slack
+      ) {
+        setIsHovered(false);
+      }
+    };
+    document.addEventListener('pointermove', onMove, { passive: true });
+    return () => document.removeEventListener('pointermove', onMove);
+  }, [isHovered]);
 
   return (
     <motion.div
@@ -162,7 +182,6 @@ export const SocialStack: React.FC = () => {
       onPointerCancel={endDrag}
       onClickCapture={handleClickCapture}
       onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
       style={
         dragPos
           ? { left: dragPos.left, top: dragPos.top, touchAction: 'none' }
@@ -205,7 +224,7 @@ export const SocialStack: React.FC = () => {
               aria-label="Social Media Links"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              exit={{ opacity: 0, scale: 0.94, transition: SWAP_OUT }}
               transition={SWAP}
               className="flex h-14 w-14 items-center justify-center"
             >
@@ -216,8 +235,8 @@ export const SocialStack: React.FC = () => {
               key="links"
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ ...SWAP, delay: 0.08 }}
+              exit={{ opacity: 0, scale: 0.97, transition: SWAP_OUT }}
+              transition={{ ...SWAP, delay: 0.04 }}
               className="flex items-center gap-0.5 px-1.5"
             >
               {SOCIAL_LINKS.map(({ href, label, Icon }, i) => (

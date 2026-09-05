@@ -73,7 +73,14 @@ interface ExpandingCTAProps {
  * ruhigen Schale wirkt ein Inhalt, der 20 Pixel weit springt und aus 90
  * Prozent aufzieht, wie ein zweiter, schnellerer Vorgang im selben Knopf.
  */
-const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
+const SWAP = { duration: 0.26, ease: EASE_REVEAL } as const;
+
+/**
+ * Hinaus geht es schneller als herein: der abtretende Inhalt ist im Weg,
+ * sobald die Schale faehrt -- man soll ihn nicht noch lesen koennen, waehrend
+ * daneben schon der neue steht.
+ */
+const SWAP_OUT = { duration: 0.14, ease: EASE_REVEAL } as const;
 
 export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   label,
@@ -86,7 +93,6 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
-  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Der Zeiger oeffnet, der Klick auch -- an der Bewegung aendert das nichts.
   //
@@ -95,21 +101,41 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   // dauerhaft offen. Auf dem Finger bleibt es beim Tipp.
   const handleEnter = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    if (leaveTimer.current) clearTimeout(leaveTimer.current);
     setOpen(true);
   };
-  const handleLeave = (e: React.PointerEvent) => {
-    if (e.pointerType !== 'mouse') return;
-    // Eine kurze Gnadenfrist: die Pille waechst unter dem Zeiger, und wer
-    // dabei einen Moment ueber ihren wandernden Rand hinausrutscht, hat sie
-    // nicht verlassen wollen.
-    if (leaveTimer.current) clearTimeout(leaveTimer.current);
-    leaveTimer.current = setTimeout(() => setOpen(false), 180);
-  };
 
-  useEffect(() => () => {
-    if (leaveTimer.current) clearTimeout(leaveTimer.current);
-  }, []);
+  // Geschlossen wird nicht auf pointerleave, sondern auf die tatsaechliche
+  // Position des Zeigers.
+  //
+  // Beim Oeffnen verschwindet das Label unter ihm, und der Browser meldet das
+  // als Austritt -- ohne dass sich irgendetwas bewegt haette, und mit einem
+  // leeren `relatedTarget`, an dem sich der Fall nicht erkennen laesst.
+  // Gemessen fuhr die Pille dadurch auf volle Breite und fiel sofort wieder
+  // zu. Wo der Zeiger steht, weisz nur er selbst: liegt er auszerhalb des
+  // Rahmens, ist er gegangen; steht er still, ist er da -- egal, was unter ihm
+  // gerade ausgetauscht wird.
+  //
+  // Der Rand ist bewusst grosszuegig: die Pille waechst unter dem Zeiger, und
+  // wer ihrem wandernden Rand einen Moment nicht folgt, wollte nicht weg.
+  useEffect(() => {
+    if (!open) return;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType !== 'mouse') return;
+      const r = boxRef.current?.getBoundingClientRect();
+      if (!r) return;
+      const slack = 28;
+      if (
+        e.clientX < r.left - slack ||
+        e.clientX > r.right + slack ||
+        e.clientY < r.top - slack ||
+        e.clientY > r.bottom + slack
+      ) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('pointermove', onMove, { passive: true });
+    return () => document.removeEventListener('pointermove', onMove);
+  }, [open]);
 
   // Zu, sobald daneben getippt oder Escape gedrueckt wird. Eine Pille, die nur
   // ihr eigener Knopf wieder schlieszt, faengt den naechsten Klick ab.
@@ -157,7 +183,6 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     <div
       ref={boxRef}
       onPointerEnter={handleEnter}
-      onPointerLeave={handleLeave}
       className={`inline-flex ${className}`}
     >
       <motion.div
@@ -180,7 +205,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               aria-expanded={open}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
+              exit={{ opacity: 0, y: -8, transition: SWAP_OUT }}
               transition={SWAP}
               className="group inline-flex items-center gap-2.5 px-6 py-3.5 sm:px-7 sm:py-4 text-[13px] sm:text-base font-black tracking-tight"
             >
@@ -192,11 +217,11 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               key="ways"
               initial={{ opacity: 0, scale: 0.97 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
+              exit={{ opacity: 0, scale: 0.97, transition: SWAP_OUT }}
               // Einen Hauch spaeter als die Schale, damit die Wege in eine
               // bereits oeffnende Flaeche hineinwachsen statt gegen ihren Rand
               // zu laufen.
-              transition={{ ...SWAP, delay: 0.08 }}
+              transition={{ ...SWAP, delay: 0.04 }}
               className="flex flex-row items-center gap-0.5 sm:gap-1 p-1 sm:p-1.5"
             >
               <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>
