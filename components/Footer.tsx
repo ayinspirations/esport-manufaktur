@@ -97,7 +97,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-900/10 text-[11px] md:text-xs text-slate-500 font-bold text-center md:text-left gap-6">
-              <p>© 2025 eSport Manufaktur GmbH</p>
+              <p>GG Manufaktur GmbH – 2026</p>
               <p className="md:text-right">
                 {/* Lower case on purpose -- it is the studio's own spelling. */}
                 Designed by <a href="https://www.akiistudio.de" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-500 transition-colors normal-case">akii studio</a>

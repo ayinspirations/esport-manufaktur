@@ -17,7 +17,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Angaben gemäß § 5 TMG</h3>
             <p className="text-2xl font-bold text-slate-900 leading-tight">
-              eSport Manufaktur GmbH<br />
+              GG Manufaktur GmbH<br />
               Gartenstraße 16/1<br />
               71229 Leonberg<br />
               Deutschland
@@ -64,7 +64,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Verantwortlich nach § 18 Abs. 2 MStV</h3>
             <p className="text-slate-600 font-medium leading-relaxed">
-              eSport Manufaktur GmbH<br />
+              GG Manufaktur GmbH<br />
               Gianluca Crepaldi<br />
               Gartenstraße 16/1<br />
               71229 Leonberg
@@ -119,7 +119,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Anbieter und Verantwortlicher</h3>
             <p className="text-lg font-bold text-slate-900">
-              eSport Manufaktur GmbH<br />
+              GG Manufaktur GmbH<br />
               Gartenstraße 16/1<br />
               71229 Leonberg
             </p>
