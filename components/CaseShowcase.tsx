@@ -49,7 +49,7 @@ const CASES: ShowcaseCase[] = [
     page: 'showdown-0711',
     category: 'Recruiting Event',
     title: '0711 Showdown',
-    text: 'Ein EA FC25-Turnier als Recruiting-Format: über 100 Teilnehmende, Arbeitgeber auf Augenhöhe.',
+    text: 'Fünf Arbeitgeber, 64 junge Talente, ein EA SPORTS FC-Turnier — und die Vorstufe der XP Days.',
     image: '/videos/case-showdown.jpg',
     imageAlt: '0711 Showdown eSport Recruiting Event von GG Manufaktur'
   },
