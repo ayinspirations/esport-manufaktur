@@ -178,9 +178,16 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
               vollständig ausschließen; die Übermittlung wird auf die Standardvertragsklauseln der Europäischen
               Kommission gestützt.
             </p>
-            <p className="mt-3 text-slate-500">
-              Unsere eigenen Plattform-, Datenbank- und Backup-Systeme laufen davon getrennt bei der Hetzner Online
-              GmbH in Deutschland. Diese Website selbst führt keine Datenbank.
+            <p className="mt-3">
+              Die Domain und ihre DNS-Verwaltung liegen bei der{' '}
+              <span className="font-bold">Hetzner Online GmbH, Industriestraße 25, 91710 Gunzenhausen,
+              Deutschland</span> – dort wird der Aufruf angenommen und auf Netlify weitergeleitet. Bei Hetzner laufen
+              außerdem unsere eigenen Plattform-, Datenbank- und Backup-Systeme, in Rechenzentren in Deutschland.
+              Diese Website selbst führt keine Datenbank. Mit Hetzner besteht ein Vertrag zur Auftragsverarbeitung
+              gemäß Art. 28 DSGVO.
+            </p>
+            <p className="mt-2 text-slate-500">
+              Weitere Informationen: hetzner.com/legal/privacy-policy und netlify.com/privacy
             </p>
           </section>
 
@@ -203,10 +210,19 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">4. HubSpot: Formulare, Terminbuchung und CRM</h3>
             <p>
-              Das Anfrageformular und die Terminbuchung für ein Erstgespräch werden über HubSpot bereitgestellt und in
-              diese Website eingebettet. Vertragspartner ist die HubSpot Germany GmbH; die technische Plattform wird
-              durch Unternehmen der HubSpot-Gruppe bereitgestellt, insbesondere die HubSpot, Inc. (USA) und die
-              HubSpot Ireland Limited.
+              Das Anfrageformular und die Terminbuchung für ein Erstgespräch werden über HubSpot bereitgestellt.
+              Vertragspartner ist die HubSpot Germany GmbH; die technische Plattform wird durch Unternehmen der
+              HubSpot-Gruppe bereitgestellt, insbesondere die HubSpot, Inc. (USA) und die HubSpot Ireland Limited.
+            </p>
+            <p className="mt-3 font-bold text-slate-900">
+              Beim bloßen Aufruf dieser Website wird nichts an HubSpot übermittelt. Weder das Formular noch die
+              Terminbuchung ist in eine Seite eingebettet, und es läuft kein HubSpot-Tracking-Code im Hintergrund.
+            </p>
+            <p className="mt-3">
+              Erst wenn du „Kontakt aufnehmen“ oder „Termin vereinbaren“ anklickst, wird das jeweilige Fenster
+              geöffnet und der dafür nötige HubSpot-Code nachgeladen. Die Verarbeitung beginnt also mit einer
+              Handlung, mit der du die Funktion ausdrücklich anforderst; schließt du das Fenster, ohne etwas
+              abzuschicken, wird auch nichts übermittelt.
             </p>
             <p className="mt-3">
               Beim Laden dieser Elemente können insbesondere IP-Adresse, Online-Kennungen, aufgerufene Seiten,
@@ -253,14 +269,15 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">6. Schriftarten (Google Fonts)</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">6. Schriftarten</h3>
             <p>
-              Diese Website lädt die Schriftart Inter über Google Fonts von Servern der Google Ireland Limited. Dabei
-              können insbesondere IP-Adresse, Browser- und Geräteinformationen sowie die aufgerufene Seite an Google
-              übermittelt werden.
+              Die auf dieser Website verwendete Schriftart Inter wird von unserem eigenen Server ausgeliefert. Zum
+              Laden der Schrift wird keine Verbindung zu Google oder einem anderen Font-Anbieter hergestellt, und es
+              werden dabei keine Daten an Dritte übermittelt.
             </p>
             <p className="mt-3">
-              Rechtsgrundlagen sind § 25 Abs. 1 TDDDG und Art. 6 Abs. 1 lit. a DSGVO.
+              Die Auslieferung der Schriftdatei ist Teil der Bereitstellung dieser Website und damit technisch
+              erforderlich; sie erfolgt über dieselbe Verbindung wie die übrigen Inhalte (siehe Abschnitt 2).
             </p>
           </section>
 
@@ -268,9 +285,9 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">7. Empfänger personenbezogener Daten</h3>
             <p>Personenbezogene Daten erhalten nur Stellen, die sie für den jeweiligen Zweck benötigen. Auf dieser Website sind das:</p>
             <ul className="list-disc pl-5 mt-3 space-y-1">
+              <li>Hetzner für Domain, DNS und unsere übrigen Systeme,</li>
               <li>Netlify als Hosting- und CDN-Dienstleister,</li>
               <li>HubSpot für Formulare, Terminbuchung und CRM,</li>
-              <li>Google Ireland Limited für die Bereitstellung der Schriftart,</li>
               <li>IT-, Entwicklungs- und Supportdienstleister,</li>
               <li>Rechts-, Steuer- und sonstige Berater sowie</li>
               <li>Behörden und Gerichte, soweit eine gesetzliche Verpflichtung besteht.</li>
@@ -285,7 +302,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">8. Übermittlungen in Drittländer</h3>
             <p>
-              Bei Netlify, HubSpot und Google kann eine Verarbeitung außerhalb der Europäischen Union oder des
+              Bei Netlify und HubSpot kann eine Verarbeitung außerhalb der Europäischen Union oder des
               Europäischen Wirtschaftsraums erfolgen. Eine Übermittlung erfolgt nur, wenn die Voraussetzungen der
               Art. 44 ff. DSGVO erfüllt sind – insbesondere über einen Angemessenheitsbeschluss, eine gültige
               Zertifizierung nach dem EU-US Data Privacy Framework, die Standardvertragsklauseln der Europäischen
