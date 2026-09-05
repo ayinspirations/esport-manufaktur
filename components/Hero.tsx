@@ -136,7 +136,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
     <section
       ref={heroRef}
       data-nav-ground="dark"
-      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center"
+      // Der Inhalt sitzt mittig in der Flaeche, und die Flaeche traegt unten
+      // eine Handbreit mehr Polster als oben: damit steht der Block eine
+      // Spur ueber der geometrischen Mitte. Genau mittig wirkt auf einem
+      // hohen, schmalen Schirm nach unten gerutscht -- das Auge nimmt die
+      // optische Mitte hoeher an als die gemessene.
+      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center pb-[9vh] md:pb-0"
     >
       <HeroGround glowRef={glowRef} gridRef={gridRef} />
 
@@ -174,20 +179,22 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
           </span>
         </h1>
 
-        {/* Mobile: the block below the headline is taken out of the flow so the
-            centred content column measures the headline alone -- that puts
-            "WIR WOLLEN MENSCHEN BEGEISTERN" exactly on the vertical centre of
-            the viewport, with subline and CTAs hanging underneath it. From md
-            up it flows normally again. */}
-        <div
-          ref={belowRef}
-          className="absolute top-full inset-x-0 px-6 md:static md:px-0"
-        >
-          <p className="hero-subtext mt-9 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
+        {/* Subline und CTAs stehen im Fluss unter der Headline -- auf jeder
+            Breite.
+
+            Sie waren auf dem Telefon einmal herausgeloest, damit die
+            zentrierte Spalte allein die Headline misst und diese exakt auf
+            der Mitte steht. Das stimmte rechnerisch und sah falsch aus: ueber
+            der Headline lag ein Drittel Bildschirm leer, waehrend der Rest
+            des Heros in die untere Haelfte gedraengt wurde. Gemeinsam
+            zentriert steht die Headline hoeher und der Hero traegt als ein
+            Block. */}
+        <div ref={belowRef} className="w-full">
+          <p className="hero-subtext mt-7 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
             Mit Gamification, Events und Markenaktivierungen.
           </p>
 
-          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-9 md:pt-11">
+          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-7 md:pt-11">
             <button
               ref={ctaBtnRef}
               onPointerEnter={handleCtaEnter}
