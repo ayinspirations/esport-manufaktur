@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, CalendarDays, Mail } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { DUR, EASE_REVEAL } from '../motion';
 
 // ---------------------------------------------------------------------------
 // Die aufklappende Handlungsaufforderung
@@ -38,8 +39,16 @@ interface ExpandingCTAProps {
   className?: string;
 }
 
-/** Die Feder, mit der sich die Pille dehnt: schnell am Anfang, kein Nachwippen. */
-const SPRING = { type: 'spring', stiffness: 260, damping: 26, mass: 0.9 } as const;
+/**
+ * Wie sich die Pille dehnt.
+ *
+ * Eine Feder war es zuerst, und eine Feder federt: sie schieszt ueber die
+ * Zielbreite hinaus und kommt zurueck. Das ist verspielt, und verspielt ist
+ * hier das Gegenteil des Gemeinten. Dieselbe ruhige Kurve wie alles andere auf
+ * der Seite, ueber dieselbe Dauer -- die Pille gleitet auf ihre Breite und
+ * bleibt dort.
+ */
+const OPEN_TRANSITION = { duration: DUR.panel, ease: EASE_REVEAL } as const;
 
 export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   label,
@@ -84,7 +93,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     ? 'bg-white text-[#0b0f2a] shadow-[0_18px_50px_-28px_rgba(0,0,0,0.65)]'
     : 'bg-[#0b0f2a] text-white shadow-[0_18px_50px_-28px_rgba(11,15,42,0.6)]';
   const wayBase =
-    'inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
+    'inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
   const wayPrimary = light
     ? 'bg-[#0b0f2a] text-white hover:bg-[#0e958e]'
     : 'bg-white text-[#0b0f2a] hover:bg-emerald-400';
@@ -96,52 +105,67 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     <div ref={boxRef} className={`inline-flex ${className}`}>
       <motion.div
         layout
-        transition={SPRING}
+        transition={OPEN_TRANSITION}
         // Rund, solange eine Zeile steht; auf dem Telefon stapeln sich die
         // beiden Wege, und eine Kapselform um zwei Zeilen sieht aus wie ein
         // Versehen -- dort wird die Pille zur Karte.
         className={`relative overflow-hidden rounded-[26px] sm:rounded-full ${shell}`}
       >
-        <AnimatePresence initial={false} mode="wait">
-          {!open ? (
-            <motion.button
-              key="label"
-              type="button"
-              onClick={() => setOpen(true)}
-              aria-expanded={false}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18 }}
-              className="spring group inline-flex items-center gap-2.5 px-7 py-4 text-sm sm:text-base font-black tracking-tight"
-            >
-              {label}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-            </motion.button>
-          ) : (
-            <motion.div
-              key="ways"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.18, delay: 0.04 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-1 p-1.5"
-            >
-              <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>
-                <CalendarDays className="w-4 h-4" />
-                {bookingLabel}
-              </button>
-              <span
-                aria-hidden="true"
-                className={`hidden sm:block w-px h-6 mx-0.5 ${light ? 'bg-[#0b0f2a]/15' : 'bg-white/20'}`}
-              />
-              <button type="button" onClick={() => choose(onContact)} className={`${wayBase} ${waySecondary}`}>
-                <Mail className="w-4 h-4" />
-                {contactLabel}
-              </button>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/*
+          Beide Zustaende sind immer da; welcher zaehlt, entscheidet allein,
+          welcher im Fluss steht und welcher darueber liegt.
+
+          Mit AnimatePresence und `mode="wait"` verschwand erst das Label,
+          dann kamen die Wege -- dazwischen war die Pille leer und fiel auf
+          ihre Mindestbreite zusammen, was als Zucken vor der eigentlichen
+          Bewegung zu sehen war. So blendet das eine ins andere, waehrend die
+          Schale in einem Zug auf ihre neue Breite gleitet.
+        */}
+        <motion.button
+          layout="position"
+          transition={OPEN_TRANSITION}
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-expanded={open}
+          aria-hidden={open}
+          tabIndex={open ? -1 : 0}
+          className={`group inline-flex items-center gap-2.5 px-7 py-4 text-sm sm:text-base font-black tracking-tight transition-opacity duration-500 ease-reveal ${
+            open ? 'absolute inset-0 justify-center opacity-0 pointer-events-none' : 'relative opacity-100'
+          }`}
+        >
+          {label}
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
+        </motion.button>
+
+        <motion.div
+          layout="position"
+          transition={OPEN_TRANSITION}
+          aria-hidden={!open}
+          className={`flex flex-col sm:flex-row items-stretch sm:items-center gap-1 p-1.5 transition-opacity duration-500 ease-reveal ${
+            open ? 'relative opacity-100' : 'absolute inset-0 opacity-0 pointer-events-none'
+          }`}
+        >
+          <button
+            type="button"
+            tabIndex={open ? 0 : -1}
+            onClick={() => choose(onBooking)}
+            className={`${wayBase} ${wayPrimary}`}
+          >
+            {bookingLabel}
+          </button>
+          <span
+            aria-hidden="true"
+            className={`hidden sm:block w-px h-6 mx-1 ${light ? 'bg-[#0b0f2a]/15' : 'bg-white/20'}`}
+          />
+          <button
+            type="button"
+            tabIndex={open ? 0 : -1}
+            onClick={() => choose(onContact)}
+            className={`${wayBase} ${waySecondary}`}
+          >
+            {contactLabel}
+          </button>
+        </motion.div>
       </motion.div>
     </div>
   );
