@@ -1,10 +1,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowDown, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
-import { HeroGround, HERO_GRADIENT_TEXT } from './HeroGround';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
 import { LazyVideo } from './LazyVideo';
 
@@ -39,18 +38,16 @@ const TILE_TEXT_VARIANTS = {
   show: { opacity: 1, y: 0, transition: { duration: DUR.interact, ease: EASE_REVEAL } }
 };
 
-// Stagger restarts on each row of the mosaic -- three rows of two -- so no
-// tile waits on the delay of one sitting above it in a different row.
-const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
+// Stagger restarts on each row of the mosaic, so no tile waits on the delay of
+// one sitting above it in a different row. Die letzte Reihe traegt nur noch
+// eine Kachel und faengt deshalb wieder bei null an.
+const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0];
 
 interface BestCasesProps {
-  onScroll?: (id: string) => void;
   onNavigate?: (page: any) => void;
-  onOpenBooking?: () => void;
-  onOpenContact?: (subject?: string) => void;
 }
 
-export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOpenBooking, onOpenContact }) => {
+export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
   return (
     <section id="best-cases" className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
       {/* The section wrapper no longer animates: it used to fade the whole
@@ -84,12 +81,17 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
             claims a different rectangle of it. Because every span is whole
             units of the same cell, the shapes vary while the layout still
             tiles exactly: rows 1-3 take the wide tile and the portrait beside
-            it, rows 4-5 the square and the panorama, rows 6-8 the two large
-            squares. No gaps, no dense-packing heuristics, no tile left
-            orphaned on its own row at a smaller width.
+            it, rows 4-5 the square and the panorama, rows 6-8 eine Kachel
+            ueber die volle Breite. No gaps, no dense-packing heuristics, no
+            tile left orphaned on its own row at a smaller width.
+
+            Die letzte Reihe trug bis eben zwei Quadrate: den BFV-Case und
+            eine Abschlusskachel, die auf den Case-Viewer darunter zeigte.
+            Ohne sie nimmt der Case die Reihe ganz, statt eine halbe Zeile
+            leer stehen zu lassen.
 
             Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
-            2x2 square, 4x2 panorama, 3x3 a large square. */}
+            2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
           {/* Rows 1-3 — T-Systems 16:9, Hagebau portrait beside it */}
           <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
@@ -116,12 +118,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
-                  <div className="flex justify-between items-start">
-                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                      Employer Branding
-                    </div>
-                  </div>
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
                     <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       T-Systems
@@ -156,12 +153,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
-                  <div className="flex justify-between items-start">
-                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                      Recruiting
-                    </div>
-                  </div>
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
                     <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       Hagebau Bolay
@@ -197,12 +189,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                     Case ansehen <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10 pointer-events-none">
-                  <div className="flex justify-between items-start">
-                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                      Event Production
-                    </div>
-                  </div>
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
                     <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.95] tracking-tighter uppercase mb-3 drop-shadow-2xl">
                       0711 Showdown
@@ -238,12 +225,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                     Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
-                  <div className="flex justify-between items-start">
-                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                      eSport Projekt
-                    </div>
-                  </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
                     <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       Bayern Zockt
@@ -255,7 +237,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
           </div>
 
           {/* Rows 6-8 — BFV and the closing tile, two large squares */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-3 lg:row-span-3 lg:aspect-auto">
+          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -279,12 +261,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
                     Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
                   </div>
                 </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-between z-10 pointer-events-none">
-                  <div className="flex justify-between items-start">
-                    <div className="px-4 py-1.5 bg-white/10 backdrop-blur-xl rounded-full text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                      eFootball
-                    </div>
-                  </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
                     <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       BFV eFootball
@@ -295,74 +272,8 @@ export const BestCases: React.FC<BestCasesProps> = ({ onScroll, onNavigate, onOp
             </motion.div>
           </div>
 
-          <div className="col-span-1 aspect-[4/3] lg:col-span-3 lg:row-span-3 lg:aspect-auto">
-            <motion.button
-              onClick={() => onScroll?.('case-showcase')}
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[5]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-              className="relative group overflow-hidden rounded-shell bg-[#020617] cursor-pointer flex flex-col justify-center items-center p-8 md:p-12 shadow-2xl text-center h-full w-full border border-white/5"
-            >
-              {/* The closing tile stands on the hero's own ground, so the page
-                  ends where it began. It lifts slightly on hover -- the tile is
-                  a button, and this is the only feedback it has. */}
-              <HeroGround className="opacity-90 group-hover:opacity-100 transition-opacity duration-700" />
-
-              {/* The tile closing the mosaic no longer sends people to the
-                  contact form -- the two buttons under the grid do that now.
-                  It points at what is directly beneath it instead: the same
-                  cases as a full-screen viewer. */}
-              <div className="relative z-10 flex flex-col items-center">
-                {/* Two lines, not four. The tile used to force a break after
-                    every word, which left "ALLE", "UNSERE" and "REFERENZEN."
-                    stacked one word per line. */}
-                <h3 className="text-white text-[clamp(28px,3.5vw,44px)] font-black leading-[1.1] tracking-tighter uppercase max-w-[12ch]">
-                  Alle unsere{' '}
-                  <span className={HERO_GRADIENT_TEXT}>Referenzen.</span>
-                </h3>
-
-                <p className="mt-5 text-white/70 font-medium text-sm md:text-base leading-relaxed tracking-tight max-w-[34ch] text-balance">
-                  Jeden Case im Großformat — direkt hier darunter.
-                </p>
-
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="mt-8 px-6 py-3 bg-white text-black rounded-full font-black text-sm uppercase tracking-widest flex items-center gap-2 group-hover:bg-emerald-400 transition-colors duration-500"
-                >
-                  Projekte ansehen
-                  <ArrowDown className="w-4 h-4" />
-                </motion.div>
-              </div>
-            </motion.button>
-          </div>
         </div>
 
-        {/* The step after the cases: talk to us. Two ways of doing that --
-            a date in the calendar, or a written enquiry -- directly under the
-            grid rather than only in the footer form. */}
-        <Reveal delay={0.1} y={24} className="mt-14 md:mt-20 flex flex-col items-center text-center">
-          <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug text-balance">
-            Genug gesehen? Dann sprechen wir über dein Projekt.
-          </p>
-          <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <button
-              onClick={() => (onOpenBooking ? onOpenBooking() : onScroll?.('contact-section'))}
-              className="spring group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-colors duration-500"
-            >
-              Termin vereinbaren
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-            </button>
-            <button
-              onClick={() => (onOpenContact ? onOpenContact('Best Cases') : onScroll?.('contact-section'))}
-              className="spring inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/25 hover:border-[#0b0f2a]/40 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-colors duration-500"
-            >
-              Kontakt aufnehmen
-            </button>
-          </div>
-        </Reveal>
       </div>
     </section>
   );

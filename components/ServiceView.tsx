@@ -1,6 +1,6 @@
 import React from 'react';
-import { ArrowRight, CalendarDays } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { ExpandingCTA } from './ui/expanding-cta';
 import { BLOCK_GAP } from './spacing';
 import type { ServiceContent } from './servicesContent';
 
@@ -87,26 +87,17 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
           </p>
         </Reveal>
 
-        {/* Desktop only. On a phone the headline, the subline and this pair of
-            buttons stack into one column, so the calls to action land directly
-            under the heading and then again at the foot of a page that is not
-            long enough to have forgotten them -- the same ask twice, a screen
-            apart. The closer keeps them; up here they are dropped. */}
-        <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 hidden md:flex flex-wrap items-center gap-4">
-          <button
-            onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
-          >
-            {content.hero.ctaLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-          </button>
-          <button
-            onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
-          >
-            <CalendarDays className="w-4 h-4" />
-            Kostenloses Erstgespräch vereinbaren
-          </button>
+        {/* Desktop only. On a phone the headline, the subline and the call to
+            action stack into one column, so the ask lands directly under the
+            heading and then again at the foot of a page that is not long
+            enough to have forgotten it -- the same ask twice, a screen apart.
+            The closer keeps it; up here it is dropped. */}
+        <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 hidden md:block">
+          <ExpandingCTA
+            label={content.hero.ctaLabel}
+            onBooking={onOpenBooking}
+            onContact={requestProject}
+          />
         </Reveal>
       </section>
 
@@ -212,29 +203,12 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
           )}
         </div>
         <div className="h-9 md:h-11" />
-        <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4">
-          <button
-            onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
-          >
-            {content.ctaCloser.primaryLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
-          </button>
-          {/* Auf dem Telefon keine zweite Pille.
-              "Kostenloses Erstgespräch vereinbaren" ist dreimal so lang wie
-              "Projekt anfragen": in derselben Pillenform bricht der Text auf
-              zwei Zeilen und der Nebenweg wird zum groeszten Element der
-              Seite -- optisch das Gegenteil der Rangfolge, die gemeint ist.
-              Bis sm steht er deshalb als schlichte Zeile mit Icon und
-              kleinerer Schrift unter der Hauptaktion, ab sm wieder als Pille
-              neben ihr. */}
-          <button
-            onClick={onOpenBooking}
-            className="inline-flex items-center gap-2 text-[#0b0f2a] font-bold text-[13px] tracking-tight underline-offset-4 hover:underline transition-all duration-500 sm:gap-2.5 sm:text-base sm:no-underline sm:hover:no-underline sm:bg-transparent sm:hover:bg-[#0b0f2a]/[0.06] sm:border sm:border-[#0b0f2a]/20 sm:hover:border-[#0b0f2a]/35 sm:px-7 sm:py-4 sm:rounded-full"
-          >
-            <CalendarDays className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            Kostenloses Erstgespräch vereinbaren
-          </button>
+        <Reveal delay={0.1} className="flex justify-center">
+          <ExpandingCTA
+            label={content.ctaCloser.primaryLabel}
+            onBooking={onOpenBooking}
+            onContact={requestProject}
+          />
         </Reveal>
       </section>
     </div>

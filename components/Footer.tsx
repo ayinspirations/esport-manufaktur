@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy') => void;
+  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign') => void;
   scrollToSection: (id: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) => {
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy') => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign') => {
     e.preventDefault();
     onNavigate(page);
   };
@@ -97,10 +97,19 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 border-t border-slate-900/10 text-[11px] md:text-xs text-slate-500 font-bold text-center md:text-left gap-6">
-              <p>© 2025 eSport Manufaktur GmbH</p>
+              <p>GG Manufaktur GmbH – 2026</p>
               <p className="md:text-right">
-                {/* Lower case on purpose -- it is the studio's own spelling. */}
-                Designed by <a href="https://www.akiistudio.de" target="_blank" rel="noopener noreferrer" className="text-emerald-600 hover:text-emerald-500 transition-colors normal-case">akii studio</a>
+                {/* Die Zeile fuehrt nicht mehr nach auszen, sondern auf die
+                    eigene Seite: wer sie anklickt, hat gerade gesehen, was
+                    dort angeboten wird. */}
+                Website designed by{' '}
+                <a
+                  href="/webdesign"
+                  onClick={(e) => handleNav(e, 'webdesign')}
+                  className="text-emerald-600 hover:text-emerald-500 transition-colors"
+                >
+                  Akan
+                </a>
               </p>
             </div>
           </motion.div>

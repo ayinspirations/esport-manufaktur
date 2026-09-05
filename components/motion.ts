@@ -50,6 +50,23 @@ export const DUR = {
   slow: 1.5,      // large surfaces, hero-scale moments
 } as const;
 
+/**
+ * Womit sich aufklappende Schalen dehnen -- die CTA-Pille und der Social-Knopf.
+ *
+ * Eine Feder war es zweimal, und zweimal falsch herum. Unterdaempft schnappte
+ * sie auf; ueberdaempft (130/26) begann sie so weich, dass in den ersten zwei
+ * Zehnteln fast nichts geschah -- gemessen blieb die Pille beim Schlieszen drei
+ * Bilder lang auf voller Breite stehen, bevor sie ueberhaupt losfuhr. Von
+ * auszen sieht das aus, als haenge sie kurz, und erst dann faellt sie
+ * zusammen.
+ *
+ * Die Reveal-Kurve macht genau das Umgekehrte: sie legt den groeszten Teil der
+ * Strecke sofort zurueck und laeuft lang aus. Die Schale antwortet damit im
+ * ersten Bild auf den Zeiger und kommt trotzdem weich an -- und sie tut es in
+ * einer festen Zeit, was der Inhalt, der gleichzeitig wechselt, treffen kann.
+ */
+export const SPRING_SHELL = { duration: 0.42, ease: EASE_REVEAL } as const;
+
 /** Stagger steps in seconds. */
 export const STAGGER = {
   char: 0.038,  // per character in a split headline
