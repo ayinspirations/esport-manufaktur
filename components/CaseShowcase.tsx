@@ -281,7 +281,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
         */}
         <div
           ref={railRef}
-          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
+          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto overscroll-x-contain pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {CASES.map((c, i) => {

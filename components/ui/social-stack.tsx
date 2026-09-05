@@ -182,10 +182,20 @@ export const SocialStack: React.FC = () => {
       onPointerCancel={endDrag}
       onClickCapture={handleClickCapture}
       onPointerEnter={handlePointerEnter}
+      // `touch-action: none` stand hier fuer das Verschieben mit dem Finger --
+      // und hat damit jede Wischbewegung geschluckt, die auf dem Knopf
+      // beginnt. Der Knopf klebt unten rechts im Bild, also genau dort, wo der
+      // Daumen zum Scrollen aufsetzt: die Seite stand still, und es sah aus,
+      // als haenge der untere Rand fest.
+      //
+      // `pan-y` gibt das Scrollen zurueck. Senkrecht gewischt bewegt sich die
+      // Seite, waagerecht begonnene Gesten erreichen weiterhin die Drag-Logik,
+      // und mit der Maus ist Ziehen ohnehin unberuehrt. Eine Schaltflaeche, an
+      // der die Seite haengenbleibt, ist der schlechtere Tausch.
       style={
         dragPos
-          ? { left: dragPos.left, top: dragPos.top, touchAction: 'none' }
-          : { touchAction: 'none' }
+          ? { left: dragPos.left, top: dragPos.top, touchAction: 'pan-y' }
+          : { touchAction: 'pan-y' }
       }
       // `justify-end`, damit die Schale rechtsbuendig in ihrem Rahmen sitzt.
       // Der Rahmen nimmt die neue Breite sofort an, die Schale animiert sie --

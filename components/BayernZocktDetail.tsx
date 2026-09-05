@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Trophy, Target, Users } from 'lucide-react';
+import { Target, Users } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { CaseHero } from './CaseHero';
 import { CaseSlider } from './CaseSlider';
@@ -223,17 +223,12 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = () => {
                   </section>
 
                   <div className="pt-10 border-t border-white/10">
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-14 h-14 shrink-0 rounded-2xl bg-emerald-500 flex items-center justify-center text-slate-900 shadow-lg shadow-emerald-500/20">
-                        <Trophy className="w-8 h-8" />
-                      </div>
-                      <div>
-                        <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status</div>
-                        <div className="text-lg font-black text-white leading-tight">Erfolgreich zur UEFA EURO 2024 umgesetzt</div>
-                        <div className="text-white/60 text-sm font-medium leading-snug mt-1">
-                          Gemeinschaftsprojekt mit dem Bayerischen Staatsministerium für Digitales, dem BFV eFootball
-                          und der BFV Service GmbH.
-                        </div>
+                    <div className="mb-6">
+                      <div className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status</div>
+                      <div className="text-lg font-black text-white leading-tight">Erfolgreich zur UEFA EURO 2024 umgesetzt</div>
+                      <div className="text-white/60 text-sm font-medium leading-snug mt-1">
+                        Gemeinschaftsprojekt mit dem Bayerischen Staatsministerium für Digitales, dem BFV eFootball
+                        und der BFV Service GmbH.
                       </div>
                     </div>
                     <p className="text-emerald-400 text-sm font-black leading-relaxed italic">
