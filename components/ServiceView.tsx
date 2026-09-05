@@ -74,14 +74,14 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <Reveal duration={0.7} delay={0.25} className="mt-9 md:mt-11 hidden md:flex flex-wrap items-center gap-4">
           <button
             onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
           >
             {content.hero.ctaLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
           </button>
           <button
             onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
           >
             <CalendarDays className="w-4 h-4" />
             Kostenloses Erstgespräch vereinbaren
@@ -144,7 +144,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                 {group.cards.map((card, ci) => (
                   <Reveal key={ci} delay={Math.min(ci, 5) * 0.05}>
-                    <div className={`h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-transform duration-300 hover:scale-[1.02]`}>
+                    <div className={`h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-transform duration-500 hover:scale-[1.02]`}>
                       <div className="w-9 h-9 rounded-full bg-emerald-400/15 text-emerald-300 flex items-center justify-center text-xs font-black mb-6">
                         {String(ci + 1).padStart(2, '0')}
                       </div>
@@ -161,7 +161,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
                 <Reveal delay={0.2} className="mt-9 md:mt-11">
                   <button
                     onClick={requestProject}
-                    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+                    className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
                   >
                     {group.groupCta}
                   </button>
@@ -194,14 +194,14 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
         <Reveal delay={0.1} className="flex flex-wrap items-center justify-center gap-4">
           <button
             onClick={requestProject}
-            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
           >
             {content.ctaCloser.primaryLabel}
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
           </button>
           <button
             onClick={onOpenBooking}
-            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-300"
+            className="inline-flex items-center gap-2.5 bg-transparent hover:bg-[#0b0f2a]/[0.06] text-[#0b0f2a] border border-[#0b0f2a]/20 hover:border-[#0b0f2a]/35 px-7 py-4 rounded-full font-bold text-sm sm:text-base tracking-tight transition-all duration-500"
           >
             <CalendarDays className="w-4 h-4" />
             Kostenloses Erstgespräch vereinbaren

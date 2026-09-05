@@ -60,7 +60,7 @@ const FilterPill: React.FC<{
     // aria-current rather than aria-pressed: these behave as a set of related
     // links through the same page, and only one is ever the current one.
     aria-current={active ? 'true' : undefined}
-    className={`shrink-0 whitespace-nowrap rounded-full px-3 py-2 md:px-5 md:py-2.5 text-[10.5px] md:text-[13px] font-black uppercase tracking-[0.06em] md:tracking-[0.08em] transition-colors duration-300 border ${
+    className={`shrink-0 whitespace-nowrap rounded-full px-3 py-2 md:px-5 md:py-2.5 text-[10.5px] md:text-[13px] font-black uppercase tracking-[0.06em] md:tracking-[0.08em] transition-colors duration-500 border ${
       active
         ? 'bg-[#0b0f2a] text-white border-[#0b0f2a]'
         : 'bg-white/50 text-[#0b0f2a]/70 border-[#0b0f2a]/10 hover:bg-white hover:text-[#0b0f2a] hover:border-[#0b0f2a]/25'

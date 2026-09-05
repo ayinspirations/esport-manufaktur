@@ -175,7 +175,7 @@ export const BFVDetail: React.FC<CaseDetailProps> = () => {
                   <button 
                     key={i} 
                     onClick={(e) => { e.stopPropagation(); setCurrentIndex(i); }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-500 ${
                       i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
                     }`}
                   />
@@ -203,13 +203,13 @@ export const BFVDetail: React.FC<CaseDetailProps> = () => {
                     
                     {/* Authentic YouTube Play Button */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-20 h-14 bg-red-600 rounded-card flex items-center justify-center text-white shadow-2xl transition-all duration-300 group-hover:bg-red-700 group-hover:scale-110">
+                      <div className="w-20 h-14 bg-red-600 rounded-card flex items-center justify-center text-white shadow-2xl transition-all duration-500 group-hover:bg-red-700 group-hover:scale-110">
                         <Play className="w-8 h-8 fill-current translate-x-0.5" />
                       </div>
                     </div>
 
                     {/* Authentic YouTube Title Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-8">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
                       <h4 className="text-white font-black text-xl md:text-2xl uppercase tracking-tighter leading-none mb-2">
                         {video.title}
                       </h4>

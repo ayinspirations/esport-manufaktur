@@ -212,10 +212,10 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
             </p>
             <button
               onClick={() => onNavigate?.(current.page)}
-              className="group inline-flex items-center gap-2.5 bg-white hover:bg-emerald-400 text-slate-950 px-7 py-3.5 rounded-full font-black text-sm tracking-tight transition-colors duration-300"
+              className="group inline-flex items-center gap-2.5 bg-white hover:bg-emerald-400 text-slate-950 px-7 py-3.5 rounded-full font-black text-sm tracking-tight transition-colors duration-500"
             >
               Case ansehen
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-500" />
             </button>
           </motion.div>
         </AnimatePresence>

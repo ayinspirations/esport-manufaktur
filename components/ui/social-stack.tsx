@@ -187,7 +187,7 @@ export const SocialStack: React.FC = () => {
           onClick={() => setIsOpen((v) => !v)}
           aria-expanded={effectiveOpen}
           aria-label="Social Media Links"
-          className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-card border transition-all duration-300 ${
+          className={`relative z-10 flex h-14 w-14 items-center justify-center rounded-card border transition-all duration-500 ${
             effectiveOpen ? SOLID_CLASS : GLASSY_CLASS
           }`}
         >

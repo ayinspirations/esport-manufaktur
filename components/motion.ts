@@ -37,12 +37,14 @@ export const EASE_SPRING = [0.67, 0.13, 0.14, 1.04] as const;
 export const EASE_SPRING_CSS = 'cubic-bezier(0.67, 0.13, 0.14, 1.04)';
 
 /** Durations in seconds. */
-// The CONTENT register is deliberately unhurried: reveals and panel swaps
-// should unfold, not snap. The INTERACT register stays short -- a hover that
-// takes a second to answer feels broken, not calm.
+// Both registers are unhurried now. They stay separate in *curve* -- hover
+// keeps the springy overshoot, content keeps the calm quart -- but a hover
+// that snapped in 0.3s next to a reveal that unfolds over a second read as
+// two different websites. Half a second is still an immediate answer to the
+// pointer; it just no longer arrives before the eye does.
 export const DUR = {
-  micro: 0.18,    // underlines, colour swaps
-  interact: 0.34, // hover lifts, arrow nudges, icon swaps
+  micro: 0.25,    // underlines, colour swaps
+  interact: 0.5,  // hover lifts, arrow nudges, icon swaps
   panel: 0.55,    // panels and menus opening, view swaps
   reveal: 1.05,   // standard content reveal
   slow: 1.5,      // large surfaces, hero-scale moments

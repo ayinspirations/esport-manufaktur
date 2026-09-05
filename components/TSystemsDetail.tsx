@@ -115,7 +115,7 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
                   <button
                     key={i}
                     onClick={() => setCurrentIndex(i)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className={`h-2 rounded-full transition-all duration-500 ${
                       i === currentIndex ? 'w-8 bg-white' : 'w-2 bg-white/20'
                     }`}
                   />

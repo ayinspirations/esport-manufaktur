@@ -45,14 +45,17 @@ export default {
       },
       transitionTimingFunction: {
         // Two registers, deliberately separated (Mooser's model):
-        reveal: 'cubic-bezier(0.16, 1, 0.3, 1)',        // calm, content
+        reveal: 'cubic-bezier(0.22, 1, 0.36, 1)',       // calm, content
         spring: 'cubic-bezier(0.67, 0.13, 0.14, 1.04)', // springy, interactive
       },
+      // Kept in sync with DUR in components/motion.ts by hand -- the same
+      // vocabulary, once for Tailwind classes and once for inline styles.
       transitionDuration: {
-        micro: '150ms',
-        interact: '300ms',
-        reveal: '750ms',
-        slow: '1100ms',
+        micro: '250ms',
+        interact: '500ms',
+        panel: '550ms',
+        reveal: '1050ms',
+        slow: '1500ms',
       },
       keyframes: {
         'tilt-in': {

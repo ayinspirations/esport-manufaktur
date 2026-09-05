@@ -116,7 +116,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
 
   const handleCtaEnter = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
     if (e.pointerType !== 'mouse' || !ctaBtnRef.current) return;
-    gsap.to(ctaBtnRef.current, { scale: 1.03, duration: 0.35, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { scale: 1.03, duration: 0.5, ease: 'power3.out' });
   });
 
   const handleCtaMove = contextSafe((e: React.PointerEvent<HTMLButtonElement>) => {
@@ -124,12 +124,12 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
     const rect = ctaBtnRef.current.getBoundingClientRect();
     const relX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
     const relY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
-    gsap.to(ctaBtnRef.current, { x: relX * 5, y: relY * 5, duration: 0.4, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { x: relX * 5, y: relY * 5, duration: 0.55, ease: 'power3.out' });
   });
 
   const handleCtaLeave = contextSafe(() => {
     if (!ctaBtnRef.current) return;
-    gsap.to(ctaBtnRef.current, { x: 0, y: 0, scale: 1, duration: 0.5, ease: 'power3.out' });
+    gsap.to(ctaBtnRef.current, { x: 0, y: 0, scale: 1, duration: 0.65, ease: 'power3.out' });
   });
 
   return (
@@ -200,13 +200,13 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
                 aria-hidden="true"
                 className="absolute inset-0 -translate-x-full skew-x-[-20deg] bg-white/25 transition-transform duration-700 ease-out group-hover:translate-x-full"
               />
-              <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-px">
+              <span className="relative inline-block transition-transform duration-500 group-hover:-translate-y-px">
                 Termin vereinbaren
               </span>
             </button>
             <button
               onClick={() => scrollToSection?.('competencies')}
-              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-300 tracking-tighter"
+              className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-sm sm:text-lg transition-colors duration-500 tracking-tighter"
             >
               Leistungen entdecken
               <ArrowRight className="w-3.5 h-3.5 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />

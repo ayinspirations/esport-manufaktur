@@ -167,12 +167,12 @@ export const CookiePopup: React.FC = () => {
                               aria-label={cat.label}
                               disabled={cat.locked}
                               onClick={() => !cat.locked && entry[1](!entry[0])}
-                              className={`shrink-0 w-12 h-7 rounded-full transition-colors duration-300 relative ${
+                              className={`shrink-0 w-12 h-7 rounded-full transition-colors duration-500 relative ${
                                 on ? 'bg-[#0e958e]' : 'bg-[#0b0f2a]/20'
                               } ${cat.locked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
                             >
                               <span
-                                className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-300 ${
+                                className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow transition-transform duration-500 ${
                                   on ? 'translate-x-5' : 'translate-x-0'
                                 }`}
                               />

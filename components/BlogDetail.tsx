@@ -52,7 +52,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
         >
           <button
             onClick={onBack}
@@ -76,7 +76,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack }) => {
           </p>
 
           <div className="relative w-full aspect-[16/9] rounded-shell overflow-hidden shadow-2xl mb-16">
-            <img src={post.image} alt={post.imageAlt} className="absolute inset-0 w-full h-full object-cover" />
+            <img src={post.image} alt={post.imageAlt} decoding="async" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" />
           </div>
 
           <div className="space-y-14 text-slate-700 font-medium leading-relaxed text-base md:text-lg">
