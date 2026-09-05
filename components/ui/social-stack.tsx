@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Instagram, Linkedin, Youtube, Mail, Share2 } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION, HERO_REVEAL_EASE } from '../heroIntro';
@@ -33,7 +33,10 @@ const SOLID_CLASS =
   'tile-gradient border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] hover:shadow-[0_0_50px_rgba(52,211,153,0.3)]';
 
 /** Derselbe Wechsel wie in der CTA-Pille -- ein Bauteil, eine Bewegung. */
-const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
+const SWAP = { duration: 0.26, ease: EASE_REVEAL } as const;
+
+/** Wie lange der abtretende Inhalt Vorsprung hat -- wie in der CTA-Pille. */
+const LEAD = 0.2;
 
 const WIDGET_SIZE = 56; // px, matches h-14/w-14
 const DRAG_THRESHOLD = 10; // px of movement before a touch counts as a drag, not a tap
@@ -55,6 +58,26 @@ export const SocialStack: React.FC = () => {
   // gates the glass -> solid look: glassy at rest, always, on both web and
   // mobile, until the user actually interacts.
   const effectiveOpen = isOpen || isHovered;
+
+  // Auf dem Telefon oeffnet der Tipp, und nichts schloss wieder: kein Zeiger,
+  // der weggeht, kein Klick daneben, der zaehlt. Ein aufgeklappter Knopf blieb
+  // ueber der ganzen Seite stehen, bis man ihn selbst wieder traf.
+  //
+  // Beides zaehlt jetzt -- ein Tipp irgendwo sonst und jede Scrollbewegung.
+  // Wer scrollt, liest weiter; die Auswahl ist dann erledigt.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onPointer = (e: PointerEvent) => {
+      if (!containerRef.current?.contains(e.target as Node)) setIsOpen(false);
+    };
+    const onScroll = () => setIsOpen(false);
+    document.addEventListener('pointerdown', onPointer);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      document.removeEventListener('pointerdown', onPointer);
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [isOpen]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     if (e.pointerType !== 'touch' || !containerRef.current) return;
@@ -170,7 +193,10 @@ export const SocialStack: React.FC = () => {
       */}
       <motion.div
         layout
-        transition={SPRING_SHELL}
+        // Auf: erst geht das Zeichen, dann dehnt sich die Flaeche mit den
+        // Symbolen. Zu: Flaeche und Symbole gehen zusammen zurueck, das
+        // Zeichen faellt danach wieder herein.
+        transition={effectiveOpen ? { ...SPRING_SHELL, delay: LEAD } : SPRING_SHELL}
         className={`flex h-14 items-center overflow-hidden rounded-card border transition-colors duration-500 ${
           effectiveOpen ? SOLID_CLASS : GLASSY_CLASS
         }`}
@@ -183,9 +209,11 @@ export const SocialStack: React.FC = () => {
               onClick={() => setIsOpen((v) => !v)}
               aria-expanded={false}
               aria-label="Social Media Links"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              // Von oben herein, nach oben hinaus -- wie das Label der
+              // CTA-Pille, damit beide Bauteile dieselbe Sequenz zeigen.
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0, transition: { ...SWAP, delay: LEAD } }}
+              exit={{ opacity: 0, y: -10 }}
               transition={SWAP}
               className="flex h-14 w-14 items-center justify-center"
             >
@@ -194,10 +222,10 @@ export const SocialStack: React.FC = () => {
           ) : (
             <motion.div
               key="links"
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.97 }}
-              transition={{ ...SWAP, delay: 0.08 }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1, transition: { ...SWAP, delay: LEAD } }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              transition={SWAP}
               className="flex items-center gap-0.5 px-1.5"
             >
               {SOCIAL_LINKS.map(({ href, label, Icon }, i) => (
