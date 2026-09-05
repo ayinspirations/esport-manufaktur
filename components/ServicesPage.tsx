@@ -234,12 +234,12 @@ const MobileServiceMenu: React.FC<{
             transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
             className="absolute inset-x-0 top-full mt-2 rounded-card border border-white/15 shadow-2xl overflow-hidden"
           >
-            {/* Derselbe Grund wie der Hero der Startseite, nur leiser: der
-                Glanz und das Raster liegen unter einem Schleier aus der
-                Grundfarbe, damit das Menue mit der Seite zusammengehoert
-                statt sich vor sie zu stellen. */}
-            <HeroGround />
-            <div aria-hidden="true" className="absolute inset-0 bg-[#020617]/55" />
+            {/* Derselbe Grund wie der Hero der Startseite -- unveraendert, nur
+                eine Spur durchlaessig, sodass die Leinwand dahinter ihn
+                minimal aufhellt. Ein Schleier aus der Grundfarbe lag vorher
+                darueber; der hat genau das genommen, was den Grund ausmacht:
+                den Glanz und das Raster. */}
+            <HeroGround className="opacity-90" />
 
             {/* Der Grund haengt am stehenden Rahmen, das Scrollen passiert
                 eine Ebene tiefer -- sonst deckt er nur die erste Bildhoehe
