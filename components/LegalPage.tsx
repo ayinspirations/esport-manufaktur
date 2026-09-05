@@ -55,8 +55,8 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           <section>
             <h3 className="text-sm font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-6">Streitbeilegung</h3>
             <p className="text-slate-600 font-medium leading-relaxed">
-              Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit:<br />
-              <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" className="text-[#0a6f6a] underline">https://ec.europa.eu/consumers/odr/</a>
+              Die Europäische Kommission hat ihre Plattform zur Online-Streitbeilegung (OS) zum 20. Juli 2025
+              eingestellt. Ein Verweis darauf entfällt damit.
             </p>
             <p className="mt-4 text-slate-500 italic">Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
           </section>
@@ -124,6 +124,37 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
               71229 Leonberg
             </p>
             <p className="mt-2 text-slate-500 font-bold italic">E-Mail-Adresse des Anbieters: info@esport-manufaktur.com</p>
+          </section>
+
+          {/* Hosting stand hier gar nicht -- und das ist die eine Verarbeitung,
+              die bei jedem einzelnen Seitenaufruf stattfindet, auch ohne
+              Einwilligung und ohne dass der Besucher irgendetwas tut. */}
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Hosting und Auslieferung</h3>
+            <p>
+              Diese Website wird bei <span className="font-bold">Netlify (Netlify, Inc., San Francisco, Kalifornien, USA)</span>{' '}
+              gehostet und über dessen Content-Delivery-Netzwerk ausgeliefert. Die Auslieferung erfolgt aus
+              Rechenzentren in der Europäischen Union.
+            </p>
+            <p className="mt-3">
+              Beim Aufruf der Website verarbeitet Netlify als unser Auftragsverarbeiter automatisch die Daten, die
+              Ihr Browser übermittelt (Server-Logfiles): IP-Adresse, Datum und Uhrzeit des Zugriffs, die aufgerufene
+              Adresse, übertragene Datenmenge, Statusmeldung, Browsertyp und -version, Betriebssystem sowie die
+              zuvor besuchte Seite. Diese Verarbeitung ist technisch notwendig, um die Seite überhaupt ausliefern zu
+              können, und dient darüber hinaus der Sicherheit und Stabilität des Angebots.
+            </p>
+            <p className="mt-3">
+              <span className="font-bold">Rechtsgrundlage:</span> Art. 6 Abs. 1 lit. f DSGVO – unser berechtigtes
+              Interesse an einer sicheren und zuverlässigen Bereitstellung dieser Website.{' '}
+              <span className="font-bold">Speicherdauer:</span> Logdaten werden nur so lange aufbewahrt, wie es für
+              diese Zwecke erforderlich ist.
+            </p>
+            <p className="mt-3">
+              Mit Netlify besteht ein Vertrag über die Auftragsverarbeitung nach Art. 28 DSGVO. Da das Unternehmen
+              seinen Sitz in den Vereinigten Staaten hat, lässt sich ein Zugriff aus einem Drittland nicht
+              vollständig ausschließen; die Übermittlung wird auf die Standardvertragsklauseln der Europäischen
+              Kommission gestützt.
+            </p>
           </section>
 
           <section>
@@ -206,7 +237,8 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
             <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
               <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Kontaktieren des Nutzers</h4>
               <ul className="space-y-4">
-                <li><span className="font-bold">Kontaktformular:</span> Autorisierung zur Verwendung der Angaben für Antworten auf Bitten nach Informationen. Verarbeitete Daten: E-Mail; Nutzungsdaten.</li>
+                <li><span className="font-bold">Kontaktformular (HubSpot Forms, HubSpot Germany GmbH):</span> Das Anfrageformular auf dieser Website wird über HubSpot bereitgestellt. Die eingegebenen Angaben werden zur Beantwortung der Anfrage verarbeitet und in unserem CRM gespeichert. Verarbeitete Daten: E-Mail; Name; Telefonnummer; Nachrichteninhalt; Nutzungsdaten. Verarbeitungsort: Deutschland.</li>
+                <li><span className="font-bold">Terminbuchung (HubSpot Meetings, HubSpot Germany GmbH):</span> Über das eingebettete Buchungsfenster können Termine für ein Erstgespräch vereinbart werden. Verarbeitete Daten: E-Mail; Name; gewählter Termin; Nutzungsdaten; Tracker. Verarbeitungsort: Deutschland.</li>
                 <li><span className="font-bold">Mailingliste oder Newsletter:</span> Hinzufügung der E-Mail-Adresse zur Kontaktliste für gewerbliche Informationen. Verarbeitete Daten: E-Mail; Nutzungsdaten; Tracker.</li>
               </ul>
             </div>
@@ -240,8 +272,17 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
               <li>Einschränkung der Verarbeitung ihrer Daten verlangen.</li>
               <li>Löschung oder anderweitiges Entfernen der personenbezogenen Daten verlangen.</li>
               <li>Ihre Daten erhalten und an einen anderen Verantwortlichen übertragen lassen.</li>
-              <li>Beschwerde einreichen.</li>
+              <li>Beschwerde bei einer Aufsichtsbehörde einreichen.</li>
             </ul>
+            <p className="mt-4">
+              Die für uns zuständige Aufsichtsbehörde ist der Landesbeauftragte für den Datenschutz und die
+              Informationsfreiheit Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart. Unabhängig davon
+              können Sie sich an die Aufsichtsbehörde Ihres Aufenthaltsorts wenden.
+            </p>
+            <p className="mt-3">
+              Zur Ausübung dieser Rechte genügt eine Nachricht an die oben genannte E-Mail-Adresse. Einen
+              Datenschutzbeauftragten haben wir nicht bestellt; wir sind dazu gesetzlich nicht verpflichtet.
+            </p>
             
             <div className="mt-8 p-6 bg-slate-950 text-white rounded-2xl border border-white/10 shadow-xl">
               <h4 className="font-black uppercase text-[10px] tracking-[0.2em] mb-3 text-[#0e958e]">Details zum Widerspruchsrecht</h4>
@@ -265,7 +306,7 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
           </section>
 
           <section className="pt-10 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">Letzte Aktualisierung: 24. Juli 2025</p>
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">Letzte Aktualisierung: 5. September 2026</p>
             <div className="text-[9px] text-slate-300 font-bold uppercase tracking-widest">iubenda hostet diese Inhalte</div>
           </section>
         </div>
