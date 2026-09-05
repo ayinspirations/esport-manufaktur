@@ -197,42 +197,50 @@ export const RevealText: React.FC<RevealTextProps> = ({
   };
 
   // -------------------------------------------------------------------------
-  // Kursiv wird nie zerlegt
+  // Kursiv wird nicht in Woerter zerlegt, sondern in Zeilen
   // -------------------------------------------------------------------------
-  // Der Aufbau zerschneidet eine Zeile in ein inline-block je Wort. Bei
+  // Der Aufbau zerschneidet eine Zeile sonst in ein inline-block je Wort. Bei
   // aufrechter Schrift ist das folgenlos; beim kursiven Schnitt nicht. Jedes
   // Wort haengt nach rechts aus seinem Kasten heraus, der Umbruch rechnet aber
   // mit dem Kasten: das letzte Wort einer Zeile gilt als passend und wird dann
-  // ueber den Rand hinaus gemalt, wo es der naechste Container abschneidet.
+  // ueber den Rand hinaus gemalt, wo der naechste Container es abschneidet.
   // Steht die Zeile still, stimmt alles wieder -- der Fehler gehoert allein
   // dem Moment des Erscheinens, und genau der ist das Erste, was jemand sieht.
   //
-  // Dagegen hilft kein besserer Zuschnitt der Maske. Solange die Zeile aus
-  // Kaesten besteht, rechnet der Umbruch mit Kaesten. Kursive Zeilen kommen
-  // deshalb als ein Stueck Text herein: ein Element, ein Aufblenden, ein
-  // kurzer Weg von unten. Kein inline-block, keine Maske, keine eigene
-  // Compositing-Ebene je Wort -- also auch keine der Stellen, an denen Tinte
-  // verloren gehen kann.
+  // Dagegen hilft kein besserer Zuschnitt der Maske: solange die Zeile aus
+  // Kaesten besteht, rechnet der Umbruch mit Kaesten. Die Maske sitzt deshalb
+  // eine Ebene hoeher -- um die ganze Zeile statt um jedes Wort. Innen steht
+  // gewoehnlicher Fliesztext, der umbricht wie jeder andere auch, und darum
+  // ein Kasten, der unten abschneidet. Die Bewegung bleibt damit exakt die
+  // von vorher: die Zeile faehrt hinter ihrer eigenen Unterkante hervor nach
+  // oben, nur eben als ein Stueck.
   //
   // Die Regel greift ueber die Klasse, nicht ueber ein Extra-Attribut: was
-  // `italic` traegt, wird eingeblendet. Damit gilt sie auch fuer jede kursive
-  // Ueberschrift, die es hier noch nicht gibt.
+  // `italic` traegt, faehrt als Zeile herein. Damit gilt sie auch fuer jede
+  // kursive Ueberschrift, die es hier noch nicht gibt.
   // -------------------------------------------------------------------------
   if (/(^|\s)italic(\s|$)/.test(className)) {
     return React.createElement(
       as,
-      {
-        ref,
-        className,
-        style: {
-          opacity: inView ? 1 : 0,
-          transform: inView ? 'translateY(0)' : 'translateY(0.16em)',
-          transition: `opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s, transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s`
-        }
-      },
+      { ref, className },
       lines.map((line, li) => (
-        <span key={`l-${li}`} className="block">
-          {line}
+        <span
+          key={`l-${li}`}
+          className="block"
+          // Schneidet nur unten. Die drei anderen Seiten stehen auf -100%,
+          // damit Oberlaengen, Umlaute und der kursive Ueberhang frei malen.
+          style={{ clipPath: 'inset(-100% -100% -0.14em -100%)' }}
+        >
+          <span
+            className="block"
+            style={{
+              transform: inView ? 'translateY(0)' : 'translateY(115%)',
+              opacity: inView ? 1 : 0,
+              transition: `transform ${duration}s ${EASE_REVEAL_CSS} ${delay}s, opacity ${duration}s ${EASE_REVEAL_CSS} ${delay}s`
+            }}
+          >
+            {line}
+          </span>
         </span>
       ))
     );
