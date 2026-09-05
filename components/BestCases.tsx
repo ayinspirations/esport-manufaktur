@@ -41,7 +41,7 @@ const TILE_TEXT_VARIANTS = {
 // Stagger restarts on each row of the mosaic, so no tile waits on the delay of
 // one sitting above it in a different row. Die letzte Reihe traegt nur noch
 // eine Kachel und faengt deshalb wieder bei null an.
-const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
+const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0];
 
 interface BestCasesProps {
   onNavigate?: (page: any) => void;
@@ -82,9 +82,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             units of the same cell, the shapes vary while the layout still
             tiles exactly: rows 1-3 take the wide tile and the portrait beside
             it, rows 4-5 the square and the panorama, rows 6-8 die hochkante
-            Kachel und die breite daneben -- gespiegelt zum ersten Band. No
-            gaps, no dense-packing heuristics, no tile left orphaned on its
-            own row at a smaller width.
+            Kachel und die breite daneben -- gespiegelt zum ersten Band --,
+            rows 9-11 ein Abschluss ueber die volle Breite. No gaps, no
+            dense-packing heuristics, no tile left orphaned on its own row at
+            a smaller width.
 
             Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
             2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss.
@@ -324,6 +325,44 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Rows 9-11 — REWE ueber die volle Breite. Ein Band allein, weil
+              das Format nach zwei Paaren wechseln soll. */}
+          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
+            <motion.div
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[6]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <div
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('rewe')}
+              >
+                <img
+                  src="/images/rewe/hero.jpg"
+                  alt="REWE × 1. FC Köln"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      REWE
+                    </h3>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>

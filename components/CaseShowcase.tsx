@@ -21,10 +21,10 @@ interface ShowcaseCase {
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV und INTERSPORT haben noch keine
-// -- die Pfade stehen im Code, die Dateien fehlen im Projekt --, also laufen
-// sie auf der eigenen dunklen Flaeche der Seite, statt sich eine Aufnahme aus
-// einem anderen Projekt zu leihen und sie als ihre auszugeben.
+// The photography each case actually has. BFV, INTERSPORT und REWE haben noch
+// keine -- die Pfade stehen im Code, die Dateien fehlen im Projekt --, also
+// laufen sie auf der eigenen dunklen Flaeche der Seite, statt sich eine
+// Aufnahme aus einem anderen Projekt zu leihen und sie als ihre auszugeben.
 const CASES: ShowcaseCase[] = [
   {
     page: 'tsystems',
@@ -74,6 +74,13 @@ const CASES: ShowcaseCase[] = [
     title: 'INTERSPORT',
     text: 'Sechs Wochen Pop-up-Gaming im Clubhouse Berlin, mit eigenem EA SPORTS FC 26-Turnier.',
     imageAlt: 'INTERSPORT Clubhouse Gaming-Aktivierung von GG Manufaktur'
+  },
+  {
+    page: 'rewe',
+    category: 'Sponsoring-Aktivierung',
+    title: 'REWE',
+    text: 'Scouting für den 1. FC Köln, Community-Turniere und Recruiting — aus einem Sponsoring wird eine Plattform.',
+    imageAlt: 'REWE eSport-Aktivierung mit dem 1. FC Köln von GG Manufaktur'
   }
 ];
 
