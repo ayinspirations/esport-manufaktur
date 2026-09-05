@@ -41,37 +41,41 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
         </div>
 
-        {/* Das Team -- auf dem Telefon anders gezeigt als am Desktop.
+        {/* Das Team, hinter dem eigenen Grund der Kachel.
 
-            Als Vollflaechen-Hintergrund funktioniert das Foto nur, solange die
-            Kachel breit ist. Auf einem schmalen Schirm ist sie 356 Pixel breit
-            und 1233 hoch; ein Cover-Ausschnitt aus einem Querformat zeigt dort
-            rund zwei Prozent der Bildbreite -- einen senkrechten Streifen, auf
-            dem niemand zu erkennen ist, und den der seitliche Verlauf (fuer
-            eine breite Kachel gemacht, links dicht) zusaetzlich fast
-            vollstaendig zudeckt.
+            Die Rechnung dahinter, weil sie nicht offensichtlich ist: die
+            Kachel ist auf einem schmalen Schirm 356 Pixel breit und rund 1230
+            hoch. Deckt das Foto sie ganz, bestimmt die Hoehe die Skalierung --
+            das Querformat wird auf 1230 Pixel gebracht, senkrecht ist damit
+            alles zu sehen, und die Koepfe sitzen dort, wo sie im Bild sitzen:
+            bei rund 40 Prozent der Hoehe, also fast in der Mitte der Kachel.
+            Waagerecht bleibt ein Fuenftel der Bildbreite uebrig. Beides
+            zugleich -- volle Kachel und Koepfe oben -- gibt die Geometrie
+            nicht her.
 
-            Deshalb bekommt das Foto dort ein eigenes Band am Kopf der Kachel.
-            In 220 Pixel Hoehe passt bei dieser Breite fast das ganze Bild --
-            alle fuenf, statt eines Ausschnitts von keinem -- und es darf auch
-            deutlich staerker durchkommen, weil darunter kein Text liegt,
-            dessen Kontrast es kosten wuerde. Der Verlauf laeuft dort nach
-            unten statt zur Seite und uebergibt an die dunkle Flaeche, auf der
-            die Headline steht. */}
+            Also deckt das Foto die oberen knapp zwei Drittel und laeuft nach
+            unten in den Grund aus. In dieser Box bestimmt wieder die Hoehe die
+            Skalierung, aber es ist eine kleinere: ein Drittel der Bildbreite
+            steht im Fenster, und die Koepfe liegen im oberen Viertel der
+            Kachel. Waagerecht sind es bei 28 Prozent die beiden linken.
+
+            Ab md faellt das alles weg -- dort traegt die Kachel das ganze
+            Bild. */}
         <img
           src={TEAM_IMAGE}
           alt="Das Team der GG Manufaktur"
           loading="lazy"
           decoding="async"
-          className="absolute inset-x-0 top-0 h-[220px] md:inset-0 md:h-full w-full object-cover object-[center_32%] md:object-center opacity-60 md:opacity-25 z-0 pointer-events-none"
+          className="absolute inset-x-0 top-0 h-[62%] md:inset-0 md:h-full w-full object-cover object-[28%_center] md:object-center opacity-45 md:opacity-25 z-0 pointer-events-none"
         />
-        {/* Telefon: nach unten ins Dunkle. */}
+        {/* Telefon: der Schleier laeuft nach unten und uebernimmt dort, wo das
+            Foto endet -- so gibt es keine Kante, sondern einen Uebergang. */}
         <div
           aria-hidden="true"
-          className="md:hidden absolute inset-x-0 top-0 h-[240px] z-0 pointer-events-none bg-gradient-to-b from-[#020617]/10 via-[#020617]/55 to-[#020617]"
+          className="md:hidden absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#020617]/40 via-[#020617]/85 to-[#020617]"
         />
-        {/* Ab md: zur Seite, damit die Headline auf der dunkelsten Stelle
-            steht und das Bild nach rechts ausklingt. */}
+        {/* Ab md zur Seite: die Headline steht dann auf der dunkelsten Stelle
+            und das Bild klingt nach rechts aus. */}
         <div
           aria-hidden="true"
           className="hidden md:block absolute inset-0 z-0 pointer-events-none bg-gradient-to-r from-[#020617] via-[#020617]/85 to-[#020617]/55"
@@ -79,7 +83,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
 
         {/* Contents follow the panel rather than fading with it: the panel
             lands first, then headline and copy build on top of it. */}
-        <div className="relative z-10 pt-[200px] pb-20 md:py-28 px-6 md:px-14 lg:px-20">
+        <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
           <RevealText
             as="h2"
             by="word"
