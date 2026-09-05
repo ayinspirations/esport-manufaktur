@@ -196,7 +196,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
           <div className="max-w-3xl">
             <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-[#0b0f2a] leading-[0.9] tracking-tighter uppercase">
               <RevealText as="span" by="word" text="Unsere" />
-              <RevealText as="span" by="word" text="Services." className="text-[#0e958e] italic" delay={0.16} />
+              <RevealText as="span" by="word" stagger={0} text="Services." className="text-[#0e958e] italic" delay={0.16} />
             </h2>
             <Reveal as="p" delay={0.34} className="text-slate-900 font-bold text-lg md:text-xl mt-5 max-w-xl leading-snug tracking-tight">
               Wir entwickeln Lösungen, die aus Aufmerksamkeit echte Interaktion machen.

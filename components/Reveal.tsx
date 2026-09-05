@@ -93,6 +93,11 @@ interface RevealTextProps {
    * slide-up. On a headline that wraps over several lines the default stagger
    * reads as the text arriving line by line, which is wrong for a hero -- the
    * statement should land in one piece.
+   *
+   * Jede kursive Zeile bekommt 0. Der Schnitt laesst jedes Wort nach rechts
+   * ueberhaengen, und wenn die Woerter nacheinander ankommen, sieht man den
+   * Ueberhang eines Wortes neben der Luecke des naechsten -- die Zeile bricht
+   * optisch auseinander, statt als eine Bewegung von unten hereinzukommen.
    */
   stagger?: number;
   as?: React.ElementType;

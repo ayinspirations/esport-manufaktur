@@ -142,7 +142,7 @@ export const NiveaEffectCrackzDetail: React.FC<NiveaEffectCrackzDetailProps> = (
             <section>
               <RevealText
                 as="h2"
-                by="word"
+                by="word" stagger={0}
                 text="Drei Marken mit individuellen Gaming- und Gamification-Aktivierungen auf der Consumenta erlebbar machen."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

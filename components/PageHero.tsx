@@ -89,7 +89,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
 
           <h1 className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-[#0b0f2a]">
             <RevealText as="span" by="word" text={title} delay={0.05} />
-            {accent && <RevealText as="span" by="word" text={accent} delay={0.18} className="text-[#0e958e] italic" />}
+            {accent && <RevealText as="span" by="word" stagger={0} text={accent} delay={0.18} className="text-[#0e958e] italic" />}
           </h1>
 
           {subline && (
@@ -121,7 +121,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
 
         <h1 className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-white">
           <RevealText as="span" by="word" text={title} delay={0.05} />
-          {accent && <RevealText as="span" by="word" text={accent} delay={0.18} className="text-[#2dd4bf] italic" />}
+          {accent && <RevealText as="span" by="word" stagger={0} text={accent} delay={0.18} className="text-[#2dd4bf] italic" />}
         </h1>
 
         {subline && (

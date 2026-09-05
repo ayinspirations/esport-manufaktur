@@ -58,7 +58,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
           <div className="max-w-3xl">
             <h2 className="text-[clamp(40px,7vw,100px)] font-black text-[#0b0f2a] leading-[0.85] tracking-tighter uppercase">
               <RevealText as="span" by="word" text="Best" />
-              <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
+              <RevealText as="span" by="word" stagger={0} text="Cases." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
             <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
               Projekte, die wir gemeinsam mit unseren Kunden realisieren durften.

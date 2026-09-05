@@ -68,7 +68,7 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
     <div className="relative z-20 -mt-[7vh] md:-mt-[8vh] px-6 md:px-14 pb-2 md:pb-4">
       <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
         <RevealText as="span" by="word" text={title} delay={0.1} />
-        <RevealText as="span" by="word" text={accent} delay={0.24} className="text-[#0e958e] italic" />
+        <RevealText as="span" by="word" stagger={0} text={accent} delay={0.24} className="text-[#0e958e] italic" />
       </h1>
     </div>
   </header>

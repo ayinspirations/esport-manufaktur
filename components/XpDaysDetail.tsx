@@ -132,7 +132,7 @@ export const XpDaysDetail: React.FC<XpDaysDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word"
+                by="word" stagger={0}
                 text="Eine gamifizierte Karrieremesse, auf der Unternehmen und junge Talente zu einem echten Match werden können."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

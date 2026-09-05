@@ -109,7 +109,7 @@ export const IntersportDetail: React.FC<IntersportDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word"
+                by="word" stagger={0}
                 text="Fußball- und Gaming-Fans mit einer sechswöchigen Pop-up-Aktivierung für INTERSPORT begeistern."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />

@@ -123,7 +123,7 @@ export const Showdown0711Detail: React.FC<CaseDetailProps> = () => {
             <section>
               <RevealText
                 as="h2"
-                by="word"
+                by="word" stagger={0}
                 text="Fünf Arbeitgeber mit 64 jungen Talenten über Gaming auf Augenhöhe zusammenbringen."
                 className="text-3xl md:text-5xl font-black uppercase tracking-tighter mb-6 md:mb-8 italic text-[#0e958e]"
               />
