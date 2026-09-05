@@ -44,6 +44,7 @@ const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ defau
 const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazy(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const WebdesignPage = lazy(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const CookiePopup = lazy(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
 const BookingModal = lazy(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
 const ContactModal = lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
@@ -60,7 +61,7 @@ const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidd
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv'
   | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
-  | 'ueber-uns' | 'meine-geschichte';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -105,6 +106,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/ueber-uns/meine-geschichte') {
     return { page: 'meine-geschichte' };
+  }
+  if (path === '/webdesign') {
+    return { page: 'webdesign' };
   }
 
   const currentHash = window.location.hash.replace('#', '');
@@ -201,6 +205,8 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns');
     } else if (page === 'meine-geschichte') {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
+    } else if (page === 'webdesign') {
+      window.history.pushState(null, '', '/webdesign');
     } else {
       window.history.pushState(null, '', `/#${page}`);
     }
@@ -308,6 +314,8 @@ export default function App() {
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'meine-geschichte' && <MeineGeschichte onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
+
+        {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
         )}
