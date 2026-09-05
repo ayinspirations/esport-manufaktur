@@ -33,10 +33,7 @@ const SOLID_CLASS =
   'tile-gradient border-white/10 shadow-[0_0_28px_rgba(52,211,153,0.35)] hover:shadow-[0_0_50px_rgba(52,211,153,0.3)]';
 
 /** Derselbe Wechsel wie in der CTA-Pille -- ein Bauteil, eine Bewegung. */
-const SWAP = { duration: 0.26, ease: EASE_REVEAL } as const;
-
-/** Wie lange der abtretende Inhalt Vorsprung hat -- wie in der CTA-Pille. */
-const LEAD = 0.2;
+const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
 
 const WIDGET_SIZE = 56; // px, matches h-14/w-14
 const DRAG_THRESHOLD = 10; // px of movement before a touch counts as a drag, not a tap
@@ -60,7 +57,7 @@ export const SocialStack: React.FC = () => {
   const effectiveOpen = isOpen || isHovered;
 
   // Auf dem Telefon oeffnet der Tipp, und nichts schloss wieder: kein Zeiger,
-  // der weggeht, kein Klick daneben, der zaehlt. Ein aufgeklappter Knopf blieb
+  // der weggeht, kein Klick daneben, der zaehlt. Der aufgeklappte Knopf blieb
   // ueber der ganzen Seite stehen, bis man ihn selbst wieder traf.
   //
   // Beides zaehlt jetzt -- ein Tipp irgendwo sonst und jede Scrollbewegung.
@@ -193,10 +190,7 @@ export const SocialStack: React.FC = () => {
       */}
       <motion.div
         layout
-        // Auf: erst geht das Zeichen, dann dehnt sich die Flaeche mit den
-        // Symbolen. Zu: Flaeche und Symbole gehen zusammen zurueck, das
-        // Zeichen faellt danach wieder herein.
-        transition={effectiveOpen ? { ...SPRING_SHELL, delay: LEAD } : SPRING_SHELL}
+        transition={SPRING_SHELL}
         className={`flex h-14 items-center overflow-hidden rounded-card border transition-colors duration-500 ${
           effectiveOpen ? SOLID_CLASS : GLASSY_CLASS
         }`}
@@ -209,11 +203,9 @@ export const SocialStack: React.FC = () => {
               onClick={() => setIsOpen((v) => !v)}
               aria-expanded={false}
               aria-label="Social Media Links"
-              // Von oben herein, nach oben hinaus -- wie das Label der
-              // CTA-Pille, damit beide Bauteile dieselbe Sequenz zeigen.
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0, transition: { ...SWAP, delay: LEAD } }}
-              exit={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={SWAP}
               className="flex h-14 w-14 items-center justify-center"
             >
@@ -222,10 +214,10 @@ export const SocialStack: React.FC = () => {
           ) : (
             <motion.div
               key="links"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1, transition: { ...SWAP, delay: LEAD } }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={SWAP}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              transition={{ ...SWAP, delay: 0.08 }}
               className="flex items-center gap-0.5 px-1.5"
             >
               {SOCIAL_LINKS.map(({ href, label, Icon }, i) => (

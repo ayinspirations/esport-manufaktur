@@ -18,30 +18,33 @@ import { EASE_REVEAL, SPRING_SHELL } from '../motion';
 // daneben: der Klickpunkt bleibt derselbe.
 //
 // ---------------------------------------------------------------------------
-// Die Choreografie
+// Die Choreografie, und warum sie so und nicht anders ist
 // ---------------------------------------------------------------------------
-// Nacheinander, nicht durcheinander -- und in beide Richtungen anders herum:
+// Drei Dinge passieren gleichzeitig, und genau ihre Gleichzeitigkeit ist der
+// Effekt:
 //
-//   Auf:  das Label steigt nach oben aus der Pille heraus. Erst wenn es
-//         draussen ist, dehnt sich die Schale und die beiden Wege kommen
-//         gleichzeitig herein.
-//   Zu:   die Wege gehen und die Schale faellt auf ihre Ausgangsform zurueck.
-//         Danach faellt das Label von oben wieder herein.
+//   1. Die Schale geht auf ihre neue Breite -- eine Feder, kein Ablaufplan,
+//      und eine ueberdaempfte: sie kommt an, statt ueber die Zielbreite
+//      hinauszuschieszen. Eine Feder kennt kein Ende ihrer Dauer; das laesst
+//      die Bewegung getragen wirken statt abgezaehlt.
+//   2. Das Label steigt nach oben aus der Pille heraus.
+//   3. Die beiden Wege kommen aus einer Spur kleiner heraus hoch, einen
+//      Hauch spaeter, sodass sie in die schon oeffnende Schale hineinwachsen.
 //
-// Die Reihenfolge steckt in den Verzoegerungen, nicht im Warten von
-// AnimatePresence. `mode="wait"` haette sie auch erzwungen, aber es nimmt der
-// Schale die Messung: zwischen dem alten und dem neuen Inhalt steht ein Frame
-// ohne beides, und was sie danach anfaehrt, ist ein Sprung statt einer Fahrt
-// (gemessen: 276 auf 372 Pixel in einem Bild).
+// Auf jeder Breite dieselbe Bewegung: die Wege stehen immer nebeneinander,
+// die Schale dehnt sich immer nur zur Seite. Ein Umbruch auf dem Telefon
+// haette daraus zwei Bewegungen gemacht -- Breite und Hoehe zugleich.
 //
-// Mit `popLayout` liegt der abtretende Inhalt neben dem Fluss und bleibt
-// sichtbar, waehrend er geht; die Schale kennt jederzeit die Breite, die sie
-// anfaehrt. Wann sie losfaehrt, sagt ihr die Verzoegerung -- beim Oeffnen
-// nach dem Label, beim Schlieszen sofort, zusammen mit den Wegen.
+// Ein Zwischenversuch liesz die Schale per Zeitplan laufen und blendete die
+// Inhalte per CSS gegeneinander. Das war korrekt und leblos: eine Kurve mit
+// festem Ende bremst sichtbar ab, und zwei ineinander verblassende Bloecke
+// bewegen sich nicht, sie werden nur durchsichtig.
 //
-// Geoeffnet wird mit dem Zeiger, nicht erst mit dem Klick: wer auf die Pille
-// zeigt, will wissen, was dahinter steht. Auf dem Finger gibt es kein Zeigen,
-// dort bleibt der Tipp.
+// `mode="popLayout"` ist das Stueck, das beides zusammenhaelt: es nimmt den
+// abtretenden Inhalt aus dem Fluss, sodass allein der neue die Breite
+// bestimmt, die die Schale gerade anfaehrt. Ohne das misst die Schale
+// waehrend des Wechsels beide zugleich und faehrt eine Breite an, die es nie
+// geben wird.
 // ---------------------------------------------------------------------------
 
 interface ExpandingCTAProps {
@@ -63,17 +66,14 @@ interface ExpandingCTAProps {
 }
 
 /**
- * Der Wechsel der Inhalte -- eine Haelfte der Sequenz, zweimal hintereinander.
+ * Der Wechsel der Inhalte.
  *
  * Laenger und mit kleinerem Weg als in der Vorlage (0.2s, 20px, scale 0.9):
  * deren Betrag gehoert zu einer Feder, die selbst schnappt. Unter einer
  * ruhigen Schale wirkt ein Inhalt, der 20 Pixel weit springt und aus 90
  * Prozent aufzieht, wie ein zweiter, schnellerer Vorgang im selben Knopf.
  */
-const SWAP = { duration: 0.26, ease: EASE_REVEAL } as const;
-
-/** Wie lange der abtretende Inhalt Vorsprung hat, bevor der Rest folgt. */
-const LEAD = 0.2;
+const SWAP = { duration: 0.32, ease: EASE_REVEAL } as const;
 
 export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   label,
@@ -88,9 +88,11 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   const boxRef = useRef<HTMLDivElement>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Nur echte Maeuse. Ein Finger loest beim Tippen ein pointerenter aus und
-  // nie ein passendes pointerleave -- die Pille bliebe nach der ersten
-  // Beruehrung dauerhaft offen.
+  // Der Zeiger oeffnet, der Klick auch -- an der Bewegung aendert das nichts.
+  //
+  // Nur echte Maeuse: ein Finger loest beim Tippen ein pointerenter aus und nie
+  // ein passendes pointerleave, die Pille bliebe nach der ersten Beruehrung
+  // dauerhaft offen. Auf dem Finger bleibt es beim Tipp.
   const handleEnter = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
     if (leaveTimer.current) clearTimeout(leaveTimer.current);
@@ -99,8 +101,8 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   const handleLeave = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return;
     // Eine kurze Gnadenfrist: die Pille waechst unter dem Zeiger, und wer
-    // dabei fuer einen Moment ueber ihren wandernden Rand hinausrutscht, hat
-    // sie nicht verlassen wollen.
+    // dabei einen Moment ueber ihren wandernden Rand hinausrutscht, hat sie
+    // nicht verlassen wollen.
     if (leaveTimer.current) clearTimeout(leaveTimer.current);
     leaveTimer.current = setTimeout(() => setOpen(false), 180);
   };
@@ -160,10 +162,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     >
       <motion.div
         layout
-        // Beim Oeffnen wartet die Schale, bis das Label draussen ist. Beim
-        // Schlieszen faellt sie zusammen mit den Wegen zurueck -- und erst
-        // danach faellt das Label wieder herein.
-        transition={open ? { ...SPRING_SHELL, delay: LEAD } : SPRING_SHELL}
+        transition={SPRING_SHELL}
         // Eine Zeile, auf jeder Breite. Die beiden Wege standen auf dem
         // Telefon uebereinander, und damit dehnte sich die Pille nicht mehr
         // zur Seite, sondern klappte nach unten auf: statt einer Bewegung
@@ -179,13 +178,8 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               type="button"
               onClick={() => setOpen(true)}
               aria-expanded={open}
-              // Von oben herein, nach oben hinaus -- dieselbe Richtung in
-              // beide Zustaende, damit das Label nicht einmal steigt und
-              // einmal faellt.
-              initial={{ opacity: 0, y: -12 }}
-              // Zurueck faellt das Label erst, wenn die Schale wieder ihre
-              // Ausgangsform hat.
-              animate={{ opacity: 1, y: 0, transition: { ...SWAP, delay: LEAD } }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={SWAP}
               className="group inline-flex items-center gap-2.5 px-6 py-3.5 sm:px-7 sm:py-4 text-[13px] sm:text-base font-black tracking-tight"
@@ -196,12 +190,13 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
           ) : (
             <motion.div
               key="ways"
-              // Gleichzeitig mit der Schale: dieselbe Verzoegerung, damit sich
-              // die Flaeche und ihr Inhalt in einem Zug aufziehen.
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1, transition: { ...SWAP, delay: LEAD } }}
-              exit={{ opacity: 0, scale: 0.96 }}
-              transition={SWAP}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.97 }}
+              // Einen Hauch spaeter als die Schale, damit die Wege in eine
+              // bereits oeffnende Flaeche hineinwachsen statt gegen ihren Rand
+              // zu laufen.
+              transition={{ ...SWAP, delay: 0.08 }}
               className="flex flex-row items-center gap-0.5 sm:gap-1 p-1 sm:p-1.5"
             >
               <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>
