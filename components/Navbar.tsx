@@ -269,7 +269,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 background: glass.fill,
                 backdropFilter: glass.filter,
                 WebkitBackdropFilter: glass.filter,
-                border: `1px solid ${glass.border}`,
+                // Ueber dunklem Grund keine Kontur. Eine gezeichnete Kante
+                // macht aus der Scheibe ein aufgeklebtes Element -- im Hero,
+                // wo hinter ihr nichts als Weite liegt, faellt genau das auf.
+                // Der helle Innenrand oben aus dem Schatten reicht dort, um
+                // die Flaeche als Glas zu lesen.
+                //
+                // Auf heller Leinwand bleibt sie: dort steht helles Glas auf
+                // hellem Grund, und ohne Kante verliert die Pille ihre Form.
+                border: `1px solid ${ground === 'light' ? glass.border : 'transparent'}`,
                 boxShadow: glass.shadow,
                 transition: `background 600ms ${EASE_REVEAL_CSS}, backdrop-filter 600ms ${EASE_REVEAL_CSS}, border-color 600ms ${EASE_REVEAL_CSS}, box-shadow 600ms ${EASE_REVEAL_CSS}`
               }

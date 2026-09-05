@@ -137,11 +137,11 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
       ref={heroRef}
       data-nav-ground="dark"
       // Der Inhalt sitzt mittig in der Flaeche, und die Flaeche traegt unten
-      // eine Handbreit mehr Polster als oben: damit steht der Block eine
-      // Spur ueber der geometrischen Mitte. Genau mittig wirkt auf einem
-      // hohen, schmalen Schirm nach unten gerutscht -- das Auge nimmt die
-      // optische Mitte hoeher an als die gemessene.
-      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center pb-[9vh] md:pb-0"
+      // eine Spur mehr Polster als oben: damit steht der Block knapp ueber
+      // der geometrischen Mitte, die auf einem hohen, schmalen Schirm immer
+      // etwas abgesackt wirkt. Nur eine Spur -- der Hero soll die Hoehe
+      // fuellen, nicht oben kleben.
+      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center pb-[4vh] md:pb-0"
     >
       <HeroGround glowRef={glowRef} gridRef={gridRef} />
 
@@ -190,11 +190,11 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             zentriert steht die Headline hoeher und der Hero traegt als ein
             Block. */}
         <div ref={belowRef} className="w-full">
-          <p className="hero-subtext mt-7 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
+          <p className="hero-subtext mt-8 md:mt-11 text-white text-xl sm:text-2xl xl:text-3xl font-bold max-w-3xl mx-auto leading-[1.3] tracking-tight opacity-90 text-balance">
             Mit Gamification, Events und Markenaktivierungen.
           </p>
 
-          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-7 md:pt-11">
+          <div className="hero-cta flex items-center justify-center gap-6 sm:gap-8 pt-12 md:pt-11">
             <button
               ref={ctaBtnRef}
               onPointerEnter={handleCtaEnter}

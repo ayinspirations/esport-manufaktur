@@ -16,6 +16,15 @@ interface ServiceViewProps {
    * nicht zweimal begrenzt und zweimal gepolstert wird.
    */
   container?: string;
+  /**
+   * Hoechstzahl der Kacheln nebeneinander auf breiten Schirmen.
+   *
+   * Ueber die volle Seitenbreite tragen drei; in der Panelspalte neben der
+   * Sidebar bleibt jeder Kachel dann kaum mehr Breite als ihre eigene
+   * Polsterung, und aus dem Text wird eine Spalte aus Silben. Dort sind es
+   * zwei.
+   */
+  cardColumns?: 2 | 3;
   /** Opens the booking popup. */
   onOpenBooking: () => void;
   /** Opens the contact-form popup, told which service it is about. */
@@ -55,7 +64,8 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
   content,
   onOpenBooking,
   onOpenContact,
-  container = CONTAINER
+  container = CONTAINER,
+  cardColumns = 3
 }) => {
   const requestProject = () => onOpenContact(content.h1);
 
@@ -152,7 +162,7 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
                 </Reveal>
               )}
 
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              <div className={`grid sm:grid-cols-2 ${cardColumns === 3 ? 'lg:grid-cols-3' : ''} gap-4 md:gap-5`}>
                 {group.cards.map((card, ci) => (
                   <Reveal key={ci} delay={Math.min(ci, 5) * 0.05}>
                     <div className={`h-full p-7 md:p-8 rounded-card ${TILE} border border-white/10 transition-transform duration-500 hover:scale-[1.02]`}>
