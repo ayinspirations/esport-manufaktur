@@ -41,7 +41,7 @@ const TILE_TEXT_VARIANTS = {
 // Stagger restarts on each row of the mosaic, so no tile waits on the delay of
 // one sitting above it in a different row. Die letzte Reihe traegt nur noch
 // eine Kachel und faengt deshalb wieder bei null an.
-const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0];
+const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
 
 interface BestCasesProps {
   onNavigate?: (page: any) => void;
@@ -81,14 +81,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             claims a different rectangle of it. Because every span is whole
             units of the same cell, the shapes vary while the layout still
             tiles exactly: rows 1-3 take the wide tile and the portrait beside
-            it, rows 4-5 the square and the panorama, rows 6-8 eine Kachel
-            ueber die volle Breite. No gaps, no dense-packing heuristics, no
-            tile left orphaned on its own row at a smaller width.
-
-            Die letzte Reihe trug bis eben zwei Quadrate: den BFV-Case und
-            eine Abschlusskachel, die auf den Case-Viewer darunter zeigte.
-            Ohne sie nimmt der Case die Reihe ganz, statt eine halbe Zeile
-            leer stehen zu lassen.
+            it, rows 4-5 the square and the panorama, rows 6-8 die hochkante
+            Kachel und die breite daneben -- gespiegelt zum ersten Band. No
+            gaps, no dense-packing heuristics, no tile left orphaned on its
+            own row at a smaller width.
 
             Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
             2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss.
@@ -257,8 +253,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 6-8 — BFV and the closing tile, two large squares */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
+          {/* Rows 6-8 — BFV hochkant, INTERSPORT breit daneben. Gespiegelt
+              zum ersten Band, damit dieselbe Paarung nicht zweimal gleich
+              aussieht. */}
+          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -274,6 +272,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 <img
                   src="/images/bfv/hero.jpg"
                   alt="BFV eFootball"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
@@ -284,11 +283,47 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 </div>
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.9] tracking-tighter uppercase mb-3 drop-shadow-2xl">
                       BFV eFootball
                     </h3>
                   </div>
                 </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
+            <motion.div
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[5]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <div
+                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+                onClick={() => onNavigate?.('intersport')}
+              >
+                <img
+                  src="/images/intersport/hero.jpg"
+                  alt="INTERSPORT Clubhouse"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      Intersport
+                    </h3>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>

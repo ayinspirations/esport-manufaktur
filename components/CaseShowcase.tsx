@@ -21,16 +21,16 @@ interface ShowcaseCase {
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV has none -- /images/cases/bfv.jpg
-// is referenced elsewhere in the site but has never existed in the repository --
-// so it runs on the site's own dark ground rather than borrowing a photo from
-// another project and captioning it as BFV.
+// The photography each case actually has. BFV und INTERSPORT haben noch keine
+// -- die Pfade stehen im Code, die Dateien fehlen im Projekt --, also laufen
+// sie auf der eigenen dunklen Flaeche der Seite, statt sich eine Aufnahme aus
+// einem anderen Projekt zu leihen und sie als ihre auszugeben.
 const CASES: ShowcaseCase[] = [
   {
     page: 'tsystems',
     category: 'Employer Branding',
     title: 'T-Systems',
-    text: 'Eine maßgeschneiderte Gaming-Plattform, die technikaffine Schüler für IT-Berufe begeistert.',
+    text: 'Eine deutschlandweite Gaming-Aktivierung, die junge Tech-Talente für den Arbeitgeber T-Systems gewinnt.',
     image: '/images/t-systems/hero.jpg',
     card: '/videos/case-tsystems.jpg',
     imageAlt: 'Gaming-Aktivierung für T-Systems von GG Manufaktur'
@@ -39,7 +39,7 @@ const CASES: ShowcaseCase[] = [
     page: 'hagebau',
     category: 'Retail Activation',
     title: 'Hagebau',
-    text: 'Gaming Days am Point of Sale — ein Erlebnis, das Zielgruppen in den Markt holt.',
+    text: 'Recruiting-Game, Messeaktivierung und eigene Gaming Days — ein Kreislauf, der bis zur Bewerbung führt.',
     image: '/images/hagebau/hero-hagebau.jpg',
     card: '/videos/case-hagebau.jpg',
     imageAlt: 'Gaming Day Aktivierung für Hagebau von GG Manufaktur'
@@ -56,7 +56,7 @@ const CASES: ShowcaseCase[] = [
     page: 'bayern-zockt',
     category: 'Verbandsformat',
     title: 'Bayern zockt',
-    text: 'Digitale Qualifier und ein physisches Finale — Talentsichtung über einen ganzen Freistaat.',
+    text: 'Eine digitale EM im Originalmodus, mit Finale im Stadion des 1. FC Augsburg.',
     image: '/images/bayern-zockt/hero.jpg',
     card: '/videos/case-bayern-zockt.jpg',
     imageAlt: 'Bayern zockt eSport Turnierserie von GG Manufaktur'
@@ -65,8 +65,15 @@ const CASES: ShowcaseCase[] = [
     page: 'bfv',
     category: 'eFootball',
     title: 'BFV eFootball',
-    text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands.',
+    text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands — Kunde seit unserer Gründung.',
     imageAlt: 'BFV eFootball Plattform von GG Manufaktur'
+  },
+  {
+    page: 'intersport',
+    category: 'Retail Activation',
+    title: 'INTERSPORT',
+    text: 'Sechs Wochen Pop-up-Gaming im Clubhouse Berlin, mit eigenem EA SPORTS FC 26-Turnier.',
+    imageAlt: 'INTERSPORT Clubhouse Gaming-Aktivierung von GG Manufaktur'
   }
 ];
 
@@ -92,7 +99,7 @@ const FallbackGround: React.FC = () => (
  *
  * One case fills the screen behind a rail of cards; picking a card swaps the
  * backdrop to it and brings that card to the front of the rail. The mosaic
- * above shows all five at once and is the way to compare them; this is the way
+ * above shows them all at once and is the way to compare them; this is the way
  * to look at one.
  *
  * Only the active backdrop is mounted -- five full-bleed photographs held in
