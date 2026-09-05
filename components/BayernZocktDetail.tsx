@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Trophy, Target, Lightbulb, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { CaseHero } from './CaseHero';
 import { STAGGER, DUR } from './motion';
 
 interface BayernZocktDetailProps {
@@ -66,42 +67,12 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = () => {
 
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-        <img 
-          src="/images/bayern-zockt/hero.jpg" 
-          alt="Bayern Zockt Gaming Event" 
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-        />
-        {/* The photograph hands over to the canvas before the headline
-            starts, so the title sits on the site's own ground and can be set
-            in the same ink-then-accent pair as every heading on the homepage.
-            The old overlay only reached the canvas at the very bottom edge,
-            which left the headline on the picture and forced it to be white. */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(186,222,218,0) 34%, rgba(186,222,218,0.9) 60%, #badeda 76%)'
-          }}
-        />
-        {/* Tells the nav where the photograph ends and the canvas begins. The
-            bar crosses both halves of this hero on the way down, and the img
-            underneath would otherwise report "dark" for the canvas half too.
-            Decorative and empty -- it exists to be hit-tested. */}
-        <div data-nav-ground="dark" aria-hidden="true" className="absolute inset-x-0 top-0 h-[52%]" />
-
-        
-        <div className="absolute bottom-16 left-6 right-6 md:left-14 md:right-14 z-20">
-          <div className="flex flex-col md:flex-row items-end justify-between gap-10 md:gap-8">
-            <div className="flex flex-col w-full md:w-auto">
-              <h1 className="text-[clamp(36px,9vw,120px)] font-black leading-[0.85] tracking-tighter uppercase text-[#0b0f2a]">
-                <RevealText as="span" by="word" text="GAMING IN" delay={0.1} />
-                <RevealText as="span" by="word" text="BAYERN" delay={0.24} className="text-[#0e958e] italic" />
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CaseHero
+        image="/images/bayern-zockt/hero.jpg"
+        alt="Bayern Zockt Gaming Event"
+        title="GAMING IN"
+        accent="BAYERN"
+      />
 
       <div className="max-w-[1440px] mx-auto px-6 md:px-14 py-16 md:py-32">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 md:gap-24">

@@ -91,7 +91,28 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             leer stehen zu lassen.
 
             Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
-            2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss. */}
+            2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss.
+
+            Kommt ein neuer Best Case dazu, bekommt er hier eine Kachel --
+            nach denselben Regeln, damit das Mosaik ein Mosaik bleibt:
+
+              1. Ein Band ist voll, wenn die Spalten darin sechs ergeben.
+                 Erlaubte Paare: 4+2 (breit neben hochkant) und 2+4
+                 (quadratisch neben Panorama); 6 allein traegt ein Band
+                 ueber die volle Breite.
+              2. Die Form wechselt: nie zweimal hintereinander dasselbe
+                 Format. Reihenfolge im Zweifel 4x3 -> 2x3 -> 2x2 -> 4x2
+                 -> 6x3 und von vorn.
+              3. Jede Kachel traegt zwei Groessen: die Spalten- und
+                 Reihenspanne ab lg, und darunter ein aspect-* fuer die
+                 einspaltige Ansicht (aspect-[4/3] breit, aspect-[3/4]
+                 hochkant, aspect-square quadratisch, aspect-[16/9]
+                 Panorama).
+              4. Die Schriftgroesse der Ueberschrift folgt der Flaeche:
+                 grosse Kacheln clamp(24px,3.2vw,38px), Panorama
+                 clamp(26px,3.4vw,42px), kleine clamp(20px,2.2vw,30px).
+              5. TILE_DELAY bekommt einen Eintrag je Kachel und faengt in
+                 jedem Band wieder bei 0 an. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
           {/* Rows 1-3 — T-Systems 16:9, Hagebau portrait beside it */}
           <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
