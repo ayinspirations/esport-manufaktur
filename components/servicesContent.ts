@@ -137,7 +137,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Guter Content beginnt mit einer guten Geschichte.',
       subline:
         'Wir entwickeln Content- und Live-Formate, die zur Marke, zum Kanal und zu den Menschen passen, die du erreichen möchtest.',
-      ctaLabel: 'Contentprojekt unverbindlich besprechen',
+      ctaLabel: 'Contentprojekt besprechen',
       image: '/REWExfckoln_1770162125933.jpg',
       imageAlt: 'Live-Streaming Produktion und Gaming Content Produktion bei GG Manufaktur'
     },
@@ -191,7 +191,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns über dein nächstes Contentformat sprechen.',
       text:
         'Im kostenlosen Erstgespräch klären wir, welche Inhalte und Kanäle für dein Ziel sinnvoll sind.',
-      primaryLabel: 'Contentprojekt unverbindlich besprechen'
+      primaryLabel: 'Contentprojekt besprechen'
     }
   },
 
@@ -209,7 +209,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Aus einem Ort wird ein Erlebnis.',
       subline:
         'Wir konzipieren und realisieren Events und Markenaktivierungen, die Menschen nicht nur besuchen, sondern aktiv erleben. Vom einzelnen Modul am Messestand bis zur vollständigen Veranstaltung.',
-      ctaLabel: 'Eventprojekt unverbindlich besprechen',
+      ctaLabel: 'Eventprojekt besprechen',
       image: '/images/competencies/eventtechnik.jpg',
       imageAlt: 'Gaming Messestand und eSport Event Konzeption von GG Manufaktur'
     },
@@ -263,7 +263,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns dein nächstes Erlebnis gemeinsam planen.',
       text:
         'Im kostenlosen Erstgespräch sprechen wir über dein Vorhaben und die passende Form der Zusammenarbeit.',
-      primaryLabel: 'Eventprojekt unverbindlich besprechen'
+      primaryLabel: 'Eventprojekt besprechen'
     }
   },
 
@@ -281,7 +281,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Digitale Lösungen, die sich deinem Projekt anpassen.',
       subline:
         'Wir entwickeln individuelle Tools, White-Label-Plattformen und Gamification-Lösungen, ohne dass du dafür ein eigenes Entwicklerteam aufbauen musst.',
-      ctaLabel: 'Digitale Lösung unverbindlich besprechen',
+      ctaLabel: 'Digitale Lösung besprechen',
       image: '/Gamification.jpg',
       imageAlt: 'Gamification Lösung und individuelle Gaming Plattform von GG Manufaktur'
     },
@@ -336,7 +336,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns deine digitale Lösung gemeinsam einordnen.',
       text:
         'Im kostenlosen Erstgespräch prüfen wir, welche bestehenden Module passen und wo individuelle Entwicklung sinnvoll ist.',
-      primaryLabel: 'Digitale Lösung unverbindlich besprechen'
+      primaryLabel: 'Digitale Lösung besprechen'
     }
   },
 
@@ -365,7 +365,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Technik, die funktioniert, wenn es darauf ankommt.',
       subline:
         'Wir planen und koordinieren die technische Infrastruktur für Events, Markenaktivierungen, Gaming-Setups und Live-Produktionen.',
-      ctaLabel: 'Technikprojekt unverbindlich besprechen',
+      ctaLabel: 'Technikprojekt besprechen',
       image: '/images/hagebau/slide-2.jpg',
       imageAlt: 'Eventtechnik und Produktionsequipment bei einer Gaming-Aktivierung von GG Manufaktur'
     },
@@ -419,7 +419,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns dein technisches Setup durchsprechen.',
       text:
         'Im kostenlosen Erstgespräch klären wir Anforderungen, Rahmenbedingungen und notwendige Gewerke.',
-      primaryLabel: 'Technikprojekt unverbindlich besprechen'
+      primaryLabel: 'Technikprojekt besprechen'
     }
   },
 
@@ -437,7 +437,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Räume und Designs, die Marken erlebbar machen.',
       subline:
         'Wir entwickeln visuelle Auftritte, Flächen und individuelle Bauten, die Funktion, Markenbild und Besuchererlebnis sinnvoll miteinander verbinden.',
-      ctaLabel: 'Raumkonzept unverbindlich besprechen',
+      ctaLabel: 'Raumkonzept besprechen',
       image: '/hero-rewe.jpg',
       imageAlt: 'Individuell gestalteter Gaming-Messestand mit Custom-Branding bei GG Manufaktur'
     },
@@ -491,7 +491,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns über deine Fläche und ihre Aufgabe sprechen.',
       text:
         'Im kostenlosen Erstgespräch klären wir, was der Raum leisten soll und welche Umsetzung dafür sinnvoll ist.',
-      primaryLabel: 'Raumkonzept unverbindlich besprechen'
+      primaryLabel: 'Raumkonzept besprechen'
     }
   },
 
@@ -509,7 +509,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Wir halten fest, was dein Projekt besonders macht.',
       subline:
         'Wir begleiten Events, Aktivierungen und Kampagnen mit Foto- und Videoproduktionen, die Atmosphäre, Menschen und Markenbotschaften authentisch einfangen.',
-      ctaLabel: 'Foto- oder Videoprojekt besprechen'
+      ctaLabel: 'Foto & Video besprechen'
     },
     pain: {
       heading: 'Content, der über den Moment hinaus wirkt',
@@ -561,7 +561,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns festhalten, was dein Projekt besonders macht.',
       text:
         'Im kostenlosen Erstgespräch klären wir Anlass, benötigte Formate und den passenden Produktionsumfang.',
-      primaryLabel: 'Foto- oder Videoprojekt besprechen'
+      primaryLabel: 'Foto & Video besprechen'
     }
   },
 
@@ -579,7 +579,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Die richtige Persönlichkeit ist wichtiger als die größte Reichweite.',
       subline:
         'Wir finden und integrieren Creator, Hosts, Moderatoren und eSport-Talents, die glaubwürdig zur Marke, zur Zielgruppe und zur Aufgabe passen.',
-      ctaLabel: 'Creator-Aktivierung unverbindlich besprechen',
+      ctaLabel: 'Creator-Aktivierung anfragen',
       image: '/images/hagebau/slide-1.jpg',
       imageAlt: 'Creator-Aktivierung mit Moderation auf einer Gaming-Bühne bei GG Manufaktur'
     },
@@ -633,7 +633,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns die passenden Persönlichkeiten für dein Projekt finden.',
       text:
         'Im kostenlosen Erstgespräch sprechen wir über Zielgruppe, Format, Rolle und mögliche Besetzung.',
-      primaryLabel: 'Creator-Aktivierung unverbindlich besprechen'
+      primaryLabel: 'Creator-Aktivierung anfragen'
     }
   },
 
@@ -651,7 +651,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Talente finden. Potenziale entwickeln.',
       subline:
         'Wir entwickeln Scouting- und Entwicklungsformate für Vereine, Verbände und Organisationen, die Talente strukturiert erreichen, auswählen und langfristig begleiten möchten.',
-      ctaLabel: 'Scouting-Konzept unverbindlich besprechen',
+      ctaLabel: 'Scouting-Konzept besprechen',
       image: '/images/status-quo/rewe-event.jpg',
       imageAlt: 'Bühne des Scouting Cup Finales einer eSport-Talentförderung bei GG Manufaktur'
     },
@@ -705,7 +705,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns dein Scouting strukturiert aufsetzen.',
       text:
         'Im kostenlosen Erstgespräch klären wir Zielbild, Zielgruppe und den passenden Auswahlprozess.',
-      primaryLabel: 'Scouting-Konzept unverbindlich besprechen'
+      primaryLabel: 'Scouting-Konzept besprechen'
     }
   },
 
@@ -723,7 +723,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Arbeitgebermarken werden stark, wenn Menschen sie erleben.',
       subline:
         'Wir nutzen Gamification, Gaming, eSport und interaktive Formate, um Arbeitgeber mit jungen und digital affinen Zielgruppen ins Gespräch zu bringen.',
-      ctaLabel: 'Recruiting-Aktivierung besprechen',
+      ctaLabel: 'Recruiting besprechen',
       image: '/hero-gamechanger.jpg',
       imageAlt: 'Employer-Branding-Aktivierung im Gaming-Umfeld bei GG Manufaktur'
     },
@@ -777,7 +777,7 @@ export const servicesContent: Record<string, ServiceContent> = {
       headline: 'Lass uns deine Arbeitgebermarke erlebbar machen.',
       text:
         'Im kostenlosen Erstgespräch sprechen wir über Zielgruppe, Anlass und die passende Aktivierung.',
-      primaryLabel: 'Recruiting-Aktivierung besprechen'
+      primaryLabel: 'Recruiting besprechen'
     }
   }
 };

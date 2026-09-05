@@ -17,6 +17,11 @@ import { EASE_REVEAL, SPRING_SHELL } from '../motion';
 // noch das Label stand. Die Pille dehnt sich dafuer, sie oeffnet nichts
 // daneben: der Klickpunkt bleibt derselbe.
 //
+// Die geschlossene Form ist bewusst knapp gehalten -- kleine Type, enges
+// Polster. Nicht aus Sparsamkeit: je schmaler sie steht, desto mehr Strecke
+// hat sie zu gehen, und die Bewegung ist der halbe Sinn dieses Knopfes. Die
+// Hoehe bleibt davon unberuehrt, die traegt eine Mindesthoehe.
+//
 // ---------------------------------------------------------------------------
 // Die Choreografie, und warum sie so und nicht anders ist
 // ---------------------------------------------------------------------------
@@ -171,7 +176,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
   // Wege nebeneinander muessen in die Breite eines schmalen Schirms passen,
   // ohne dass einer von beiden zu "Termin" verkuerzt werden muss.
   const wayBase =
-    'inline-flex items-center justify-center rounded-full px-3.5 py-2.5 text-[11.5px] sm:px-6 sm:py-3 sm:text-sm font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
+    'inline-flex items-center justify-center rounded-full px-3.5 py-2.5 text-[11px] sm:px-5 sm:py-2.5 sm:text-[12.5px] font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
   const wayPrimary = light
     ? 'bg-[#0b0f2a] text-white hover:bg-[#0e958e]'
     : 'bg-white text-[#0b0f2a] hover:bg-emerald-400';
@@ -194,7 +199,10 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
         // zwei, Breite und Hoehe zugleich, und die Feder arbeitete gegen den
         // Umbruch. Nebeneinander bleibt es dieselbe Bewegung wie am Desktop --
         // die Schrift wird kleiner, nicht der Aufbau ein anderer.
-        className={`relative flex items-center overflow-hidden rounded-full ${shell}`}
+        // Feste Mindesthoehe, weil die Schrift darin kleiner geworden ist:
+        // sonst faellt die Pille beim Verkleinern der Type mit zusammen, und
+        // hoch soll sie bleiben -- nur schmaler.
+        className={`relative flex items-center overflow-hidden rounded-full min-h-[50px] sm:min-h-[54px] ${shell}`}
       >
         <AnimatePresence initial={false} mode="popLayout">
           {!open ? (
@@ -207,10 +215,10 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8, transition: SWAP_OUT }}
               transition={SWAP}
-              className="group inline-flex items-center gap-2.5 px-6 py-3.5 sm:px-7 sm:py-4 text-[13px] sm:text-base font-black tracking-tight"
+              className="group inline-flex items-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 text-[12px] sm:text-[13.5px] font-black tracking-tight"
             >
               {label}
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-500" />
+              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-500" />
             </motion.button>
           ) : (
             <motion.div

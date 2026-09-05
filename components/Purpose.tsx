@@ -41,24 +41,45 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#061226]/40 to-[#020617]" />
         </div>
 
-        {/* The team, behind the panel's own ground. Held back far enough that
-            the copy on top keeps its contrast, and faded out to the right so
-            the headline's side of the panel stays the darkest part of it. */}
+        {/* Das Team -- auf dem Telefon anders gezeigt als am Desktop.
+
+            Als Vollflaechen-Hintergrund funktioniert das Foto nur, solange die
+            Kachel breit ist. Auf einem schmalen Schirm ist sie 356 Pixel breit
+            und 1233 hoch; ein Cover-Ausschnitt aus einem Querformat zeigt dort
+            rund zwei Prozent der Bildbreite -- einen senkrechten Streifen, auf
+            dem niemand zu erkennen ist, und den der seitliche Verlauf (fuer
+            eine breite Kachel gemacht, links dicht) zusaetzlich fast
+            vollstaendig zudeckt.
+
+            Deshalb bekommt das Foto dort ein eigenes Band am Kopf der Kachel.
+            In 220 Pixel Hoehe passt bei dieser Breite fast das ganze Bild --
+            alle fuenf, statt eines Ausschnitts von keinem -- und es darf auch
+            deutlich staerker durchkommen, weil darunter kein Text liegt,
+            dessen Kontrast es kosten wuerde. Der Verlauf laeuft dort nach
+            unten statt zur Seite und uebergibt an die dunkle Flaeche, auf der
+            die Headline steht. */}
         <img
           src={TEAM_IMAGE}
           alt="Das Team der GG Manufaktur"
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 z-0 w-full h-full object-cover opacity-25 pointer-events-none"
+          className="absolute inset-x-0 top-0 h-[220px] md:inset-0 md:h-full w-full object-cover object-[center_32%] md:object-center opacity-60 md:opacity-25 z-0 pointer-events-none"
         />
+        {/* Telefon: nach unten ins Dunkle. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-r from-[#020617] via-[#020617]/85 to-[#020617]/55"
+          className="md:hidden absolute inset-x-0 top-0 h-[240px] z-0 pointer-events-none bg-gradient-to-b from-[#020617]/10 via-[#020617]/55 to-[#020617]"
+        />
+        {/* Ab md: zur Seite, damit die Headline auf der dunkelsten Stelle
+            steht und das Bild nach rechts ausklingt. */}
+        <div
+          aria-hidden="true"
+          className="hidden md:block absolute inset-0 z-0 pointer-events-none bg-gradient-to-r from-[#020617] via-[#020617]/85 to-[#020617]/55"
         />
 
         {/* Contents follow the panel rather than fading with it: the panel
             lands first, then headline and copy build on top of it. */}
-        <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
+        <div className="relative z-10 pt-[200px] pb-20 md:py-28 px-6 md:px-14 lg:px-20">
           <RevealText
             as="h2"
             by="word"
