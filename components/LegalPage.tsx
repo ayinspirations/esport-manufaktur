@@ -108,206 +108,300 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
     },
     privacy: {
       title: "Datenschutz.",
-      subtitle: "Datenschutzerklärung von esport-manufaktur.com",
+      subtitle: "Datenschutzerklärung für diese Website",
       body: (
-        <div className="space-y-12 text-slate-700 font-medium leading-relaxed text-sm md:text-base">
-          <section className="border-b border-slate-100 pb-10">
-            <p className="text-lg font-bold text-slate-900 mb-4">Diese Website erhebt personenbezogene Daten von ihren Nutzern.</p>
-            <p>Dieses Dokument kann zu Zwecken der Aufbewahrung über den Befehl „Drucken“ im Browser ausgedruckt werden.</p>
-          </section>
-
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Anbieter und Verantwortlicher</h3>
-            <p className="text-lg font-bold text-slate-900">
-              GG Manufaktur GmbH<br />
-              Gartenstraße 16/1<br />
-              71229 Leonberg
+        <div className="space-y-10 text-slate-700 font-medium leading-relaxed text-sm md:text-base">
+          <section className="border-b border-slate-100 pb-8">
+            <p className="text-lg font-bold text-slate-900 mb-3">
+              Diese Erklärung beschreibt, was beim Besuch dieser Website mit personenbezogenen Daten geschieht.
             </p>
-            <p className="mt-2 text-slate-500 font-bold italic">E-Mail-Adresse des Anbieters: info@esport-manufaktur.com</p>
-          </section>
-
-          {/* Hosting stand hier gar nicht -- und das ist die eine Verarbeitung,
-              die bei jedem einzelnen Seitenaufruf stattfindet, auch ohne
-              Einwilligung und ohne dass der Besucher irgendetwas tut. */}
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Hosting und Auslieferung</h3>
             <p>
-              Diese Website wird bei <span className="font-bold">Netlify (Netlify, Inc., San Francisco, Kalifornien, USA)</span>{' '}
-              gehostet und über dessen Content-Delivery-Netzwerk ausgeliefert. Die Auslieferung erfolgt aus
-              Rechenzentren in der Europäischen Union.
+              Sie ist die auf diese Domain zugeschnittene Fassung unserer Master-Datenschutzerklärung: beschrieben
+              wird ausschließlich, was hier tatsächlich stattfindet. Für unsere Turnier-, Event- und
+              White-Label-Plattformen gelten eigene, dort bereitgestellte Datenschutzhinweise.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">1. Verantwortlicher</h3>
+            <p className="text-lg font-bold text-slate-900">
+              eSport Manufaktur GmbH<br />
+              im Außenauftritt: GG Manufaktur<br />
+              Gartenstraße 16/1<br />
+              71229 Leonberg<br />
+              Deutschland
+            </p>
+            <p className="mt-3">E-Mail: info@esport-manufaktur.com</p>
+            <p className="mt-3">
+              Die Umfirmierung in GG Manufaktur GmbH ist in Vorbereitung. Bis zur Eintragung im Handelsregister ist
+              die eSport Manufaktur GmbH die rechtlich verantwortliche Gesellschaft. Durch die Umfirmierung ändert
+              sich lediglich die Firma; die Identität des Rechtsträgers bleibt bestehen.
             </p>
             <p className="mt-3">
-              Beim Aufruf der Website verarbeitet Netlify als unser Auftragsverarbeiter automatisch die Daten, die
-              Ihr Browser übermittelt (Server-Logfiles): IP-Adresse, Datum und Uhrzeit des Zugriffs, die aufgerufene
-              Adresse, übertragene Datenmenge, Statusmeldung, Browsertyp und -version, Betriebssystem sowie die
-              zuvor besuchte Seite. Diese Verarbeitung ist technisch notwendig, um die Seite überhaupt ausliefern zu
-              können, und dient darüber hinaus der Sicherheit und Stabilität des Angebots.
+              Einen Datenschutzbeauftragten haben wir nicht bestellt; dazu sind wir gesetzlich nicht verpflichtet.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">2. Hosting und technische Bereitstellung</h3>
+            <p>
+              Diese Website wird bei <span className="font-bold">Netlify (Netlify, Inc., San Francisco, Kalifornien,
+              USA)</span> gehostet und über dessen Content-Delivery-Netzwerk ausgeliefert. Die Auslieferung erfolgt
+              aus Rechenzentren in der Europäischen Union.
+            </p>
+            <p className="mt-3">Beim Aufruf werden technisch erforderliche Zugriffsdaten verarbeitet. Dazu gehören insbesondere:</p>
+            <ul className="list-disc pl-5 mt-3 space-y-1">
+              <li>IP-Adresse,</li>
+              <li>Datum und Uhrzeit des Zugriffs,</li>
+              <li>aufgerufene Seite oder Datei,</li>
+              <li>Referrer-URL,</li>
+              <li>Browsertyp und -version,</li>
+              <li>Betriebssystem sowie Geräte- und Verbindungsinformationen,</li>
+              <li>übertragene Datenmenge und HTTP-Statuscode,</li>
+              <li>technische Fehler- und Sicherheitsinformationen.</li>
+            </ul>
+            <p className="mt-3">
+              Die Verarbeitung dient der Bereitstellung des Angebots, der Systemsicherheit und Stabilität, der
+              Fehleranalyse sowie der Abwehr missbräuchlicher Zugriffe. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f
+              DSGVO; unser berechtigtes Interesse besteht in einem sicheren und funktionsfähigen Betrieb.
             </p>
             <p className="mt-3">
-              <span className="font-bold">Rechtsgrundlage:</span> Art. 6 Abs. 1 lit. f DSGVO – unser berechtigtes
-              Interesse an einer sicheren und zuverlässigen Bereitstellung dieser Website.{' '}
-              <span className="font-bold">Speicherdauer:</span> Logdaten werden nur so lange aufbewahrt, wie es für
-              diese Zwecke erforderlich ist.
-            </p>
-            <p className="mt-3">
-              Mit Netlify besteht ein Vertrag über die Auftragsverarbeitung nach Art. 28 DSGVO. Da das Unternehmen
-              seinen Sitz in den Vereinigten Staaten hat, lässt sich ein Zugriff aus einem Drittland nicht
+              Server- und Zugriffsprotokolle werden nur so lange gespeichert, wie dies für Betrieb, Fehleranalyse und
+              Sicherheit erforderlich ist. Mit Netlify besteht ein Vertrag zur Auftragsverarbeitung nach Art. 28
+              DSGVO. Da das Unternehmen seinen Sitz in den USA hat, lässt sich ein Zugriff aus einem Drittland nicht
               vollständig ausschließen; die Übermittlung wird auf die Standardvertragsklauseln der Europäischen
               Kommission gestützt.
             </p>
-          </section>
-
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Arten der erhobenen Daten</h3>
-            <p>Zu den personenbezogenen Daten, die diese Website selbstständig oder durch Dritte verarbeitet, gehören: Tracker; Nutzungsdaten; Anzahl der Nutzer; Sitzungsstatistiken; E-Mail; Nachname; Antworten auf Fragen; Benutzerinhalte; Telefonnummer.</p>
-            <p className="mt-4 text-slate-500">
-              Vollständige Details zu jeder Art von verarbeiteten personenbezogenen Daten werden in den dafür vorgesehenen Abschnitten dieser Datenschutzerklärung oder punktuell durch Erklärungstexte bereitgestellt, die vor der Datenerhebung angezeigt werden.
-              Personenbezogene Daten können vom Nutzer freiwillig angegeben oder, im Falle von Nutzungsdaten, automatisch erhoben werden, wenn diese Website genutzt wird.
-              Sofern nicht anders angegeben, ist die Angabe aller durch diese Website angeforderten Daten obligatorisch. Weigert sich der Nutzer, die Daten anzugeben, kann dies dazu führen, dass diese Website dem Nutzer ihre Dienste nicht zur Verfügung stellen kann. In Fällen, in denen diese Website die Angabe personenbezogener Daten ausdrücklich als freiwillig bezeichnet, dürfen sich die Nutzer dafür entscheiden, diese Daten ohne jegliche Folgen für die Verfügbarkeit oder die Funktionsfähigkeit des Dienstes nicht anzugeben.
-              Nutzer, die sich darüber im Unklaren sind, welche personenbezogenen Daten obligatorisch sind, können sich an den Anbieter wenden.
-              Jegliche Verwendung von Cookies – oder anderer Tracking-Tools – durch diese Website oder Anbieter von Drittdiensten, die durch diese Website eingesetzt werden, dient dem Zweck, den vom Nutzer gewünschten Dienst zu erbringen, und allen anderen Zwecken, die im vorliegenden Dokumentund in der Cookie-Richtlinie beschrieben sind.
+            <p className="mt-3 text-slate-500">
+              Unsere eigenen Plattform-, Datenbank- und Backup-Systeme laufen davon getrennt bei der Hetzner Online
+              GmbH in Deutschland. Diese Website selbst führt keine Datenbank.
             </p>
-            <p className="mt-4 font-bold text-slate-900">Die Nutzer sind für alle personenbezogenen Daten Dritter verantwortlich, die durch diese Website beschafft, veröffentlicht oder weitergegeben werden.</p>
-          </section>
-
-          <section className="space-y-6">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Art und Ort der Datenverarbeitung</h3>
-            
-            <div>
-              <h4 className="font-black text-slate-900 mb-2 uppercase text-xs">Verarbeitungsmethoden</h4>
-              <p>Der Anbieter verarbeitet die personenbezogenen Daten der Nutzer auf ordnungsgemäße Weise und ergreift angemessene Sicherheitsmaßnahmen, um den unbefugten Zugriff und die unbefugte Weiterleitung, Veränderung oder Vernichtung von Daten zu vermeiden.</p>
-              <p className="mt-2">Die Datenverarbeitung wird mittels Computern oder IT-basierten Systemen nach organisatorischen Verfahren und Verfahrensweisen durchgeführt, die gezielt auf die angegebenen Zwecke abstellen. Zusätzlich zum Verantwortlichen könnten auch andere Personen intern (Personalverwaltung, Vertrieb, Marketing, Rechtsabteilung, Systemadministratoren) oder extern – und in dem Fall soweit erforderlich, vom Verantwortlichen als Auftragsverarbeiter benannt (wie Anbieter technischer Dienstleistungen, Zustellunternehmen, Hosting-Anbieter, IT-Unternehmen oder Kommunikationsagenturen) - diese Website betreiben und damit Zugriff auf die Daten haben. Eine aktuelle Liste dieser Beteiligten kann jederzeit vom Anbieter verlangt werden.</p>
-            </div>
-
-            <div>
-              <h4 className="font-black text-slate-900 mb-2 uppercase text-xs">Ort</h4>
-              <p>Die Daten werden in der Niederlassung des Anbieters und an allen anderen Orten, an denen sich die an der Datenverarbeitung beteiligten Stellen befinden, verarbeitet.</p>
-              <p className="mt-2">Je nach Standort der Nutzer können Datenübertragungen die Übertragung der Daten des Nutzers in ein anderes Land als das eigene beinhalten. Um mehr über den Ort der Verarbeitung der übermittelten Daten zu erfahren, können die Nutzer den Abschnitt mit den ausführlichen Angaben zur Verarbeitung der personenbezogenen Daten konsultieren.</p>
-            </div>
-
-            <div>
-              <h4 className="font-black text-slate-900 mb-2 uppercase text-xs">Speicherdauer</h4>
-              <p>Sofern in diesem Dokument nicht anderweitig festgelegt, werden personenbezogene Daten so lange verarbeitet und gespeichert, wie es der Zweck erfordert, zu dem sie erhoben wurden, und können ggf. aufgrund einer zu erfüllenden rechtlichen Verpflichtung oder basierend auf der Einwilligung des Nutzers auch länger aufbewahrt werden.</p>
-            </div>
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Zwecke der Verarbeitung</h3>
-            <p>Personenbezogene Daten über den Nutzer werden erhoben, damit der Anbieter den Dienst erbringen und des Weiteren seinen gesetzlichen Verpflichtungen nachkommen, auf Durchsetzungsforderungen reagieren, seine Rechte und Interessen (oder die der Nutzer oder Dritter) schützen, böswillige oder betrügerische Aktivitäten aufdecken kann. Darüber hinaus werden Daten zu folgenden Zwecken erhoben: Analytik, Anzeigen von Inhalten externer Plattformen, Tag-Verwaltung, Kontaktieren des Nutzers, Zugriff auf Profile von Drittanbietern, Interaktion mit externen sozialen Netzwerken und Plattformen und Interaktion mit Live-Chat-Plattformen.</p>
-          </section>
-
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Facebook-Genehmigungen</h3>
-            <p>Diese Website kann bestimmte Facebook-Genehmigungen verlangen, um mit dem Facebook-Konto des Nutzers Aktionen auszuführen und Informationen einschließlich personenbezogener Daten daraus zu erhalten. Diese Website verbindet sich mittels dieses Dienstes mit dem Nutzerprofil auf dem sozialen Netzwerk Facebook, bereitgestellt von Facebook Inc.</p>
-            <p className="mt-2">Folgende Genehmigungen werden verlangt: Allgemeine Angaben, E-Mail, Geräteinformationen, Nutzungsdaten und Tracker.</p>
-          </section>
-
-          <section className="space-y-8">
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Ausführliche Angaben über die Verarbeitung personenbezogener Daten</h3>
-            
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-              <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Analytik</h4>
-              <ul className="space-y-4">
-                <li>
-                  <span className="font-bold">Google Analytics 4 (Google LLC):</span> Google Analytics 4 ist ein Webanalysedienst von Google LLC („Google“). Google verwendet die erhobenen Daten, um nachzuverfolgen und zu untersuchen, wie diese Website genutzt wird. Verarbeitete Daten: Anzahl der Nutzer; Nutzungsdaten; Sitzungsstatistiken; Tracker. Verarbeitungsort: Vereinigte Staaten.
-                </li>
-                <li>
-                  <span className="font-bold">HubSpot Analytics (HubSpot Germany GmbH):</span> HubSpot Analytics ist ein Analysedienst von HubSpot, Inc. Verarbeitete Daten: Nutzungsdaten; Tracker. Verarbeitungsort: Deutschland.
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-              <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Anzeigen von Inhalten externer Plattformen</h4>
-              <ul className="space-y-4">
-                <li>
-                  <span className="font-bold">Google Fonts (Google LLC):</span> Visualisierung von Schriftarten. Verarbeitungsort: Vereinigte Staaten.
-                </li>
-                <li>
-                  <span className="font-bold">Google-Maps-Widget (Google LLC):</span> Visualisierung von Karten. Verarbeitungsort: Vereinigte Staaten.
-                </li>
-              </ul>
-            </div>
-
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-              <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Interaktion mit Live-Chat-Plattformen</h4>
-              <p><span className="font-bold">HubSpot Chat (HubSpot Germany GmbH):</span> Dienst für das Interagieren mit der Live-Chat-Plattform HubSpot. Verarbeitete Daten: Antworten auf Fragen; Benutzerinhalte; E-Mail; Nachname; Telefonnummer. Verarbeitungsort: Deutschland.</p>
-            </div>
-
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-              <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Kontaktieren des Nutzers</h4>
-              <ul className="space-y-4">
-                <li><span className="font-bold">Kontaktformular (HubSpot Forms, HubSpot Germany GmbH):</span> Das Anfrageformular auf dieser Website wird über HubSpot bereitgestellt. Die eingegebenen Angaben werden zur Beantwortung der Anfrage verarbeitet und in unserem CRM gespeichert. Verarbeitete Daten: E-Mail; Name; Telefonnummer; Nachrichteninhalt; Nutzungsdaten. Verarbeitungsort: Deutschland.</li>
-                <li><span className="font-bold">Terminbuchung (HubSpot Meetings, HubSpot Germany GmbH):</span> Über das eingebettete Buchungsfenster können Termine für ein Erstgespräch vereinbart werden. Verarbeitete Daten: E-Mail; Name; gewählter Termin; Nutzungsdaten; Tracker. Verarbeitungsort: Deutschland.</li>
-                <li><span className="font-bold">Mailingliste oder Newsletter:</span> Hinzufügung der E-Mail-Adresse zur Kontaktliste für gewerbliche Informationen. Verarbeitete Daten: E-Mail; Nutzungsdaten; Tracker.</li>
-              </ul>
-            </div>
-
-            <div className="p-6 bg-slate-50 rounded-2xl border border-slate-100">
-              <h4 className="font-black text-slate-900 mb-3 uppercase text-xs">Tag-Verwaltung</h4>
-              <p><span className="font-bold">Google Tag Manager (Google LLC):</span> Dienst zur zentralen Verwaltung von Tags. Verarbeitungsort: Vereinigte Staaten.</p>
-            </div>
-          </section>
-
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Rechtsgrundlagen der Verarbeitung</h3>
-            <p>Der Anbieter darf personenbezogene Daten von Nutzern nur dann verarbeiten, wenn einer der folgenden Punkte zutrifft:</p>
-            <ul className="list-disc pl-5 mt-3 space-y-1">
-              <li>Die Nutzer haben ihre Einwilligung für einen oder mehrere bestimmte Zwecke erteilt.</li>
-              <li>die Datenerhebung ist für die Erfüllung eines Vertrages mit dem Nutzer und/oder für vorvertragliche Maßnahmen daraus erforderlich;</li>
-              <li>die Verarbeitung ist für die Erfüllung einer rechtlichen Verpflichtung, der der Anbieter unterliegt, erforderlich;</li>
-              <li>die Verarbeitung steht im Zusammenhang mit einer Aufgabe, die im öffentlichen Interesse oder in Ausübung hoheitlicher Befugnisse, die dem Anbieter übertragen wurden, durchgeführt wird;</li>
-              <li>die Verarbeitung ist zur Wahrung der berechtigten Interessen des Anbieters oder eines Dritten erforderlich.</li>
-            </ul>
-          </section>
-
-          <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Rechte der Nutzer (DSGVO)</h3>
-            <p>Nutzer haben im gesetzlich zulässigen Umfang insbesondere das Recht, Folgendes zu tun:</p>
-            <ul className="list-disc pl-5 mt-3 space-y-2">
-              <li>Die Einwilligungen jederzeit widerrufen.</li>
-              <li>Widerspruch gegen die Verarbeitung ihrer Daten einlegen.</li>
-              <li>Auskunft bezüglich ihrer Daten erhalten.</li>
-              <li>Überprüfen und berichtigen lassen.</li>
-              <li>Einschränkung der Verarbeitung ihrer Daten verlangen.</li>
-              <li>Löschung oder anderweitiges Entfernen der personenbezogenen Daten verlangen.</li>
-              <li>Ihre Daten erhalten und an einen anderen Verantwortlichen übertragen lassen.</li>
-              <li>Beschwerde bei einer Aufsichtsbehörde einreichen.</li>
-            </ul>
-            <p className="mt-4">
-              Die für uns zuständige Aufsichtsbehörde ist der Landesbeauftragte für den Datenschutz und die
-              Informationsfreiheit Baden-Württemberg, Lautenschlagerstraße 20, 70173 Stuttgart. Unabhängig davon
-              können Sie sich an die Aufsichtsbehörde Ihres Aufenthaltsorts wenden.
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">3. Kontaktaufnahme und B2B-Anfragen</h3>
+            <p>
+              Wenn du uns über das Anfrageformular, per E-Mail oder telefonisch kontaktierst, verarbeiten wir die von
+              dir mitgeteilten Daten zur Bearbeitung deiner Anfrage. Dazu können Vor- und Nachname, geschäftliche
+              E-Mail-Adresse, Telefonnummer, Unternehmen, Position, Interessengebiet, Inhalt der Anfrage sowie
+              Zeitpunkt und Verlauf der Kommunikation gehören.
             </p>
             <p className="mt-3">
-              Zur Ausübung dieser Rechte genügt eine Nachricht an die oben genannte E-Mail-Adresse. Einen
-              Datenschutzbeauftragten haben wir nicht bestellt; wir sind dazu gesetzlich nicht verpflichtet.
+              Bezieht sich die Anfrage auf einen Vertrag oder vorvertragliche Maßnahmen, ist Rechtsgrundlage Art. 6
+              Abs. 1 lit. b DSGVO. Kontaktierst du uns als Ansprechpartner eines Unternehmens, erfolgt die
+              Verarbeitung auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO; unser berechtigtes Interesse besteht in der
+              Bearbeitung geschäftlicher Anfragen und der Anbahnung von Geschäftsbeziehungen.
             </p>
-            
-            <div className="mt-8 p-6 bg-slate-950 text-white rounded-2xl border border-white/10 shadow-xl">
-              <h4 className="font-black uppercase text-[10px] tracking-[0.2em] mb-3 text-[#0e958e]">Details zum Widerspruchsrecht</h4>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">4. HubSpot: Formulare, Terminbuchung und CRM</h3>
+            <p>
+              Das Anfrageformular und die Terminbuchung für ein Erstgespräch werden über HubSpot bereitgestellt und in
+              diese Website eingebettet. Vertragspartner ist die HubSpot Germany GmbH; die technische Plattform wird
+              durch Unternehmen der HubSpot-Gruppe bereitgestellt, insbesondere die HubSpot, Inc. (USA) und die
+              HubSpot Ireland Limited.
+            </p>
+            <p className="mt-3">
+              Beim Laden dieser Elemente können insbesondere IP-Adresse, Online-Kennungen, aufgerufene Seiten,
+              Formularinteraktionen, Geräte- und Browserinformationen, Referrer-URL, Interaktionszeitpunkte sowie die
+              übermittelten Kontaktangaben verarbeitet werden. Bei der Terminbuchung kommen der gewählte Termin und
+              die dafür angegebenen Kontaktdaten hinzu.
+            </p>
+            <p className="mt-3">
+              In HubSpot als CRM werden Kontakt- und Unternehmensdaten, Kommunikationsverläufe, angefragte
+              Leistungen, Termine sowie Einwilligungs- und Widerrufsinformationen gespeichert. Rechtsgrundlage ist je
+              nach Anlass Art. 6 Abs. 1 lit. b oder lit. f DSGVO. Mit HubSpot besteht ein Vertrag zur
+              Auftragsverarbeitung gemäß Art. 28 DSGVO.
+            </p>
+            <p className="mt-3">
+              Soweit unser HubSpot-Konto in der Europäischen Union gehostet wird, erfolgt die primäre Speicherung in
+              Deutschland. Eine begrenzte Verarbeitung außerhalb der EU kann dennoch stattfinden; HubSpot stützt
+              erforderliche Übermittlungen in die USA auf das EU-US Data Privacy Framework und ergänzend auf die
+              Standardvertragsklauseln.
+            </p>
+            <p className="mt-3">
+              HubSpot wird für B2B-Kontakt- und CRM-Prozesse verwendet. Teilnehmer-, Turnier- und Gaming-Daten werden
+              nicht an HubSpot übermittelt.
+            </p>
+            <p className="mt-2 text-slate-500">
+              Weitere Informationen: legal.hubspot.com/privacy-policy, legal.hubspot.com/dpa und
+              legal.hubspot.com/sub-processors-page
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">5. Cookies und Einwilligungen</h3>
+            <p>
+              Technisch erforderliche Cookies und Speicherzugriffe setzen wir ein, soweit sie für Bereitstellung,
+              Sicherheit und Sitzungsverwaltung unbedingt erforderlich sind. Rechtsgrundlage für die Speicherung oder
+              den Zugriff auf Informationen im Endgerät ist § 25 Abs. 2 Nr. 2 TDDDG; die anschließende Verarbeitung
+              richtet sich nach Art. 6 Abs. 1 lit. b oder lit. f DSGVO.
+            </p>
+            <p className="mt-3">
+              Nicht notwendige Analyse-, Marketing- und Tracking-Technologien werden erst nach ausdrücklicher
+              Einwilligung aktiviert. Rechtsgrundlagen sind § 25 Abs. 1 TDDDG und Art. 6 Abs. 1 lit. a DSGVO. Deine
+              Auswahl triffst du im Einwilligungsbanner dieser Website und kannst sie dort jederzeit mit Wirkung für
+              die Zukunft ändern.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">6. Schriftarten (Google Fonts)</h3>
+            <p>
+              Diese Website lädt die Schriftart Inter über Google Fonts von Servern der Google Ireland Limited. Dabei
+              können insbesondere IP-Adresse, Browser- und Geräteinformationen sowie die aufgerufene Seite an Google
+              übermittelt werden.
+            </p>
+            <p className="mt-3">
+              Rechtsgrundlagen sind § 25 Abs. 1 TDDDG und Art. 6 Abs. 1 lit. a DSGVO.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">7. Empfänger personenbezogener Daten</h3>
+            <p>Personenbezogene Daten erhalten nur Stellen, die sie für den jeweiligen Zweck benötigen. Auf dieser Website sind das:</p>
+            <ul className="list-disc pl-5 mt-3 space-y-1">
+              <li>Netlify als Hosting- und CDN-Dienstleister,</li>
+              <li>HubSpot für Formulare, Terminbuchung und CRM,</li>
+              <li>Google Ireland Limited für die Bereitstellung der Schriftart,</li>
+              <li>IT-, Entwicklungs- und Supportdienstleister,</li>
+              <li>Rechts-, Steuer- und sonstige Berater sowie</li>
+              <li>Behörden und Gerichte, soweit eine gesetzliche Verpflichtung besteht.</li>
+            </ul>
+            <p className="mt-3">
+              Dienstleister, die Daten in unserem Auftrag verarbeiten, werden auf Grundlage eines Vertrags zur
+              Auftragsverarbeitung gemäß Art. 28 DSGVO eingesetzt und erhalten nur die für ihre Tätigkeit
+              erforderlichen Daten. Eine Weitergabe zu eigenen Werbezwecken Dritter erfolgt nicht.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">8. Übermittlungen in Drittländer</h3>
+            <p>
+              Bei Netlify, HubSpot und Google kann eine Verarbeitung außerhalb der Europäischen Union oder des
+              Europäischen Wirtschaftsraums erfolgen. Eine Übermittlung erfolgt nur, wenn die Voraussetzungen der
+              Art. 44 ff. DSGVO erfüllt sind – insbesondere über einen Angemessenheitsbeschluss, eine gültige
+              Zertifizierung nach dem EU-US Data Privacy Framework, die Standardvertragsklauseln der Europäischen
+              Kommission und erforderlichenfalls ergänzende Schutzmaßnahmen.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">9. Speicherdauer und Löschung</h3>
+            <p>
+              Wir speichern personenbezogene Daten nur so lange, wie dies für den jeweiligen Zweck erforderlich ist
+              oder eine gesetzliche Aufbewahrungspflicht besteht. Für diese Website gilt insbesondere:
+            </p>
+            <ul className="list-disc pl-5 mt-3 space-y-1">
+              <li>Server- und Sicherheitsprotokolle werden nach Ablauf der festgelegten Sicherheitsfrist gelöscht, sofern kein sicherheitsrelevanter Vorfall vorliegt.</li>
+              <li>B2B-Kontaktdaten werden regelmäßig überprüft und gelöscht, wenn keine Geschäftsbeziehung, laufende Vertragsanbahnung oder andere Rechtsgrundlage mehr besteht.</li>
+              <li>Vertrags-, Abrechnungs- und Buchhaltungsunterlagen werden entsprechend den gesetzlichen Aufbewahrungsfristen gespeichert.</li>
+              <li>Einwilligungsnachweise werden bis zum Ablauf der maßgeblichen Nachweis- und Verjährungsfristen gespeichert.</li>
+            </ul>
+            <p className="mt-3">
+              Nach Löschung aus den Produktivsystemen können Daten bis zur turnusmäßigen Überschreibung noch in
+              verschlüsselten Backups enthalten sein. Sie werden dort nicht mehr produktiv verwendet.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">10. Datensicherheit</h3>
+            <p>
+              Wir treffen unter Berücksichtigung des Stands der Technik angemessene technische und organisatorische
+              Maßnahmen zum Schutz personenbezogener Daten. Dazu gehören insbesondere die verschlüsselte
+              Datenübertragung über HTTPS/TLS, rollen- und berechtigungsbasierte Zugriffskonzepte, die Protokollierung
+              sicherheitsrelevanter Vorgänge, regelmäßige Datensicherungen, die Trennung von Produktiv-, Entwicklungs-
+              und Testumgebungen, regelmäßige Aktualisierung der Systeme sowie Vertraulichkeitsverpflichtungen für
+              Mitarbeiter und Dienstleister.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">11. Pflicht zur Bereitstellung von Daten</h3>
+            <p>
+              Die Bereitstellung personenbezogener Daten ist freiwillig. Bestimmte Angaben sind jedoch erforderlich,
+              damit wir eine Anfrage bearbeiten oder einen Termin vereinbaren können. Ohne die entsprechend
+              gekennzeichneten Pflichtangaben ist die Nutzung der betreffenden Funktion gegebenenfalls nicht möglich.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">12. Rechte betroffener Personen</h3>
+            <p>Du hast nach Maßgabe der gesetzlichen Voraussetzungen insbesondere folgende Rechte:</p>
+            <ul className="list-disc pl-5 mt-3 space-y-1">
+              <li>Recht auf Auskunft gemäß Art. 15 DSGVO,</li>
+              <li>Recht auf Berichtigung gemäß Art. 16 DSGVO,</li>
+              <li>Recht auf Löschung gemäß Art. 17 DSGVO,</li>
+              <li>Recht auf Einschränkung der Verarbeitung gemäß Art. 18 DSGVO,</li>
+              <li>Recht auf Datenübertragbarkeit gemäß Art. 20 DSGVO,</li>
+              <li>Recht auf Widerspruch gemäß Art. 21 DSGVO,</li>
+              <li>Recht auf Widerruf einer Einwilligung gemäß Art. 7 Abs. 3 DSGVO sowie</li>
+              <li>Recht auf Beschwerde bei einer Datenschutzaufsichtsbehörde gemäß Art. 77 DSGVO.</li>
+            </ul>
+            <p className="mt-3">Zur Ausübung deiner Rechte genügt eine Nachricht an info@esport-manufaktur.com.</p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">13. Widerruf und Widerspruch</h3>
+            <p>
+              Eine erteilte Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen. Der Widerruf
+              berührt nicht die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung. Cookie- und
+              Tracking-Einwilligungen änderst du über die Cookie-Einstellungen dieser Website.
+            </p>
+            <div className="mt-6 p-6 bg-slate-950 text-white rounded-2xl border border-white/10 shadow-xl">
+              <h4 className="font-black uppercase text-[10px] tracking-[0.2em] mb-3 text-[#0e958e]">Widerspruchsrecht</h4>
               <p className="text-sm leading-relaxed text-white/70">
-                Werden personenbezogene Daten im öffentlichen Interesse, in Ausübung eines dem Anbieter übertragenen hoheitlichen Befugnisses oder zur Wahrung der berechtigten Interessen des Anbieters verarbeitet, kann der Nutzer dieser Verarbeitung widersprechen, indem er einen Rechtfertigungsgrund angibt, der sich auf seine besondere Situation bezieht.
-                Nutzer werden darüber informiert, dass sie der Verarbeitung der personenbezogenen Daten für Direktwerbung jederzeit unentgeltlich ohne Angabe von Gründen widersprechen können.
+                Soweit personenbezogene Daten auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO verarbeitet werden, kannst
+                du aus Gründen, die sich aus deiner besonderen Situation ergeben, jederzeit Widerspruch gegen die
+                Verarbeitung einlegen. Werden Daten für Direktwerbung verarbeitet, kannst du jederzeit ohne Angabe von
+                Gründen widersprechen; danach werden die Daten nicht mehr für Direktwerbung verwendet.
               </p>
             </div>
           </section>
 
           <section>
-            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">Begriffsbestimmungen</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-bold text-slate-500 uppercase tracking-wider">
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Personenbezogene Daten</div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Nutzungsdaten</div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Nutzer & Betroffener</div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Auftragsverarbeiter</div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Verantwortlicher</div>
-              <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">Tracker & Cookie</div>
-            </div>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">14. Beschwerderecht</h3>
+            <p>Du kannst dich bei einer Datenschutzaufsichtsbehörde beschweren. Für uns zuständig ist:</p>
+            <p className="mt-3 font-bold text-slate-900">
+              Der Landesbeauftragte für den Datenschutz und die Informationsfreiheit Baden-Württemberg<br />
+              Heilbronner Straße 35<br />
+              70191 Stuttgart<br />
+              Deutschland
+            </p>
+            <p className="mt-3">
+              E-Mail: poststelle@lfdi.bwl.de · Website: www.baden-wuerttemberg.datenschutz.de
+            </p>
+            <p className="mt-3">
+              Du kannst dich auch an jede andere nach Art. 77 DSGVO zuständige Aufsichtsbehörde wenden, insbesondere
+              an die an deinem Aufenthaltsort.
+            </p>
           </section>
 
-          <section className="pt-10 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">Letzte Aktualisierung: 5. September 2026</p>
-            <div className="text-[9px] text-slate-300 font-bold uppercase tracking-widest">iubenda hostet diese Inhalte</div>
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">15. Automatisierte Entscheidungen</h3>
+            <p>
+              Eine ausschließlich automatisierte Entscheidungsfindung im Sinne von Art. 22 DSGVO, die rechtliche
+              Wirkung entfaltet oder dich in vergleichbarer Weise erheblich beeinträchtigt, findet nicht statt.
+            </p>
+          </section>
+
+          <section>
+            <h3 className="text-xs font-black uppercase tracking-[0.3em] text-[#0a6f6a] mb-4">16. Aktualisierung dieser Datenschutzerklärung</h3>
+            <p>
+              Wir aktualisieren diese Datenschutzerklärung, wenn sich unsere Angebote, Datenverarbeitungen,
+              Dienstleister oder die rechtlichen Anforderungen ändern. Nach Eintragung der Umfirmierung wird die
+              Bezeichnung „eSport Manufaktur GmbH“ durch „GG Manufaktur GmbH“ ersetzt; der datenschutzrechtlich
+              verantwortliche Rechtsträger wechselt dadurch nicht.
+            </p>
+            <p className="mt-3">
+              Für einzelne Turniere, Events und White-Label-Plattformen werden ergänzende Datenschutzhinweise
+              bereitgestellt.
+            </p>
+          </section>
+
+          <section className="pt-8 border-t border-slate-200">
+            <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.3em]">Stand: September 2026</p>
           </section>
         </div>
       )
