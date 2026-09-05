@@ -205,25 +205,35 @@ const MobileServiceMenu: React.FC<{
       ref={boxRef}
       className="lg:hidden sticky top-[calc(var(--nav-clearance,78px)+8px)] z-30 mb-8"
     >
-      <button
-        onClick={() => setOpen((v) => !v)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        className="w-full flex items-center justify-between gap-4 rounded-card bg-[#0b0f2a] text-white px-5 py-3.5 text-left shadow-lg shadow-[#0b0f2a]/10"
-      >
-        <span className="min-w-0">
-          <span className="block text-[9px] font-black uppercase tracking-[0.22em] text-white/45">
-            Leistung
+      {/* Der Knopf ist das Einzige, was beim Lesen stehen bleibt -- also traegt
+          er denselben Grund wie das Menue, das aus ihm herauskommt, und nicht
+          eine flache Tintenflaeche daneben. Der Grund liegt im Rahmen, nicht
+          im Knopf: ein <button> darf nur Text und Inline-Inhalt umschlieszen,
+          keine Ebenen. */}
+      <div className="relative rounded-card overflow-hidden border border-white/15 shadow-lg shadow-[#0b0f2a]/15">
+        <HeroGround />
+        <div aria-hidden="true" className="absolute inset-0 bg-[#020617]/35" />
+
+        <button
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
+          aria-haspopup="menu"
+          className="relative z-10 w-full flex items-center justify-between gap-4 text-white px-5 py-3.5 text-left"
+        >
+          <span className="min-w-0">
+            <span className="block text-[9px] font-black uppercase tracking-[0.22em] text-white/50">
+              Leistung
+            </span>
+            <span className="block truncate text-[15px] font-black tracking-tight">
+              {activeTitle}
+            </span>
           </span>
-          <span className="block truncate text-[15px] font-black tracking-tight">
-            {activeTitle}
-          </span>
-        </span>
-        <ChevronDown
-          className={`w-5 h-5 shrink-0 transition-transform duration-500 ${open ? 'rotate-180' : ''}`}
-          aria-hidden="true"
-        />
-      </button>
+          <ChevronDown
+            className={`w-5 h-5 shrink-0 transition-transform duration-500 ${open ? 'rotate-180' : ''}`}
+            aria-hidden="true"
+          />
+        </button>
+      </div>
 
       <AnimatePresence>
         {open && (
@@ -234,12 +244,10 @@ const MobileServiceMenu: React.FC<{
             transition={{ duration: DUR.panel, ease: EASE_REVEAL }}
             className="absolute inset-x-0 top-full mt-2 rounded-card border border-white/15 shadow-2xl overflow-hidden"
           >
-            {/* Derselbe Grund wie der Hero der Startseite -- unveraendert, nur
-                eine Spur durchlaessig, sodass die Leinwand dahinter ihn
-                minimal aufhellt. Ein Schleier aus der Grundfarbe lag vorher
-                darueber; der hat genau das genommen, was den Grund ausmacht:
-                den Glanz und das Raster. */}
-            <HeroGround className="opacity-90" />
+            {/* Derselbe Grund wie der Hero der Startseite, voll deckend, mit
+                einem leichten Schleier aus der Grundfarbe darueber. */}
+            <HeroGround />
+            <div aria-hidden="true" className="absolute inset-0 bg-[#020617]/55" />
 
             {/* Der Grund haengt am stehenden Rahmen, das Scrollen passiert
                 eine Ebene tiefer -- sonst deckt er nur die erste Bildhoehe
