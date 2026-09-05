@@ -40,7 +40,7 @@ const WIDE_CONTAINER = 'max-w-[1440px] mx-auto px-6 md:px-14';
  * The matching CSS variable is `--nav-clearance` in index.css; keep the two
  * together.
  */
-const navClearance = () => (window.innerWidth >= 768 ? 96 : 64);
+const navClearance = () => (window.innerWidth >= 768 ? 96 : 78);
 
 /**
  * The filter, as the client describes the offering: four central fields, then
@@ -203,7 +203,7 @@ const MobileServiceMenu: React.FC<{
   return (
     <div
       ref={boxRef}
-      className="lg:hidden sticky top-[calc(var(--nav-clearance,64px)+8px)] z-30 mb-8"
+      className="lg:hidden sticky top-[calc(var(--nav-clearance,78px)+8px)] z-30 mb-8"
     >
       <button
         onClick={() => setOpen((v) => !v)}
