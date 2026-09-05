@@ -453,6 +453,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
     <ServiceView
       content={content}
       container={sidebar ? 'w-full' : undefined}
+      cardColumns={sidebar ? 2 : 3}
       onOpenBooking={onOpenBooking}
       onOpenContact={onOpenContact}
     />
