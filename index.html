@@ -18,18 +18,9 @@
          parallel with the HTML rather than after the stylesheet is discovered. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Echte Schnitte statt synthetischer.
-         Bis 700 geladen und font-black (900) dem Browser ueberlassen hiesz:
-         jede Headline wurde synthetisch fettgerechnet, und die kursiven
-         Akzente ("zur GG Manufaktur.") zusaetzlich synthetisch geschert.
-         Eine geschraegte Glyphe ragt aus ihrer Layoutbox heraus -- und die
-         maskierten Headline-Reveals rastern waehrend ihrer Bewegung genau auf
-         diese Box, sodass am Wortende Tinte abgeschnitten wurde. Am
-         sichtbarsten in den ersten Millisekunden, solange noch die
-         Systemschrift geschert wird.
-         Die Variable-Font-Achsen kosten eine Datei je Schnitt-Gruppe, nicht
-         eine je Gewicht: 300..900 plus Italic ist hier nicht mehr Gewicht als
-         die fuenf festen Schnitte vorher. -->
+    <!-- Weights deliberately stop at 700. font-black (900) therefore renders as
+         a browser-synthesised bold -- that is the intended look here; do not
+         add 800/900 to this URL without checking the headlines first. -->
     <!--
       Loaded asynchronously. A plain <link rel="stylesheet"> to Google Fonts is
       render-blocking on a chain two hops long -- fonts.googleapis.com for the
@@ -42,10 +33,10 @@
       painted immediately in the fallback stack below and re-flows to Inter
       when it swaps in (the URL already carries display=swap).
     -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..900;1,300..900&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..900;1,300..900&display=swap" media="print" onload="this.media='all'">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
     <noscript>
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300..900;1,300..900&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     </noscript>
 
     <style>
