@@ -160,6 +160,35 @@ export const CaseShowcase: React.FC = () => {
     }
   }, [inView]);
 
+  // Senkrechtes Raddrehen ueber der Reihe gehoert der Seite.
+  //
+  // `overflow-x: auto` macht den Kasten auch senkrecht zum Scrollbereich --
+  // das laeszt sich nicht trennen, `overflow-y: clip` rechnet daneben zu
+  // `hidden`. Der Browser haengt die Radgeste beim ersten Ereignis an den
+  // naechstgelegenen Scrollbereich und bleibt fuer den Rest der Geste dort.
+  // Ueber der Reihe war das die Reihe selbst: sie kann senkrecht nichts
+  // bewegen, gibt die Geste aber auch nicht mehr her, und die Seite stand.
+  // Genau das Bild, das man sieht -- der Zeiger muss die Kacheln verlassen,
+  // damit es weitergeht.
+  //
+  // Also entscheiden wir selbst, wem die Geste gehoert: ueberwiegt die
+  // senkrechte Bewegung, scrollt die Seite und das Ereignis ist erledigt.
+  // Waagerechtes Wischen -- Trackpad, Schaltwippe, geneigtes Rad -- bleibt
+  // bei der Reihe. Der Zeilenmodus wird umgerechnet, sonst kriecht ein
+  // klassisches Mausrad in Dreier-Schritten.
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      const step = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
+      e.preventDefault();
+      window.scrollBy({ top: e.deltaY * step });
+    };
+    rail.addEventListener('wheel', onWheel, { passive: false });
+    return () => rail.removeEventListener('wheel', onWheel);
+  }, []);
+
   // Bring the chosen card to the front of the rail.
   //
   // `scrollIntoView` is not used: it scrolls every scrollable ancestor,
@@ -198,10 +227,18 @@ export const CaseShowcase: React.FC = () => {
           className="absolute inset-0"
         >
           {current.image ? (
+            // Auf dem Telefon das ganze Bild, auf dem Rechner der Ausschnitt.
+            //
+            // Die Aufnahmen sind quer, das Telefon ist hoch: formatfuellend
+            // bleibt von einem 3:2-Bild ein senkrechter Streifen aus seiner
+            // Mitte uebrig -- vom Aufbau, vom Publikum, vom Raum ist nichts
+            // mehr zu sehen. `contain` zeigt es vollstaendig und so grosz, wie
+            // die Bildschirmbreite es zulaeszt. Auf breiten Schirmen passt das
+            // Seitenverhaeltnis ohnehin, dort bleibt es formatfuellend.
             <img
               src={current.image}
               alt={current.imageAlt ?? ''}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain md:object-cover"
             />
           ) : (
             <FallbackGround />
