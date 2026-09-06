@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { HubSpotForm } from './HubSpotForm';
 import { Reveal, RevealText } from './Reveal';
-import { LazyVideo } from './LazyVideo';
 import { DUR, EASE_REVEAL_CSS, STAGGER } from './motion';
 import { SECTION_PADDING } from './spacing';
 
@@ -139,11 +138,6 @@ export const ContactForm: React.FC = () => {
                   maskComposite: 'intersect',
                   WebkitMaskComposite: 'source-in',
                 }}
-              />
-              <LazyVideo
-                src="/videos/contact-bg.mp4"
-                poster="/videos/contact-bg.jpg"
-                className="absolute inset-0 w-full h-full object-cover opacity-[0.08] mix-blend-overlay"
               />
             </div>
 

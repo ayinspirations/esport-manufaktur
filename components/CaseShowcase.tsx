@@ -1,116 +1,112 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
 import { useInView } from '../hooks/useInView';
 
 interface ShowcaseCase {
-  page: string;
-  /**
-   * Das Schlagwort zum Case. Steht aktuell nicht auf der Kachel -- die Pille
-   * darueber nahm dem Titel den Auftakt und sagte in zwei Woertern, was die
-   * Zeile darunter ohnehin sagt. Das Feld bleibt, weil es die Cases
-   * beschreibt, nicht ihre Darstellung.
-   */
-  category: string;
+  /** Eindeutig, und zugleich der Dateiname des Bildes. */
+  id: string;
   title: string;
   text: string;
-  /** Full-bleed backdrop. Omitted where no photograph exists for the case. */
+  /** Full-bleed backdrop. Fehlt es, laeuft der Case auf der dunklen Flaeche. */
   image?: string;
-  /** The card in the rail. Falls back to `image`. */
+  /** Die Kachel in der Reihe. Faellt auf `image` zurueck. */
   card?: string;
   imageAlt?: string;
 }
 
-// The photography each case actually has. BFV, INTERSPORT, REWE, die XP Days,
-// DEKRA, Interwetten und die Consumenta haben noch keine -- die Pfade stehen im Code, die Dateien fehlen im
-// Projekt --, also laufen sie auf der eigenen dunklen Flaeche der Seite,
-// statt sich eine Aufnahme aus einem anderen Projekt zu leihen und sie als
-// ihre auszugeben.
+// ---------------------------------------------------------------------------
+// Was hier steht -- und was nicht
+// ---------------------------------------------------------------------------
+// Die Buehne zeigt die ganze Arbeit, nicht nur die elf Cases mit eigener
+// Unterseite. Die uebrigen sind kurz erzaehlt: ein Titel, ein Satz, ein Bild.
+// Wer mehr wissen will, findet die ausgearbeiteten Faelle im Mosaik darueber.
+//
+// Bilder: jeder Eintrag zeigt auf /images/showcase/<id>.jpg. Fehlt die Datei,
+// laeuft der Case auf der dunklen Flaeche der Seite -- die Buehne bleibt also
+// vollstaendig, waehrend die Bilder nachkommen. Siehe die README in dem
+// Ordner.
+// ---------------------------------------------------------------------------
+
+/** Kuerzt die Wiederholung: aus der id werden beide Bildpfade. */
+const shot = (id: string, title: string, text: string, over?: Partial<ShowcaseCase>): ShowcaseCase => ({
+  id,
+  title,
+  text,
+  image: `/images/showcase/${id}.jpg`,
+  imageAlt: `${title} -- Aktivierung von GG Manufaktur`,
+  ...over
+});
+
 const CASES: ShowcaseCase[] = [
-  {
-    page: 'tsystems',
-    category: 'Employer Branding',
-    title: 'T-Systems',
-    text: 'Eine deutschlandweite Gaming-Aktivierung, die junge Tech-Talente für den Arbeitgeber T-Systems gewinnt.',
+  // Die ausgearbeiteten Faelle zuerst -- sie haben eine eigene Unterseite und
+  // teils eigenes Bildmaterial, das hier weiterverwendet wird.
+  shot('tsystems', 'T-Systems', 'Eine deutschlandweite Gaming-Aktivierung, die junge Tech-Talente für den Arbeitgeber T-Systems gewinnt.', {
     image: '/images/t-systems/hero.jpg',
-    card: '/videos/case-tsystems.jpg',
-    imageAlt: 'Gaming-Aktivierung für T-Systems von GG Manufaktur'
-  },
-  {
-    page: 'hagebau',
-    category: 'Retail Activation',
-    title: 'Hagebau',
-    text: 'Recruiting-Game, Messeaktivierung und eigene Gaming Days — ein Kreislauf, der bis zur Bewerbung führt.',
+    card: '/videos/case-tsystems.jpg'
+  }),
+  shot('hagebau', 'Hagebau Bolay', 'Recruiting-Game, Messeaktivierung und eigene Gaming Days — ein Kreislauf, der bis zur Bewerbung führt.', {
     image: '/images/hagebau/hero-hagebau.jpg',
-    card: '/videos/case-hagebau.jpg',
-    imageAlt: 'Gaming Day Aktivierung für Hagebau von GG Manufaktur'
-  },
-  {
-    page: 'showdown-0711',
-    category: 'Recruiting Event',
-    title: '0711 Showdown',
-    text: 'Fünf Arbeitgeber, 64 junge Talente, ein EA SPORTS FC-Turnier — und die Vorstufe der XP Days.',
-    image: '/videos/case-showdown.jpg',
-    imageAlt: '0711 Showdown eSport Recruiting Event von GG Manufaktur'
-  },
-  {
-    page: 'bayern-zockt',
-    category: 'Verbandsformat',
-    title: 'Bayern zockt',
-    text: 'Eine digitale EM im Originalmodus, mit Finale im Stadion des 1. FC Augsburg.',
+    card: '/videos/case-hagebau.jpg'
+  }),
+  shot('showdown-0711', '0711 Showdown', 'Fünf Arbeitgeber, 64 junge Talente, ein EA SPORTS FC-Turnier — und die Vorstufe der XP Days.', {
+    image: '/videos/case-showdown.jpg'
+  }),
+  shot('bayern-zockt', 'Bayern zockt', 'Eine digitale EM im Originalmodus, mit Finale im Stadion des 1. FC Augsburg.', {
     image: '/images/bayern-zockt/hero.jpg',
-    card: '/videos/case-bayern-zockt.jpg',
-    imageAlt: 'Bayern zockt eSport Turnierserie von GG Manufaktur'
-  },
-  {
-    page: 'bfv',
-    category: 'eFootball',
-    title: 'BFV eFootball',
-    text: 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands — Kunde seit unserer Gründung.',
-    imageAlt: 'BFV eFootball Plattform von GG Manufaktur'
-  },
-  {
-    page: 'intersport',
-    category: 'Retail Activation',
-    title: 'INTERSPORT',
-    text: 'Sechs Wochen Pop-up-Gaming im Clubhouse Berlin, mit eigenem EA SPORTS FC 26-Turnier.',
-    imageAlt: 'INTERSPORT Clubhouse Gaming-Aktivierung von GG Manufaktur'
-  },
-  {
-    page: 'rewe',
-    category: 'Sponsoring-Aktivierung',
-    title: 'REWE',
-    text: 'Scouting für den 1. FC Köln, Community-Turniere und Recruiting — aus einem Sponsoring wird eine Plattform.',
-    imageAlt: 'REWE eSport-Aktivierung mit dem 1. FC Köln von GG Manufaktur'
-  },
-  {
-    page: 'xp-days',
-    category: 'Eigenes Format',
-    title: 'XP Days',
-    text: 'Unsere eigene Karrieremesse: Plattform, XP-System, Videocontent und Gaming-Erlebniswelt in einem Format.',
-    imageAlt: 'XP Days gamifizierte Karrieremesse von GG Manufaktur'
-  },
-  {
-    page: 'dekra',
-    category: 'Digitale Lösung',
-    title: 'DEKRA Motorsport',
-    text: 'Digitaler Wallet-Pass statt Stempelkarte: sechs DTM-Standorte, QR-Tracking und messbare Leads.',
-    imageAlt: 'DEKRA Motorsport Event-Pass von GG Manufaktur'
-  },
-  {
-    page: 'interwetten',
-    category: 'Markenaktivierung',
-    title: 'Interwetten',
-    text: 'Virtual Tennis beim BOSS OPEN: gebrandeter Court, Live-Ranking und Leads aus dem Spiel heraus.',
-    imageAlt: 'Interwetten Virtual-Tennis-Aktivierung von GG Manufaktur'
-  },
-  {
-    page: 'consumenta',
-    category: 'Multi-Brand-Aktivierung',
-    title: 'NIVEA MEN // EFFECT // CRACKZ',
-    text: 'Drei Marken, drei Mechaniken, eine Messefläche — Gaming, Sampling und Leads auf der Consumenta.',
-    imageAlt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ von GG Manufaktur'
-  }
+    card: '/videos/case-bayern-zockt.jpg'
+  }),
+  shot('bfv', 'BFV eFootball', 'Die digitale Fußballplattform des Bayerischen Fußball-Verbands — Kunde seit unserer Gründung.', {
+    image: '/images/bfv/hero.jpg'
+  }),
+  shot('intersport', 'INTERSPORT', 'Sechs Wochen Pop-up-Gaming im Clubhouse Berlin, mit eigenem EA SPORTS FC 26-Turnier.', {
+    image: '/images/intersport/hero.jpg'
+  }),
+  shot('rewe', 'REWE', 'Scouting für den 1. FC Köln, Community-Turniere und Recruiting — aus einem Sponsoring wird eine Plattform.', {
+    image: '/images/rewe/hero.jpg'
+  }),
+  shot('xp-days', 'XP Days', 'Unsere eigene Karrieremesse: Plattform, XP-System, Videocontent und Gaming-Erlebniswelt in einem Format.', {
+    image: '/images/xp-days/hero.jpg'
+  }),
+  shot('dekra', 'DEKRA Motorsport', 'Digitaler Wallet-Pass statt Stempelkarte: sechs DTM-Standorte, QR-Tracking und messbare Leads.', {
+    image: '/images/dekra/hero.jpg'
+  }),
+  shot('interwetten', 'Interwetten', 'Virtual Tennis beim BOSS OPEN: gebrandeter Court, Live-Ranking und Leads aus dem Spiel heraus.', {
+    image: '/images/interwetten/hero.jpg'
+  }),
+  shot('consumenta', 'NIVEA MEN // EFFECT // CRACKZ', 'Drei Marken, drei Mechaniken, eine Messefläche — Gaming, Sampling und Leads auf der Consumenta.', {
+    image: '/images/consumenta/hero.jpg'
+  }),
+
+  // Und die uebrige Arbeit, in der Reihenfolge, in der sie freigegeben wurde.
+  shot('developer-akademie', 'Developer Akademie', 'Gamifizierte Lead-Generierung für IT-Weiterbildungen auf einer individuellen White-Label-Plattform durch zielgruppengerechte Online-Turniere.'),
+  shot('hhn-techday', 'Hochschule Heilbronn – TechDay', 'Spielerische Aktivierung junger Tech- und Studieninteressierter durch Online- und Offline-Turniere in Mario Kart und EA SPORTS FC.'),
+  shot('hhn-gamingland-meetit', 'Hochschule Heilbronn – Gamingland × MeetIT', 'Gaming-nahes Giveaway zur Aktivierung von Studieninteressierten inklusive digitaler Teilnahmeplattform und Mario-Kart-Aktivierung vor Ort.'),
+  shot('naspa-svww', 'Naspa × SV Wehen Wiesbaden', 'Sponsorship Activation zur Neukundenakquise bei jungen Zielgruppen durch einen 2vs2 EA SPORTS FC Cup im Umfeld des SV Wehen Wiesbaden.'),
+  shot('stadt-muenchen-bfv', 'Stadt München × BFV', 'Champions-League-Aktivierung für die Stadt München und den BFV mit einem öffentlich zugänglichen EA SPORTS FC Turnier im Pineapple Park.'),
+  shot('erazer-expert', 'ERAZER × expert', 'Fortnite Gaming-Aktivierung für ERAZER und expert als Technikdienstleister im Auftrag der Lead-Agentur MYI.'),
+  shot('sonax-rocket-league', 'SONAX × Rocket League', 'Rocket-League-Aktivierung für SONAX auf der Tuning World durch Bereitstellung, Aufbau und Installation des Gaming-Equipments im Auftrag von MYI.'),
+  shot('ewe', 'EWE', 'Entwicklung einer ganzheitlichen Gaming-Strategie für den authentischen Markteintritt von EWE inklusive Positionierung, Zielgruppenanalyse und Aktivierungskonzept.'),
+  shot('aok-fortuna-duesseldorf', 'AOK × Fortuna Düsseldorf', 'Regionale Markenaktivierung für die AOK durch Konzeption und Durchführung einer eSport-Stadtmeisterschaft mit Fortuna Düsseldorf.'),
+  shot('allianz-juniorcup', 'Allianz × Mercedes-Benz JuniorCup', 'Aktivierung von Fußball- und Gaming-Fans beim Mercedes-Benz JuniorCup durch eine EA SPORTS FC Gaming-Area und eine Beat-the-Pro-Challenge.'),
+  shot('kreissparkasse-esslingen', 'Kreissparkasse Esslingen', 'Gamifizierte Aktivierung des Familienfests durch eine gebrandete Turnierplattform, Mario Kart, EA SPORTS FC und ein WM-Turnier auf der Hauptbühne.'),
+  shot('kreissparkasse-boeblingen', 'Kreissparkasse Böblingen', 'Spielerische Messeaktivierung auf der Karrieremesse im eigenen Forum durch Mario Kart und ein zielgruppengerechtes Giveaway am Messestand.'),
+  shot('vfb-season-opening', 'VfB Stuttgart eSports – Season Opening', 'Interaktive Community-Aktivierung zum Season Opening durch unsere hauseigene KI-Fotolösung, eine Beat-the-Pro-Challenge und drei gebrandete Gaming-Stationen.'),
+  shot('vfb-turnierplattform', 'VfB Stuttgart eSports – Turnierplattform', 'Digitale Durchführung von Creator Cups und VBL Open Wildcard Cups auf einer individuellen White-Label-Plattform im Design des VfB Stuttgart.'),
+  shot('vr-bank-starnberg-bfv', 'VR Bank Starnberg-Zugspitze × BFV', 'Fußball- und Gaming-Aktivierung gemeinsam mit dem BFV durch ein öffentliches WM-Public-Viewing und ein begleitendes EA SPORTS FC Turnier.'),
+  shot('winamax-gluecksgefuehle', 'Winamax × Glücksgefühle Festival', 'Gamifizierte Markenaktivierung für Winamax auf dem Glücksgefühle Festival durch eine digitale Live-Ranking-Plattform und Mario Kart vor Ort.'),
+  shot('hamburger-sv', 'Hamburger SV', 'Digitale Durchführung des VBL Open Wildcard Cups auf einer vollständig gebrandeten Turnier-Microsite im Design des Hamburger SV.'),
+  shot('eintracht-frankfurt-ambition', 'Eintracht Frankfurt – AMBITION', 'Digitale Aktivierung des eSports-Förderprogramms AMBITION durch individuelle Plattformlösungen und Online-Turniere in Rocket League und EA SPORTS FC.'),
+  shot('1822direkt-blacki-cups', '1822direkt × BLACKI CUPS', 'Sponsorship Activation und Lead-Generierung für 1822direkt durch eine digitale Turnierserie mit integrierten Werbeflächen im Umfeld der BLACKI CUPS.'),
+  shot('itcs', 'ITCS', 'Steigerung der Erlebnisqualität einer IT-Karrieremesse durch einen frei zugänglichen Gaming-Stand mit technischer Ausstattung und spielerischer Besucheraktivierung.'),
+  shot('markenfestival', 'Markenfestival', 'Fachvortrag von Gründer und Geschäftsführer Gianluca Crepaldi über den strategischen Einsatz von Gaming und eSport für Recruiting und Brand Awareness.'),
+  shot('spobis-brand-summit', 'SPOBIS Brand Summit', 'Fachvortrag von Gründer und Geschäftsführer Gianluca Crepaldi über Gaming und eSport als Instrumente für Recruiting, Sponsoring und Markenaktivierung.'),
+  shot('holstein-kiel', 'Holstein Kiel', 'Digitale Durchführung von Online-Turnieren und VBL Open Wildcard Cups auf einer individuellen Turnier-Microsite im Design von Holstein Kiel.'),
+  shot('plauen-park', 'Plauen Park', 'Technische Umsetzung einer zweitägigen Gaming-Aktivierung mit gebrandetem Mobiliar, Gaming-Equipment und Turnier-Microsite im Auftrag der eSport Reputation GmbH.'),
+  shot('rb-leipzig', 'RB Leipzig', 'Skalierbare Durchführung unterschiedlicher eSport-Turniere auf einer individuellen White-Label-Plattform im Design von RB Leipzig.'),
+  shot('vfl-bochum', 'VfL Bochum', 'Digitale Durchführung unterschiedlicher eSport-Wettbewerbe auf einer gebrandeten White-Label-Plattform mit Teilnehmer- und Turniermanagement.'),
+  shot('tsg-hoffenheim', 'TSG Hoffenheim', 'Digitale Abbildung von Turnieren und eSport-Wettbewerben auf einer individuellen White-Label-Plattform im Vereinsdesign der TSG Hoffenheim.'),
+  shot('esport-verband-schleswig-holstein', 'eSport-Verband Schleswig-Holstein', 'Digitale Abbildung des neuen Landesmeisterschaftsformats auf einer individuellen White-Label-Plattform mit Wettbewerbsstruktur und Teilnehmermanagement.'),
+  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.')
 ];
 
 /** The dark ground a case without photography runs on. */
@@ -144,7 +140,7 @@ const FallbackGround: React.FC = () => (
  * cache when the section comes into view instead, so the first switch is
  * instant without any of them being decoded up front.
  */
-export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = ({ onNavigate }) => {
+export const CaseShowcase: React.FC = () => {
   const [active, setActive] = useState(0);
   const railRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -163,6 +159,35 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
       img.src = c.image;
     }
   }, [inView]);
+
+  // Senkrechtes Raddrehen ueber der Reihe gehoert der Seite.
+  //
+  // `overflow-x: auto` macht den Kasten auch senkrecht zum Scrollbereich --
+  // das laeszt sich nicht trennen, `overflow-y: clip` rechnet daneben zu
+  // `hidden`. Der Browser haengt die Radgeste beim ersten Ereignis an den
+  // naechstgelegenen Scrollbereich und bleibt fuer den Rest der Geste dort.
+  // Ueber der Reihe war das die Reihe selbst: sie kann senkrecht nichts
+  // bewegen, gibt die Geste aber auch nicht mehr her, und die Seite stand.
+  // Genau das Bild, das man sieht -- der Zeiger muss die Kacheln verlassen,
+  // damit es weitergeht.
+  //
+  // Also entscheiden wir selbst, wem die Geste gehoert: ueberwiegt die
+  // senkrechte Bewegung, scrollt die Seite und das Ereignis ist erledigt.
+  // Waagerechtes Wischen -- Trackpad, Schaltwippe, geneigtes Rad -- bleibt
+  // bei der Reihe. Der Zeilenmodus wird umgerechnet, sonst kriecht ein
+  // klassisches Mausrad in Dreier-Schritten.
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      const step = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
+      e.preventDefault();
+      window.scrollBy({ top: e.deltaY * step });
+    };
+    rail.addEventListener('wheel', onWheel, { passive: false });
+    return () => rail.removeEventListener('wheel', onWheel);
+  }, []);
 
   // Bring the chosen card to the front of the rail.
   //
@@ -194,7 +219,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
           would blank the stage between the two. */}
       <AnimatePresence initial={false}>
         <motion.div
-          key={current.page}
+          key={current.id}
           initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0 }}
@@ -202,10 +227,18 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
           className="absolute inset-0"
         >
           {current.image ? (
+            // Auf dem Telefon das ganze Bild, auf dem Rechner der Ausschnitt.
+            //
+            // Die Aufnahmen sind quer, das Telefon ist hoch: formatfuellend
+            // bleibt von einem 3:2-Bild ein senkrechter Streifen aus seiner
+            // Mitte uebrig -- vom Aufbau, vom Publikum, vom Raum ist nichts
+            // mehr zu sehen. `contain` zeigt es vollstaendig und so grosz, wie
+            // die Bildschirmbreite es zulaeszt. Auf breiten Schirmen passt das
+            // Seitenverhaeltnis ohnehin, dort bleibt es formatfuellend.
             <img
               src={current.image}
               alt={current.imageAlt ?? ''}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="absolute inset-0 w-full h-full object-contain md:object-cover"
             />
           ) : (
             <FallbackGround />
@@ -243,7 +276,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
       <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pt-32 pb-8 md:pb-10">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
-            key={current.page}
+            key={current.id}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -253,16 +286,9 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
             <h3 className="text-white text-[clamp(34px,5.5vw,68px)] font-black leading-[0.92] tracking-tighter uppercase mb-5 drop-shadow-2xl">
               {current.title}
             </h3>
-            <p className="text-white/70 text-base md:text-lg font-medium leading-relaxed mb-8 max-w-lg">
+            <p className="text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-lg">
               {current.text}
             </p>
-            <button
-              onClick={() => onNavigate?.(current.page)}
-              className="group inline-flex items-center gap-2.5 bg-white hover:bg-emerald-400 text-slate-950 px-7 py-3.5 rounded-full font-black text-sm tracking-tight transition-colors duration-500"
-            >
-              Case ansehen
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-500" />
-            </button>
           </motion.div>
         </AnimatePresence>
       </div>
@@ -288,7 +314,7 @@ export const CaseShowcase: React.FC<{ onNavigate?: (page: string) => void }> = (
             const isActive = i === active;
             return (
               <button
-                key={c.page}
+                key={c.id}
                 ref={(el) => { cardRefs.current[i] = el; }}
                 onClick={() => setActive(i)}
                 aria-current={isActive ? 'true' : undefined}

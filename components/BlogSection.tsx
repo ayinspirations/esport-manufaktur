@@ -43,7 +43,7 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
         <span>{post.readTime}</span>
       </div>
       <h3 className="text-white text-lg font-black tracking-tight leading-snug mb-2.5 group-hover:text-emerald-300 transition-colors">
-        {post.title}
+        {post.cardTitle ?? post.title}
       </h3>
       <p className="text-white/50 text-sm font-medium leading-snug line-clamp-2 mb-5">
         {post.excerpt}
