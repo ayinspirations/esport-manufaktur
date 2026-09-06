@@ -83,16 +83,16 @@ interface Member {
 // dafuer ist nichts weiter zu tun als die Zeile hier ohne `image` zu lassen.
 const team: Member[] = [
   { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '68% 16%' },
-  { name: 'Sandro', role: 'Co-Founder & Operations' },
-  { name: 'Patrick', role: 'Sales & Partnerships' },
+  { name: 'Sandro', role: 'Co-Founder & Operations', image: '/team/sandro.jpg' },
+  { name: 'Patrick', role: 'Sales & Partnerships', image: '/team/patrick.jpg' },
   { name: 'Sandra', role: 'Operations', image: '/team/sandra.jpg' },
-  { name: 'Manuela', role: 'Backoffice' },
-  { name: 'Shayan', role: 'Developer' },
+  { name: 'Manuela', role: 'Backoffice', image: '/team/manuela.jpg' },
+  { name: 'Shayan', role: 'Developer', image: '/team/shayan.jpg' },
   { name: 'Akan', role: 'Website', image: '/team/akan.jpg' },
   { name: 'Mark', role: 'Graphics & Designs', image: '/team/mark.jpg' },
   { name: 'Yannik', role: 'Bilder & Videomacher', image: '/team/yannik.jpg' },
   { name: 'Chris', role: 'Community Support', image: '/team/chris.jpg' },
-  { name: 'Silas', role: 'Helping Hand' }
+  { name: 'Silas', role: 'Helping Hand', image: '/team/silas.jpg' }
 ];
 
 // Monogram avatars until real portraits exist. Two tones from the CI, alternating
