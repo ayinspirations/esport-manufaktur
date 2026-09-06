@@ -10,7 +10,7 @@ import { CasesCTA } from './components/CasesCTA';
 import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { BlogSection } from './components/BlogSection';
-import { blogPosts } from './components/blogPosts';
+import { blogPosts, blogRoutes, getBlogPost } from './components/blogPosts';
 import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
@@ -116,11 +116,21 @@ const resolveRoute = (): Route => {
   if (path === '/webdesign') {
     return { page: 'webdesign' };
   }
+  // Ein Artikel lebt unter seiner eigenen Adresse, nicht hinter einer Raute.
+  // Frueher genutzte Adressen fuehren ueber getBlogPost auf den heutigen
+  // Artikel, statt den Leser auf der Startseite abzuliefern.
+  const blogMatch = path.match(/^\/blog\/([a-z0-9-]+)$/);
+  if (blogMatch) {
+    const post = getBlogPost(blogMatch[1]);
+    if (post) return { page: post.slug as Page };
+  }
 
   const currentHash = window.location.hash.replace('#', '');
-  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', 'dekra', 'interwetten', 'consumenta', ...blogSlugs];
+  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', 'dekra', 'interwetten', 'consumenta', ...blogRoutes];
   if (validPages.includes(currentHash)) {
-    return { page: currentHash as Page };
+    // Auch hinter der Raute kann eine alte Artikeladresse stehen.
+    const post = getBlogPost(currentHash);
+    return { page: (post ? post.slug : currentHash) as Page };
   }
   return { page: 'home' };
 };
@@ -213,6 +223,8 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
     } else if (page === 'webdesign') {
       window.history.pushState(null, '', '/webdesign');
+    } else if (blogSlugs.includes(page)) {
+      window.history.pushState(null, '', `/blog/${page}`);
     } else {
       window.history.pushState(null, '', `/#${page}`);
     }
@@ -329,7 +341,12 @@ export default function App() {
 
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
-          <BlogDetail slug={activePage} onBack={() => scrollToSection('blog')} />
+          <BlogDetail
+            slug={activePage}
+            onBack={() => scrollToSection('blog')}
+            onOpenBooking={openBooking}
+            onOpenContact={openContact}
+          />
         )}
         </Suspense>
       </main>
