@@ -284,7 +284,7 @@ export default function App() {
             {/* The same five cases as a full-viewport stage, directly under the
                 mosaic: the grid above is for comparing them, this is for
                 looking at one. */}
-            <CaseShowcase onNavigate={navigateTo} />
+            <CaseShowcase />
 
             {/* Erst hinter beiden Case-Sektionen die Frage nach dem Projekt --
                 unter dem Mosaik stand sie noch mitten in den Cases. */}
