@@ -37,6 +37,8 @@ export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith('/') 
 // alte Kopien verschwinden sollen -- und immer dann, wenn eine Datei an einer
 // Adresse *neu dazukommt*, die es vorher schon gab.
 //
+// v4: Patricks Portraet wurde ausgetauscht.
+//
 // Genau daran hing v3. Der Stempel kam mit einem Deploy, die Bilder fuer XP
 // Days und NIVEA erst mit dem naechsten. Dazwischen fragte die Seite
 // /images/xp-days/hero.jpg?v=2 ab, bekam die neue 404-Antwort -- und die trug
@@ -49,7 +51,7 @@ export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith('/') 
 // 3, weil das eine Adresse ist, unter der noch nie eine Fehlantwort lag.
 // ---------------------------------------------------------------------------
 
-export const ASSET_VERSION = '3';
+export const ASSET_VERSION = '4';
 
 /** Medienpfad mit Versionsstempel. Fremde Adressen bleiben unberuehrt. */
 export function asset(path: string): string;
