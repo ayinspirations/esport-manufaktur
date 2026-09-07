@@ -93,10 +93,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             claims a different rectangle of it. Because every span is whole
             units of the same cell, the shapes vary while the layout still
             tiles exactly: rows 1-3 die breite Kachel und die hochkante
-            daneben, rows 4-8 das Quadrat und die hohe daneben, rows 9-10 das
-            kleine Quadrat und das Panorama, rows 11-13 wieder breit und
-            hochkant, rows 14-15 zwei gleich breite Haelften, rows 16-18 ein
-            Abschluss ueber die volle Breite. No gaps, no dense-packing
+            daneben, rows 4-6 noch einmal breit und hochkant, rows 7-8 das
+            Quadrat und das Panorama, rows 9-11 wieder breit und hochkant,
+            rows 12-13 zwei gleich breite Haelften, rows 14-16 ein Abschluss
+            ueber die volle Breite. No gaps, no dense-packing
             heuristics, no tile left orphaned on its own row at a smaller
             width.
 
@@ -204,14 +204,15 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 4-8 — DEKRA quadratisch, BFV hochkant daneben.
-              Die Aufnahme ist quadratisch, also ist es die Kachel auch: vier
-              Spalten neben fuenf Reihen ergeben 877 x 856 Pixel, und in
-              einem Rahmen, der dem Bild entspricht, schneidet `object-cover`
-              nichts mehr ab. Das gruene Band am Fusz der Aufnahme ist aus der
-              Datei geschnitten, nicht per Zuschnitt versteckt -- sonst haette
-              es in jeder anderen Verwendung wieder dringestanden. */}
-          <div className="col-span-1 aspect-square lg:col-span-4 lg:row-span-5 lg:aspect-auto">
+          {/* Rows 4-6 — DEKRA breit, BFV hochkant daneben.
+              Die Aufnahme ist quadratisch, die Kachel ist es nicht: sie ist
+              so hoch wie die T-Systems-Kachel darueber und damit breiter als
+              hoch. `object-top` legt das Bild an die Oberkante, also faellt
+              ausschlieszlich unten etwas weg -- oben, links und rechts steht
+              es vollstaendig. Dasselbe Paar wie im Band darueber, und das
+              ausnahmsweise: das Format gibt hier das Foto vor, nicht der
+              Wechsel. */}
+          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -229,7 +230,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                   src="/images/dekra/hero.jpg"
                   alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
@@ -239,7 +240,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 </div>
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       DEKRA Motorsport
                     </h3>
                   </div>
@@ -248,7 +249,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-5 lg:aspect-auto">
+          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -284,7 +285,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 9-10 — 0711 quadratisch, Bayern zockt als Panorama daneben */}
+          {/* Rows 7-8 — 0711 quadratisch, INTERSPORT als Panorama daneben */}
           <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
@@ -322,47 +323,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
           </div>
 
           <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[5]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/bayern-zockt`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('bayern-zockt'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-bayern-zockt.mp4"
-                  poster="/videos/case-bayern-zockt.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      Bayern Zockt
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 11-13 — INTERSPORT breit, Interwetten hochkant daneben */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
-              custom={TILE_DELAY[6]}
+              custom={TILE_DELAY[5]}
               initial="hidden"
               whileInView="show"
               viewport={TILE_VIEWPORT}
@@ -386,11 +350,48 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 </div>
                 <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       Intersport
                     </h3>
                   </div>
                 </motion.div>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Rows 9-11 — Bayern zockt breit, Interwetten hochkant daneben */}
+          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
+            <motion.div 
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[6]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <a
+                href={`/best-cases/bayern-zockt`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('bayern-zockt'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+              >
+                <LazyVideo
+                  src="/videos/case-bayern-zockt.mp4"
+                  poster="/videos/case-bayern-zockt.jpg"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      Bayern Zockt
+                    </h3>
+                  </div>
+                </div>
               </a>
             </motion.div>
           </div>
@@ -432,7 +433,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 14-15 — REWE und XP Days teilen sich das Band zu gleichen Teilen */}
+          {/* Rows 12-13 — REWE und XP Days teilen sich das Band zu gleichen Teilen */}
           <div className="col-span-1 aspect-[16/9] lg:col-span-3 lg:row-span-2 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
@@ -507,7 +508,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 16-18 — Consumenta ueber die volle Breite. Drei Marken in
+          {/* Rows 14-16 — Consumenta ueber die volle Breite. Drei Marken in
               einer Kachel brauchen die ganze Zeile fuer ihren Namen. */}
           <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
             <motion.div
@@ -545,6 +546,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               </a>
             </motion.div>
           </div>
+
 
 
         </div>
