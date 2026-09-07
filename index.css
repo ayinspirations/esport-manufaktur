@@ -282,3 +282,10 @@ html {
   scrollbar-width: thin;
   scrollbar-color: rgba(127, 145, 155, 0.32) transparent;
 }
+
+/* Der Ladekreis der Routen. Steht hier und nicht in Tailwinds `animate-spin`,
+   weil dieselbe Umdrehung auch dann laufen soll, wenn jemand `prefers-reduced-
+   motion` gesetzt hat -- ein Ladezeichen, das stillsteht, sagt nichts. */
+@keyframes gg-spin {
+  to { transform: rotate(360deg); }
+}

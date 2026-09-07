@@ -36,35 +36,153 @@ import { smoothScrollToElement } from './components/motion';
 // opened; `warmRouteChunks` below then pulls them in during idle time, so in
 // practice the chunk is already cached by the time it is clicked and the
 // Suspense fallback never actually shows.
-const BlogDetail = lazy(() => import('./components/BlogDetail').then(m => ({ default: m.BlogDetail })));
-const LegalPage = lazy(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
-const CaseDetail = lazy(() => import('./components/CaseDetail').then(m => ({ default: m.CaseDetail })));
-const TSystemsDetail = lazy(() => import('./components/TSystemsDetail').then(m => ({ default: m.TSystemsDetail })));
-const BayernZocktDetail = lazy(() => import('./components/BayernZocktDetail').then(m => ({ default: m.BayernZocktDetail })));
-const Showdown0711Detail = lazy(() => import('./components/Showdown0711Detail').then(m => ({ default: m.Showdown0711Detail })));
-const BFVDetail = lazy(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
-const IntersportDetail = lazy(() => import('./components/IntersportDetail').then(m => ({ default: m.IntersportDetail })));
-const ReweDetail = lazy(() => import('./components/ReweDetail').then(m => ({ default: m.ReweDetail })));
-const XpDaysDetail = lazy(() => import('./components/XpDaysDetail').then(m => ({ default: m.XpDaysDetail })));
-const DekraDetail = lazy(() => import('./components/DekraDetail').then(m => ({ default: m.DekraDetail })));
-const InterwettenDetail = lazy(() => import('./components/InterwettenDetail').then(m => ({ default: m.InterwettenDetail })));
-const NiveaEffectCrackzDetail = lazy(() => import('./components/NiveaEffectCrackzDetail').then(m => ({ default: m.NiveaEffectCrackzDetail })));
-const ServicesPage = lazy(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
-const UeberUnsPage = lazy(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
-const MeineGeschichte = lazy(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
-const WebdesignPage = lazy(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
-const CookiePopup = lazy(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
-const BookingModal = lazy(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
-const ContactModal = lazy(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
+// ---------------------------------------------------------------------------
+// Nachladen, das einen Deploy ueberlebt
+// ---------------------------------------------------------------------------
+// Die Routen unten liegen in eigenen Dateien, die erst beim Klick geholt
+// werden. Deren Namen tragen einen Hash des Inhalts -- nach jedem Deploy
+// heiszen sie anders, und die alten sind weg.
+//
+// Wer die Seite offen hatte, waehrend deployt wurde, haelt damit ein
+// index.html, das auf Dateien zeigt, die es nicht mehr gibt. Der Klick loeste
+// dann ein `import()` aus, das ins Leere lief; React hatte keine Auffangstelle
+// dafuer, also blieb die Seite leer, bis jemand neu lud. Genau das war die
+// Meldung "geht erst nach dem Neuladen" -- und an einem Tag mit acht Deploys
+// trifft es jeden, der laenger als eine Runde liest.
+//
+// Also: ein zweiter Versuch (eine abgerissene Verbindung ist der haeufigere
+// Fall), und wenn auch der scheitert, laedt die Seite sich einmal selbst neu.
+// Das holt index.html mitsamt den heutigen Dateinamen; der Merker verhindert,
+// dass daraus eine Schleife wird, falls wirklich etwas kaputt ist.
+// ---------------------------------------------------------------------------
+
+const RELOAD_MARK = 'gg:chunk-reload';
+
+/** sessionStorage kann werfen (private Fenster, gesperrte Speicher). */
+const mark = {
+  read: () => { try { return sessionStorage.getItem(RELOAD_MARK); } catch { return null; } },
+  set: () => { try { sessionStorage.setItem(RELOAD_MARK, '1'); } catch { /* egal */ } },
+  clear: () => { try { sessionStorage.removeItem(RELOAD_MARK); } catch { /* egal */ } }
+};
+
+function lazyRoute<T extends React.ComponentType<any>>(load: () => Promise<{ default: T }>) {
+  return lazy(() =>
+    load()
+      .then((mod) => { mark.clear(); return mod; })
+      .catch((error) =>
+        load()
+          .then((mod) => { mark.clear(); return mod; })
+          .catch(() => {
+            if (!mark.read()) {
+              mark.set();
+              window.location.reload();
+              // Der Aufrufer braucht ein Versprechen; eingeloest wird es nie,
+              // weil die Seite in diesem Moment ohnehin neu laedt.
+              return new Promise<{ default: T }>(() => {});
+            }
+            throw error;
+          })
+      )
+  );
+}
+
+const BlogDetail = lazyRoute(() => import('./components/BlogDetail').then(m => ({ default: m.BlogDetail })));
+const LegalPage = lazyRoute(() => import('./components/LegalPage').then(m => ({ default: m.LegalPage })));
+const CaseDetail = lazyRoute(() => import('./components/CaseDetail').then(m => ({ default: m.CaseDetail })));
+const TSystemsDetail = lazyRoute(() => import('./components/TSystemsDetail').then(m => ({ default: m.TSystemsDetail })));
+const BayernZocktDetail = lazyRoute(() => import('./components/BayernZocktDetail').then(m => ({ default: m.BayernZocktDetail })));
+const Showdown0711Detail = lazyRoute(() => import('./components/Showdown0711Detail').then(m => ({ default: m.Showdown0711Detail })));
+const BFVDetail = lazyRoute(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
+const IntersportDetail = lazyRoute(() => import('./components/IntersportDetail').then(m => ({ default: m.IntersportDetail })));
+const ReweDetail = lazyRoute(() => import('./components/ReweDetail').then(m => ({ default: m.ReweDetail })));
+const XpDaysDetail = lazyRoute(() => import('./components/XpDaysDetail').then(m => ({ default: m.XpDaysDetail })));
+const DekraDetail = lazyRoute(() => import('./components/DekraDetail').then(m => ({ default: m.DekraDetail })));
+const InterwettenDetail = lazyRoute(() => import('./components/InterwettenDetail').then(m => ({ default: m.InterwettenDetail })));
+const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffectCrackzDetail').then(m => ({ default: m.NiveaEffectCrackzDetail })));
+const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
+const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
+const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
+const CookiePopup = lazyRoute(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
+const BookingModal = lazyRoute(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
+const ContactModal = lazyRoute(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 
 /**
- * Held in place of a route while its chunk is in flight.
+ * Steht an der Stelle einer Route, solange deren Datei unterwegs ist.
  *
- * Full viewport height and the page's own background: a short fallback that
- * collapses to nothing would drop the scroll height to zero and then restore
- * it a moment later, which reads as the page flinching.
+ * Volle Schirmhoehe und die Flaeche der Seite: ein Platzhalter, der zu nichts
+ * zusammenfaellt, wuerde die Scrollhoehe auf null ziehen und einen Wimpernschlag
+ * spaeter zurueck -- die Seite zuckt.
+ *
+ * Nach einem Drittel einer Sekunde kommt ein Zeichen dazu. Kuerzer waere es
+ * ein Flackern; laenger sieht eine leere Flaeche aus, als sei etwas kaputt --
+ * und wer das denkt, laedt neu, statt zu warten.
  */
-const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidden="true" />;
+const RouteFallback = () => {
+  const [slow, setSlow] = useState(false);
+  useEffect(() => {
+    const t = window.setTimeout(() => setSlow(true), 320);
+    return () => window.clearTimeout(t);
+  }, []);
+  return (
+    <div className="min-h-screen bg-[#badeda] flex items-start justify-center pt-[38vh]" role="status" aria-live="polite">
+      <span
+        className="w-8 h-8 rounded-full border-2 border-[#0b0f2a]/15 border-t-[#0e958e] transition-opacity duration-300"
+        style={{ opacity: slow ? 1 : 0, animation: 'gg-spin 700ms linear infinite' }}
+      />
+      <span className="sr-only">Seite wird geladen</span>
+    </div>
+  );
+};
+
+/**
+ * Faengt ab, was beim Laden einer Route schiefgeht.
+ *
+ * Ohne sie nimmt ein einziges fehlgeschlagenes `import()` die ganze Anwendung
+ * mit: React raeumt den Baum ab, zurueck bleibt eine weisze Flaeche ohne
+ * Hinweis, was zu tun waere. lazyRoute oben faengt den haeufigsten Fall schon
+ * vorher ab; was hier ankommt, ist der Rest -- und der bekommt wenigstens eine
+ * Seite, die sagt, was los ist, und einen Knopf, der es behebt.
+ */
+// React liegt in diesem Projekt ohne Typdefinitionen vor -- @types/react ist
+// nicht installiert, und der Rest des Codes kommt ohne aus, weil er nur
+// Funktionskomponenten schreibt. Eine Auffangstelle muss aber eine Klasse
+// sein (nur sie kennt getDerivedStateFromError), und dafuer braucht
+// TypeScript die Basisklasse; ohne Typen kennt es weder `props` noch `state`.
+// Deshalb steht sie hier einmal als `any`.
+const ReactComponent: any = React.Component;
+
+class RouteBoundary extends ReactComponent {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error('Route konnte nicht geladen werden:', error);
+  }
+
+  render() {
+    if (!this.state.failed) return this.props.children;
+    return (
+      <div className="min-h-screen bg-[#badeda] flex flex-col items-center justify-center gap-5 px-6 text-center">
+        <h2 className="text-[clamp(24px,4vw,40px)] font-black uppercase tracking-tighter text-[#0b0f2a] leading-[0.95]">
+          Diese Seite ist gerade nicht<br />durchgekommen.
+        </h2>
+        <p className="text-slate-600 font-medium max-w-sm leading-relaxed">
+          Meist liegt es an der Verbindung oder an einer frisch veröffentlichten Fassung dieser Website.
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-6 py-3 rounded-full bg-[#0b0f2a] hover:bg-[#0e958e] text-white text-sm font-bold tracking-tight transition-colors"
+        >
+          Neu laden
+        </button>
+      </div>
+    );
+  }
+}
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
@@ -348,6 +466,10 @@ export default function App() {
           </div>
         )}
 
+        {/* `key` haengt an der Route: eine Auffangstelle, die einmal
+            ausgeloest hat, bleibt sonst ausgeloest -- auch fuer die naechste
+            Seite, die vielleicht problemlos laedt. */}
+        <RouteBoundary key={activePage}>
         <Suspense fallback={activePage === 'home' ? null : <RouteFallback />}>
         {activePage === 'services' && (
           <ServicesPage
@@ -431,6 +553,7 @@ export default function App() {
           />
         )}
         </Suspense>
+        </RouteBoundary>
       </main>
 
       <Footer onNavigate={navigateTo} scrollToSection={scrollToSection} />
