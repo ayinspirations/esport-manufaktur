@@ -12,10 +12,9 @@ interface InterwettenDetailProps {
 // Liegen die Bilder unter public/images/interwetten, erscheinen sie von selbst
 // -- fehlt eines, faellt es aus der Reihe (siehe CaseSlider).
 const images = [
-  '/images/interwetten/slide-1.jpg',
-  '/images/interwetten/slide-2.jpg',
-  '/images/interwetten/slide-3.jpg',
-  '/images/interwetten/slide-4.jpg',
+  '/images/interwetten/hero.jpg',
+  '/images/interwetten/gallery-2.jpg',
+  '/images/interwetten/gallery-3.jpg',
 ];
 
 // ---------------------------------------------------------------------------

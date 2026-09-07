@@ -10,12 +10,11 @@ interface CaseDetailProps {
 }
 
 const images = [
-  '/images/hagebau/slide-3.jpg',
-  '/images/hagebau/slide-1.jpg',
-  '/images/hagebau/slide-2.jpg',
-  '/images/hagebau/slide-4.jpg',
-  '/images/hagebau/slide-5.jpg',
-  '/images/hagebau/slide-6.jpg',
+  '/images/hagebau/gallery-1.jpg',
+  '/images/hagebau/gallery-2.jpg',
+  '/images/hagebau/gallery-3.jpg',
+  '/images/hagebau/gallery-4.jpg',
+  '/images/hagebau/gallery-5.jpg',
 ];
 
 // ---------------------------------------------------------------------------

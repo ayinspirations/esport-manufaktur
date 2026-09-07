@@ -37,6 +37,9 @@ const shot = (id: string, title: string, text: string, over?: Partial<ShowcaseCa
   ...over
 });
 
+/** Wie viele Aufmacher beim Naeherkommen vorgeladen werden. */
+const WARM_COUNT = 6;
+
 const CASES: ShowcaseCase[] = [
   // Die ausgearbeiteten Faelle zuerst -- sie haben eine eigene Unterseite und
   // teils eigenes Bildmaterial, das hier weiterverwendet wird.
@@ -45,7 +48,7 @@ const CASES: ShowcaseCase[] = [
     card: '/videos/case-tsystems.jpg'
   }),
   shot('hagebau', 'Hagebau Bolay', 'Recruiting-Game, Messeaktivierung und eigene Gaming Days — ein Kreislauf, der bis zur Bewerbung führt.', {
-    image: '/images/hagebau/hero-hagebau.jpg',
+    image: '/images/hagebau/gallery-1.jpg',
     card: '/videos/case-hagebau.jpg'
   }),
   shot('showdown-0711', '0711 Showdown', 'Fünf Arbeitgeber, 64 junge Talente, ein EA SPORTS FC-Turnier — und die Vorstufe der XP Days.', {
@@ -148,12 +151,17 @@ export const CaseShowcase: React.FC = () => {
 
   const current = CASES[active];
 
-  // Warm the backdrops once the stage is near. Fetched, not rendered: they land
-  // in the HTTP cache so a switch paints immediately, without five decoded
-  // bitmaps being held in memory for a section nobody may interact with.
+  // Warm the first few backdrops once the stage is near. Fetched, not
+  // rendered: sie landen im HTTP-Zwischenspeicher, damit der erste Wechsel
+  // sofort steht, ohne dass eine decodierte Bitmap im Speicher haengt.
+  //
+  // Nur die ersten sechs. Bei elf Cases war "alle" vertretbar, bei vierzig
+  // waeren es mehrere Megabyte fuer einen Abschnitt, den viele nur
+  // vorbeiscrollen. Alles Weitere laedt beim Anklicken -- die Kacheln in der
+  // Reihe haengen ohnehin an `loading="lazy"`.
   useEffect(() => {
     if (!inView) return;
-    for (const c of CASES) {
+    for (const c of CASES.slice(0, WARM_COUNT)) {
       if (!c.image) continue;
       const img = new Image();
       img.src = c.image;

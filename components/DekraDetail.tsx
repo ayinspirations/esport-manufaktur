@@ -11,12 +11,7 @@ interface DekraDetailProps {
 
 // Liegen die Bilder unter public/images/dekra, erscheinen sie von selbst --
 // fehlt eines, faellt es aus der Reihe (siehe CaseSlider).
-const images = [
-  '/images/dekra/slide-1.jpg',
-  '/images/dekra/slide-2.jpg',
-  '/images/dekra/slide-3.jpg',
-  '/images/dekra/slide-4.jpg',
-];
+const images = ['/images/dekra/hero.jpg'];
 
 // ---------------------------------------------------------------------------
 // Die Inhalte dieses Cases

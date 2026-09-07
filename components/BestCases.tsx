@@ -308,10 +308,9 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
                 onClick={() => onNavigate?.('bfv')}
               >
-                <img
-                  src="/images/bfv/hero.jpg"
-                  alt="BFV eFootball"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                <LazyVideo
+                  src="/videos/case-bfv.mp4"
+                  poster="/images/bfv/hero.jpg"
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
