@@ -85,6 +85,17 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
         {/* Contents follow the panel rather than fading with it: the panel
             lands first, then headline and copy build on top of it. */}
         <div className="relative z-10 py-20 md:py-28 px-6 md:px-14 lg:px-20">
+          {/* Derselbe Dreiklang wie in der Telefonleiste. Er steht als
+              Vorzeile ueber der Ueberschrift, nicht darin: drei Woerter in
+              Versalien vor einer Zeile in 90 Pixeln lesen sich als Anlauf,
+              nicht als Konkurrenz. */}
+          <Reveal
+            as="p"
+            delay={0.08}
+            className="text-[#5fd6cf] font-black uppercase tracking-[0.28em] text-[10px] md:text-xs mb-5 md:mb-6"
+          >
+            Create. Engage. Empower.
+          </Reveal>
           <RevealText
             as="h2"
             by="word"
