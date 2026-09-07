@@ -45,7 +45,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, sub
     <AnimatePresence>
       {isOpen && (
         <div
-          className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-6"
+          className="fixed inset-0 z-[10000] flex items-center justify-center p-3 sm:p-4 md:p-6 overscroll-contain"
           role="dialog"
           aria-modal="true"
           aria-label="Projekt anfragen"
@@ -62,7 +62,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, sub
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-[800px] rounded-shell shadow-2xl overflow-hidden flex flex-col h-[92vh] md:h-[90vh] tile-gradient"
+            className="modal-shell relative w-full max-w-[800px] rounded-shell shadow-2xl overflow-hidden flex flex-col tile-gradient"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-white/10 shrink-0 z-10">

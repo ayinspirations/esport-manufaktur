@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollLock } from '../hooks/useScrollLock';
-import { X, Calendar, CheckCircle2 } from 'lucide-react';
+import { X, Calendar, CheckCircle2, ExternalLink } from 'lucide-react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -57,7 +57,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
     // neuen Tab angeboten, statt auf eine weisze Flaeche zu sehen.
     const slow = window.setTimeout(() => {
       setLoadState((s) => (s === 'loading' ? 'slow' : s));
-    }, 12000);
+    }, 7000);
 
     return () => {
       window.removeEventListener('message', handleMessage);
@@ -77,7 +77,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 md:p-6">
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-3 sm:p-4 md:p-6 overscroll-contain">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -90,12 +90,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            /* dvh statt vh: `vh` rechnet auf iPhones mit dem Fenster ohne
-               Browserleisten, das Fenster ist aber meist kleiner. Der Rahmen
-               ragte damit unter die Leisten, und was unten stand -- der Knopf
-               zum Buchen -- war nicht erreichbar. `dvh` folgt dem, was
-               wirklich zu sehen ist. */
-            className="relative w-full max-w-[800px] bg-white rounded-shell shadow-2xl overflow-hidden flex flex-col h-[92dvh] md:h-[90dvh]"
+            /* Die Hoehe steht in index.css unter .modal-shell: erst vh, dann
+               dvh. `vh` rechnet auf Telefonen mit dem Fenster ohne
+               Browserleisten -- das echte ist kleiner, und der Fusz mit dem
+               Buchen-Knopf lag darunter. `dvh` behebt das, gibt es aber erst
+               ab iOS 15.4; deshalb bleibt vh als Boden darunter stehen, statt
+               dass aeltere Geraete voellig ohne Hoehe dastehen. */
+            className="modal-shell relative w-full max-w-[800px] bg-white rounded-shell shadow-2xl overflow-hidden flex flex-col"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 shrink-0 bg-white z-10">
@@ -108,12 +109,30 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                   <p className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-slate-400 mt-1">Kostenloses Kennenlernen</p>
                 </div>
               </div>
-              <button
-                onClick={onClose}
-                className="w-8 h-8 md:w-10 md:h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex items-center gap-1">
+                {/* Der Ausweg steht immer da, nicht erst wenn etwas schiefgeht.
+                    Ein Iframe kann in einem In-App-Browser oder hinter einem
+                    Blocker leer bleiben, ohne dass die Seite davon erfaehrt --
+                    dann ist dieser Verweis der Unterschied zwischen "geht
+                    nicht" und "geht eben hier". */}
+                <a
+                  href={BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Im neuen Tab öffnen"
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
+                >
+                  <ExternalLink className="w-[18px] h-[18px]" />
+                  <span className="sr-only">Termin im neuen Tab buchen</span>
+                </a>
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 md:w-10 md:h-10 rounded-full hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-900 transition-all"
+                  aria-label="Schließen"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Der Inhalt.
