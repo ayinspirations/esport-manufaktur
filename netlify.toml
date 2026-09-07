@@ -70,31 +70,31 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # ---------------------------------------------------------------------------
-# Keine Edge Function hier
+# Keine Edge Function, nirgends
 # ---------------------------------------------------------------------------
-# Hier stand ein "Torwaechter", der die Regel aus der robots.txt als Antwort
-# durchgesetzt hat. Er selbst hatte keine einzige Abhaengigkeit -- aber sein
-# Vorhandensein hat Netlifys Edge-Bundling ueberhaupt erst eingeschaltet, und
-# damit fiel auch die Funktion in den Build, die die Integration "User Agent
-# Blocker" erzeugt (erkennbar an USER_AGENT_BLOCKER_ANALYTICS in den
-# Umgebungsvariablen). Die importiert @netlify/blobs, und npm-Module in Edge
-# Functions sind dort experimentell: der Build brach ab.
+# Hier stand ein "Torwaechter": eine Edge Function, die die Regel aus der
+# robots.txt auch als Antwort durchgesetzt hat. Sie hatte keine einzige
+# Abhaengigkeit -- aber ihr Vorhandensein hat Netlifys Edge-Bundling
+# eingeschaltet, und damit fiel auch die Funktion in den Build, die die
+# Integration "User Agent Blocker" selbst erzeugt. Die importiert
+# @netlify/blobs; npm-Module in Edge Functions sind dort experimentell, und der
+# Build brach ab ("Could not resolve @netlify/blobs"). Unsere Funktion ist
+# deshalb geflogen -- und danach zeigte sich, dass die Integration das Bundling
+# ganz allein einschaltet: sie legt ihre Funktion ohne unser Zutun in
+# .netlify/edge-functions. @netlify/blobs musste als Abhaengigkeit her, damit
+# der Bundler sie aufloesen konnte.
 #
-# Also uebernimmt das Sperren die Integration, die dafuer eingerichtet ist,
-# und dieses Verzeichnis bleibt leer. Die Regel selbst steht weiterhin lesbar
-# in public/robots.txt.
+# Beides ist jetzt weg. Die Integration ist deinstalliert, also entsteht keine
+# Edge Function mehr, es gibt kein Edge-Bundling und @netlify/blobs steht
+# nicht mehr in der package.json. Jede Anfrage geht direkt ans CDN, ohne
+# Zwischenstation -- das ist auch der schnellere Weg: die Funktion lief vor
+# jeder einzelnen Auslieferung und schrieb dabei ihre Zaehler.
 #
-# Nachtrag: die Integration allein reicht, um das Edge-Bundling einzuschalten
-# -- sie legt ihre Funktion selbst in .netlify/edge-functions ab, ganz ohne
-# unser Zutun. Und sie importiert @netlify/blobs, das der Bundler nur
-# aufloesen kann, wenn das Paket in node_modules liegt. Es stand nirgends,
-# also brach der Build ab ("Could not resolve @netlify/blobs").
-#
-# Deshalb steht @netlify/blobs in den dependencies der package.json, obwohl
-# kein Zeile unseres Codes es importiert: es ist die Abhaengigkeit der
-# Integration, nicht der Seite. Wer es dort aufraeumt, weil "das benutzt ja
-# niemand", legt den naechsten Deploy lahm. Wird die Integration im Netlify-UI
-# abgeschaltet, kann es mit weg.
+# Das Sperren uebernimmt damit allein public/robots.txt. Das ist eine Bitte,
+# keine Schranke: wer sich nicht daran haelt, kommt durch. Fuer die Suchmaschinen
+# und die groszen Crawler reicht es; soll wieder wirklich gesperrt werden,
+# kommt die Integration zurueck -- und mit ihr @netlify/blobs in die
+# dependencies, sonst bricht der erste Build danach wieder ab.
 # ---------------------------------------------------------------------------
 # Renamed services
 # ---------------------------------------------------------------------------
