@@ -107,7 +107,7 @@ const CASES: ShowcaseCase[] = [
   shot('aok-fortuna-duesseldorf', 'AOK × Fortuna Düsseldorf', 'Regionale Markenaktivierung für die AOK durch Konzeption und Durchführung einer eSport-Stadtmeisterschaft mit Fortuna Düsseldorf.'),
   // Tief angesetzt: oben steht nur der Schriftzug des Carl-Benz-Centers.
   // Die Zelte, um die es geht, sitzen im unteren Drittel der Aufnahme.
-  shot('allianz-juniorcup', 'Allianz × Mercedes-Benz JuniorCup', 'Aktivierung von Fußball- und Gaming-Fans beim Mercedes-Benz JuniorCup durch eine EA SPORTS FC Gaming-Area und eine Beat-the-Pro-Challenge.', { focus: '50% 80%' }),
+  shot('allianz-juniorcup', 'Allianz × Mercedes-Benz JuniorCup', 'Aktivierung von Fußball- und Gaming-Fans beim Mercedes-Benz JuniorCup durch eine EA SPORTS FC Gaming-Area und eine Beat-the-Pro-Challenge.', { focus: '62% 62%' }),
   shot('kreissparkasse-esslingen', 'Kreissparkasse Esslingen', 'Gamifizierte Aktivierung des Familienfests durch eine gebrandete Turnierplattform, Mario Kart, EA SPORTS FC und ein WM-Turnier auf der Hauptbühne.'),
   // Ein Plakat, kein Foto: der Schnitt muss die Aussage treffen, nicht die
   // Bildmitte. Etwas tiefer stehen Mario und "Gewinne eine Switch2" im Bild.
@@ -128,7 +128,7 @@ const CASES: ShowcaseCase[] = [
   shot('vfl-bochum', 'VfL Bochum', 'Digitale Durchführung unterschiedlicher eSport-Wettbewerbe auf einer gebrandeten White-Label-Plattform mit Teilnehmer- und Turniermanagement.'),
   shot('tsg-hoffenheim', 'TSG Hoffenheim', 'Digitale Abbildung von Turnieren und eSport-Wettbewerben auf einer individuellen White-Label-Plattform im Vereinsdesign der TSG Hoffenheim.'),
   shot('esport-verband-schleswig-holstein', 'eSport-Verband Schleswig-Holstein', 'Digitale Abbildung des neuen Landesmeisterschaftsformats auf einer individuellen White-Label-Plattform mit Wettbewerbsstruktur und Teilnehmermanagement.'),
-  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.')
+  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.', { focus: '50% 92%' })
 ];
 
 /** Die Faelle, die gerade gezeigt werden -- in der Reihenfolge von oben. */
