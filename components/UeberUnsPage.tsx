@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
@@ -6,6 +7,7 @@ import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 import { asset } from './site';
+import { useScrollZoom } from '../hooks/useScrollZoom';
 
 interface UeberUnsPageProps {
   onNavigate: (page: any) => void;
@@ -128,9 +130,13 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
   // daneben -- und zwar so lange, bis es jemandem auffaellt.
   const [failed, setFailed] = useState(false);
   const showImage = Boolean(member.image) && !failed;
+  // Telefon: das Portraet faehrt beim Vorbeiscrollen leicht heran -- am
+  // Desktop macht das der Zeiger.
+  const { ref: zoomRef, zoom } = useScrollZoom();
 
   return (
-  <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
+  <div ref={zoomRef} className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
+    <motion.div className="absolute inset-0" style={zoom}>
     {showImage ? (
       <img
         src={asset(member.image)}
@@ -151,6 +157,7 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
         {member.name.charAt(0)}
       </div>
     )}
+    </motion.div>
 
     {/* Der Schleier traegt die Schrift. Auf dem Telefon steht er, am Desktop
         kommt er mit dem Zeiger. */}

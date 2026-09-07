@@ -122,11 +122,20 @@ export const ContactForm: React.FC = () => {
           <div data-nav-ground="dark" className="relative rounded-shell overflow-hidden shadow-2xl bg-[#020617] border border-white/10 min-h-[600px]">
             <div className="absolute inset-0 z-0 pointer-events-none">
               <div className="absolute inset-0 bg-[#020617]" />
+              {/* Der Schein oben links -- ohne Weichzeichner.
+                  Er hing vorher an einem Kasten, der ueber die Kante der Karte
+                  hinausragte und per `filter: blur(40px)` weichgezeichnet
+                  wurde. Ein Filter erzeugt aber eine eigene Zeichenflaeche,
+                  und die beschneidet der Browser am rechteckigen Rand des
+                  Elternteils, nicht an dessen Rundung: in der Ecke stand
+                  dadurch ein heller, gerader Fleck ueber der Abrundung.
+                  Der Verlauf selbst ist weich genug -- er laeuft ohnehin bis
+                  70 Prozent ins Nichts. Also liegt er jetzt flaechig in der
+                  Karte, ohne Filter und ohne Ueberstand. */}
               <div
-                className="absolute -top-[10%] -left-[5%] w-[80%] h-[80%] opacity-40"
+                className="absolute inset-0 opacity-40"
                 style={{
-                  background: 'radial-gradient(circle at 20% 20%, #00818d 0%, transparent 70%)',
-                  filter: 'blur(40px)',
+                  background: 'radial-gradient(circle at 14% 12%, #00818d 0%, rgba(0,129,141,0.35) 32%, transparent 62%)',
                 }}
               />
               <div

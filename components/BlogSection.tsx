@@ -8,6 +8,7 @@ import { Reveal, RevealText } from './Reveal';
 import { DUR, STAGGER } from './motion';
 import { useInView } from '../hooks/useInView';
 import { asset } from './site';
+import { useScrollZoom } from '../hooks/useScrollZoom';
 
 // The heading runs eyebrow -> "Blog" -> "& Wissen." -> subline, the last of
 // which starts at 0.42s. The cards begin once that subline is most of the way
@@ -26,19 +27,26 @@ interface BlogSectionProps {
 // weisz auch eine Suchmaschine: der Artikel war aus der Startseite heraus
 // nicht verlinkt. Der Klick geht weiterhin durch den Router, alles andere --
 // Mittelklick, Tastatur, Crawler -- folgt der echten Adresse.
-const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => (
+const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => {
+  // Telefon: das Bild faehrt beim Vorbeiscrollen heran -- der Ersatz fuers
+  // Hover, das es auf einem Telefon nicht gibt.
+  const { ref: zoomRef, zoom } = useScrollZoom();
+
+  return (
   <a
     href={`/blog/${post.slug}`}
     onClick={(e) => { e.preventDefault(); onOpenPost(post.slug); }}
     className={`group text-left flex flex-col rounded-surface overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
-      <img
-        src={asset(post.image)}
-        alt={post.imageAlt}
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-      />
+      <motion.div ref={zoomRef} className="absolute inset-0" style={zoom}>
+        <img
+          src={asset(post.image)}
+          alt={post.imageAlt}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
     </div>
 
@@ -60,7 +68,8 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
       </div>
     </div>
   </a>
-);
+  );
+};
 
 export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
   const [showAllMobile, setShowAllMobile] = useState(false);

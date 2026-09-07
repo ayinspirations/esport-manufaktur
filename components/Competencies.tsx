@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
@@ -6,6 +7,7 @@ import { SECTION_PADDING } from './spacing';
 import { useInView, useInViewContinuous } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
 import { asset } from './site';
+import { useScrollZoom } from '../hooks/useScrollZoom';
 
 /**
  * How long a tile's own text waits after the tile starts moving.
@@ -104,6 +106,10 @@ const PillarCard: React.FC<{
 
   const open = () => onNavigate?.(`service:${item.slug}`);
 
+  // Telefon: das Motiv faehrt beim Vorbeiscrollen heran, weil dort kein
+  // Zeiger die Kachel beleben kann.
+  const { ref: zoomRef, zoom } = useScrollZoom();
+
   return (
     <div
       ref={setCardRef}
@@ -118,7 +124,9 @@ const PillarCard: React.FC<{
       }}
       className="group relative rounded-surface overflow-hidden select-none cursor-pointer aspect-[3/4]"
     >
-      <TileArt item={item} />
+      <motion.div ref={zoomRef} className="absolute inset-0" style={zoom}>
+        <TileArt item={item} />
+      </motion.div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/25 to-transparent" />
 

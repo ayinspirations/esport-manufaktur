@@ -312,6 +312,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               />
             </span>
           </button>
+
+          {/* Der Claim, nur auf dem Telefon.
+              Auf dem Desktop stehen hier vier Links -- da ist kein Platz und
+              auch kein Bedarf, der Hero sagt es zwei Bildschirmzeilen weiter
+              unten selbst. Auf dem Telefon liegt zwischen Marke und Burger
+              eine leere Mitte, und die traegt ihn.
+              Er faellt weg, sobald das Menue offen ist: dann gehoert die
+              Zeile dem X, und der Claim stuende ueber einer Liste, in der
+              man etwas sucht. */}
+          {!isOpen && (
+            <span
+              aria-hidden="true"
+              className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap font-black uppercase tracking-[0.16em] text-[clamp(8px,2.7vw,11px)] transition-colors duration-500 ${
+                mobileInk ? 'text-[#0e958e]' : 'text-[#5fd6cf]'
+              }`}
+            >
+              Create. Engage. Empower.
+            </span>
+          )}
+
           <button
             className={`p-2.5 rounded-full transition-colors duration-500 ${
               mobileInk

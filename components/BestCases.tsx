@@ -5,6 +5,7 @@ import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
 import { LazyVideo } from './LazyVideo';
+import { useScrollZoom } from '../hooks/useScrollZoom';
 import { asset } from './site';
 
 // Same entry as the service tiles: a straight fade with a short rise, no 3D
@@ -208,8 +209,14 @@ interface BestCasesProps {
 // Jetzt ist es ein <a href> auf die echte Adresse. Der Klick wird abgefangen
 // und geht weiterhin durch den Router, damit die Seite nicht neu laedt; alles
 // andere -- Mittelklick, Tastatur, Crawler -- folgt dem Verweis.
-const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any) => void }> = ({ tile, delay, onNavigate }) => (
+const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any) => void }> = ({ tile, delay, onNavigate }) => {
+  // Auf dem Telefon faehrt das Medium beim Vorbeiscrollen langsam heran --
+  // dort gibt es kein Hover, das die Kachel sonst belebt.
+  const { ref, zoom } = useScrollZoom();
+
+  return (
   <div
+    ref={ref}
     className="w-full aspect-[var(--ar-m)] lg:w-auto lg:basis-0 lg:aspect-[var(--ar)]"
     style={{ '--ar': `${tile.ar}`, '--ar-m': `${tile.arMobile ?? tile.ar}`, flexGrow: tile.ar } as React.CSSProperties}
   >
@@ -226,20 +233,25 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
         onClick={(e) => { e.preventDefault(); onNavigate?.(tile.slug); }}
         className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
       >
-        {tile.video ? (
-          <LazyVideo
-            src={asset(tile.video)!}
-            poster={asset(tile.poster)}
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
-          />
-        ) : (
-          <img
-            src={asset(tile.image)}
-            alt={tile.alt ?? ''}
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
-          />
-        )}
+        {/* Die Huelle traegt das Heranfahren, nicht das Medium selbst: das
+            Medium haelt schon die Hover-Skalierung, und zwei Transformationen
+            auf einem Element ueberschreiben einander. */}
+        <motion.div className="absolute inset-0" style={zoom}>
+          {tile.video ? (
+            <LazyVideo
+              src={asset(tile.video)!}
+              poster={asset(tile.poster)}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
+            />
+          ) : (
+            <img
+              src={asset(tile.image)}
+              alt={tile.alt ?? ''}
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
+            />
+          )}
+        </motion.div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
           <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
@@ -259,7 +271,8 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
       </a>
     </motion.div>
   </div>
-);
+  );
+};
 
 export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
   return (
