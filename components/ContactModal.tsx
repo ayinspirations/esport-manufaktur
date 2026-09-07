@@ -24,12 +24,13 @@ interface ContactModalProps {
  * form, one HubSpot integration, one set of styles. That matters more than it
  * looks -- the `.hs-form` rules in index.css are written for a dark ground
  * (white labels, translucent white inputs), so the panel here is the site's own
- * `tile-gradient` rather than the white BookingModal uses. On a white panel the
- * form would render white-on-white.
+ * `tile-gradient` rather than a white panel -- on white the form would render
+ * white-on-white.
  *
- * The shell otherwise mirrors BookingModal deliberately: same overlay, same
- * entrance, same header and close affordance, so the two popups on the site
- * behave identically.
+ * Das Buchungsfenster, dem diese Huelle nachgebaut ist, gibt es nicht mehr:
+ * der Terminkalender oeffnet inzwischen einen eigenen Tab (siehe openBooking
+ * in App.tsx). Abdunklung, Auftritt, Kopfzeile und Schlieszknopf bleiben, wie
+ * sie waren -- es ist jetzt das einzige Fenster der Seite.
  */
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, subject }) => {
   useScrollLock(isOpen);

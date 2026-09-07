@@ -17,6 +17,7 @@ import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
+import { BOOKING_URL } from './components/site';
 
 // ---------------------------------------------------------------------------
 // Route splitting
@@ -104,7 +105,6 @@ const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m 
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const CookiePopup = lazyRoute(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
-const BookingModal = lazyRoute(() => import('./components/BookingModal').then(m => ({ default: m.BookingModal })));
 const ContactModal = lazyRoute(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 
 /**
@@ -299,13 +299,28 @@ export default function App() {
   // whichever route was linked) is in the very first paint.
   const [route, setRoute] = useState<Route>(resolveRoute);
   const { page: activePage } = route;
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
-  // Latches true on the first open; see the BookingModal mount below.
-  const [hasOpenedBooking, setHasOpenedBooking] = useState(false);
-
+  // ---------------------------------------------------------------------------
+  // Termin buchen: ein neuer Tab, kein Fenster
+  // ---------------------------------------------------------------------------
+  // Der Kalender lag in einem Fenster auf der Seite, und der Rahmen darin ist
+  // fremdes Gebiet: die Knoepfe "Zurueck" und "Bestaetigen" kleben bei HubSpot
+  // am unteren Rand ihres Fensters, und ihr eigener Bildlauf endet auf manchen
+  // Telefonen davor. Vier Anlaeufe -- Seite im Rahmen scrollen lassen, Rahmen
+  // fest hoeher, Rahmen mit dem Inhalt wachsen lassen, HubSpots eigenes
+  // Einbettungsskript -- haben es auf einem iPhone in Ordnung gebracht und auf
+  // dem naechsten nicht. Was innerhalb eines fremden Rahmens passiert, koennen
+  // wir nicht garantieren.
+  //
+  // Also gar kein Rahmen mehr. Der Knopf oeffnet die Terminseite in einem
+  // neuen Tab; dort hat sie das ganze Fenster, ihre eigene Ansicht und den
+  // Bildlauf des Browsers. Auf jedem Geraet dasselbe, ohne Sonderweg, ohne
+  // etwas von uns dazwischen.
+  //
+  // Weist ein Blocker das neue Fenster ab, gehen wir eben hier hin -- besser
+  // die Seite verlassen als gar nicht buchen koennen.
   const openBooking = () => {
-    setHasOpenedBooking(true);
-    setIsBookingOpen(true);
+    const tab = window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+    if (!tab) window.location.href = BOOKING_URL;
   };
 
   // Same latching as the booking modal: its chunk never loads for a visitor who
@@ -560,14 +575,6 @@ export default function App() {
       {activePage === 'home' && <SocialStack />}
       <Suspense fallback={null}>
         <CookiePopup />
-        {/* Mounted from the first time it is opened and kept mounted after
-            that, rather than mounted on `isBookingOpen`. Its chunk therefore
-            never loads for a visitor who does not book, but once it has, the
-            modal's own AnimatePresence still gets to play its close
-            animation -- unmounting it on close would cut that off. */}
-        {hasOpenedBooking && (
-          <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
-        )}
         {hasOpenedContact && (
           <ContactModal
             isOpen={isContactOpen}
