@@ -59,6 +59,31 @@ const shot = (id: string, title: string, text: string, over?: Partial<ShowcaseCa
 /** Wie viele Aufmacher beim Naeherkommen vorgeladen werden. */
 const WARM_COUNT = 6;
 
+// ---------------------------------------------------------------------------
+// Was die Buehne zeigt, und in welcher Reihenfolge
+// ---------------------------------------------------------------------------
+// CASES ist die vollstaendige Liste der Arbeit -- sie bleibt, auch wo noch
+// keine Aufnahme da ist. Was tatsaechlich auf der Buehne laeuft, steht hier:
+// eine Reihenfolge, von Hand gesetzt, weil die Buehne nacheinander gelesen
+// wird und der erste Fall den Ton angibt.
+//
+// Ein Fall kommt dazu, sobald es eine Aufnahme gibt, die etwas zeigt. Bis
+// dahin ist er nicht "leer", sondern schlicht nicht dabei -- eine dunkle
+// Flaeche mit einem Namen darauf ist keine Referenz, sondern ein Platzhalter,
+// und Platzhalter gehoeren nicht auf eine Seite, die Arbeit vorstellt.
+// ---------------------------------------------------------------------------
+const STAGE_ORDER = [
+  'winamax-gluecksgefuehle',
+  'naspa-svww',
+  'allianz-juniorcup',
+  'kreissparkasse-esslingen',
+  'sonax-rocket-league',
+  'aok-fortuna-duesseldorf',
+  'kreissparkasse-boeblingen',
+  'allianz-vfb-stuttgart',
+  'hhn-gamingland-meetit'
+];
+
 const CASES: ShowcaseCase[] = [
   // Nur die Arbeit, die oben nicht schon steht.
   //
@@ -70,7 +95,7 @@ const CASES: ShowcaseCase[] = [
   // Unterseite, hier alles Uebrige.
   shot('developer-akademie', 'Developer Akademie', 'Gamifizierte Lead-Generierung für IT-Weiterbildungen auf einer individuellen White-Label-Plattform durch zielgruppengerechte Online-Turniere.'),
   shot('hhn-techday', 'Hochschule Heilbronn – TechDay', 'Spielerische Aktivierung junger Tech- und Studieninteressierter durch Online- und Offline-Turniere in Mario Kart und EA SPORTS FC.'),
-  shot('hhn-gamingland-meetit', 'Hochschule Heilbronn – Gamingland × MeetIT', 'Gaming-nahes Giveaway zur Aktivierung von Studieninteressierten inklusive digitaler Teilnahmeplattform und Mario-Kart-Aktivierung vor Ort.'),
+  shot('hhn-gamingland-meetit', 'Hochschule Heilbronn – Gamingland × MeetIT', 'Gaming-nahes Giveaway zur Aktivierung von Studieninteressierten inklusive digitaler Teilnahmeplattform und Mario-Kart-Aktivierung vor Ort.', { focus: '50% 72%' }),
   shot('naspa-svww', 'Naspa × SV Wehen Wiesbaden', 'Sponsorship Activation zur Neukundenakquise bei jungen Zielgruppen durch einen 2vs2 EA SPORTS FC Cup im Umfeld des SV Wehen Wiesbaden.'),
   shot('stadt-muenchen-bfv', 'Stadt München × BFV', 'Champions-League-Aktivierung für die Stadt München und den BFV mit einem öffentlich zugänglichen EA SPORTS FC Turnier im Pineapple Park.'),
   // Tiefer angesetzt: im oberen Drittel steht nur die Hallendecke. Erst
@@ -102,8 +127,15 @@ const CASES: ShowcaseCase[] = [
   shot('vfl-bochum', 'VfL Bochum', 'Digitale Durchführung unterschiedlicher eSport-Wettbewerbe auf einer gebrandeten White-Label-Plattform mit Teilnehmer- und Turniermanagement.'),
   shot('tsg-hoffenheim', 'TSG Hoffenheim', 'Digitale Abbildung von Turnieren und eSport-Wettbewerben auf einer individuellen White-Label-Plattform im Vereinsdesign der TSG Hoffenheim.'),
   shot('esport-verband-schleswig-holstein', 'eSport-Verband Schleswig-Holstein', 'Digitale Abbildung des neuen Landesmeisterschaftsformats auf einer individuellen White-Label-Plattform mit Wettbewerbsstruktur und Teilnehmermanagement.'),
-  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.')
+  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.', { focus: '50% 78%' })
 ];
+
+/** Die Faelle, die gerade gezeigt werden -- in der Reihenfolge von oben. */
+const STAGE: ShowcaseCase[] = STAGE_ORDER.map((id) => {
+  const found = CASES.find((c) => c.id === id);
+  if (!found) throw new Error(`STAGE_ORDER nennt "${id}", das es in CASES nicht gibt.`);
+  return found;
+});
 
 /** The dark ground a case without photography runs on. */
 const FallbackGround: React.FC = () => (
@@ -137,15 +169,12 @@ const FallbackGround: React.FC = () => (
  * instant without any of them being decoded up front.
  */
 export const CaseShowcase: React.FC = () => {
-  // Startet auf dem ersten Fall, zu dem es eine Aufnahme gibt. Sechzehn der
-  // neunundzwanzig warten noch auf ihr Bild; oeffnete die Buehne auf einem
-  // davon, waere der erste Eindruck eine dunkle Flaeche.
-  const [active, setActive] = useState(() => Math.max(CASES.findIndex((c) => c.image), 0));
+  const [active, setActive] = useState(0);
   const railRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.05, rootMargin: '200px' });
 
-  const current = CASES[active];
+  const current = STAGE[active];
 
   // Warm the first few backdrops once the stage is near. Fetched, not
   // rendered: sie landen im HTTP-Zwischenspeicher, damit der erste Wechsel
@@ -157,7 +186,7 @@ export const CaseShowcase: React.FC = () => {
   // Reihe haengen ohnehin an `loading="lazy"`.
   useEffect(() => {
     if (!inView) return;
-    for (const c of CASES.slice(0, WARM_COUNT)) {
+    for (const c of STAGE.slice(0, WARM_COUNT)) {
       if (!c.image) continue;
       const img = new Image();
       img.src = c.image;
@@ -328,7 +357,7 @@ export const CaseShowcase: React.FC = () => {
           className="case-rail flex items-end gap-3 md:gap-4 overflow-x-auto overscroll-x-contain pt-8 pb-8 -mx-6 px-6 md:mx-0 md:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {CASES.map((c, i) => {
+          {STAGE.map((c, i) => {
             const isActive = i === active;
             return (
               <button
