@@ -32,6 +32,8 @@ export interface BlogPost {
   metaTitle?: string;
   metaDescription: string;
   date: string;
+  /** Dasselbe Datum maschinenlesbar -- fuer die Auszeichnung als Beitrag. */
+  isoDate: string;
   readTime: string;
   image: string;
   imageAlt: string;
@@ -55,6 +57,7 @@ export const blogPosts: BlogPost[] = [
     metaDescription:
       'Warum Gamification am Messestand funktioniert und wie Challenges, Gaming und Lead-Tools für mehr Interaktion, Verweildauer und qualifizierte Kontakte sorgen.',
     date: '06. Sep 2026',
+    isoDate: '2026-09-06',
     readTime: '9 min',
     image: '/Gamification.jpg',
     imageAlt: 'Gamification-Aktivierung an einem Messestand von GG Manufaktur',

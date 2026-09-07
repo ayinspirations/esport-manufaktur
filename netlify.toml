@@ -58,6 +58,16 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # ---------------------------------------------------------------------------
+# Torwaechter
+# ---------------------------------------------------------------------------
+# Setzt die Regel aus der robots.txt tatsaechlich durch: Google und ChatGPT
+# kommen durch, alles andere, was sich als Programm zu erkennen gibt, bekommt
+# 403. Laeuft vor jeder Antwort, siehe netlify/edge-functions/gatekeeper.ts.
+[[edge_functions]]
+  function = "gatekeeper"
+  path = "/*"
+
+# ---------------------------------------------------------------------------
 # Renamed services
 # ---------------------------------------------------------------------------
 # "Messen & Events" became "Events & Erlebniswelten" and "Content & Streaming"

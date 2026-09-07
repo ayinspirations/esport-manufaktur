@@ -11,6 +11,8 @@ import { ContactForm } from './components/ContactForm';
 import { Footer } from './components/Footer';
 import { BlogSection } from './components/BlogSection';
 import { blogPosts, blogRoutes, getBlogPost } from './components/blogPosts';
+import { CASE_META, CASE_SLUGS } from './components/caseMeta';
+import { useDocumentHead } from './hooks/useDocumentHead';
 import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
@@ -116,6 +118,14 @@ const resolveRoute = (): Route => {
   if (path === '/webdesign') {
     return { page: 'webdesign' };
   }
+  // Auch ein Best Case lebt unter einer eigenen Adresse. Hinter einer Raute
+  // ist er fuer eine Suchmaschine kein eigenes Dokument, sondern ein Anker in
+  // der Startseite -- elf Seiten, die nie in einer Trefferliste auftauchen.
+  const caseMatch = path.match(/^\/best-cases\/([a-z0-9-]+)$/);
+  if (caseMatch && CASE_SLUGS.includes(caseMatch[1])) {
+    return { page: caseMatch[1] as Page };
+  }
+
   // Ein Artikel lebt unter seiner eigenen Adresse, nicht hinter einer Raute.
   // Frueher genutzte Adressen fuehren ueber getBlogPost auf den heutigen
   // Artikel, statt den Leser auf der Startseite abzuliefern.
@@ -133,6 +143,24 @@ const resolveRoute = (): Route => {
     return { page: (post ? post.slug : currentHash) as Page };
   }
   return { page: 'home' };
+};
+
+/**
+ * Setzt Titel, Beschreibung und kanonische Adresse einer Best-Case-Seite.
+ *
+ * Als eigene Komponente und nicht als Aufruf in App, weil ein Hook nicht
+ * bedingt aufgerufen werden darf -- hier haengt er an der Lebensdauer genau
+ * der Seite, um die es geht, und raeumt beim Verlassen selbst auf.
+ */
+const CaseHead: React.FC<{ slug: string; children: React.ReactNode }> = ({ slug, children }) => {
+  const meta = CASE_META[slug];
+  useDocumentHead({
+    title: meta.title,
+    description: meta.description,
+    canonicalPath: `/best-cases/${slug}`,
+    ogImage: meta.image
+  });
+  return <>{children}</>;
 };
 
 /**
@@ -223,6 +251,8 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
     } else if (page === 'webdesign') {
       window.history.pushState(null, '', '/webdesign');
+    } else if (CASE_SLUGS.includes(page)) {
+      window.history.pushState(null, '', `/best-cases/${page}`);
     } else if (blogSlugs.includes(page)) {
       window.history.pushState(null, '', `/blog/${page}`);
     } else {
@@ -323,17 +353,61 @@ export default function App() {
         )}
         {/* Back from a case returns to the Best Cases section the visitor came
             from, not the top of the homepage -- same as BlogDetail below. */}
-        {activePage === 'hagebau' && <CaseDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'tsystems' && <TSystemsDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'bayern-zockt' && <BayernZocktDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'showdown-0711' && <Showdown0711Detail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'bfv' && <BFVDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'intersport' && <IntersportDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'rewe' && <ReweDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'xp-days' && <XpDaysDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'dekra' && <DekraDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'interwetten' && <InterwettenDetail onBack={() => scrollToSection('best-cases')} />}
-        {activePage === 'consumenta' && <NiveaEffectCrackzDetail onBack={() => scrollToSection('best-cases')} />}
+        {activePage === 'hagebau' && (
+          <CaseHead slug="hagebau">
+            <CaseDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'tsystems' && (
+          <CaseHead slug="tsystems">
+            <TSystemsDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'bayern-zockt' && (
+          <CaseHead slug="bayern-zockt">
+            <BayernZocktDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'showdown-0711' && (
+          <CaseHead slug="showdown-0711">
+            <Showdown0711Detail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'bfv' && (
+          <CaseHead slug="bfv">
+            <BFVDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'intersport' && (
+          <CaseHead slug="intersport">
+            <IntersportDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'rewe' && (
+          <CaseHead slug="rewe">
+            <ReweDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'xp-days' && (
+          <CaseHead slug="xp-days">
+            <XpDaysDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'dekra' && (
+          <CaseHead slug="dekra">
+            <DekraDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'interwetten' && (
+          <CaseHead slug="interwetten">
+            <InterwettenDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'consumenta' && (
+          <CaseHead slug="consumenta">
+            <NiveaEffectCrackzDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}

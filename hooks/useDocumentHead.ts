@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { SITE_URL, absoluteUrl } from '../components/site';
 
 interface DocumentHeadConfig {
   title: string;
@@ -60,8 +61,14 @@ export function useDocumentHead(config: DocumentHeadConfig) {
     setMeta('property', 'og:title', config.ogTitle || config.title);
     setMeta('property', 'og:description', config.ogDescription || config.description);
     setMeta('property', 'og:type', 'website');
-    if (config.ogImage) setMeta('property', 'og:image', config.ogImage);
-    if (config.canonicalPath) setCanonical(`https://esport-manufaktur.de${config.canonicalPath}`);
+    // Absolut, immer. Ein Vorschaubild mit relativem Pfad zeigt in jedem
+    // Chat und jedem sozialen Netz ins Leere -- dort gibt es keine Seite, zu
+    // der "/images/..." relativ waere.
+    if (config.ogImage) setMeta('property', 'og:image', absoluteUrl(config.ogImage));
+    if (config.canonicalPath) {
+      setCanonical(absoluteUrl(config.canonicalPath));
+      setMeta('property', 'og:url', absoluteUrl(config.canonicalPath));
+    }
 
     return () => {
       document.title = defaults.title;
@@ -69,7 +76,10 @@ export function useDocumentHead(config: DocumentHeadConfig) {
       setMeta('property', 'og:title', defaults.ogTitle);
       setMeta('property', 'og:description', defaults.ogDescription);
       if (defaults.ogImage) setMeta('property', 'og:image', defaults.ogImage);
-      if (defaults.canonical) setCanonical(defaults.canonical);
+      if (defaults.canonical) {
+        setCanonical(defaults.canonical);
+        setMeta('property', 'og:url', SITE_URL);
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [config.title, config.description, config.canonicalPath]);
