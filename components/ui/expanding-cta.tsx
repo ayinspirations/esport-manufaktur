@@ -232,14 +232,30 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
               transition={{ ...SWAP, delay: 0.04 }}
               className="flex flex-row items-center gap-0.5 sm:gap-1 p-1 sm:p-1.5"
             >
-              <button type="button" onClick={() => choose(onBooking)} className={`${wayBase} ${wayPrimary}`}>
+              {/* Gezaehlt wird der gewaehlte Weg, nicht das Aufklappen davor --
+                  das ist Bedienung, keine Absicht. */}
+              <button
+                type="button"
+                onClick={() => choose(onBooking)}
+                data-track="cta_click"
+                data-track-label="termin_vereinbaren"
+                data-track-destination="hubspot_terminseite"
+                className={`${wayBase} ${wayPrimary}`}
+              >
                 {bookingLabel}
               </button>
               <span
                 aria-hidden="true"
                 className={`w-px h-5 sm:h-6 mx-0.5 sm:mx-1 ${light ? 'bg-[#0b0f2a]/15' : 'bg-white/20'}`}
               />
-              <button type="button" onClick={() => choose(onContact)} className={`${wayBase} ${waySecondary}`}>
+              <button
+                type="button"
+                onClick={() => choose(onContact)}
+                data-track="contact_click"
+                data-track-label="kontaktformular_oeffnen"
+                data-track-destination="kontaktformular"
+                className={`${wayBase} ${waySecondary}`}
+              >
                 {contactLabel}
               </button>
             </motion.div>

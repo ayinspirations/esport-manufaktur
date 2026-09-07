@@ -1,6 +1,7 @@
 
 import React, { useEffect, useId, useRef, useState } from 'react';
 import { Loader2, CheckCircle2 } from 'lucide-react';
+import { track } from './analytics';
 
 declare global {
   interface Window {
@@ -169,6 +170,17 @@ export const HubSpotForm: React.FC<HubSpotFormProps> = ({ eager = false }) => {
           onFormReady: () => {
             safeSetStatus('ready');
             if (isMounted) injectCustomStyles();
+
+            // "Begonnen" heiszt: jemand hat das erste Feld angefasst. Nicht
+            // das Erscheinen des Formulars -- das waere ein Ereignis fuers
+            // blosze Rendern und wuerde jede Auswertung unbrauchbar machen.
+            // Einmal je Formular, danach meldet sich der Zuhoerer ab.
+            const form = document.getElementById(targetId);
+            const begin = () => {
+              track('contact_start', { location: eager ? 'kontakt_fenster' : 'kontakt_sektion' });
+              form?.removeEventListener('focusin', begin);
+            };
+            form?.addEventListener('focusin', begin);
           },
           onFormSubmitted: () => {
             // Nicht scrollen, sondern die Hoehe halten.
@@ -189,6 +201,11 @@ export const HubSpotForm: React.FC<HubSpotFormProps> = ({ eager = false }) => {
             if (wrapperRef.current) {
               wrapperRef.current.style.minHeight = `${wrapperRef.current.offsetHeight}px`;
             }
+            // Erst hier -- HubSpot ruft das auf, wenn die Anfrage wirklich
+            // angenommen wurde. Ein Klick auf "Absenden" allein ist keine
+            // Anfrage: Pflichtfelder, Format, Ablehnung durch den Dienst.
+            // Keine Feldinhalte, kein Betreff, nur die Stelle im Haus.
+            track('contact_submit', { location: eager ? 'kontakt_fenster' : 'kontakt_sektion' });
             safeSetStatus('submitted');
           },
         });

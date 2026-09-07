@@ -115,6 +115,10 @@ const PillarCard: React.FC<{
       role="link"
       tabIndex={0}
       onClick={open}
+      data-track="service_click"
+      data-track-service={item.slug}
+      data-track-label={item.slug}
+      data-track-destination={`/services/${item.slug}`}
       onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && open()}
       style={{
         opacity: inView ? 1 : 0,
@@ -227,6 +231,9 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
         <Reveal delay={0.2} className="mt-12 md:mt-16">
           <button
             onClick={() => onNavigate?.('services')}
+            data-track="cta_click"
+            data-track-label="alle_leistungen_entdecken"
+            data-track-destination="/services"
             className="group inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
           >
             Alle Leistungen entdecken

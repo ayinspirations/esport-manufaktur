@@ -247,6 +247,7 @@ export const SocialStack: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.97, transition: SWAP_OUT }}
               transition={{ ...SWAP, delay: 0.04 }}
+              data-track-location="social_stack"
               className="flex items-center gap-0.5 px-1.5"
             >
               {SOCIAL_LINKS.map(({ href, label, Icon }, i) => (

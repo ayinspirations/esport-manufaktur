@@ -194,6 +194,10 @@ const JoinTile: React.FC<{ onOpenContact?: (subject?: string) => void }> = ({ on
   <button
     type="button"
     onClick={() => onOpenContact?.('Initiativbewerbung')}
+    data-track="contact_click"
+    data-track-label="initiativbewerbung"
+    data-track-location="team"
+    data-track-destination="kontaktformular"
     className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10 text-left"
   >
     <HeroGround className="transition-transform duration-700 ease-reveal group-hover:scale-[1.06]" />

@@ -24,7 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
   return (
     <div className="w-full bg-[#badeda]">
       <div className="max-w-[1440px] mx-auto w-full px-6 md:px-14">
-        <footer className="py-24 md:py-32 relative">
+        <footer data-track-location="footer" className="py-24 md:py-32 relative">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}

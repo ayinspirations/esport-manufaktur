@@ -173,6 +173,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'home')}
+            data-track="navigation_click"
+            data-track-label="logo"
+            data-track-location="navigation"
+            data-track-destination="/"
             className="flex items-center gap-2.5 group"
             aria-label="GG Manufaktur"
           >
@@ -205,24 +209,40 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center flex-nowrap whitespace-nowrap gap-10 lg:gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
           <button
             onClick={(e) => handleLinkClick(e, 'competencies')}
+            data-track="navigation_click"
+            data-track-label="services"
+            data-track-location="navigation"
+            data-track-destination="#competencies"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Services
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
+            data-track="navigation_click"
+            data-track-label="ueber_uns"
+            data-track-location="navigation"
+            data-track-destination="/ueber-uns"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Über uns
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'best-cases')}
+            data-track="navigation_click"
+            data-track-label="best_cases"
+            data-track-location="navigation"
+            data-track-destination="#best-cases"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Best Cases
           </button>
           <button
             onClick={(e) => handleLinkClick(e, 'blog')}
+            data-track="navigation_click"
+            data-track-label="blog"
+            data-track-location="navigation"
+            data-track-destination="#blog"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Blog &amp; Wissen
@@ -232,6 +252,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         <div className="flex items-center shrink-0">
           <button
             onClick={(e) => handleLinkClick(e, 'contact')}
+            data-track="contact_click"
+            data-track-label="kontakt"
+            data-track-location="navigation"
+            data-track-destination="#contact"
             className={`spring px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
             style={{ textShadow: 'none' }}
           >
@@ -364,24 +388,40 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
                 <button
                   onClick={(e) => handleLinkClick(e, 'competencies')}
+            data-track="navigation_click"
+            data-track-label="services"
+            data-track-location="navigation"
+            data-track-destination="#competencies"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Services
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'ueber-uns')}
+            data-track="navigation_click"
+            data-track-label="ueber_uns"
+            data-track-location="navigation"
+            data-track-destination="/ueber-uns"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Über uns
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
+            data-track="navigation_click"
+            data-track-label="best_cases"
+            data-track-location="navigation"
+            data-track-destination="#best-cases"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
                 </button>
                 <button
                   onClick={(e) => handleLinkClick(e, 'blog')}
+            data-track="navigation_click"
+            data-track-label="blog"
+            data-track-location="navigation"
+            data-track-destination="#blog"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Blog &amp; Wissen
@@ -389,6 +429,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
                   onClick={(e) => handleLinkClick(e, 'contact')}
+            data-track="contact_click"
+            data-track-label="kontakt"
+            data-track-location="navigation"
+            data-track-destination="#contact"
                   className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen

@@ -276,6 +276,18 @@ export const LegalPage: React.FC<LegalPageProps> = ({ type }) => {
               Auswahl triffst du im Einwilligungsbanner dieser Website und kannst sie dort jederzeit mit Wirkung für
               die Zukunft ändern.
             </p>
+            <p className="mt-3">
+              Zur <span className="font-bold">Reichweitenmessung</span> nutzen wir – und nur, wenn du die Kategorie
+              „Statistik“ zugelassen hast – <span className="font-bold">Umami</span> (Umami Software, Inc., USA).
+              Umami setzt keine Cookies und legt nichts auf deinem Gerät ab. Erfasst werden aufgerufene Seiten,
+              Verweisquelle, ungefähre Herkunft auf Länderebene, Gerätetyp, Browser und Betriebssystem sowie
+              anonyme Angaben dazu, welche Schaltflächen genutzt werden. Deine IP-Adresse wird dabei nicht
+              gespeichert, sondern nur kurzzeitig zu einer nicht rückführbaren Kennung verrechnet; Namen,
+              E-Mail-Adressen, Telefonnummern oder Formularinhalte werden nicht übermittelt. Eine Zusammenführung
+              zu einem Personenprofil findet nicht statt. Widerrufen kannst du die Einwilligung jederzeit über den
+              Link „Cookie-Einstellungen“ im Fußbereich; dann wird nichts mehr geladen und nichts mehr gemessen.
+            </p>
+            <p className="mt-2 text-slate-500">Weitere Informationen: umami.is/privacy</p>
           </section>
 
           <section>
