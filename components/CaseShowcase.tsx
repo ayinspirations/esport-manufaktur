@@ -244,7 +244,7 @@ export const CaseShowcase: React.FC = () => {
       id="case-showcase"
       data-nav-ground="dark"
       aria-label="Best Cases im Überblick"
-      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex flex-col justify-end"
+      className="relative w-full min-h-screen-dyn overflow-hidden bg-[#020617] flex flex-col justify-end"
     >
       {/* ---- Die Aufnahme, formatfuellend ---- */}
       {/*

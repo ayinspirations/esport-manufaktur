@@ -141,7 +141,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
       // der geometrischen Mitte, die auf einem hohen, schmalen Schirm immer
       // etwas abgesackt wirkt. Nur eine Spur -- der Hero soll die Hoehe
       // fuellen, nicht oben kleben.
-      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex items-center justify-center pb-[4vh] md:pb-0"
+      className="relative w-full min-h-screen-dyn overflow-hidden bg-[#020617] flex items-center justify-center pb-[4vh] md:pb-0"
     >
       <HeroGround glowRef={glowRef} gridRef={gridRef} />
 

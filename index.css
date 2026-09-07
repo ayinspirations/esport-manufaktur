@@ -289,3 +289,45 @@ html {
 @keyframes gg-spin {
   to { transform: rotate(360deg); }
 }
+
+/* ---------------------------------------------------------------------------
+   Fensterhoehe, die auf jedem Geraet stimmt
+   ---------------------------------------------------------------------------
+   `dvh` misst das Fenster so, wie es gerade zu sehen ist -- mit den Leisten,
+   die iOS und Android beim Scrollen ein- und ausblenden. Genau das braucht ein
+   Dialog, dessen Knopf unten sitzt.
+
+   Nur: `dvh` gibt es erst ab iOS 15.4 und Chrome 108. Aeltere Geraete werfen
+   die Zeile weg -- und wenn nur sie dasteht, hat das Element gar keine Hoehe
+   mehr. Deshalb stehen hier immer zwei Zeilen: erst `vh`, das jeder versteht,
+   dann `dvh` fuer die, die es koennen. Wer beides kennt, nimmt die zweite.
+
+   Auf niedrigen Fenstern -- ein Telefon quer, ein geteilter Bildschirm --
+   bleibt sonst kaum etwas uebrig, deshalb darf der Dialog dort fast die ganze
+   Hoehe nehmen.
+   --------------------------------------------------------------------------- */
+
+.modal-shell {
+  height: 92vh;
+  height: 92dvh;
+}
+
+@media (min-width: 768px) {
+  .modal-shell {
+    height: 90vh;
+    height: 90dvh;
+  }
+}
+
+@media (max-height: 620px) {
+  .modal-shell {
+    height: 96vh;
+    height: 96dvh;
+  }
+}
+
+/* Dasselbe fuer die Abschnitte, die den Schirm fuellen sollen. */
+.min-h-screen-dyn {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
