@@ -69,6 +69,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   // dunkel stehen -- und das offene Menue, das die helle Flaeche selbst ist,
   // nimmt Tinte.
   const mobileInk = isOpen || ground === 'light';
+  // Die Marke folgt dem nur halb. Weisz steht sie auf der geschlossenen Pille
+  // ueber heller Seite; im offenen Menue steht sie auf der Leinwand selbst,
+  // und dort gehoert der Verlauf hin -- weisz auf #badeda ist kein Zeichen
+  // mehr, sondern eine Aussparung.
+  const mobileMarkWhite = mobileInk && !isOpen;
   const navLinkTone = inkOnGlass
     ? 'text-[#0b0f2a]/80 hover:text-[#0e958e]'
     : 'text-white/75 hover:text-[#5fd6cf]';
@@ -296,14 +301,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 src="/logos/GG_Bildmarke_neg.png"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: mobileInk ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
+                style={{ opacity: mobileMarkWhite ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
               />
               <img
                 src="/logos/GG_Bildmarke_pos.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: mobileInk ? 0 : 1 }}
+                style={{ opacity: mobileMarkWhite ? 0 : 1 }}
               />
             </span>
           </button>

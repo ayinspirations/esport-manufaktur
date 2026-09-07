@@ -32,17 +32,17 @@
 [[headers]]
   for = "/videos/*"
   [headers.values]
-    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
 [[headers]]
   for = "/logos/*"
   [headers.values]
-    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
 # The HTML shell names the current hashed bundles, so it must never be held
 # past a deploy or the page boots against assets that no longer exist.
@@ -105,6 +105,51 @@
   to = "/services/content-live-kommunikation"
   status = 301
   force = true
+
+# ---------------------------------------------------------------------------
+# Fehlende Medien sind ein Fehler, keine Seite
+# ---------------------------------------------------------------------------
+# Das hier war die teuerste Zeile der Datei -- durch das, was sie *nicht* tat.
+#
+# Die SPA-Weiche unten faengt jede Adresse ab, unter der keine Datei liegt, und
+# beantwortet sie mit index.html und Status 200. Fuer eine Route wie
+# /best-cases/rewe ist das genau richtig. Fuer /images/rewe/hero.jpg ist es
+# falsch: solange die Datei fehlte -- und die Case-Seiten standen Wochen vor
+# ihren Bildern --, bekam jeder Aufruf die Startseite zurueck, mit Status 200
+# und der langen Cache-Regel fuer /images/* obendrauf. Der Browser hat sich
+# also gemerkt: unter dieser Bildadresse liegt HTML, und zwar wochenlang, ohne
+# nachzufragen. Kam die Datei spaeter dazu, sah sie niemand mehr; das <img>
+# bekam HTML, meldete einen Fehler, und die Kachel blieb schwarz.
+#
+# Deshalb enden Medienpfade jetzt vor der Weiche. Netlify liefert eine
+# vorhandene Datei ohnehin zuerst aus, also greifen diese Regeln nur, wenn
+# wirklich nichts da ist -- und dann sagen sie es, statt eine Seite zu
+# schicken. Was einmal falsch im Cache liegt, raeumt der Versionsstempel aus
+# components/site.ts (?v=N) ab.
+[[redirects]]
+  from = "/images/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/videos/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/logos/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/team/*"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/fonts/*"
+  to = "/404.html"
+  status = 404
 
 # ---------------------------------------------------------------------------
 # SPA fallback

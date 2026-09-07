@@ -5,6 +5,7 @@ import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
 import { SECTION_PADDING } from './spacing';
 import { useInView, useInViewContinuous } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
+import { asset } from './site';
 
 /**
  * How long a tile's own text waits after the tile starts moving.
@@ -44,7 +45,7 @@ const TEXT_LAG = 0.26;
 const TileArt: React.FC<{ item: ServiceListing }> = ({ item }) =>
   item.tileImage ? (
     <img
-      src={item.tileImage}
+      src={asset(item.tileImage)}
       alt={item.tileImageAlt ?? ''}
       loading="lazy"
       decoding="async"

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RevealText } from './Reveal';
+import { asset } from './site';
 
 interface CaseHeroProps {
   /** Das Aufmacherbild. Querformat, weil es hier fast quadratisch beschnitten wird. */
@@ -9,6 +10,14 @@ interface CaseHeroProps {
   title: string;
   /** Zweite Zeile, im Akzent und kursiv -- der Anspruch, nicht die Wiederholung. */
   accent: string;
+  /**
+   * Wo im Bild der Ausschnitt sitzt, als object-position.
+   *
+   * Der Aufmacher ist breit, viele Aufnahmen sind hochkant: der mittige
+   * Schnitt nimmt dann oben die Koepfe und unten den Boden und laeszt die
+   * Mitte stehen. Wo das die Sache verfehlt, sagt die Seite es hier.
+   */
+  focus?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -42,7 +51,7 @@ interface CaseHeroProps {
 // traegt, ohne selbst als Dunst ueber dem Bild zu liegen.
 // ---------------------------------------------------------------------------
 
-export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent }) => {
+export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent, focus }) => {
   // Fehlt das Bild, bleibt die dunkle Flaeche darunter stehen. Ohne das
   // stuende hier ein zerbrochenes Bildsymbol ueber dem Alternativtext --
   // fuer eine Seite, deren erster Eindruck der Aufmacher ist, der schlechtere
@@ -54,9 +63,10 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
     <div className="relative h-[68vh] md:h-[78vh] overflow-hidden bg-[#0b0f2a]">
       {!failed && (
         <img
-          src={image}
+          src={asset(image)}
           alt={alt}
           onError={() => setFailed(true)}
+          style={{ objectPosition: focus ?? '50% 50%' }}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"
         />
       )}

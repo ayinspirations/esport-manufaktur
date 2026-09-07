@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from '../hooks/useInView';
+import { asset } from './site';
 
 interface ShowcaseCase {
   /** Eindeutig, und zugleich der Dateiname des Bildes. */
@@ -189,7 +190,7 @@ export const CaseShowcase: React.FC = () => {
     for (const c of STAGE.slice(0, WARM_COUNT)) {
       if (!c.image) continue;
       const img = new Image();
-      img.src = c.image;
+      img.src = asset(c.image);
     }
   }, [inView]);
 
@@ -267,7 +268,7 @@ export const CaseShowcase: React.FC = () => {
         >
           {current.image ? (
             <img
-              src={current.image}
+              src={asset(current.image)}
               alt={current.imageAlt ?? ''}
               style={{ objectPosition: current.focus ?? FOCUS }}
               className="absolute inset-0 w-full h-full object-cover"
@@ -408,7 +409,7 @@ export const CaseShowcase: React.FC = () => {
               >
                 {c.card || c.image ? (
                   <img
-                    src={c.card ?? c.image}
+                    src={asset(c.card ?? c.image)}
                     alt=""
                     loading="lazy"
                     decoding="async"

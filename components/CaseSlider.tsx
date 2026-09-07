@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { asset } from './site';
 
 interface CaseSliderProps {
   /** Bildpfade in der Reihenfolge, in der sie gezeigt werden sollen. */
@@ -39,7 +40,7 @@ export const CaseSlider: React.FC<CaseSliderProps> = ({ images, alt }) => {
         {shown.map((src, i) => (
           <img
             key={src}
-            src={src}
+            src={asset(src)}
             alt={`${alt} ${i + 1}`}
             onError={() => setFailed((f) => (f.includes(src) ? f : [...f, src]))}
             className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"

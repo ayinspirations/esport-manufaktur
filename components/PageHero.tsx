@@ -1,6 +1,7 @@
 import React from 'react';
 import { Reveal, RevealText } from './Reveal';
 import { HeroGround } from './HeroGround';
+import { asset } from './site';
 
 interface PageHeroProps {
   /** First half of the headline. */
@@ -49,7 +50,7 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
             enough of the frame for it to read as a picture of a team. */}
         <div className="relative w-full h-[62vh] md:h-[74vh] min-h-[420px] max-h-[860px] overflow-hidden">
           <img
-            src={image}
+            src={asset(image)}
             alt={imageAlt ?? ''}
             // Framed slightly above centre: heads sit in the upper half of the
             // frame, and a centred crop cuts them off at this aspect.

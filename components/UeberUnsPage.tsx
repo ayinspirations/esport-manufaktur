@@ -5,6 +5,7 @@ import { PageHero } from './PageHero';
 import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
+import { asset } from './site';
 
 interface UeberUnsPageProps {
   onNavigate: (page: any) => void;
@@ -132,7 +133,7 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
   <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
     {showImage ? (
       <img
-        src={member.image}
+        src={asset(member.image)}
         alt={member.name}
         loading="lazy"
         decoding="async"
@@ -381,7 +382,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, onOpenCo
               <div className="md:col-span-5">
                 {GIANLUCA_IMAGE ? (
                   <img
-                    src={GIANLUCA_IMAGE}
+                    src={asset(GIANLUCA_IMAGE)}
                     alt="Gianluca Crepaldi, Gründer und Geschäftsführer der GG Manufaktur"
                     loading="lazy"
                     decoding="async"
