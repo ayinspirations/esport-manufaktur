@@ -89,7 +89,7 @@ interface Member {
 const team: Member[] = [
   { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '50% 8%' },
   { name: 'Sandro', role: 'Co-Founder & Operations', image: '/team/sandro.jpg' },
-  { name: 'Patrick', role: 'Sales & Partnerships', image: '/team/patrick.jpg' },
+  { name: 'Patrick', role: 'Sales & Partnerships', image: '/team/patrick.jpg', focus: '50% 6%' },
   { name: 'Sandra', role: 'Operations', image: '/team/sandra.jpg' },
   { name: 'Manuela', role: 'Backoffice', image: '/team/manuela.jpg' },
   { name: 'Shayan', role: 'Developer', image: '/team/shayan.jpg' },
