@@ -210,13 +210,16 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               breiter als hoch, sobald sie mehr Spalten als Reihen hat. Ein
               quadratisches Bild formatfuellend in eine solche Kachel zu
               legen heiszt, unten ein Viertel abzuschneiden.
-              Zwei Spalten neben drei Reihen ergibt 427 zu 504 -- schmaler als
-              hoch. Das Bild steht darin an der Oberkante in voller Breite und
-              voller Hoehe, 427 zu 427, ohne dass irgendwo etwas wegfaellt.
-              Was unter ihm bleibt, sind 77 Pixel, und dort steht ohnehin der
-              Name. Die Kachel ist damit genau so hoch wie die von T-Systems
-              und die schmalste im Mosaik. */}
-          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-3 lg:aspect-auto">
+              Die Kachel ist deshalb selbst quadratisch: zwei Spalten breit
+              und genauso hoch, 427 auf 427. Das Bild fuellt sie ganz aus,
+              nichts wird beschnitten, und es bleibt kein dunkler Streifen
+              darunter.
+              Das Raster gibt diese Hoehe nicht her -- drei Reihen sind 504
+              Pixel --, also nimmt die Kachel ihr Band nicht in voller Hoehe
+              ein: `self-start` haelt sie oben, die Hoehe des Bandes bestimmt
+              BFV daneben. Die 77 Pixel darunter sind Seitenflaeche, kein
+              angeschnittenes Bild. */}
+          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-3 lg:self-start lg:aspect-square">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -234,7 +237,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                   src="/images/dekra/hero.jpg"
                   alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-contain object-top transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
