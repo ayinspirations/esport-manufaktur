@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 400 400">
+  <!-- Generator: Adobe Illustrator 30.8.1, SVG Export Plug-In . SVG Version: 2.1.4 Build 1)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
+
+      .st1 {
+        fill: url(#Unbenannter_Verlauf_46);
+      }
+    </style>
+    <linearGradient id="Unbenannter_Verlauf_46" data-name="Unbenannter Verlauf 46" x1="-12.05" y1="349.34" x2="413.22" y2="51.56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#15233a"/>
+      <stop offset=".58" stop-color="#51bab4"/>
+      <stop offset=".71" stop-color="#4eb8b1"/>
+      <stop offset=".8" stop-color="#45b2ab"/>
+      <stop offset=".87" stop-color="#36a99f"/>
+      <stop offset=".94" stop-color="#219c90"/>
+      <stop offset="1" stop-color="#058b7b"/>
+      <stop offset="1" stop-color="#058b7b"/>
+    </linearGradient>
+  </defs>
+  <rect class="st1" x="10.81" y="10.68" width="379.55" height="379.55" rx="12" ry="12"/>
+  <path class="st0" d="M174.32,254.5h-36.55c-15.6,0-29.1-5.94-40.14-17.67-10.98-11.68-16.55-25.97-16.55-42.47s5.57-30.76,16.55-42.45c11.03-11.74,24.54-17.69,40.14-17.69h41.89c2.74,0,4.97-2.23,4.97-4.97v-17.6h-46.86c-21.26,0-39.68,8.14-54.76,24.19-15.11,16.06-22.77,35.74-22.77,58.52s7.66,42.47,22.77,58.55c15.06,16.03,33.49,24.16,54.76,24.16h57.4v-59.3h-20.85v36.73ZM140.76,186.87v18.78h54.4v-22.57h-50.61c-2.09,0-3.79,1.7-3.79,3.79ZM323.73,135.81c-15.06-16.03-33.49-24.16-54.76-24.16h-57.4v59.3h20.85v-36.73h36.55c15.6,0,29.1,5.94,40.14,17.66,10.98,11.68,16.55,25.97,16.55,42.47s-5.57,30.76-16.55,42.45c-11.03,11.74-24.54,17.69-40.14,17.69h-42.7c-2.29,0-4.16,1.87-4.16,4.16v18.41h46.86c21.26,0,39.68-8.14,54.76-24.19,15.11-16.06,22.77-35.74,22.77-58.52s-7.66-42.47-22.77-58.55ZM265.97,200.87v-17.79h-54.4v22.57h49.63c2.63,0,4.78-2.14,4.78-4.78Z"/>
+</svg>
