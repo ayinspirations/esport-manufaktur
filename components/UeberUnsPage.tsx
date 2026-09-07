@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ArrowRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { PageHero } from './PageHero';
+import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 
@@ -168,7 +169,39 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
   );
 };
 
-export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
+/**
+ * Die letzte Kachel im Team-Raster: der Platz, der noch frei ist.
+ *
+ * Elf Portraets sagen, wer da ist. Diese Kachel sagt, dass Platz fuer einen
+ * zwoelften waere -- und zwar an der Stelle, an der jemand gerade Gesichter
+ * anschaut und sich fragt, ob er dazugehoeren koennte. Ein Satz weiter unten
+ * auf der Seite haette diesen Moment nicht.
+ *
+ * Sie steht auf dem Grund des Startseiten-Heros, damit sie sich als Teil des
+ * Auftritts liest und nicht als eingeklebte Anzeige, und behaelt den Zuschnitt
+ * der Portraets, damit das Raster nicht aus der Reihe faellt.
+ */
+const JoinTile: React.FC<{ onOpenContact?: (subject?: string) => void }> = ({ onOpenContact }) => (
+  <button
+    type="button"
+    onClick={() => onOpenContact?.('Initiativbewerbung')}
+    className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10 text-left"
+  >
+    <HeroGround className="transition-transform duration-700 ease-reveal group-hover:scale-[1.06]" />
+
+    <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5">
+      <span className="block font-black text-lg md:text-xl tracking-tighter text-white leading-tight text-balance">
+        Du willst Teil des Teams werden?
+      </span>
+      <span className="mt-3 inline-flex items-center gap-2 self-start rounded-full bg-white/10 px-3.5 py-2 text-[10px] md:text-[11px] font-black uppercase tracking-[0.18em] text-white ring-1 ring-white/20 transition-colors duration-500 group-hover:bg-emerald-400 group-hover:text-slate-950 group-hover:ring-emerald-400">
+        Schreib uns
+        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-500 group-hover:translate-x-0.5" />
+      </span>
+    </div>
+  </button>
+);
+
+export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, onOpenContact }) => {
   return (
     <div className="w-full">
       {/* ============ 1. HERO ============ */}
@@ -292,6 +325,9 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate }) => {
                 <MemberTile member={member} index={i} />
               </Reveal>
             ))}
+            <Reveal as="li" delay={(team.length % 4) * STAGGER.card} y={24}>
+              <JoinTile onOpenContact={onOpenContact} />
+            </Reveal>
           </ul>
         </div>
       </section>
