@@ -179,7 +179,7 @@ export const ExpandingCTA: React.FC<ExpandingCTAProps> = ({
     'inline-flex items-center justify-center rounded-full px-3.5 py-2.5 text-[11px] sm:px-5 sm:py-2.5 sm:text-[12.5px] font-black tracking-tight transition-colors duration-500 whitespace-nowrap';
   const wayPrimary = light
     ? 'bg-[#0b0f2a] text-white hover:bg-[#0e958e]'
-    : 'bg-white text-[#0b0f2a] hover:bg-emerald-400';
+    : 'bg-white text-[#0b0f2a] hover:bg-emerald-500 hover:text-white';
   const waySecondary = light
     ? 'text-[#0b0f2a]/75 hover:text-[#0b0f2a] hover:bg-[#0b0f2a]/[0.06]'
     : 'text-white/75 hover:text-white hover:bg-white/10';

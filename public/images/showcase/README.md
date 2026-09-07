@@ -38,6 +38,12 @@ winamax-gluecksgefuehle.jpg
 Die elf Cases mit eigener Unterseite ziehen ihr Bild aus ihrem eigenen Ordner
 (`/images/t-systems/hero.jpg` und so weiter) — für sie ist hier nichts zu tun.
 
+**Eine Datei allein zeigt den Fall noch nicht.** Die Bühne führt eine eigene,
+von Hand gesetzte Reihenfolge: `STAGE_ORDER` in `components/CaseShowcase.tsx`.
+Wer dort nicht steht, läuft auch nicht — das ist die Stelle, an der ein Fall
+dazukommt, sobald seine Aufnahme etwas zeigt. So steht auf der Bühne nie eine
+dunkle Fläche mit einem Namen darauf.
+
 **Zuschnitt:** querformat, mindestens 1600 Pixel breit. Das Bild läuft
 formatfüllend hinter der Bühne und wird zusätzlich hochkant auf 3:4 für die
 Kachel beschnitten; was zählt, gehört deshalb in die Mitte, nicht an den Rand.

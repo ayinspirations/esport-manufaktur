@@ -128,10 +128,25 @@ export const HubSpotForm: React.FC = () => {
             if (isMounted) injectCustomStyles();
           },
           onFormSubmitted: () => {
-            safeSetStatus('submitted');
-            if (isMounted) {
-              window.scrollTo({ top: document.getElementById('contact')?.offsetTop || 0, behavior: 'smooth' });
+            // Nicht scrollen, sondern die Hoehe halten.
+            //
+            // Hier stand ein Sprung zu `#contact`, berechnet aus dessen
+            // `offsetTop`. Das misst aber den Abstand zum naechsten
+            // positionierten Vorfahren, nicht zum Seitenanfang -- bei einem
+            // Element, das tief in verschachtelten Kaesten sitzt, kommt dabei
+            // eine kleine Zahl heraus. Die Seite sprang also nach oben, statt
+            // beim Formular zu bleiben.
+            //
+            // Auch ohne den Sprung waere die Seite gerutscht: die Danksagung
+            // ist kuerzer als das Formular, das Dokument schrumpft, und der
+            // Browser zieht die Ansicht mit. Also behaelt der Rahmen die Hoehe,
+            // die das Formular hatte -- dann bleibt alles darunter, wo es war,
+            // und die Danksagung steht genau dort, wo eben noch die Felder
+            // standen.
+            if (wrapperRef.current) {
+              wrapperRef.current.style.minHeight = `${wrapperRef.current.offsetHeight}px`;
             }
+            safeSetStatus('submitted');
           },
         });
       } catch (err) {
@@ -184,7 +199,7 @@ export const HubSpotForm: React.FC = () => {
       )}
 
       {showSuccess && (
-        <div className="text-center py-20">
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
           <div className="w-24 h-24 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
             <CheckCircle2 className="w-12 h-12 text-white" />
           </div>

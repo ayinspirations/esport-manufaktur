@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useScrollLock } from '../hooks/useScrollLock';
 import { X, Calendar, CheckCircle2 } from 'lucide-react';
 
 interface BookingModalProps {
@@ -10,9 +11,10 @@ interface BookingModalProps {
 export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [isSuccess, setIsSuccess] = useState(false);
 
+  useScrollLock(isOpen);
+
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       // Listen for message from HubSpot iframe to detect successful booking
       const handleMessage = (event: MessageEvent) => {
         // HubSpot postMessage events often contain form submission data
@@ -33,7 +35,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       document.body.appendChild(script);
 
       return () => {
-        document.body.style.overflow = 'unset';
         window.removeEventListener('message', handleMessage);
         if (script.parentNode) {
           document.body.removeChild(script);
@@ -41,7 +42,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       };
     } else {
       setIsSuccess(false);
-      document.body.style.overflow = 'unset';
     }
   }, [isOpen]);
 

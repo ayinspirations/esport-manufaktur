@@ -98,10 +98,6 @@ const IMPACT = [
 export const DekraDetail: React.FC<DekraDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (
@@ -155,20 +151,6 @@ export const DekraDetail: React.FC<DekraDetailProps> = () => {
               ))}
             </div>
 
-            <div className="pt-12 flex justify-center">
-              <a
-                href="https://www.tailormade-group.de"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:scale-105 transition-transform"
-              >
-                <img
-                  src="/logos/Tailormade.png"
-                  alt="TAILORMADE Logo"
-                  className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
           </div>
 
           {/* Projekt-Steckbrief */}

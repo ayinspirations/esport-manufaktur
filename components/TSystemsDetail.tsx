@@ -83,10 +83,6 @@ const IMPACT = [
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (
@@ -140,20 +136,6 @@ export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
               ))}
             </div>
 
-            <div className="pt-12 flex justify-center">
-              <a
-                href="https://www.t-systems.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:scale-105 transition-transform"
-              >
-                <img
-                  src="/logos/T-Systems_Logo_2024.svg.png"
-                  alt="T-Systems Logo"
-                  className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
           </div>
 
           {/* Projekt-Steckbrief */}
