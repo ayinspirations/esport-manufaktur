@@ -204,6 +204,13 @@ export default function App() {
   };
 
   useEffect(() => {
+    // Der Browser stellt beim Zurueckgehen die alte Scrollposition wieder her
+    // -- und tut das erst nach unserem eigenen Sprung nach oben. Auf einer
+    // Seite, die kuerzer ist als die, von der man kommt, landet man dadurch
+    // unterhalb des Inhalts: sichtbar bleibt die dunkle Flaeche. Wir setzen
+    // die Position ohnehin selbst, also nehmen wir dem Browser die Aufgabe ab.
+    const previousRestoration = history.scrollRestoration;
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
     const handleNav = () => {
       setRoute(resolveRoute());
@@ -219,6 +226,7 @@ export default function App() {
     return () => {
       window.removeEventListener('hashchange', handleNav);
       window.removeEventListener('popstate', handleNav);
+      if ('scrollRestoration' in history) history.scrollRestoration = previousRestoration;
     };
   }, []);
 

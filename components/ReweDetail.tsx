@@ -90,10 +90,6 @@ const IMPACT = [
 export const ReweDetail: React.FC<ReweDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (

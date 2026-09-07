@@ -101,10 +101,6 @@ const IMPACT = [
 export const BFVDetail: React.FC<CaseDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (

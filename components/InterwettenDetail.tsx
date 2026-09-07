@@ -95,10 +95,6 @@ const IMPACT = [
 export const InterwettenDetail: React.FC<InterwettenDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (

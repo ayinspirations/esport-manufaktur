@@ -98,10 +98,6 @@ const IMPACT = [
 export const DekraDetail: React.FC<DekraDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (

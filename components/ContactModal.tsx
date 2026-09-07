@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useScrollLock } from '../hooks/useScrollLock';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send } from 'lucide-react';
 import { HubSpotForm } from './HubSpotForm';
@@ -31,18 +32,13 @@ interface ContactModalProps {
  * behave identically.
  */
 export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, subject }) => {
+  useScrollLock(isOpen);
+
   useEffect(() => {
-    if (!isOpen) {
-      document.body.style.overflow = 'unset';
-      return;
-    }
-    document.body.style.overflow = 'hidden';
+    if (!isOpen) return;
     const onEsc = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     window.addEventListener('keydown', onEsc);
-    return () => {
-      document.body.style.overflow = 'unset';
-      window.removeEventListener('keydown', onEsc);
-    };
+    return () => window.removeEventListener('keydown', onEsc);
   }, [isOpen, onClose]);
 
   return (

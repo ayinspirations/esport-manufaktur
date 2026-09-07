@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useScrollLock } from '../hooks/useScrollLock';
 import { X, Check, SlidersHorizontal, ArrowLeft } from 'lucide-react';
 import { HERO_GROUP_DELAY, HERO_GROUP_DURATION } from './heroIntro';
 import { CATEGORIES, CONSENT_EVENT, getConsent, saveConsent } from './cookieConsent';
@@ -38,12 +39,7 @@ export const CookiePopup: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = isVisible ? 'hidden' : 'unset';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isVisible]);
+  useScrollLock(isVisible);
 
   const decide = (choice: { statistics: boolean; marketing: boolean }) => {
     saveConsent(choice);

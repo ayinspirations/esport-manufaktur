@@ -83,10 +83,6 @@ const IMPACT = [
 export const TSystemsDetail: React.FC<TSystemsDetailProps> = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
   }, []);
 
   return (
