@@ -11,12 +11,7 @@ interface IntersportDetailProps {
 
 // Liegen die Bilder unter public/images/intersport, erscheinen sie von
 // selbst -- fehlt eines, faellt es aus der Reihe (siehe CaseSlider).
-const images = [
-  '/images/intersport/slide-1.jpg',
-  '/images/intersport/slide-2.jpg',
-  '/images/intersport/slide-3.jpg',
-  '/images/intersport/slide-4.jpg',
-];
+const images = ['/images/intersport/hero.jpg'];
 
 // ---------------------------------------------------------------------------
 // Die Inhalte dieses Cases

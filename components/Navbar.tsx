@@ -171,24 +171,26 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className="flex items-center gap-2.5 group"
             aria-label="GG Manufaktur"
           >
-            {/* The two logo files are the same artwork in two inks on the same
-                transparent ground, so the pair can be stacked and cross-faded.
-                Swapping the `src` instead would cut hard in the middle of the
-                glass's own 600ms transition. The white one vanishes on the
-                light glass, the blue one on the dark. */}
+            {/* Die zwei Logodateien sind dasselbe Zeichen in zwei Farben auf
+                demselben transparenten Grund -- gestapelt lassen sie sich
+                ueberblenden. Ein Wechsel der `src` wuerde mitten in die 600ms
+                des Glases hinein hart schneiden.
+                Weisz steht auf der hellen Leiste, der Verlauf auf der dunklen
+                -- auch im Hero. Das Weisze traegt dabei einen weichen Schatten,
+                weil helles Glas allein es nicht halten wuerde. */}
             <span className="relative block h-8">
               <img
-                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                src="/logos/GG_Bildmarke_neg.png"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 0 : 1 }}
+                style={{ opacity: inkOnGlass ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
               />
               <img
-                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                src="/logos/GG_Bildmarke_pos.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: inkOnGlass ? 1 : 0 }}
+                style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
             </span>
           </button>
@@ -291,17 +293,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           >
             <span className="relative block h-8">
               <img
-                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                src="/logos/GG_Bildmarke_neg.png"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: mobileInk ? 0 : 1 }}
+                style={{ opacity: mobileInk ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
               />
               <img
-                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                src="/logos/GG_Bildmarke_pos.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
-                style={{ opacity: mobileInk ? 1 : 0 }}
+                style={{ opacity: mobileInk ? 0 : 1 }}
               />
             </span>
           </button>

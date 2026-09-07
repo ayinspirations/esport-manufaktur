@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
@@ -38,6 +37,163 @@ const TILE_TEXT_VARIANTS = {
   show: { opacity: 1, y: 0, transition: { duration: DUR.interact, ease: EASE_REVEAL } }
 };
 
+// ---------------------------------------------------------------------------
+// Das Mosaik
+// ---------------------------------------------------------------------------
+// Es liegt nicht mehr in einem Spaltenraster, sondern in Baendern.
+//
+// Das Raster konnte nur ganze Sechstel: eine Kachel war zwei, drei oder vier
+// Spalten breit, und ob das Bild darin aufging, war Glueckssache. Ein
+// hochkantes Video neben einem Querformat ergab zwei verschieden hohe Kacheln
+// mit einem Loch darunter -- oder ein beschnittenes Bild.
+//
+// Jetzt gibt jedes Band seinen Kacheln dieselbe Hoehe und teilt die Breite im
+// Verhaeltnis ihrer Bilder auf. Das ist eine Zeile Rechnung: liegen alle
+// Kacheln eines Bandes auf derselben Hoehe h, ist jede so breit wie h mal ihr
+// Seitenverhaeltnis. Genau das macht `flex-grow: ar` bei `flex-basis: 0` --
+// die Breiten verhalten sich wie die Verhaeltnisse, und weil jede Kachel ihr
+// Verhaeltnis auch als `aspect-ratio` traegt, kommt fuer alle dieselbe Hoehe
+// heraus. Kein Bild wird beschnitten, kein Band bleibt rechts offen, und
+// zwischen den Baendern darf die Hoehe springen. Das ist das Mosaik.
+//
+// Eine neue Kachel braucht deshalb nur ihr Seitenverhaeltnis (Breite geteilt
+// durch Hoehe des Materials, nicht der Wunschkachel) und ein Band, in das sie
+// passt. Faustregel fuers Band: ein Hochformat neben ein Querformat. Zwei
+// Hochformate nebeneinander werden sehr hoch, zwei Querformate sehr flach.
+//
+// Auf schmalen Schirmen faellt das Band in eine Spalte; dort steht jede Kachel
+// fuer sich, und `arMobile` darf ein ruhigeres Verhaeltnis vorgeben.
+// ---------------------------------------------------------------------------
+
+interface Tile {
+  slug: string;
+  title: string;
+  /** Breite geteilt durch Hoehe des Materials. Gibt Breite *und* Hoehe im Band. */
+  ar: number;
+  /** Abweichendes Verhaeltnis fuer die einspaltige Ansicht. */
+  arMobile?: number;
+  video?: string;
+  poster?: string;
+  image?: string;
+  alt?: string;
+  /** Schriftgroesse der Ueberschrift -- folgt der Flaeche, nicht dem Namen. */
+  head: string;
+  /** Zusatz fuers Medium, etwa ein Bildausschnitt. */
+  media?: string;
+}
+
+const BANDS: Tile[][] = [
+  [
+    {
+      slug: 'tsystems',
+      title: 'T-Systems',
+      ar: 877 / 504,
+      arMobile: 4 / 3,
+      video: '/videos/case-tsystems.mp4',
+      poster: '/videos/case-tsystems.jpg',
+      head: 'clamp(24px,3.2vw,38px)'
+    },
+    {
+      slug: 'hagebau',
+      title: 'Hagebau Bolay',
+      ar: 427 / 504,
+      arMobile: 3 / 4,
+      video: '/videos/case-hagebau.mp4',
+      poster: '/videos/case-hagebau.jpg',
+      head: 'clamp(24px,3.2vw,38px)'
+    }
+  ],
+  [
+    {
+      slug: 'bfv',
+      title: 'BFV eFootball',
+      // 576 x 1024 -- das Video laeuft in voller Hoehe, ohne Schnitt.
+      ar: 9 / 16,
+      video: '/videos/case-bfv.mp4',
+      poster: '/images/bfv/hero.jpg',
+      head: 'clamp(20px,2.2vw,30px)',
+      media: 'object-top'
+    },
+    {
+      slug: 'intersport',
+      title: 'Intersport',
+      // 2000 x 1333. Neben dem hochkanten Video wird die Kachel dadurch breit
+      // genug, um das Band rechts zu schlieszen.
+      ar: 3 / 2,
+      image: '/images/intersport/hero.jpg',
+      alt: 'Gaming-Wall im INTERSPORT Clubhouse Berlin – Pop-up-Aktivierung von GG Manufaktur',
+      head: 'clamp(22px,2.8vw,34px)'
+    }
+  ],
+  [
+    {
+      slug: 'dekra',
+      title: 'DEKRA Motorsport',
+      // 1166 x 1166 -- quadratisch, also auch die Kachel.
+      ar: 1,
+      image: '/images/dekra/hero.jpg',
+      alt: 'Digitaler Event-Pass für DEKRA an sechs DTM-Standorten',
+      head: 'clamp(24px,3.2vw,38px)'
+    },
+    {
+      slug: 'bayern-zockt',
+      title: 'Bayern Zockt',
+      ar: 16 / 9,
+      video: '/videos/case-bayern-zockt.mp4',
+      poster: '/videos/case-bayern-zockt.jpg',
+      head: 'clamp(26px,3.4vw,42px)'
+    }
+  ],
+  [
+    {
+      slug: 'rewe',
+      title: 'REWE',
+      ar: 2 / 3,
+      image: '/images/rewe/hero.jpg',
+      alt: 'eSport-Sponsoring-Aktivierung für REWE mit dem 1. FC Köln',
+      head: 'clamp(20px,2.2vw,30px)'
+    },
+    {
+      slug: 'showdown-0711',
+      title: '0711 Showdown',
+      ar: 16 / 9,
+      video: '/videos/case-showdown.mp4',
+      poster: '/videos/case-showdown.jpg',
+      head: 'clamp(22px,2.8vw,34px)'
+    },
+    {
+      slug: 'interwetten',
+      title: 'Interwetten',
+      ar: 3 / 4,
+      image: '/images/interwetten/hero.jpg',
+      alt: 'Virtual-Tennis-Aktivierung für Interwetten beim BOSS OPEN',
+      head: 'clamp(20px,2.2vw,30px)'
+    }
+  ],
+  [
+    {
+      slug: 'xp-days',
+      title: 'XP Days',
+      ar: 16 / 9,
+      image: '/images/xp-days/hero.jpg',
+      alt: 'XP Days – gamifizierte Karrieremesse der GG Manufaktur in Stuttgart',
+      head: 'clamp(22px,2.8vw,34px)'
+    },
+    {
+      slug: 'consumenta',
+      title: 'NIVEA MEN // EFFECT // CRACKZ',
+      ar: 16 / 9,
+      image: '/images/consumenta/hero.jpg',
+      alt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg',
+      head: 'clamp(22px,2.8vw,34px)'
+    }
+  ]
+];
+
+interface BestCasesProps {
+  onNavigate?: (page: any) => void;
+}
+
 // Die Kacheln sind Verweise, keine anklickbaren Kaesten.
 //
 // Sie waren <div onClick>: fuer eine Maus dasselbe, fuer alles andere nichts.
@@ -49,15 +205,58 @@ const TILE_TEXT_VARIANTS = {
 // Jetzt ist es ein <a href> auf die echte Adresse. Der Klick wird abgefangen
 // und geht weiterhin durch den Router, damit die Seite nicht neu laedt; alles
 // andere -- Mittelklick, Tastatur, Crawler -- folgt dem Verweis.
-
-// Stagger restarts on each row of the mosaic, so no tile waits on the delay of
-// one sitting above it in a different row. Die letzte Reihe traegt nur noch
-// eine Kachel und faengt deshalb wieder bei null an.
-const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
-
-interface BestCasesProps {
-  onNavigate?: (page: any) => void;
-}
+const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any) => void }> = ({ tile, delay, onNavigate }) => (
+  <div
+    className="w-full aspect-[var(--ar-m)] lg:w-auto lg:basis-0 lg:aspect-[var(--ar)]"
+    style={{ '--ar': `${tile.ar}`, '--ar-m': `${tile.arMobile ?? tile.ar}`, flexGrow: tile.ar } as React.CSSProperties}
+  >
+    <motion.div
+      className="h-full w-full"
+      variants={TILE_VARIANTS}
+      custom={delay}
+      initial="hidden"
+      whileInView="show"
+      viewport={TILE_VIEWPORT}
+    >
+      <a
+        href={`/best-cases/${tile.slug}`}
+        onClick={(e) => { e.preventDefault(); onNavigate?.(tile.slug); }}
+        className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+      >
+        {tile.video ? (
+          <LazyVideo
+            src={tile.video}
+            poster={tile.poster}
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
+          />
+        ) : (
+          <img
+            src={tile.image}
+            alt={tile.alt ?? ''}
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+          <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+            Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+          </div>
+        </div>
+        <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
+          <div>
+            <h3
+              className="text-white font-black leading-[0.9] tracking-tighter uppercase mb-3 drop-shadow-2xl text-balance"
+              style={{ fontSize: tile.head }}
+            >
+              {tile.title}
+            </h3>
+          </div>
+        </motion.div>
+      </a>
+    </motion.div>
+  </div>
+);
 
 export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
   return (
@@ -84,481 +283,18 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Mosaic.
-            Every tile used to be exactly 500px tall, so six different column
-            spans still produced one flat band of equal-height boxes -- a table,
-            not a mosaic.
-
-            The grid is six columns of a uniform row unit instead, and each tile
-            claims a different rectangle of it. Because every span is whole
-            units of the same cell, the shapes vary while the layout still
-            tiles exactly: rows 1-3 die breite Kachel und die hochkante
-            daneben, rows 4-6 die schmale und die breite daneben, rows 7-8
-            das Quadrat und das Panorama, rows 9-11 hochkant und breit, rows
-            12-13 noch einmal Quadrat und Panorama, rows 14-16 ein Abschluss
-            ueber die volle Breite. No gaps, no dense-packing
-            heuristics, no tile left orphaned on its own row at a smaller
-            width.
-
-            Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
-            2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss.
-
-            Kommt ein neuer Best Case dazu, bekommt er hier eine Kachel --
-            nach denselben Regeln, damit das Mosaik ein Mosaik bleibt:
-
-              1. Ein Band ist voll, wenn die Spalten darin sechs ergeben.
-                 Erlaubte Paare: 4+2 (breit neben hochkant), 2+4
-                 (quadratisch neben Panorama) und 3+3 (zwei gleich
-                 breite Haelften); 6 allein traegt ein Band ueber die
-                 volle Breite.
-              2. Die Form wechselt: nie zweimal hintereinander dasselbe
-                 Format. Reihenfolge im Zweifel 4x3 -> 2x3 -> 2x2 -> 4x2
-                 -> 6x3 und von vorn.
-              3. Jede Kachel traegt zwei Groessen: die Spalten- und
-                 Reihenspanne ab lg, und darunter ein aspect-* fuer die
-                 einspaltige Ansicht (aspect-[4/3] breit, aspect-[3/4]
-                 hochkant, aspect-square quadratisch, aspect-[16/9]
-                 Panorama).
-              4. Die Schriftgroesse der Ueberschrift folgt der Flaeche:
-                 grosse Kacheln clamp(24px,3.2vw,38px), Panorama
-                 clamp(26px,3.4vw,42px), halbe Baender und volle Breite
-                 clamp(22px,2.8vw,34px), kleine clamp(20px,2.2vw,30px).
-              5. TILE_DELAY bekommt einen Eintrag je Kachel und faengt in
-                 jedem Band wieder bei 0 an.
-              6. Bringt eine Aufnahme ein Format mit, das keiner dieser
-                 Zuschnitte trifft, bekommt sie ihren eigenen: vier Spalten
-                 neben fuenf Reihen ergeben ein Quadrat, drei neben vier ein
-                 stehendes Rechteck. Die Kachel folgt dem Bild, nicht
-                 umgekehrt -- siehe DEKRA. */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
-          {/* Rows 1-3 — T-Systems breit, hagebau hochkant daneben */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[0]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/tsystems`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('tsystems'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-tsystems.mp4"
-                  poster="/videos/case-tsystems.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      T-Systems
-                    </h3>
-                  </div>
-                </motion.div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[1]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/hagebau`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('hagebau'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-hagebau.mp4"
-                  poster="/videos/case-hagebau.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      Hagebau Bolay
-                    </h3>
-                  </div>
-                </motion.div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 4-6 — DEKRA schmal, BFV breit daneben.
-              Die DEKRA-Aufnahme ist quadratisch, das Raster kennt kein
-              Quadrat: eine Zelle ist breiter als hoch, also ist jede Kachel
-              breiter als hoch, sobald sie mehr Spalten als Reihen hat. Ein
-              quadratisches Bild formatfuellend in eine solche Kachel zu
-              legen heiszt, unten ein Viertel abzuschneiden.
-              Die Kachel ist deshalb selbst quadratisch: zwei Spalten breit
-              und genauso hoch, 427 auf 427. Das Bild fuellt sie ganz aus,
-              nichts wird beschnitten, und es bleibt kein dunkler Streifen
-              darunter.
-              Das Raster gibt diese Hoehe nicht her -- drei Reihen sind 504
-              Pixel --, also nimmt die Kachel ihr Band nicht in voller Hoehe
-              ein: `self-start` haelt sie oben, die Hoehe des Bandes bestimmt
-              BFV daneben. Die 77 Pixel darunter sind Seitenflaeche, kein
-              angeschnittenes Bild. */}
-          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-3 lg:self-start lg:aspect-square">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[2]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/dekra`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('dekra'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/dekra/hero.jpg"
-                  alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      DEKRA Motorsport
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[3]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/bfv`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('bfv'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-bfv.mp4"
-                  poster="/images/bfv/hero.jpg"
-                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.9] tracking-tighter uppercase mb-3 drop-shadow-2xl">
-                      BFV eFootball
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 7-8 — 0711 quadratisch, INTERSPORT als Panorama daneben */}
-          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[4]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/showdown-0711`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('showdown-0711'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-showdown.mp4"
-                  poster="/videos/case-showdown.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.95] tracking-tighter uppercase mb-3 drop-shadow-2xl">
-                      0711 Showdown
-                    </h3>
-                  </div>
-                </motion.div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[5]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/intersport`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('intersport'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/intersport/hero.jpg"
-                  alt="Gaming-Wall im INTERSPORT Clubhouse Berlin – Pop-up-Aktivierung von GG Manufaktur"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      Intersport
-                    </h3>
-                  </div>
-                </motion.div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 9-11 — REWE hochkant, Bayern zockt breit daneben */}
-          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[6]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/rewe`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('rewe'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/rewe/hero.jpg"
-                  alt="eSport-Sponsoring-Aktivierung für REWE mit dem 1. FC Köln"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      REWE
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
-            <motion.div 
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[7]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/bayern-zockt`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('bayern-zockt'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <LazyVideo
-                  src="/videos/case-bayern-zockt.mp4"
-                  poster="/videos/case-bayern-zockt.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(24px,3.2vw,38px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      Bayern Zockt
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 12-13 — Interwetten quadratisch, XP Days als Panorama daneben */}
-          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[8]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/interwetten`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('interwetten'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/interwetten/hero.jpg"
-                  alt="Virtual-Tennis-Aktivierung für Interwetten beim BOSS OPEN"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-sm uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-4 h-4" />
-                  </div>
-                </div>
-                <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.9] tracking-tighter uppercase mb-3 drop-shadow-2xl">
-                      Interwetten
-                    </h3>
-                  </div>
-                </motion.div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[9]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/xp-days`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('xp-days'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/xp-days/hero.jpg"
-                  alt="XP Days – gamifizierte Karrieremesse der GG Manufaktur in Stuttgart"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      XP Days
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          {/* Rows 14-16 — Consumenta ueber die volle Breite. Drei Marken in
-              einer Kachel brauchen die ganze Zeile fuer ihren Namen. */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[10]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/consumenta`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('consumenta'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/consumenta/hero.jpg"
-                  alt="Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl text-balance">
-                      NIVEA MEN // EFFECT // CRACKZ
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-
-
-
+        {/* Ein Band je Zeile. Der Versatz faengt in jedem Band wieder bei null
+            an -- keine Kachel wartet auf eine, die zwei Baender weiter oben
+            steht. */}
+        <div className="flex flex-col gap-4 md:gap-6">
+          {BANDS.map((band, bi) => (
+            <div key={bi} className="flex flex-col lg:flex-row items-start gap-4 md:gap-6">
+              {band.map((tile, ti) => (
+                <MosaicTile key={tile.slug} tile={tile} delay={ti * STAGGER.card} onNavigate={onNavigate} />
+              ))}
+            </div>
+          ))}
         </div>
-
       </div>
     </section>
   );

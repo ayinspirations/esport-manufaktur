@@ -67,9 +67,10 @@ interface Member {
    * Wo im Bild die Person steht, als object-position.
    *
    * Voreingestellt ist die Mitte auf einem Viertel Hoehe -- das passt fuer ein
-   * Portraet. Nicht jede Aufnahme ist eines: Gianlucas Foto ist eine
-   * Buehnensituation im Querformat, auf der er rechts steht, und ein
-   * mittiger Zuschnitt zeigt die Wand hinter ihm.
+   * Portraet. Gianlucas Aufnahme ist hochkant und steht damit hoeher im
+   * Rahmen als das Raster: bei 4:5 faellt unten ein Sechstel weg, und erst
+   * ein Zuschnitt nahe der Oberkante laeszt das Gesicht auf Augenhoehe
+   * sitzen statt am oberen Rand.
    */
   focus?: string;
 }
@@ -83,7 +84,7 @@ interface Member {
 // ein Fehler, den niemand sucht. Wer kein Bild hat, bekommt sein Monogramm --
 // dafuer ist nichts weiter zu tun als die Zeile hier ohne `image` zu lassen.
 const team: Member[] = [
-  { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '68% 16%' },
+  { name: 'Gianluca', role: 'Founder & CEO', image: '/team/gianluca.jpg', focus: '50% 8%' },
   { name: 'Sandro', role: 'Co-Founder & Operations', image: '/team/sandro.jpg' },
   { name: 'Patrick', role: 'Sales & Partnerships', image: '/team/patrick.jpg' },
   { name: 'Sandra', role: 'Operations', image: '/team/sandra.jpg' },
@@ -384,7 +385,7 @@ export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, onOpenCo
                     alt="Gianluca Crepaldi, Gründer und Geschäftsführer der GG Manufaktur"
                     loading="lazy"
                     decoding="async"
-                    style={{ objectPosition: '68% 16%' }}
+                    style={{ objectPosition: '50% 8%' }}
                     className="w-full aspect-[4/5] object-cover rounded-card"
                   />
                 ) : (

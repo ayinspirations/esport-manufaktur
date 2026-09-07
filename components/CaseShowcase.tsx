@@ -127,7 +127,7 @@ const CASES: ShowcaseCase[] = [
   shot('vfl-bochum', 'VfL Bochum', 'Digitale Durchführung unterschiedlicher eSport-Wettbewerbe auf einer gebrandeten White-Label-Plattform mit Teilnehmer- und Turniermanagement.'),
   shot('tsg-hoffenheim', 'TSG Hoffenheim', 'Digitale Abbildung von Turnieren und eSport-Wettbewerben auf einer individuellen White-Label-Plattform im Vereinsdesign der TSG Hoffenheim.'),
   shot('esport-verband-schleswig-holstein', 'eSport-Verband Schleswig-Holstein', 'Digitale Abbildung des neuen Landesmeisterschaftsformats auf einer individuellen White-Label-Plattform mit Wettbewerbsstruktur und Teilnehmermanagement.'),
-  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.', { focus: '50% 78%' })
+  shot('allianz-vfb-stuttgart', 'Allianz × VfB Stuttgart', 'Gaming-Aktivierung im Umfeld eines Bundesliga-Spiels zur Steigerung der Brand Awareness und zum Aufbau positiver Markenassoziationen bei jungen Zielgruppen.')
 ];
 
 /** Die Faelle, die gerade gezeigt werden -- in der Reihenfolge von oben. */
@@ -297,22 +297,56 @@ export const CaseShowcase: React.FC = () => {
         Kante zu enden. Die obere Haelfte bleibt scharf, da ist das Bild fuer
         sich.
       */}
+      {/*
+        Auf dem Telefon liegt derselbe Fusz deutlich leichter.
+
+        Die Werte oben sind fuer einen breiten Schirm gerechnet: dort steht der
+        Text in der linken Haelfte, und was er verdeckt, ist ein Rand des
+        Bildes. Auf einem hochkanten Schirm ist derselbe Fusz fast die halbe
+        Flaeche -- die Aufnahme endete auf halber Hoehe in einer schwarzen
+        Flaeche, und darunter sahen die Kacheln aus, als staenden sie auf einem
+        eigenen Hintergrund statt auf dem Bild.
+
+        Hier bleibt die Aufnahme deshalb bis zur Unterkante sichtbar. Sie wird
+        nach unten hin gedaempft und leicht weichgezeichnet, aber nicht mehr
+        zugedeckt: kein Verlauf erreicht Deckung, und die Unschaerfe ist eine
+        Stufe schwaecher. Text und Kacheln tragen ihren eigenen Schatten, den
+        brauchen sie hier auch.
+
+        Der seitliche Verlauf faellt ganz weg -- er hat nur dort eine Aufgabe,
+        wo der Text seitlich neben dem Bild steht.
+      */}
       <div
-        className="absolute inset-x-0 bottom-0 h-[46%] pointer-events-none backdrop-blur-lg"
+        className="sm:hidden absolute inset-x-0 bottom-0 h-[52%] pointer-events-none backdrop-blur-[3px]"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 55%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 55%)'
+        }}
+      />
+      <div
+        className="sm:hidden absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to top, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.62) 20%, rgba(2,6,23,0.34) 45%, rgba(2,6,23,0.06) 70%, rgba(2,6,23,0.32) 100%)'
+        }}
+      />
+
+      <div
+        className="hidden sm:block absolute inset-x-0 bottom-0 h-[46%] pointer-events-none backdrop-blur-lg"
         style={{
           maskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)',
           WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)'
         }}
       />
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="hidden sm:block absolute inset-0 pointer-events-none"
         style={{
           background:
             'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.92) 26%, rgba(2,6,23,0.45) 52%, rgba(2,6,23,0.06) 76%, rgba(2,6,23,0.45) 100%)'
         }}
       />
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="hidden sm:block absolute inset-0 pointer-events-none"
         style={{
           background:
             'linear-gradient(to right, rgba(2,6,23,0.72) 0%, rgba(2,6,23,0.28) 38%, rgba(2,6,23,0) 68%)'
