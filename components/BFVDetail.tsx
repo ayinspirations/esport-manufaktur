@@ -9,11 +9,7 @@ interface CaseDetailProps {
   onBack: () => void;
 }
 
-const images = [
-  '/images/bfv/slide-1.jpg',
-  '/images/bfv/slide-2.jpg',
-  '/images/bfv/slide-3.jpg',
-];
+const images = ['/images/bfv/hero.jpg'];
 
 const videos = [
   {

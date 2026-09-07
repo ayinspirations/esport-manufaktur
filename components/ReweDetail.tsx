@@ -12,10 +12,8 @@ interface ReweDetailProps {
 // Liegen die Bilder unter public/images/rewe, erscheinen sie von selbst --
 // fehlt eines, faellt es aus der Reihe (siehe CaseSlider).
 const images = [
-  '/images/rewe/slide-1.jpg',
-  '/images/rewe/slide-2.jpg',
-  '/images/rewe/slide-3.jpg',
-  '/images/rewe/slide-4.jpg',
+  '/images/rewe/hero.jpg',
+  '/images/rewe/gallery-2.jpg',
 ];
 
 // ---------------------------------------------------------------------------

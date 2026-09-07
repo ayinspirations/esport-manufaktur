@@ -4,7 +4,17 @@ Hier gehören die Aufnahmen hin, die unter den Best Cases in der
 Vollbild-Bühne laufen — als Hintergrund und als Kachel in der Reihe darunter.
 
 Erwartet wird **eine Datei je Case**, benannt nach dessen `id` aus
-`components/CaseShowcase.tsx`, kleingeschrieben, mit der Endung `.jpg`:
+`components/CaseShowcase.tsx`, kleingeschrieben, mit der Endung `.jpg`.
+
+Vorhanden sind bereits: aok-fortuna-duesseldorf, allianz-juniorcup,
+allianz-vfb-stuttgart, erazer-expert, hhn-techday, hhn-gamingland-meetit,
+kreissparkasse-esslingen, kreissparkasse-boeblingen, markenfestival,
+naspa-svww, plauen-park, sonax-rocket-league und winamax-gluecksgefuehle.
+Dateien mit angehängter Nummer (`allianz-juniorcup-2.jpg`) sind Zweit- und
+Drittaufnahmen desselben Falls: die Bühne zeigt je Fall eine, die weiteren
+warten hier, bis der Fall eine eigene Unterseite mit Bildergalerie bekommt.
+
+Es fehlen noch:
 
 ```
 developer-akademie.jpg              hamburger-sv.jpg
