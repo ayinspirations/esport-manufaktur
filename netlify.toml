@@ -71,6 +71,18 @@
 # Also uebernimmt das Sperren die Integration, die dafuer eingerichtet ist,
 # und dieses Verzeichnis bleibt leer. Die Regel selbst steht weiterhin lesbar
 # in public/robots.txt.
+#
+# Nachtrag: die Integration allein reicht, um das Edge-Bundling einzuschalten
+# -- sie legt ihre Funktion selbst in .netlify/edge-functions ab, ganz ohne
+# unser Zutun. Und sie importiert @netlify/blobs, das der Bundler nur
+# aufloesen kann, wenn das Paket in node_modules liegt. Es stand nirgends,
+# also brach der Build ab ("Could not resolve @netlify/blobs").
+#
+# Deshalb steht @netlify/blobs in den dependencies der package.json, obwohl
+# kein Zeile unseres Codes es importiert: es ist die Abhaengigkeit der
+# Integration, nicht der Seite. Wer es dort aufraeumt, weil "das benutzt ja
+# niemand", legt den naechsten Deploy lahm. Wird die Integration im Netlify-UI
+# abgeschaltet, kann es mit weg.
 # ---------------------------------------------------------------------------
 # Renamed services
 # ---------------------------------------------------------------------------
