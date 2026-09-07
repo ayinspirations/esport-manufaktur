@@ -93,9 +93,9 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             claims a different rectangle of it. Because every span is whole
             units of the same cell, the shapes vary while the layout still
             tiles exactly: rows 1-3 die breite Kachel und die hochkante
-            daneben, rows 4-6 noch einmal breit und hochkant, rows 7-8 das
-            Quadrat und das Panorama, rows 9-11 wieder breit und hochkant,
-            rows 12-13 zwei gleich breite Haelften, rows 14-16 ein Abschluss
+            daneben, rows 4-6 die schmale und die breite daneben, rows 7-8
+            das Quadrat und das Panorama, rows 9-11 hochkant und breit, rows
+            12-13 noch einmal Quadrat und Panorama, rows 14-16 ein Abschluss
             ueber die volle Breite. No gaps, no dense-packing
             heuristics, no tile left orphaned on its own row at a smaller
             width.
@@ -363,12 +363,49 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 9-11 — Bayern zockt breit, Interwetten hochkant daneben */}
+          {/* Rows 9-11 — REWE hochkant, Bayern zockt breit daneben */}
+          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
+            <motion.div
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[6]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <a
+                href={`/best-cases/rewe`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('rewe'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+              >
+                <img
+                  src="/images/rewe/hero.jpg"
+                  alt="eSport-Sponsoring-Aktivierung für REWE mit dem 1. FC Köln"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(20px,2.2vw,30px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      REWE
+                    </h3>
+                  </div>
+                </div>
+              </a>
+            </motion.div>
+          </div>
+
           <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
-              custom={TILE_DELAY[6]}
+              custom={TILE_DELAY[7]}
               initial="hidden"
               whileInView="show"
               viewport={TILE_VIEWPORT}
@@ -400,11 +437,12 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
+          {/* Rows 12-13 — Interwetten quadratisch, XP Days als Panorama daneben */}
+          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
-              custom={TILE_DELAY[7]}
+              custom={TILE_DELAY[8]}
               initial="hidden"
               whileInView="show"
               viewport={TILE_VIEWPORT}
@@ -437,45 +475,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 12-13 — REWE und XP Days teilen sich das Band zu gleichen Teilen */}
-          <div className="col-span-1 aspect-[16/9] lg:col-span-3 lg:row-span-2 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[8]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/rewe`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('rewe'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/rewe/hero.jpg"
-                  alt="eSport-Sponsoring-Aktivierung für REWE mit dem 1. FC Köln"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      REWE
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-[16/9] lg:col-span-3 lg:row-span-2 lg:aspect-auto">
+          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -503,7 +503,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 </div>
                 <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
                   <div>
-                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
                       XP Days
                     </h3>
                   </div>
@@ -550,6 +550,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               </a>
             </motion.div>
           </div>
+
 
 
 
