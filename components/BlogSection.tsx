@@ -141,7 +141,13 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             animate={headingSeen ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
             transition={{ duration: 0.85, delay: CARDS_AFTER_HEADING, ease: [0.22, 1, 0.36, 1] }}
           >
-            {!showAllMobile ? (
+            {/* Ein einzelner Beitrag braucht weder Karussell noch Schalter:
+                zum Wischen fehlt das Nachbarblatt, und "Alle Beitraege
+                ansehen" waere eine Schaltflaeche, die nichts aufklappt. Er
+                steht dann einfach da. */}
+            {blogPosts.length < 2 ? (
+              <BlogCard post={blogPosts[0]} onOpenPost={onOpenPost} />
+            ) : !showAllMobile ? (
               <>
                 <style>{`.blog-carousel-track::-webkit-scrollbar{display:none}`}</style>
                 <div
@@ -161,6 +167,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
               </div>
             )}
 
+            {blogPosts.length > 1 && (
             <button
               onClick={() => setShowAllMobile((v) => !v)}
               className="mt-8 w-full flex items-center justify-center gap-2 rounded-full border border-white/20 py-3.5 text-white text-xs font-black uppercase tracking-widest transition-colors duration-500 hover:bg-emerald-400 hover:border-emerald-400 hover:text-slate-950"
@@ -171,6 +178,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
                 <>Alle Beiträge ansehen <ChevronDown className="w-4 h-4" /></>
               )}
             </button>
+            )}
           </motion.div>
         </div>
       </Reveal>

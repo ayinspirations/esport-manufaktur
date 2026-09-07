@@ -66,7 +66,7 @@ const RouteFallback = () => <div className="min-h-screen bg-[#badeda]" aria-hidd
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
-  | 'gamification-im-marketing' | 'esport-event-planen' | 'streaming-fuer-marken' | 'recruiting-im-gaming' | 'gaming-am-messestand'
+  | 'gamification-messestand' | 'gamification-im-marketing'
   | 'ueber-uns' | 'meine-geschichte' | 'webdesign';
 
 /**
