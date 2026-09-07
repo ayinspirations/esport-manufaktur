@@ -204,15 +204,19 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 4-6 — DEKRA breit, BFV hochkant daneben.
-              Die Aufnahme ist quadratisch, die Kachel ist es nicht: sie ist
-              so hoch wie die T-Systems-Kachel darueber und damit breiter als
-              hoch. `object-top` legt das Bild an die Oberkante, also faellt
-              ausschlieszlich unten etwas weg -- oben, links und rechts steht
-              es vollstaendig. Dasselbe Paar wie im Band darueber, und das
-              ausnahmsweise: das Format gibt hier das Foto vor, nicht der
-              Wechsel. */}
-          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
+          {/* Rows 4-6 — DEKRA schmal, BFV breit daneben.
+              Die DEKRA-Aufnahme ist quadratisch, das Raster kennt kein
+              Quadrat: eine Zelle ist breiter als hoch, also ist jede Kachel
+              breiter als hoch, sobald sie mehr Spalten als Reihen hat. Ein
+              quadratisches Bild formatfuellend in eine solche Kachel zu
+              legen heiszt, unten ein Viertel abzuschneiden.
+              Zwei Spalten neben drei Reihen ergibt 427 zu 504 -- schmaler als
+              hoch. Das Bild steht darin an der Oberkante in voller Breite und
+              voller Hoehe, 427 zu 427, ohne dass irgendwo etwas wegfaellt.
+              Was unter ihm bleibt, sind 77 Pixel, und dort steht ohnehin der
+              Name. Die Kachel ist damit genau so hoch wie die von T-Systems
+              und die schmalste im Mosaik. */}
+          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-3 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -230,7 +234,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                   src="/images/dekra/hero.jpg"
                   alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-contain object-top transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
@@ -249,7 +253,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
+          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div 
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -266,7 +270,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                 <LazyVideo
                   src="/videos/case-bfv.mp4"
                   poster="/images/bfv/hero.jpg"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
