@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                   className="flex items-center gap-3 mb-8 group"
                   aria-label="GG Manufaktur"
                 >
-                  <img src="/logos/Esport-Manufaktur_Logo-blau.png" alt="GG Manufaktur" className="h-9 w-auto object-contain" />
+                  <img src="/logos/GG_Bildmarke_pos.png" alt="GG Manufaktur" className="h-9 w-auto object-contain" />
                 </a>
                 <p className="text-slate-600 max-w-sm leading-relaxed mb-10 text-lg font-medium tracking-tight">
                   Wir entwickeln Gamification, Events und Markenaktivierungen – von der ersten Idee bis zur Umsetzung. Live, digital und immer mit dem Ziel, Menschen zu begeistern.

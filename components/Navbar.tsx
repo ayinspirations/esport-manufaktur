@@ -178,13 +178,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 light glass, the blue one on the dark. */}
             <span className="relative block h-8">
               <img
-                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                src="/logos/GG_Bildmarke_neg.png"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
               <img
-                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                src="/logos/GG_Bildmarke_pos.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
@@ -291,13 +291,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           >
             <span className="relative block h-8">
               <img
-                src="/logos/Esport-Manufaktur_Logo-weiss.png"
+                src="/logos/GG_Bildmarke_neg.png"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: mobileInk ? 0 : 1 }}
               />
               <img
-                src="/logos/Esport-Manufaktur_Logo-blau.png"
+                src="/logos/GG_Bildmarke_pos.png"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
