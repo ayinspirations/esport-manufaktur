@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { RevealText } from './Reveal';
+import { asset } from './site';
 
 interface CaseHeroProps {
   /** Das Aufmacherbild. Querformat, weil es hier fast quadratisch beschnitten wird. */
@@ -54,7 +55,7 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent })
     <div className="relative h-[68vh] md:h-[78vh] overflow-hidden bg-[#0b0f2a]">
       {!failed && (
         <img
-          src={image}
+          src={asset(image)}
           alt={alt}
           onError={() => setFailed(true)}
           className="absolute inset-0 w-full h-full object-cover pointer-events-none"

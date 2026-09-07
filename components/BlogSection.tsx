@@ -7,6 +7,7 @@ import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, STAGGER } from './motion';
 import { useInView } from '../hooks/useInView';
+import { asset } from './site';
 
 // The heading runs eyebrow -> "Blog" -> "& Wissen." -> subline, the last of
 // which starts at 0.42s. The cards begin once that subline is most of the way
@@ -33,7 +34,7 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
       <img
-        src={post.image}
+        src={asset(post.image)}
         alt={post.imageAlt}
         loading="lazy"
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"

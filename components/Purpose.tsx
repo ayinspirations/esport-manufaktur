@@ -4,6 +4,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
+import { asset } from './site';
 
 /** The team photograph, shared with the "Über uns" page header. */
 const TEAM_IMAGE = '/Sportmanufaktur_team.jpg';
@@ -62,7 +63,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             Ab md faellt das alles weg -- dort traegt die Kachel das ganze
             Bild. */}
         <img
-          src={TEAM_IMAGE}
+          src={asset(TEAM_IMAGE)}
           alt="Das Team der GG Manufaktur"
           loading="lazy"
           decoding="async"

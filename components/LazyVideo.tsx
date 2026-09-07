@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { asset } from './site';
 
 interface LazyVideoProps {
   src: string;
@@ -146,8 +147,8 @@ export const LazyVideo: React.FC<LazyVideoProps> = ({
       {mounted && (
         <video
           ref={videoRef}
-          src={src}
-          poster={poster}
+          src={asset(src)}
+          poster={asset(poster)}
           muted
           loop
           playsInline

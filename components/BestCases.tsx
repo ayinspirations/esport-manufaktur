@@ -5,6 +5,7 @@ import { SECTION_PADDING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
 import { LazyVideo } from './LazyVideo';
+import { asset } from './site';
 
 // Same entry as the service tiles: a straight fade with a short rise, no 3D
 // tilt. Keeping both tile grids on one gesture is what makes the page read as
@@ -225,13 +226,13 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
       >
         {tile.video ? (
           <LazyVideo
-            src={tile.video}
-            poster={tile.poster}
+            src={asset(tile.video)!}
+            poster={asset(tile.poster)}
             className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
           />
         ) : (
           <img
-            src={tile.image}
+            src={asset(tile.image)}
             alt={tile.alt ?? ''}
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
             className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}

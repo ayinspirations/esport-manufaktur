@@ -6,6 +6,7 @@ import { getBlogPost } from './blogPosts';
 import type { BlogBlock } from './blogPosts';
 import { ExpandingCTA } from './ui/expanding-cta';
 import { SITE_URL, absoluteUrl } from './site';
+import { asset } from './site';
 
 interface BlogDetailProps {
   slug: string;
@@ -182,7 +183,7 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack, onOpenBook
           </p>
 
           <div className="relative w-full aspect-[16/9] rounded-shell overflow-hidden shadow-2xl mb-16">
-            <img src={post.image} alt={post.imageAlt} decoding="async" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" />
+            <img src={asset(post.image)} alt={post.imageAlt} decoding="async" fetchPriority="high" className="absolute inset-0 w-full h-full object-cover" />
           </div>
 
           <div className="space-y-14 text-slate-700 font-medium leading-relaxed text-base md:text-lg">
