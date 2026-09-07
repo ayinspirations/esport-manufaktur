@@ -51,6 +51,45 @@ interface BookingModalProps {
 const MEETINGS_SRC = 'https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js';
 
 /**
+ * Sucht in einer Nachricht aus dem Rahmen nach einer Hoehenangabe.
+ *
+ * Nur fuer den Fall gedacht, dass wir den Rahmen selbst stellen mussten. Die
+ * HubSpot-Seite meldet ihre Hoehe naemlich von sich aus -- ihr Skript ist nur
+ * der Empfaenger. Faellt das Skript aus, koennen wir dieselbe Meldung
+ * auswerten und den Rahmen ebenso mitwachsen lassen; dann scrollt der Kasten
+ * auszen, und die Knopfleiste am Ende des Inhalts ist erreichbar.
+ *
+ * Die Form der Nachricht ist nirgends zugesagt und hat sich ueber die Jahre
+ * geaendert, also wird sie nicht erraten, sondern durchsucht: irgendein Feld,
+ * dessen Name "height" enthaelt und dessen Wert eine plausible Pixelzahl ist.
+ * Verschachtelte Objekte und als Text verpackte JSON-Daten eingeschlossen.
+ */
+const readHeight = (data: unknown, depth = 0): number | null => {
+  if (depth > 4 || data == null) return null;
+  if (typeof data === 'string') {
+    if (!data.includes('height')) return null;
+    try {
+      return readHeight(JSON.parse(data), depth + 1);
+    } catch {
+      return null;
+    }
+  }
+  if (typeof data !== 'object') return null;
+
+  for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
+    if (/height/i.test(key)) {
+      const n = typeof value === 'number' ? value : Number(value);
+      if (Number.isFinite(n) && n > 200 && n < 20000) return Math.round(n);
+    }
+    if (value && (typeof value === 'object' || typeof value === 'string')) {
+      const found = readHeight(value, depth + 1);
+      if (found) return found;
+    }
+  }
+  return null;
+};
+
+/**
  * Haengt das Einbettungsskript neu ein und meldet, wenn es geladen ist.
  *
  * Neu eingehaengt, nicht wiederverwendet: das Skript durchsucht das Dokument
@@ -81,6 +120,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
   const [hasFrame, setHasFrame] = useState(false);
   /** Der selbst gestellte Rahmen hat geladen. */
   const [selfLoaded, setSelfLoaded] = useState(false);
+  /** Hoehe, die die Seite im Rahmen gemeldet hat -- nur im Ersatzfall genutzt. */
+  const [selfHeight, setSelfHeight] = useState<number | null>(null);
   const [slow, setSlow] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -92,6 +133,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       setMode('script');
       setHasFrame(false);
       setSelfLoaded(false);
+      setSelfHeight(null);
       setSlow(false);
       return;
     }
@@ -106,6 +148,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       } catch (e) {
         // Fremde Nachrichten -- nicht unsere Sache.
       }
+
+      const reported = readHeight(event.data);
+      if (reported) setSelfHeight(reported);
     };
     window.addEventListener('message', handleMessage);
 
@@ -233,7 +278,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                       src={`${BOOKING_URL}?embed=true`}
                       title="Termin bei der GG Manufaktur buchen"
                       onLoad={() => setSelfLoaded(true)}
-                      className="w-full h-full border-0 block"
+                      className="w-full border-0 block"
+                      style={selfHeight ? { height: `${selfHeight}px` } : { height: '100%' }}
                     />
                   )}
 
@@ -294,7 +340,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                 Telefonen vor den Knoepfen. Wer dort haengenbleibt, hat hier
                 den Ausweg genau an der Stelle, an der die Knoepfe fehlen.
                 Kommt das Skript durch, steht sie nicht im Weg. */}
-            {mode === 'self' && !isSuccess && (
+            {mode === 'self' && !selfHeight && !isSuccess && (
               <div className="shrink-0 border-t border-slate-200 bg-white px-4 py-3 flex items-center justify-between gap-3">
                 <p className="text-[11px] leading-snug text-slate-500 font-medium">
                   Kalender lässt sich nicht ganz anzeigen?
