@@ -11,6 +11,13 @@ interface ShowcaseCase {
   image?: string;
   /** Die Kachel in der Reihe. Faellt auf `image` zurueck. */
   card?: string;
+  /**
+   * Welcher Teil der Aufnahme stehen bleibt, wenn die Buehne quer und das
+   * Bild hochkant ist. Standard ist das obere Drittel; wo das Wesentliche
+   * tiefer sitzt, wird es hier genannt -- ein Wert, kein Nachschneiden der
+   * Datei.
+   */
+  focus?: string;
   imageAlt?: string;
 }
 
@@ -28,6 +35,9 @@ interface ShowcaseCase {
 // ---------------------------------------------------------------------------
 
 /** Kuerzt die Wiederholung: aus der id werden beide Bildpfade. */
+/** Standardausschnitt: oberes Drittel. Siehe `focus`. */
+const FOCUS = '50% 30%';
+
 const shot = (id: string, title: string, text: string, over?: Partial<ShowcaseCase>): ShowcaseCase => ({
   id,
   title,
@@ -54,7 +64,9 @@ const CASES: ShowcaseCase[] = [
   shot('hhn-gamingland-meetit', 'Hochschule Heilbronn – Gamingland × MeetIT', 'Gaming-nahes Giveaway zur Aktivierung von Studieninteressierten inklusive digitaler Teilnahmeplattform und Mario-Kart-Aktivierung vor Ort.'),
   shot('naspa-svww', 'Naspa × SV Wehen Wiesbaden', 'Sponsorship Activation zur Neukundenakquise bei jungen Zielgruppen durch einen 2vs2 EA SPORTS FC Cup im Umfeld des SV Wehen Wiesbaden.'),
   shot('stadt-muenchen-bfv', 'Stadt München × BFV', 'Champions-League-Aktivierung für die Stadt München und den BFV mit einem öffentlich zugänglichen EA SPORTS FC Turnier im Pineapple Park.'),
-  shot('erazer-expert', 'ERAZER × expert', 'Fortnite Gaming-Aktivierung für ERAZER und expert als Technikdienstleister im Auftrag der Lead-Agentur MYI.'),
+  // Tiefer angesetzt: im oberen Drittel steht nur die Hallendecke. Erst
+  // weiter unten sitzen die Leute an den Geraeten, um die es geht.
+  shot('erazer-expert', 'ERAZER × expert', 'Fortnite Gaming-Aktivierung für ERAZER und expert als Technikdienstleister im Auftrag der Lead-Agentur MYI.', { focus: '50% 72%' }),
   shot('sonax-rocket-league', 'SONAX × Rocket League', 'Rocket-League-Aktivierung für SONAX auf der Tuning World durch Bereitstellung, Aufbau und Installation des Gaming-Equipments im Auftrag von MYI.'),
   shot('ewe', 'EWE', 'Entwicklung einer ganzheitlichen Gaming-Strategie für den authentischen Markteintritt von EWE inklusive Positionierung, Zielgruppenanalyse und Aktivierungskonzept.'),
   shot('aok-fortuna-duesseldorf', 'AOK × Fortuna Düsseldorf', 'Regionale Markenaktivierung für die AOK durch Konzeption und Durchführung einer eSport-Stadtmeisterschaft mit Fortuna Düsseldorf.'),
@@ -215,7 +227,8 @@ export const CaseShowcase: React.FC = () => {
             <img
               src={current.image}
               alt={current.imageAlt ?? ''}
-              className="absolute inset-0 w-full h-full object-cover object-[center_30%]"
+              style={{ objectPosition: current.focus ?? FOCUS }}
+              className="absolute inset-0 w-full h-full object-cover"
             />
           ) : (
             <FallbackGround />
@@ -232,6 +245,23 @@ export const CaseShowcase: React.FC = () => {
         die obere Mitte, wo das Bild seine Sache zeigt, bleibt fast
         unberuehrt.
       */}
+      {/*
+        Der Fusz laeuft weich aus.
+
+        Unten stehen Text und Kachelreihe, und darunter lag bisher ein
+        scharfes Foto -- zwei Ebenen mit Details, die um dieselbe
+        Aufmerksamkeit streiten. Eine Unschaerfe, die nach unten hin einsetzt,
+        laeszt die Aufnahme in den Hintergrund uebergehen, statt an einer
+        Kante zu enden. Die obere Haelfte bleibt scharf, da ist das Bild fuer
+        sich.
+      */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-[46%] pointer-events-none backdrop-blur-lg"
+        style={{
+          maskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 45%)'
+        }}
+      />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
