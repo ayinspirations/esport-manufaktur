@@ -35,8 +35,17 @@ interface ShowcaseCase {
 // ---------------------------------------------------------------------------
 
 /** Kuerzt die Wiederholung: aus der id werden beide Bildpfade. */
-/** Standardausschnitt: oberes Drittel. Siehe `focus`. */
-const FOCUS = '50% 30%';
+/**
+ * Standardausschnitt.
+ *
+ * Lag zuerst bei 30 Prozent, also im oberen Drittel -- gedacht gegen den
+ * mittigen Schnitt, der oben die Koepfe abschneidet. In der Praxis zeigte er
+ * bei fast jeder Aufnahme die Decke: die Bilder sind mit dem Telefon aus der
+ * Hand gemacht, und was zaehlt, steht darauf ungefaehr auf halber Hoehe.
+ * Etwas unterhalb der Mitte trifft es fuer die meisten; Ausnahmen nennen
+ * ihren Wert selbst.
+ */
+const FOCUS = '50% 55%';
 
 const shot = (id: string, title: string, text: string, over?: Partial<ShowcaseCase>): ShowcaseCase => ({
   id,

@@ -25,9 +25,40 @@ export default {
         // And one step lighter, for small accent text on the *dark* ground --
         // the mirror of ink-accent-deep. Same hue throughout.
         'ink-accent-soft': '#5fd6cf',
+        // ---------------------------------------------------------------
+        // Ein Gruen, nicht zwei
+        // ---------------------------------------------------------------
+        // Die Seite trug zwei Gruentoene nebeneinander: das Tuerkis der
+        // Ueberschriften (#0e958e, das "level up") und Tailwinds Emerald,
+        // ein deutlich gelberes Gruen, das ueber die Voreinstellung in jeden
+        // Knopf, jedes Symbol und jeden Zeigezustand gelaufen ist. Nebenein-
+        // ander sehen die beiden nicht nach zwei Abstufungen aus, sondern
+        // nach einem Fehler.
+        //
+        // Statt in neunundzwanzig Dateien Klassen zu tauschen, wird die
+        // Leiter selbst ersetzt: `emerald` ist ab hier dieselbe Farbe wie
+        // ink-accent, in hellere und dunklere Stufen gefaechert. Jedes
+        // bestehende `emerald-400`, `emerald-500`, `shadow-emerald-500/20`
+        // zieht damit von selbst mit -- und ein kuenftiges auch.
+        //
+        // Die Ankerstufen sind die, die es schon gab: 300 ist
+        // ink-accent-soft, 500 ist ink-accent, 600 ist ink-accent-deep.
+        emerald: {
+          50: '#eafaf8',
+          100: '#cdf3f0',
+          200: '#9ee7e2',
+          300: '#5fd6cf',
+          400: '#22bdb5',
+          500: '#0e958e',
+          600: '#0a6f6a',
+          700: '#0b5854',
+          800: '#0d4744',
+          900: '#103b39',
+          950: '#032222'
+        },
         // Brand accents
-        brand: '#10b981',       // emerald 500
-        'brand-bright': '#34d399', // emerald 400 -- primary CTA
+        brand: '#0e958e',
+        'brand-bright': '#22bdb5',
         teal: '#2dd4bf',        // headline gradient start
         lime: '#84cc16',        // headline gradient end
         petrol: '#00818d',      // hero ambient glow
