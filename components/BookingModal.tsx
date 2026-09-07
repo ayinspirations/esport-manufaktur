@@ -286,6 +286,29 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                 </motion.div>
               )}
             </div>
+
+            {/* Die Notleiste.
+                Sie erscheint nur, wenn HubSpots Skript nicht durchkam und wir
+                den Rahmen selbst stellen mussten -- dann fuehrt die Seite
+                darin ihren eigenen Bildlauf, und der endet auf manchen
+                Telefonen vor den Knoepfen. Wer dort haengenbleibt, hat hier
+                den Ausweg genau an der Stelle, an der die Knoepfe fehlen.
+                Kommt das Skript durch, steht sie nicht im Weg. */}
+            {mode === 'self' && !isSuccess && (
+              <div className="shrink-0 border-t border-slate-200 bg-white px-4 py-3 flex items-center justify-between gap-3">
+                <p className="text-[11px] leading-snug text-slate-500 font-medium">
+                  Kalender lässt sich nicht ganz anzeigen?
+                </p>
+                <a
+                  href={BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 px-4 py-2.5 rounded-full bg-[#0b0f2a] hover:bg-[#0e958e] text-white text-[11px] font-black uppercase tracking-[0.15em] transition-colors"
+                >
+                  Im neuen Tab öffnen
+                </a>
+              </div>
+            )}
           </motion.div>
         </div>
       )}
