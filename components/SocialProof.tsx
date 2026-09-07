@@ -19,12 +19,10 @@ const logos = [
   { name: 'VfB Stuttgart', url: '/logos/VfB-Stuttgart-logo-2014-500x281.png' },
   { name: 'Techniker Krankenkasse', url: '/logos/Techniker_Krankenkasse_2016_logo.svg.png' },
   { name: '1. FC Köln', url: '/logos/1-fc-koln-logo-png_seeklogo-505047.png' },
-  { name: 'Sparkasse', url: '/logos/Sparkasse.svg.png', link: 'https://www.sparkasse.de' },
   { name: 'Indeed', url: '/logos/indeed-logo.png', link: 'https://www.indeed.com' },
   { name: 'Bayerischer Fussballverband', url: '/logos/Bayerischer_Fussballverband.svg.png', link: 'https://www.bfv.de' },
   { name: 'Rewe', url: '/logos/a2dec73e456eae1312e702710b3cb5c5.jpg' },
   { name: 'RB Leipzig', url: '/logos/RB-Leipzig-Logo-500x281.png' },
-  { name: 'Eintracht Frankfurt', url: '/logos/Eintracht-Frankfurt-logo-500x325.png' },
   { name: 'VfL Bochum', url: '/logos/VfL_Bochum_logo.svg.png' },
   { name: 'OneFootball', url: '/logos/onefootball-logo-png_seeklogo-458889.png' },
   { name: 'Betano', url: '/logos/Betano-Symbol-500x281.png' },
@@ -32,12 +30,14 @@ const logos = [
   { name: 'Tailormade', url: '/logos/Tailormade.png' },
   { name: 'B2Sports', url: '/logos/B2Sports_Logo_digital_hor_green-e1607446064766.webp' },
   { name: 'Naspa', url: '/logos/naspa-logo-apriori.png' },
-  { name: 'Mingle', url: '/logos/mingle.png' },
   { name: 'Logo HHN', url: '/logos/Logo_HHN.png' },
   { name: 'Nivea', url: '/logos/nivea-men-logo-png_seeklogo-323961.png', blend: true, link: 'https://www.nivea.de' },
   { name: 'ITCS', url: '/logos/ITCS_MESSE_LOGO_SCHWARZ-WEISS-RGBR.png' },
   { name: 'Schalke 04', url: '/logos/sc3377fe86-schalke-04-logo-fc-schalke-04-liblogo.png', blend: true },
-  { name: 'Holstein Kiel', url: '/logos/kieler-sv-holstein-logo-png_seeklogo-295846.png' }
+  { name: 'Holstein Kiel', url: '/logos/kieler-sv-holstein-logo-png_seeklogo-295846.png' },
+  { name: 'Eintracht Frankfurt', url: '/logos/Eintracht-Frankfurt-logo-500x325.png' },
+  { name: 'Mingle', url: '/logos/mingle.png' },
+  { name: 'Sparkasse', url: '/logos/Sparkasse.svg.png', link: 'https://www.sparkasse.de' }
 ];
 
 interface SocialProofProps {
