@@ -143,20 +143,6 @@ export const ReweDetail: React.FC<ReweDetailProps> = () => {
               ))}
             </div>
 
-            <div className="pt-12 flex justify-center">
-              <a
-                href="https://www.fc.de"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:scale-105 transition-transform"
-              >
-                <img
-                  src="/logos/1-fc-koln-logo-png_seeklogo-505047.png"
-                  alt="1. FC Köln Logo"
-                  className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
           </div>
 
           {/* Projekt-Steckbrief */}

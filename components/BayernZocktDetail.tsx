@@ -140,20 +140,6 @@ export const BayernZocktDetail: React.FC<BayernZocktDetailProps> = () => {
               ))}
             </div>
 
-            <div className="pt-12 flex justify-center">
-              <a
-                href="https://www.bfv.de"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:scale-105 transition-transform"
-              >
-                <img
-                  src="/logos/Bayerischer_Fussballverband.svg.png"
-                  alt="Bayerischer Fußball-Verband Logo"
-                  className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
           </div>
 
           {/* Projekt-Steckbrief */}

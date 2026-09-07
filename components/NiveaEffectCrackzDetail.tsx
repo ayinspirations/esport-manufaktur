@@ -18,13 +18,6 @@ const images = [
   '/images/consumenta/slide-4.jpg',
 ];
 
-// Die Logos, die im Projekt liegen. CRACKZ hat keines -- die Zeile nennt die
-// Marke deshalb im Text und nicht als Bild.
-const LOGOS = [
-  { src: '/logos/nivea-men-logo-png_seeklogo-323961.png', alt: 'NIVEA MEN Logo', href: 'https://www.nivea.de/nivea-men' },
-  { src: '/logos/effect-energy-drink-logo-png-transparent.png', alt: 'EFFECT Energy Logo', href: 'https://www.effect-energy.com' }
-];
-
 // ---------------------------------------------------------------------------
 // Die Inhalte dieses Cases
 // ---------------------------------------------------------------------------
@@ -172,20 +165,6 @@ export const NiveaEffectCrackzDetail: React.FC<NiveaEffectCrackzDetailProps> = (
                   <h3 className="text-xl font-black uppercase tracking-tighter mb-3 leading-tight">{item.title}</h3>
                   <p className="text-slate-600 font-medium leading-relaxed text-sm">{item.text}</p>
                 </Reveal>
-              ))}
-            </div>
-
-            <div className="pt-12 flex flex-wrap items-center justify-center gap-10 md:gap-16">
-              {LOGOS.map((logo) => (
-                <a
-                  key={logo.src}
-                  href={logo.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block hover:scale-105 transition-transform"
-                >
-                  <img src={logo.src} alt={logo.alt} className="h-14 md:h-20 w-auto opacity-100 transition-opacity" />
-                </a>
               ))}
             </div>
           </div>

@@ -139,20 +139,6 @@ export const CaseDetail: React.FC<CaseDetailProps> = () => {
               ))}
             </div>
 
-            <div className="pt-12 flex justify-center">
-              <a
-                href="https://www.hagebau-bolay.de"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:scale-105 transition-transform"
-              >
-                <img
-                  src="/logos/hagebau-logo.png"
-                  alt="hagebau Bolay Logo"
-                  className="h-16 md:h-24 w-auto opacity-100 transition-opacity"
-                />
-              </a>
-            </div>
           </div>
 
           {/* Projekt-Steckbrief */}
