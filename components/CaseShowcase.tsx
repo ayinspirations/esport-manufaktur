@@ -218,35 +218,38 @@ export const CaseShowcase: React.FC = () => {
       id="case-showcase"
       data-nav-ground="dark"
       aria-label="Best Cases im Überblick"
-      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex flex-col justify-end"
+      className="relative w-full min-h-[100dvh] overflow-hidden bg-[#020617] flex flex-col"
     >
-      {/* ---- Backdrop ---- */}
-      {/* Default mode, not "wait" or "popLayout": the outgoing and incoming
-          backdrops are both absolutely positioned and stacked, so letting them
-          overlap for a moment is exactly what produces the crossfade. "wait"
-          would blank the stage between the two. */}
+      {/* ---- Hintergrund: dasselbe Bild, unscharf ---- */}
+      {/*
+        Die Buehne stand bisher formatfuellend im Bild, und das ging nicht auf:
+        die meisten Aufnahmen sind hochkant (1200x1600, teils 900x1600), die
+        Buehne ist quer. `object-cover` schnitt daraus einen senkrechten
+        Streifen aus der Mitte -- vom Aufbau, vom Publikum, vom Raum blieb
+        nichts uebrig -- und rechnete ein 900 Pixel breites Bild auf 1440
+        hoch, was den Rest an Schaerfe kostete.
+
+        Jetzt steht die Aufnahme vollstaendig in ihrem eigenen Format, und was
+        formatfuellend laeuft, ist eine unscharfe, abgedunkelte Kopie
+        derselben Datei. Sie gibt der Flaeche Farbe und Tiefe, ohne dass
+        irgendetwas beschnitten wird -- und kostet nichts, weil es dieselbe
+        Datei ist, die daneben ohnehin geladen wird.
+      */}
       <AnimatePresence initial={false}>
         <motion.div
           key={current.id}
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ opacity: { duration: 0.9 }, scale: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }}
+          transition={{ duration: 0.9 }}
           className="absolute inset-0"
+          aria-hidden="true"
         >
           {current.image ? (
-            // Auf dem Telefon das ganze Bild, auf dem Rechner der Ausschnitt.
-            //
-            // Die Aufnahmen sind quer, das Telefon ist hoch: formatfuellend
-            // bleibt von einem 3:2-Bild ein senkrechter Streifen aus seiner
-            // Mitte uebrig -- vom Aufbau, vom Publikum, vom Raum ist nichts
-            // mehr zu sehen. `contain` zeigt es vollstaendig und so grosz, wie
-            // die Bildschirmbreite es zulaeszt. Auf breiten Schirmen passt das
-            // Seitenverhaeltnis ohnehin, dort bleibt es formatfuellend.
             <img
               src={current.image}
-              alt={current.imageAlt ?? ''}
-              className="absolute inset-0 w-full h-full object-contain md:object-cover"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-30"
             />
           ) : (
             <FallbackGround />
@@ -254,55 +257,72 @@ export const CaseShowcase: React.FC = () => {
         </motion.div>
       </AnimatePresence>
 
+      {/* Nur so viel Abdunkelung, wie die Schrift braucht. */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.88) 22%, rgba(2,6,23,0.55) 60%, rgba(2,6,23,0.6) 100%)'
+        }}
+      />
+
+      {/* ---- Aufnahme und Text ---- */}
       {/*
-        Legibility scrim, weighted rather than even.
-
-        A flat wash across the whole frame took the same amount out of the
-        picture everywhere, so the photograph never got to be bright anywhere
-        and the whole stage read as hazy. This keeps the upper middle of the
-        image close to full strength and spends the darkness where it is
-        actually needed: the foot, under the copy and the rail, a touch at the
-        very top for the navigation, and a soft fall from the left where the
-        headline runs.
+        Nebeneinander ab grossen Schirmen, untereinander darunter. Der Text
+        steht damit nie im Bild -- das war der zweite Fehler der alten
+        Fassung: eine Ueberschrift in 68 Pixeln quer ueber der Aufnahme
+        verdeckte genau das, was sie ankuendigte.
       */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.94) 20%, rgba(2,6,23,0.5) 48%, rgba(2,6,23,0.08) 74%, rgba(2,6,23,0.45) 100%)'
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'linear-gradient(to right, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.3) 36%, rgba(2,6,23,0) 66%)'
-        }}
-      />
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pt-28 md:pt-32 pb-6 grow flex items-center">
+        <div className="w-full grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.figure
+              key={`shot-${current.id}`}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              // Auf dem Telefon randlos: die sechs Pixel Rand kosten dort acht
+              // Prozent Bildbreite, und das Bild ist ohnehin das Kleinste, was
+              // die Buehne zu bieten hat.
+              className="lg:col-span-7 lg:order-2 flex justify-center -mx-6 sm:mx-0"
+            >
+              {current.image ? (
+                <img
+                  src={current.image}
+                  alt={current.imageAlt ?? ''}
+                  className="max-h-[52vh] sm:max-h-[50vh] lg:max-h-[58vh] w-auto max-w-full rounded-none sm:rounded-shell object-contain shadow-[0_40px_90px_-30px_rgba(0,0,0,0.9)]"
+                />
+              ) : (
+                <div className="relative w-full aspect-[16/10] rounded-shell overflow-hidden">
+                  <FallbackGround />
+                </div>
+              )}
+            </motion.figure>
+          </AnimatePresence>
 
-      {/* ---- Copy for the active case ---- */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pt-32 pb-8 md:pb-10">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={current.id}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="max-w-xl"
-          >
-            <h3 className="text-white text-[clamp(34px,5.5vw,68px)] font-black leading-[0.92] tracking-tighter uppercase mb-5 drop-shadow-2xl">
-              {current.title}
-            </h3>
-            <p className="text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-lg">
-              {current.text}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={current.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="lg:col-span-5 lg:order-1"
+            >
+              <h3 className="text-white text-[clamp(26px,3.6vw,52px)] font-black leading-[0.95] tracking-tighter uppercase mb-4 text-balance">
+                {current.title}
+              </h3>
+              <p className="text-white/70 text-sm md:text-base lg:text-lg font-medium leading-relaxed max-w-lg">
+                {current.text}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* ---- Card rail ---- */}
-      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pb-4 md:pb-8">
+      <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-14 pb-4 md:pb-6">
         {/*
           The vertical padding is inside the scroller, not around it.
 
@@ -315,7 +335,7 @@ export const CaseShowcase: React.FC = () => {
         */}
         <div
           ref={railRef}
-          className="case-rail flex items-end gap-3 md:gap-5 overflow-x-auto overscroll-x-contain pt-12 pb-12 -mx-6 px-6 md:mx-0 md:px-0"
+          className="case-rail flex items-end gap-3 md:gap-4 overflow-x-auto overscroll-x-contain pt-8 pb-8 -mx-6 px-6 md:mx-0 md:px-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {CASES.map((c, i) => {
@@ -327,9 +347,9 @@ export const CaseShowcase: React.FC = () => {
                 onClick={() => setActive(i)}
                 aria-current={isActive ? 'true' : undefined}
                 aria-label={`${c.title} anzeigen`}
-                className={`group relative shrink-0 w-[136px] sm:w-[158px] md:w-[184px] aspect-[3/4] rounded-[22px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                className={`group relative shrink-0 w-[92px] sm:w-[110px] md:w-[128px] aspect-[3/4] rounded-[22px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
-                    ? '-translate-y-3 scale-[1.05] shadow-[0_38px_70px_-24px_rgba(0,0,0,0.9)]'
+                    ? '-translate-y-2 scale-[1.05] shadow-[0_28px_54px_-20px_rgba(0,0,0,0.9)]'
                     : 'shadow-[0_18px_40px_-22px_rgba(0,0,0,0.8)] hover:-translate-y-1.5 hover:shadow-[0_28px_56px_-24px_rgba(0,0,0,0.85)]'
                 }`}
               >
@@ -363,7 +383,7 @@ export const CaseShowcase: React.FC = () => {
                 <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-black/90 via-black/45 to-transparent" />
 
                 <span
-                  className={`absolute inset-x-0 bottom-0 p-3 md:p-3.5 text-left text-[11px] md:text-xs font-black uppercase tracking-tight leading-tight transition-colors duration-500 ${
+                  className={`absolute inset-x-0 bottom-0 p-2 md:p-2.5 text-left text-[9px] md:text-[10px] font-black uppercase tracking-tight leading-tight transition-colors duration-500 ${
                     isActive ? 'text-white' : 'text-white/75'
                   }`}
                 >
