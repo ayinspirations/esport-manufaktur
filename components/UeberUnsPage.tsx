@@ -135,8 +135,8 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
   const { ref: zoomRef, zoom } = useScrollZoom();
 
   return (
-  <div ref={zoomRef} className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
-    <motion.div className="absolute inset-0" style={zoom}>
+  <div className="group relative aspect-[4/5] w-full overflow-hidden rounded-card ring-1 ring-[#0b0f2a]/10">
+    <div ref={zoomRef} className="absolute inset-0" style={zoom}>
     {showImage ? (
       <img
         src={asset(member.image)}
@@ -157,7 +157,7 @@ const MemberTile: React.FC<{ member: Member; index: number }> = ({ member, index
         {member.name.charAt(0)}
       </div>
     )}
-    </motion.div>
+    </div>
 
     {/* Der Schleier traegt die Schrift. Auf dem Telefon steht er, am Desktop
         kommt er mit dem Zeiger. */}

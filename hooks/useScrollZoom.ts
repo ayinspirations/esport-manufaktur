@@ -1,34 +1,33 @@
 import { useEffect, useRef, useState } from 'react';
-import { useScroll, useTransform, type MotionValue } from 'framer-motion';
-import type { RefObject } from 'react';
+import type { CSSProperties, RefObject } from 'react';
+import { EASE_REVEAL_CSS } from '../components/motion';
 
 // ---------------------------------------------------------------------------
 // Das langsame Heranfahren auf dem Telefon
 // ---------------------------------------------------------------------------
 // Auf dem Desktop lebt jede Kachel von einer Bewegung, die es auf einem
-// Telefon nicht gibt: `group-hover:scale-105`. Ein Finger schwebt nicht, also
-// liegen die Bilder dort vollkommen still, waehrend die Seite an ihnen
-// vorbeizieht.
+// Telefon nicht gibt: `group-hover:scale`. Ein Finger schwebt nicht, also
+// lagen die Bilder dort vollkommen still, waehrend die Seite an ihnen
+// vorbeizog. Diesen Platz nimmt das Heranfahren ein.
 //
-// Diesen Platz nimmt jetzt der Bildlauf selbst ein. Waehrend eine Kachel durch
-// den Schirm wandert, waechst ihr Bild von 1,00 auf 1,08 -- so wenig, dass man
-// es nicht als Effekt bemerkt, und genug, dass die Flaeche lebt. Es ist
-// dieselbe Geste wie beim Zeigen mit der Maus, nur an den Bildlauf gehaengt
-// statt an den Zeiger.
+// Die erste Fassung hing die Skalierung an den Bildlauf: jede Kachel las ihre
+// Position, und daraus wurde ein Wert zwischen 1,00 und 1,08. Das sieht auf
+// dem Schreibtisch gut aus und ist auf einem Telefon der falsche Handel.
+// Fuenfundzwanzig Kacheln messen dabei in jedem Bild ihre Lage -- ein
+// erzwungenes Layout je Kachel und Bild --, und iOS liefert waehrend des
+// Nachschwingens ohnehin nur unregelmaeszig Bildlauf-Ereignisse. Das Ergebnis
+// war genau das gemeldete Zittern.
 //
-// Zwei Bedingungen:
+// Jetzt entscheidet ein IntersectionObserver einmal, ob die Kachel im Bild
+// ist, und der Rest ist eine CSS-Transition: der Browser rechnet sie im
+// Compositor, ohne dass waehrend des Bildlaufs eine Zeile JavaScript laeuft.
+// Man sieht praktisch dasselbe -- das Bild waechst langsam, waehrend die
+// Kachel durchs Bild wandert --, es kostet nur nichts mehr.
 //
-//   Nur auf schmalen Schirmen. Auf dem Desktop wuerde die Skalierung aus dem
-//   Bildlauf mit der aus dem Hover kollidieren -- beides sind Transformationen
-//   auf demselben Element, und die zuletzt gesetzte gewinnt. Dort bleibt es
-//   beim Zeigen.
-//
-//   Nur, wenn Bewegung erwuenscht ist. Wer `prefers-reduced-motion` gesetzt
-//   hat, bekommt ein stehendes Bild.
-//
-// Die Kosten sind eine `transform`, also Sache der Grafikkarte: kein Layout,
-// kein Neuzeichnen. Framer haengt alle Kacheln an denselben Bildlauf-Zuhoerer,
-// es kommt also nicht einer je Kachel dazu.
+// Zwei Bedingungen bleiben: nur auf schmalen Schirmen (darueber gehoert die
+// Skalierung dem Zeiger, und zwei Transformationen auf einem Element
+// ueberschreiben einander), und nur, wenn `prefers-reduced-motion` nicht
+// gesetzt ist.
 // ---------------------------------------------------------------------------
 
 /** Schmaler Schirm und Bewegung erwuenscht -- beides zur Laufzeit beobachtet. */
@@ -52,23 +51,45 @@ const usePhoneMotion = () => {
 };
 
 /**
- * Gibt die Skalierung fuer das Medium einer Kachel zurueck -- oder nichts,
- * wenn hier nicht herangefahren werden soll. Der Rueckgabewert geht direkt in
- * `style` eines `motion`-Elements.
+ * Gibt Ref und Stil fuer die Huelle um das Medium einer Kachel zurueck.
+ * Auszerhalb des Telefons steht im Stil nichts -- dort bleibt es beim Hover.
  */
-export function useScrollZoom(from = 1, to = 1.08) {
+export function useScrollZoom(to = 1.06) {
   const ref = useRef<HTMLDivElement>(null);
   const active = usePhoneMotion();
+  const [near, setNear] = useState(false);
 
-  // "start end" bis "end start": von dem Moment, in dem die Oberkante der
-  // Kachel die Unterkante des Schirms erreicht, bis ihre Unterkante oben
-  // hinauslaeuft. Das ist der ganze Weg, den sie sichtbar zuruecklegt.
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-  const scale = useTransform(scrollYProgress, [0, 1], [from, to]);
+  useEffect(() => {
+    const el = ref.current;
+    if (!active || !el) return;
 
-  return {
-    ref: ref as RefObject<HTMLDivElement>,
-    /** In `style` geben; ausserhalb des Telefons steht hier nichts. */
-    zoom: (active ? { scale } : undefined) as { scale: MotionValue<number> } | undefined
-  };
+    // Ein einziger Rueckruf je Kachel, wenn sie den Schirm betritt -- und
+    // keiner mehr danach. Der Rand von 15 Prozent laeszt die Bewegung
+    // beginnen, waehrend die Kachel noch unter der Kante steht, sodass man
+    // beim Hochscrollen in eine bereits laufende Bewegung hineinfaehrt statt
+    // in einen Start.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setNear(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0, rootMargin: '-15% 0px -15% 0px' }
+    );
+
+    io.observe(el);
+    return () => io.disconnect();
+  }, [active]);
+
+  const style: CSSProperties | undefined = active
+    ? {
+        transform: `scale(${near ? to : 1})`,
+        // Lang und weich: die Bewegung soll unter dem Daumen liegen, nicht vor
+        // ihm. Nur `transform` -- kein Layout, kein Neuzeichnen.
+        transition: `transform 2200ms ${EASE_REVEAL_CSS}`
+      }
+    : undefined;
+
+  return { ref: ref as RefObject<HTMLDivElement>, zoom: style };
 }

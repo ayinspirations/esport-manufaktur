@@ -216,7 +216,6 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
 
   return (
   <div
-    ref={ref}
     className="w-full aspect-[var(--ar-m)] lg:w-auto lg:basis-0 lg:aspect-[var(--ar)]"
     style={{ '--ar': `${tile.ar}`, '--ar-m': `${tile.arMobile ?? tile.ar}`, flexGrow: tile.ar } as React.CSSProperties}
   >
@@ -236,7 +235,7 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
         {/* Die Huelle traegt das Heranfahren, nicht das Medium selbst: das
             Medium haelt schon die Hover-Skalierung, und zwei Transformationen
             auf einem Element ueberschreiben einander. */}
-        <motion.div className="absolute inset-0" style={zoom}>
+        <div ref={ref} className="absolute inset-0" style={zoom}>
           {tile.video ? (
             <LazyVideo
               src={asset(tile.video)!}
@@ -251,7 +250,7 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
               className={`absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none ${tile.media ?? ''}`}
             />
           )}
-        </motion.div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
           <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
