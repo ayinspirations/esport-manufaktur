@@ -401,6 +401,10 @@ export const CaseShowcase: React.FC = () => {
                 onClick={() => setActive(i)}
                 aria-current={isActive ? 'true' : undefined}
                 aria-label={`${c.title} anzeigen`}
+                data-track="project_click"
+                data-track-project={c.id}
+                data-track-label={c.id}
+                data-track-location="referenzen"
                 className={`group relative shrink-0 w-[92px] sm:w-[110px] md:w-[128px] aspect-[3/4] rounded-[22px] overflow-hidden transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                   isActive
                     ? '-translate-y-2 scale-[1.05] shadow-[0_28px_54px_-20px_rgba(0,0,0,0.9)]'

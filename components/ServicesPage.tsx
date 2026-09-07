@@ -74,12 +74,18 @@ interface LayoutProps {
 
 const FilterPill: React.FC<{
   label: string;
+  /** Nur fuer die Messung -- welche Leistung hier gewaehlt wird. */
+  slug: string;
   active: boolean;
   onSelect: () => void;
-}> = ({ label, active, onSelect }) => (
+}> = ({ label, slug, active, onSelect }) => (
   <button
     data-pill
     onClick={onSelect}
+    data-track="service_click"
+    data-track-service={slug}
+    data-track-label={slug}
+    data-track-destination={`/services/${slug}`}
     // aria-current rather than aria-pressed: these behave as a set of related
     // links through the same page, and only one is ever the current one.
     aria-current={active ? 'true' : undefined}
@@ -122,6 +128,7 @@ const PillsLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel }
               <FilterPill
                 key={item.slug}
                 label={item.title}
+                slug={item.slug}
                 active={item.slug === active}
                 onSelect={() => select(item.slug)}
               />
@@ -141,11 +148,13 @@ const PillsLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, panel }
 
 const SidebarItem: React.FC<{
   label: string;
+  /** Nur fuer die Messung -- welche Leistung hier gewaehlt wird. */
+  slug: string;
   active: boolean;
   onSelect: () => void;
   /** 'ink' steht auf der hellen Flaeche, 'light' auf dem dunklen Hero-Grund. */
   tone?: 'ink' | 'light';
-}> = ({ label, active, onSelect, tone = 'ink' }) => {
+}> = ({ label, slug, active, onSelect, tone = 'ink' }) => {
   const ink = active
     ? 'bg-[#0b0f2a] text-white'
     : 'text-[#0b0f2a]/65 hover:bg-white/60 hover:text-[#0b0f2a]';
@@ -157,6 +166,10 @@ const SidebarItem: React.FC<{
     <button
       onClick={onSelect}
       aria-current={active ? 'true' : undefined}
+      data-track="service_click"
+      data-track-service={slug}
+      data-track-label={slug}
+      data-track-destination={`/services/${slug}`}
       className={`w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
         tone === 'light' ? light : ink
       }`}
@@ -271,6 +284,7 @@ const MobileServiceMenu: React.FC<{
                       <SidebarItem
                         key={item.slug}
                         label={item.title}
+                        slug={item.slug}
                         active={item.slug === active}
                         tone="light"
                         onSelect={() => {
@@ -333,6 +347,7 @@ const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, menuR
                   <SidebarItem
                     key={item.slug}
                     label={item.title}
+                    slug={item.slug}
                     active={item.slug === active}
                     onSelect={() => select(item.slug)}
                   />

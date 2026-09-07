@@ -18,6 +18,7 @@ import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
 import { BOOKING_URL } from './components/site';
+import { startAnalytics } from './components/analytics';
 
 // ---------------------------------------------------------------------------
 // Route splitting
@@ -335,6 +336,11 @@ export default function App() {
     setHasOpenedContact(true);
     setIsContactOpen(true);
   };
+
+  // Reichweitenmessung: Skript (nach Einwilligung) und Klickerkennung, einmal
+  // fuer die ganze Anwendung. Seitenaufrufe zaehlt Umami selbst, auch die
+  // Wechsel ueber history.pushState -- deshalb steht hier keiner.
+  useEffect(() => startAnalytics(), []);
 
   useEffect(() => {
     // Der Browser stellt beim Zurueckgehen die alte Scrollposition wieder her

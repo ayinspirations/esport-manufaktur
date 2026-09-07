@@ -201,6 +201,10 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
               onPointerMove={handleCtaMove}
               onPointerLeave={handleCtaLeave}
               onClick={() => onOpenBooking?.()}
+              data-track="cta_click"
+              data-track-label="termin_vereinbaren"
+              data-track-location="hero"
+              data-track-destination="hubspot_terminseite"
               className="hero-cta-btn group relative overflow-hidden bg-emerald-400 text-slate-900 px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base shadow-[0_0_50px_rgba(52,211,153,0.3)] md:shadow-[0_0_60px_rgba(52,211,153,0.4)] lg:shadow-[0_0_80px_rgba(52,211,153,0.45)] tracking-tighter"
             >
               <span
@@ -213,6 +217,10 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
             </button>
             <button
               onClick={() => scrollToSection?.('competencies')}
+              data-track="cta_click"
+              data-track-label="leistungen_entdecken"
+              data-track-location="hero"
+              data-track-destination="#competencies"
               className="hero-cta-link group inline-flex items-center gap-2 text-white/90 hover:text-white font-bold text-xs sm:text-base transition-colors duration-500 tracking-tighter"
             >
               Leistungen entdecken

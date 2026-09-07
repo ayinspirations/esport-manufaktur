@@ -2,8 +2,9 @@
 // Cookie consent store
 // ---------------------------------------------------------------------------
 // The previous implementation stored a single "cookies-accepted" flag, which
-// cannot express what the privacy page actually declares (Google Analytics 4,
-// HubSpot Analytics). This keeps a per-category record instead, so a visitor
+// cannot express what the privacy page actually declares (Umami fuer die
+// Reichweitenmessung, HubSpot fuer Formular und Terminbuchung). This keeps a
+// per-category record instead, so a visitor
 // can accept statistics without accepting marketing, and so the rest of the
 // app can ask what it is allowed to load.
 //
@@ -94,7 +95,7 @@ export const CATEGORIES: {
     id: 'statistics',
     label: 'Statistik',
     description:
-      'Hilft uns zu verstehen, wie die Seite genutzt wird – anonymisierte Reichweitenmessung, z. B. Google Analytics.'
+      'Hilft uns zu verstehen, wie die Seite genutzt wird – cookiefreie, anonymisierte Reichweitenmessung mit Umami.'
   },
   {
     id: 'marketing',

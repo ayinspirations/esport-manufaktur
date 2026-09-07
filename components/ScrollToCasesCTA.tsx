@@ -30,6 +30,10 @@ export const ScrollToCasesCTA: React.FC<ScrollToCasesCTAProps> = ({ onScroll }) 
             umspringt als die Hand, wie ein Flackern wirkt. */}
         <motion.button
           onClick={() => onScroll?.('best-cases')}
+          data-track="cta_click"
+          data-track-label="best_cases_ansehen"
+          data-track-location="social_proof"
+          data-track-destination="#best-cases"
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.98 }}
           transition={{ duration: 0.2, ease: EASE_REVEAL }}
