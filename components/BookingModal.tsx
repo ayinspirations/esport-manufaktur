@@ -8,41 +8,61 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
+const BOOKING_URL = 'https://esport-manufaktur.com/meetings/gianluca-crepaldi/kennenlernen';
+
 export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [isSuccess, setIsSuccess] = useState(false);
+  const [loadState, setLoadState] = useState<'loading' | 'ready' | 'slow'>('loading');
 
   useScrollLock(isOpen);
 
+  // ---------------------------------------------------------------------------
+  // Der Kalender kommt jetzt ohne HubSpots Einbettungsskript
+  // ---------------------------------------------------------------------------
+  // Hier wurde bei jedem Oeffnen MeetingsEmbedCode.js nachgeladen und beim
+  // Schlieszen wieder aus dem Dokument genommen. Das Skript sucht sich beim
+  // Start die Behaelter mit `data-src` und haengt Iframes hinein -- ein
+  // Vorgang, der genau einmal je Seitenaufruf zuverlaessig laeuft. Beim
+  // zweiten Oeffnen, bei langsamer Verbindung oder wenn ein Blocker die Datei
+  // abfaengt, blieb der Kasten leer. Genau das war "laedt oft nicht".
+  //
+  // Dabei ist die Einbettung nichts als ein Iframe auf dieselbe Adresse. Den
+  // stellen wir selbst, und damit haengt das Buchen an nichts mehr auszer der
+  // Seite von HubSpot: ein Klick, ein Iframe, fertig. Was das Skript sonst
+  // noch tut -- die Hoehe des Rahmens nachfuehren -- brauchen wir nicht, weil
+  // der Rahmen hier ohnehin die volle Hoehe des Fensters hat.
+  //
+  // Die Rueckmeldung nach der Buchung kommt weiterhin per postMessage aus dem
+  // Iframe; die schickt die HubSpot-Seite von sich aus, dafuer braucht es das
+  // Skript nicht.
   useEffect(() => {
-    if (isOpen) {
-      // Listen for message from HubSpot iframe to detect successful booking
-      const handleMessage = (event: MessageEvent) => {
-        // HubSpot postMessage events often contain form submission data
-        try {
-          if (event.data.meetingBooked || (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted')) {
-            setIsSuccess(true);
-          }
-        } catch (e) {
-          // Ignore errors from other messages
-        }
-      };
-      window.addEventListener('message', handleMessage);
-      
-      // Load HubSpot script
-      const script = document.createElement('script');
-      script.src = "https://static.hsappstatic.net/MeetingsEmbed/ex/MeetingsEmbedCode.js";
-      script.async = true;
-      document.body.appendChild(script);
-
-      return () => {
-        window.removeEventListener('message', handleMessage);
-        if (script.parentNode) {
-          document.body.removeChild(script);
-        }
-      };
-    } else {
+    if (!isOpen) {
       setIsSuccess(false);
+      setLoadState('loading');
+      return;
     }
+
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        if (event.data.meetingBooked || (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmitted')) {
+          setIsSuccess(true);
+        }
+      } catch (e) {
+        // Fremde Nachrichten -- nicht unsere Sache.
+      }
+    };
+    window.addEventListener('message', handleMessage);
+
+    // Kommt binnen zwoelf Sekunden nichts, bekommt der Besucher den Weg im
+    // neuen Tab angeboten, statt auf eine weisze Flaeche zu sehen.
+    const slow = window.setTimeout(() => {
+      setLoadState((s) => (s === 'loading' ? 'slow' : s));
+    }, 12000);
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+      window.clearTimeout(slow);
+    };
   }, [isOpen]);
 
   // Handle ESC key
@@ -70,7 +90,12 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-[800px] bg-white rounded-shell shadow-2xl overflow-hidden flex flex-col h-[92vh] md:h-[90vh]"
+            /* dvh statt vh: `vh` rechnet auf iPhones mit dem Fenster ohne
+               Browserleisten, das Fenster ist aber meist kleiner. Der Rahmen
+               ragte damit unter die Leisten, und was unten stand -- der Knopf
+               zum Buchen -- war nicht erreichbar. `dvh` folgt dem, was
+               wirklich zu sehen ist. */
+            className="relative w-full max-w-[800px] bg-white rounded-shell shadow-2xl overflow-hidden flex flex-col h-[92dvh] md:h-[90dvh]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 shrink-0 bg-white z-10">
@@ -91,15 +116,48 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
               </button>
             </div>
 
-            {/* Content Area */}
-            <div className="flex-1 overflow-y-auto relative bg-slate-50 min-h-0 overscroll-contain">
+            {/* Der Inhalt.
+                Genau ein Scrollbereich, und der liegt im Iframe: vorher war
+                der Kalender 1200 Pixel hoch in einem scrollenden Kasten, also
+                zwei ineinander liegende Bereiche. Auf einem Telefon nimmt
+                dann mal der eine, mal der andere die Wischgeste an, und man
+                kommt nicht dorthin, wo man hin will. Jetzt fuellt der Rahmen
+                die Flaeche und die Seite darin scrollt selbst. */}
+            <div className="flex-1 relative bg-slate-50 min-h-0 overflow-hidden">
               {!isSuccess ? (
-                <div className="w-full min-h-full flex flex-col p-2 md:p-0">
-                  <div 
-                    className="meetings-iframe-container w-full h-[1200px] md:h-full" 
-                    data-src="https://esport-manufaktur.com/meetings/gianluca-crepaldi/kennenlernen?embed=true"
-                  ></div>
-                </div>
+                <>
+                  <iframe
+                    key={String(isOpen)}
+                    src={`${BOOKING_URL}?embed=true`}
+                    title="Termin bei der GG Manufaktur buchen"
+                    onLoad={() => setLoadState('ready')}
+                    className="w-full h-full border-0"
+                  />
+                  {loadState !== 'ready' && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-slate-50 px-8 text-center">
+                      {loadState === 'loading' ? (
+                        <>
+                          <span className="w-8 h-8 rounded-full border-2 border-slate-300 border-t-[#0e958e]" style={{ animation: 'gg-spin 700ms linear infinite' }} />
+                          <p className="text-slate-500 font-bold uppercase tracking-widest text-[11px]">Kalender wird geladen</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-slate-600 font-medium max-w-xs leading-relaxed">
+                            Der Kalender braucht ungewöhnlich lange. Du kannst ihn direkt öffnen:
+                          </p>
+                          <a
+                            href={BOOKING_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-6 py-3 rounded-full bg-[#0b0f2a] hover:bg-[#0e958e] text-white text-xs font-black uppercase tracking-[0.2em] transition-colors"
+                          >
+                            Termin im neuen Tab buchen
+                          </a>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </>
               ) : (
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.9 }}

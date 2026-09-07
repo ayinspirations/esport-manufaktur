@@ -90,7 +90,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, sub
 
             {/* Form */}
             <div className="flex-1 overflow-y-auto min-h-0 overscroll-contain px-6 md:px-10 py-8 md:py-10">
-              <HubSpotForm />
+              <HubSpotForm eager />
             </div>
           </motion.div>
         </div>
