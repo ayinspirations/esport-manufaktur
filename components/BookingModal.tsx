@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { BOOKING_URL } from './site';
 import { X, Calendar, CheckCircle2, ExternalLink } from 'lucide-react';
 
 interface BookingModalProps {
@@ -8,7 +9,7 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-const BOOKING_URL = 'https://esport-manufaktur.com/meetings/gianluca-crepaldi/kennenlernen';
+
 
 // Hoehe fuer den Fall, dass die Seite im Rahmen nichts ueber ihre Laenge
 // sagt. Grosszuegig genug fuer den laengsten Schritt -- Formular, Gaeste,

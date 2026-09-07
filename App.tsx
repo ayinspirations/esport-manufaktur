@@ -17,6 +17,7 @@ import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
+import { BOOKING_URL } from './components/site';
 
 // ---------------------------------------------------------------------------
 // Route splitting
@@ -303,7 +304,36 @@ export default function App() {
   // Latches true on the first open; see the BookingModal mount below.
   const [hasOpenedBooking, setHasOpenedBooking] = useState(false);
 
+  // ---------------------------------------------------------------------------
+  // Termin buchen: auf dem Telefon ohne Umweg
+  // ---------------------------------------------------------------------------
+  // Der Kalender lag bisher auch auf dem Telefon in einem Fenster, und
+  // HubSpots eingebettete Ansicht kommt dort mit dem Bildlauf nicht zurecht:
+  // beim Formularschritt endet sie mitten im Datenschutztext, der Knopf zum
+  // Buchen darunter ist nicht erreichbar. Zwei Anlaeufe -- die Seite im
+  // Rahmen scrollen lassen, den Rahmen mit dem Inhalt wachsen lassen -- haben
+  // das nicht behoben, weil die Ursache innerhalb des Rahmens liegt und dort
+  // enden unsere Mittel.
+  //
+  // Also faellt auf Fingergeraeten der Rahmen weg. Der Knopf oeffnet die
+  // Terminseite direkt; dort hat sie das ganze Fenster, ihre normale Ansicht
+  // und Safaris eigenen Bildlauf. Weniger elegant als ein Fenster auf der
+  // Seite, aber es funktioniert -- und darum geht es hier.
+  //
+  // Am Zeigergeraet bleibt das Fenster: dort ist die Einbettung in Ordnung,
+  // und der Besucher verliert die Seite nicht aus dem Blick.
   const openBooking = () => {
+    const touch =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    if (touch) {
+      // Direkt im Klick, nicht spaeter: nur dann laesst der Browser das
+      // Oeffnen zu, statt es als ungebetenes Fenster abzuweisen.
+      window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+      return;
+    }
+
     setHasOpenedBooking(true);
     setIsBookingOpen(true);
   };
