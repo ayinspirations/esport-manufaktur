@@ -175,7 +175,8 @@ const BANDS: Tile[][] = [
     {
       slug: 'xp-days',
       title: 'XP Days',
-      ar: 16 / 9,
+      // 4000 x 2667, auf 2000 gerechnet.
+      ar: 3 / 2,
       image: '/images/xp-days/hero.jpg',
       alt: 'XP Days – gamifizierte Karrieremesse der GG Manufaktur in Stuttgart',
       head: 'clamp(22px,2.8vw,34px)'
@@ -183,7 +184,8 @@ const BANDS: Tile[][] = [
     {
       slug: 'consumenta',
       title: 'NIVEA MEN // EFFECT // CRACKZ',
-      ar: 16 / 9,
+      // 1080 x 1920 -- hochkant, also eine schmale Kachel neben den XP Days.
+      ar: 9 / 16,
       image: '/images/consumenta/hero.jpg',
       alt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg',
       head: 'clamp(22px,2.8vw,34px)'

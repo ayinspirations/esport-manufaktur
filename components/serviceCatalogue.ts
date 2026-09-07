@@ -29,8 +29,9 @@ export interface ServiceListing {
    * Artwork for the homepage tile.
    *
    * ---- DROP YOUR GRAPHICS IN HERE ----
-   * Put the file in `public/images/services/` and set the path below, e.g.
-   *   tileImage: '/images/services/strategie-konzeption.svg'
+   * Datei nach `public/` legen und den Pfad hier eintragen. Die vier Saeulen
+   * tragen die hauseigenen Motive GG_Leistungen_*.png; sie liegen in der
+   * Wurzel von `public/`, weil sie dort hochgeladen wurden.
    * Anything the browser can render works (SVG, WebP, JPG, PNG). The tiles are
    * portrait, 3:4, and are shown at roughly 340x450 CSS px on a desktop grid,
    * so 680x900 covers a 2x screen.
@@ -61,6 +62,8 @@ export const services: ServiceListing[] = [
     slug: 'strategie-konzeption',
     title: 'Strategie & Konzeption',
     pillar: true,
+    tileImage: '/GG_Leistungen_STRATEGIE.png',
+    tileImageAlt: 'Grafisches Motiv der GG Manufaktur für Strategie & Konzeption',
     tagline:
       'Wir entwickeln Aktivierungsstrategien und kreative Leitideen, die Marke, Zielgruppe und Kommunikationsziel präzise miteinander verbinden – mit klaren KPIs von Anfang an.'
   },
@@ -68,6 +71,8 @@ export const services: ServiceListing[] = [
     slug: 'events-erlebniswelten',
     title: 'Markenaktivierung & Events',
     pillar: true,
+    tileImage: '/GG_Leistungen_EVENTS.png',
+    tileImageAlt: 'Grafisches Motiv der GG Manufaktur für Markenaktivierung & Events',
     tagline:
       'Vom interaktiven Messetool bis zur vollständigen Erlebniswelt: Wir konzipieren und realisieren Formate, die Menschen ins Mitmachen bringen und nachhaltig in Erinnerung bleiben.'
   },
@@ -75,6 +80,8 @@ export const services: ServiceListing[] = [
     slug: 'digitale-loesungen',
     title: 'Gamification & digitale Lösungen',
     pillar: true,
+    tileImage: '/GG_Leistungen_GAMIFICATION.png',
+    tileImageAlt: 'Grafisches Motiv der GG Manufaktur für Gamification & digitale Lösungen',
     tagline:
       'White-Label-Plattformen, Eventpässe, Games, Challenges und Turniersysteme – individuell anpassbar, modular skalierbar und DSGVO-konform.'
   },
@@ -82,6 +89,8 @@ export const services: ServiceListing[] = [
     slug: 'content-live-kommunikation',
     title: 'Content & Live-Kommunikation',
     pillar: true,
+    tileImage: '/GG_Leistungen_CONTENT.png',
+    tileImageAlt: 'Grafisches Motiv der GG Manufaktur für Content & Live-Kommunikation',
     tagline:
       'Streams, Showformate, Creator-Aktivierungen sowie Foto- und Videocontent, die Erlebnisse verlängern, Reichweite schaffen und Communities authentisch erreichen.'
   },
