@@ -5,6 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 import { getBlogPost } from './blogPosts';
 import type { BlogBlock } from './blogPosts';
 import { ExpandingCTA } from './ui/expanding-cta';
+import { SITE_URL, absoluteUrl } from './site';
 
 interface BlogDetailProps {
   slug: string;
@@ -83,13 +84,52 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack, onOpenBook
     const previousDescription = metaDescription?.getAttribute('content') ?? '';
     metaDescription?.setAttribute('content', post.metaDescription);
 
+    // Was beim Teilen erscheint: der Artikel, nicht die Startseite. Ohne das
+    // traegt jeder geteilte Beitrag denselben Titel und dasselbe Bild.
+    const setOg = (key: string, value: string) => {
+      const el = document.querySelector<HTMLMetaElement>(`meta[property="${key}"]`);
+      const before = el?.getAttribute('content') ?? '';
+      el?.setAttribute('content', value);
+      return () => el?.setAttribute('content', before);
+    };
+    const restoreOg = [
+      setOg('og:title', post.title),
+      setOg('og:description', post.metaDescription),
+      setOg('og:type', 'article'),
+      setOg('og:image', absoluteUrl(post.image)),
+      setOg('og:url', absoluteUrl(`/blog/${post.slug}`))
+    ];
+
     // Ein Artikel, der unter zwei Adressen erreichbar ist, braucht eine, die
     // als die richtige gilt -- sonst teilen sich beide seine Sichtbarkeit.
     const canonical = document.querySelector('link[rel="canonical"]');
     const previousCanonical = canonical?.getAttribute('href') ?? '';
-    canonical?.setAttribute('href', `https://esport-manufaktur.de/blog/${post.slug}`);
+    canonical?.setAttribute('href', absoluteUrl(`/blog/${post.slug}`));
+
+    // Was dieser Text ist, in maschinenlesbarer Form: Artikel, Titel, Datum,
+    // Bild, Verfasser. Ohne das ist er fuer eine Suchmaschine eine Seite mit
+    // viel Text; damit ist er ein Beitrag mit Datum und Herkunft, und genau
+    // das entscheidet, ob er in einer Trefferliste als solcher auftaucht.
+    const ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.metaTitle ?? post.title,
+      description: post.metaDescription,
+      image: absoluteUrl(post.image),
+      datePublished: post.isoDate,
+      dateModified: post.isoDate,
+      inLanguage: 'de-DE',
+      mainEntityOfPage: absoluteUrl(`/blog/${post.slug}`),
+      author: { '@type': 'Organization', name: 'GG Manufaktur' },
+      publisher: { '@id': `${SITE_URL}/#organization` }
+    });
+    document.head.appendChild(ld);
 
     return () => {
+      ld.remove();
+      restoreOg.forEach((undo) => undo());
       document.title = previousTitle;
       metaDescription?.setAttribute('content', previousDescription);
       canonical?.setAttribute('href', previousCanonical);

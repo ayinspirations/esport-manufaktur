@@ -21,9 +21,14 @@ interface BlogSectionProps {
   onOpenPost: (slug: string) => void;
 }
 
+// Die Kachel ist ein Verweis, kein Knopf. Ein Knopf fuehrt nirgendwohin, das
+// weisz auch eine Suchmaschine: der Artikel war aus der Startseite heraus
+// nicht verlinkt. Der Klick geht weiterhin durch den Router, alles andere --
+// Mittelklick, Tastatur, Crawler -- folgt der echten Adresse.
 const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; className?: string }> = ({ post, onOpenPost, className = '' }) => (
-  <button
-    onClick={() => onOpenPost(post.slug)}
+  <a
+    href={`/blog/${post.slug}`}
+    onClick={(e) => { e.preventDefault(); onOpenPost(post.slug); }}
     className={`group text-left flex flex-col rounded-surface overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
@@ -53,7 +58,7 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
         <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
       </div>
     </div>
-  </button>
+  </a>
 );
 
 export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {

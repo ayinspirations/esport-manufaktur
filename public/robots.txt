@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------------------
+# Wer diese Seite lesen darf
+# ---------------------------------------------------------------------------
+# Zugelassen sind zwei: die Google-Suche und die Abrufe von ChatGPT. Alles
+# andere -- SEO-Werkzeuge, Scraper, Trainingscrawler, Archivdienste -- ist
+# ausgeschlossen.
+#
+# Wichtig zu wissen: robots.txt ist eine Bitte, keine Sperre. Wer sich nicht
+# daran hält, wird davon nicht aufgehalten. Das erledigt die Edge Function
+# unter netlify/edge-functions/gatekeeper.ts, die dieselbe Liste als
+# tatsächliche Antwort durchsetzt. Beide zusammen ergeben die Regel: hier steht
+# sie lesbar, dort wird sie angewandt.
+# ---------------------------------------------------------------------------
+
+# --- Google-Suche ----------------------------------------------------------
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Googlebot-News
+User-agent: Google-InspectionTool
+User-agent: Storebot-Google
+Allow: /
+
+# Google-Extended steuert ausschließlich das Training von Gemini, nicht die
+# Suche. Ausschließen kostet also keine Sichtbarkeit.
+User-agent: Google-Extended
+Disallow: /
+
+# --- ChatGPT ---------------------------------------------------------------
+# OAI-SearchBot baut den Suchindex von ChatGPT, ChatGPT-User holt eine Seite,
+# weil eine Person danach gefragt hat. Beide dürfen, aber langsam: eine
+# Anfrage alle zehn Sekunden reicht für eine Website dieser Größe und hält den
+# Abruf auf einem Maß, das niemandem wehtut.
+User-agent: OAI-SearchBot
+Allow: /
+Crawl-delay: 10
+
+User-agent: ChatGPT-User
+Allow: /
+Crawl-delay: 10
+
+# GPTBot sammelt Trainingsmaterial. Das ist etwas anderes als eine Antwort auf
+# eine Frage und deshalb nicht zugelassen.
+User-agent: GPTBot
+Disallow: /
+
+# --- Alle übrigen ----------------------------------------------------------
+User-agent: *
+Disallow: /
+
+Sitemap: https://esport-manufaktur.de/sitemap.xml

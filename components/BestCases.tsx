@@ -38,6 +38,18 @@ const TILE_TEXT_VARIANTS = {
   show: { opacity: 1, y: 0, transition: { duration: DUR.interact, ease: EASE_REVEAL } }
 };
 
+// Die Kacheln sind Verweise, keine anklickbaren Kaesten.
+//
+// Sie waren <div onClick>: fuer eine Maus dasselbe, fuer alles andere nichts.
+// Eine Suchmaschine findet in einem div keinen Weg zur Unterseite -- die elf
+// Case-Seiten waren aus der Startseite heraus schlicht nicht verlinkt. Und wer
+// mit der Tastatur navigiert oder einen Verweis in einem neuen Tab oeffnen
+// will, kam ebenfalls nicht weiter.
+//
+// Jetzt ist es ein <a href> auf die echte Adresse. Der Klick wird abgefangen
+// und geht weiterhin durch den Router, damit die Seite nicht neu laedt; alles
+// andere -- Mittelklick, Tastatur, Crawler -- folgt dem Verweis.
+
 // Stagger restarts on each row of the mosaic, so no tile waits on the delay of
 // one sitting above it in a different row. Die letzte Reihe traegt nur noch
 // eine Kachel und faengt deshalb wieder bei null an.
@@ -125,9 +137,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('tsystems')}
+              <a
+                href={`/best-cases/tsystems`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('tsystems'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <LazyVideo
                   src="/videos/case-tsystems.mp4"
@@ -147,7 +160,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -160,9 +173,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('hagebau')}
+              <a
+                href={`/best-cases/hagebau`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('hagebau'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <LazyVideo
                   src="/videos/case-hagebau.mp4"
@@ -182,7 +196,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -196,9 +210,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('showdown-0711')}
+              <a
+                href={`/best-cases/showdown-0711`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('showdown-0711'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <LazyVideo
                   src="/videos/case-showdown.mp4"
@@ -218,7 +233,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -232,9 +247,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('bayern-zockt')}
+              <a
+                href={`/best-cases/bayern-zockt`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('bayern-zockt'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <LazyVideo
                   src="/videos/case-bayern-zockt.mp4"
@@ -254,7 +270,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -268,13 +284,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('intersport')}
+              <a
+                href={`/best-cases/intersport`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('intersport'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/intersport/hero.jpg"
-                  alt="INTERSPORT Clubhouse"
+                  alt="Gaming-Wall im INTERSPORT Clubhouse Berlin – Pop-up-Aktivierung von GG Manufaktur"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
@@ -291,7 +308,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -304,9 +321,10 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('bfv')}
+              <a
+                href={`/best-cases/bfv`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('bfv'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <LazyVideo
                   src="/videos/case-bfv.mp4"
@@ -326,7 +344,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -342,13 +360,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('rewe')}
+              <a
+                href={`/best-cases/rewe`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('rewe'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/rewe/hero.jpg"
-                  alt="REWE × 1. FC Köln"
+                  alt="eSport-Sponsoring-Aktivierung für REWE mit dem 1. FC Köln"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
@@ -365,7 +384,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -378,13 +397,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('xp-days')}
+              <a
+                href={`/best-cases/xp-days`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('xp-days'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/xp-days/hero.jpg"
-                  alt="XP Days"
+                  alt="XP Days – gamifizierte Karrieremesse der GG Manufaktur in Stuttgart"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
@@ -401,7 +421,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -416,13 +436,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('dekra')}
+              <a
+                href={`/best-cases/dekra`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('dekra'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/dekra/hero.jpg"
-                  alt="DEKRA Motorsport"
+                  alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
@@ -439,7 +460,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -452,13 +473,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('interwetten')}
+              <a
+                href={`/best-cases/interwetten`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('interwetten'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/interwetten/hero.jpg"
-                  alt="Interwetten"
+                  alt="Virtual-Tennis-Aktivierung für Interwetten beim BOSS OPEN"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
                 />
@@ -475,7 +497,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
@@ -490,13 +512,14 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
               whileInView="show"
               viewport={TILE_VIEWPORT}
             >
-              <div
-                className="relative group overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-                onClick={() => onNavigate?.('consumenta')}
+              <a
+                href={`/best-cases/consumenta`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('consumenta'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
               >
                 <img
                   src="/images/consumenta/hero.jpg"
-                  alt="NIVEA MEN, EFFECT und CRACKZ auf der Consumenta"
+                  alt="Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
                 />
@@ -513,7 +536,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </div>
-              </div>
+              </a>
             </motion.div>
           </div>
 
