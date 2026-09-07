@@ -29,20 +29,32 @@
 # a case video must eventually reach people who already have it. A month of
 # hot cache plus stale-while-revalidate gives repeat visits an instant paint
 # while a replacement propagates in the background.
+# Eine Stunde fest, danach eine Woche lang sofort aus dem Cache mit
+# Auffrischung im Hintergrund.
+#
+# Vorher standen hier sieben Tage fest, und das hatte eine Kehrseite, die erst
+# im Betrieb auffiel: diese Regel gilt fuer *jede* Antwort unter dem Pfad, auch
+# fuer eine Fehlermeldung. Fehlte eine Datei kurz -- weil ihr Code einen Deploy
+# frueher da war als sie selbst --, merkte sich der Browser die 404 fuer eine
+# Woche und fragte auch dann nicht mehr nach, als die Datei laengst lag.
+#
+# Eine Stunde ist kurz genug, dass sich das von selbst erledigt, und
+# stale-while-revalidate haelt den zweiten Besuch trotzdem sofort: die Datei
+# kommt aus dem Cache, die Pruefung laeuft daneben.
 [[headers]]
   for = "/videos/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800"
 
 [[headers]]
   for = "/images/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800"
 
 [[headers]]
   for = "/logos/*"
   [headers.values]
-    Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800"
 
 # The HTML shell names the current hashed bundles, so it must never be held
 # past a deploy or the page boots against assets that no longer exist.
