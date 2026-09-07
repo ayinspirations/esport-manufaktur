@@ -9,56 +9,9 @@ interface BookingModalProps {
   onClose: () => void;
 }
 
-
-
-// Hoehe fuer den Fall, dass die Seite im Rahmen nichts ueber ihre Laenge
-// sagt. Grosszuegig genug fuer den laengsten Schritt -- Formular, Gaeste,
-// Datenschutztext und Knopf --, damit der Kasten darum bis ans Ende scrollen
-// kann.
-const FALLBACK_HEIGHT = 1900;
-
-/**
- * Sucht in einer Nachricht aus dem Rahmen nach einer Hoehenangabe.
- *
- * HubSpot meldet die Hoehe seiner Seite per postMessage -- das ist es, was
- * ihr Einbettungsskript sonst auswertet, um den Rahmen mitwachsen zu lassen.
- * Die genaue Form der Nachricht ist nirgends zugesagt und hat sich ueber die
- * Jahre geaendert, also wird sie nicht erraten, sondern durchsucht: irgendein
- * Feld, dessen Name "height" enthaelt und dessen Wert eine plausible
- * Pixelzahl ist. Verschachtelte Objekte und als Text verpackte JSON-Daten
- * eingeschlossen.
- */
-const readHeight = (data: unknown, depth = 0): number | null => {
-  if (depth > 4 || data == null) return null;
-  if (typeof data === 'string') {
-    if (!data.includes('height')) return null;
-    try {
-      return readHeight(JSON.parse(data), depth + 1);
-    } catch {
-      return null;
-    }
-  }
-  if (typeof data !== 'object') return null;
-
-  for (const [key, value] of Object.entries(data as Record<string, unknown>)) {
-    if (/height/i.test(key)) {
-      const n = typeof value === 'number' ? value : Number(value);
-      if (Number.isFinite(n) && n > 200 && n < 20000) return Math.round(n);
-    }
-    if (value && (typeof value === 'object' || typeof value === 'string')) {
-      const found = readHeight(value, depth + 1);
-      if (found) return found;
-    }
-  }
-  return null;
-};
-
 export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'slow'>('loading');
-  // Die Hoehe, die die HubSpot-Seite selbst meldet. Null heiszt: noch keine
-  // Meldung -- dann fuellt der Rahmen die Flaeche wie bisher.
-  const [frameHeight, setFrameHeight] = useState<number | null>(null);
 
   useScrollLock(isOpen);
 
@@ -85,7 +38,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
     if (!isOpen) {
       setIsSuccess(false);
       setLoadState('loading');
-      setFrameHeight(null);
       return;
     }
 
@@ -97,9 +49,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       } catch (e) {
         // Fremde Nachrichten -- nicht unsere Sache.
       }
-
-      const reported = readHeight(event.data);
-      if (reported) setFrameHeight(reported);
     };
     window.addEventListener('message', handleMessage);
 
@@ -109,19 +58,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
       setLoadState((s) => (s === 'loading' ? 'slow' : s));
     }, 7000);
 
-    // Und wenn nach drei Sekunden keine Hoehe gemeldet wurde, bekommt der
-    // Rahmen auf Fingergeraeten eine groszzuegige feste Hoehe. Dann scrollt
-    // der Kasten darum -- der Weg nach unten steht offen, auch wenn die Seite
-    // im Rahmen ihre eigene Laenge nicht mitteilt.
-    const guess = window.setTimeout(() => {
-      const touch = window.matchMedia('(hover: none)').matches;
-      setFrameHeight((h) => (h === null && touch ? FALLBACK_HEIGHT : h));
-    }, 3000);
-
     return () => {
       window.removeEventListener('message', handleMessage);
       window.clearTimeout(slow);
-      window.clearTimeout(guess);
     };
   }, [isOpen]);
 
@@ -195,22 +134,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
               </div>
             </div>
 
-            {/* Der Inhalt, und der Weg nach unten.
-                Erst fuellte der Rahmen die Flaeche und die Seite darin
-                scrollte selbst. Das geht so lange gut, wie die Seite im
-                Rahmen ihren eigenen Bildlauf richtig fuehrt -- beim
-                Formularschritt hoerte sie beim Datenschutztext auf, und der
-                Knopf darunter war nicht mehr erreichbar.
-                Deshalb waechst der Rahmen jetzt mit: HubSpot meldet die Hoehe
-                seiner Seite, wir setzen sie, und gescrollt wird auszen. Kommt
-                keine Meldung, bekommt er auf Fingergeraeten nach drei
-                Sekunden eine feste, groszzuegige Hoehe -- dann fuehrt dieser
-                Kasten den Bildlauf, und das Ende ist in jedem Fall
-                erreichbar. */}
-            <div
-              className="flex-1 relative bg-slate-50 min-h-0 overflow-y-auto overscroll-contain"
-              style={{ WebkitOverflowScrolling: 'touch' } as React.CSSProperties}
-            >
+            {/* Der Inhalt.
+                Der Rahmen fuellt die Flaeche, die Seite darin scrollt selbst
+                -- und das ist hier auch richtig so: die Knoepfe "Zurueck" und
+                "Bestaetigen" liegen bei HubSpot in einer Leiste, die am
+                unteren Rand des Fensters klebt. Im Rahmen heiszt das: am
+                unteren Rand des Rahmens. Ist der so hoch wie die Flaeche,
+                steht die Leiste sichtbar darin.
+                Kurz stand hier eine Mechanik, die den Rahmen mit dem Inhalt
+                wachsen liesz. Fuer Telefone gedacht, half sie dort nicht (die
+                Leiste rutschte mit nach unten aus dem Bild) und schadete am
+                Desktop, wo bis dahin alles stimmte. Telefone gehen jetzt
+                ohnehin einen anderen Weg -- siehe openBooking in App.tsx --,
+                also ist sie wieder weg. */}
+            <div className="flex-1 relative bg-slate-50 min-h-0 overflow-hidden">
               {!isSuccess ? (
                 <>
                   <iframe
@@ -218,8 +155,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) =
                     src={`${BOOKING_URL}?embed=true`}
                     title="Termin bei der GG Manufaktur buchen"
                     onLoad={() => setLoadState('ready')}
-                    className="w-full border-0 block"
-                    style={frameHeight ? { height: `${frameHeight}px` } : { height: '100%' }}
+                    className="w-full h-full border-0 block"
                   />
                   {loadState !== 'ready' && (
                     <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 bg-slate-50 px-8 text-center">
