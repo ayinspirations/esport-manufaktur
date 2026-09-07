@@ -25,8 +25,14 @@ interface CasesCTAProps {
 export const CasesCTA: React.FC<CasesCTAProps> = ({ onOpenBooking, onOpenContact, onScroll }) => (
   <section className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14`}>
     <Reveal delay={0.1} y={24} className="max-w-[1440px] mx-auto flex flex-col items-center text-center">
-      <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug text-balance">
-        Genug gesehen? Dann sprechen wir über dein Projekt.
+      {/* Der Umbruch steht fest, er wird nicht dem Browser ueberlassen.
+          `text-balance` verteilt eine Zeile auf gleich lange Haelften, und das
+          traf hier zwischen Frage und Antwort: "Genug gesehen? Dann" stand
+          oben, "sprechen wir ueber dein Projekt." darunter. Die Frage gehoert
+          auf die erste Zeile, die Antwort auf die zweite. */}
+      <p className="text-[#0b0f2a] font-black text-xl md:text-2xl tracking-tight max-w-xl leading-snug">
+        <span className="block">Genug gesehen?</span>
+        <span className="block text-balance">Dann sprechen wir über dein Projekt.</span>
       </p>
       <div className="mt-7">
         <ExpandingCTA
