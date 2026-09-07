@@ -314,6 +314,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           </button>
 
           {/* Der Claim, nur auf dem Telefon.
+              Er liegt als eigenes Feld zwischen Marke und Burger, nicht
+              absolut in der Mitte der Pille: absolut zentriert stuende er
+              mittig zur Leiste, aber nicht mittig zwischen seinen beiden
+              Nachbarn -- die Marke ist breiter als der Burger. Als Feld
+              dazwischen sind beide Abstaende gleich. Das -mr-2.5 gleicht die
+              Innenpolsterung des Burger-Knopfes aus, sonst zaehlt rechts
+              dessen leerer Rand mit und die Luecke wirkt zehn Pixel groeszer.
               Auf dem Desktop stehen hier vier Links -- da ist kein Platz und
               auch kein Bedarf, der Hero sagt es zwei Bildschirmzeilen weiter
               unten selbst. Auf dem Telefon liegt zwischen Marke und Burger
@@ -324,7 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           {!isOpen && (
             <span
               aria-hidden="true"
-              className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap font-black uppercase tracking-[0.16em] text-[clamp(8px,2.7vw,11px)] transition-colors duration-500 ${
+              className={`flex-1 min-w-0 -mr-2.5 self-center text-center leading-none whitespace-nowrap font-black uppercase tracking-[0.16em] text-[clamp(7px,2.4vw,9.5px)] transition-colors duration-500 ${
                 mobileInk ? 'text-[#0e958e]' : 'text-[#5fd6cf]'
               }`}
             >
