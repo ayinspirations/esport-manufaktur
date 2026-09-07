@@ -58,15 +58,19 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
 
 # ---------------------------------------------------------------------------
-# Torwaechter
+# Keine Edge Function hier
 # ---------------------------------------------------------------------------
-# Setzt die Regel aus der robots.txt tatsaechlich durch: Google und ChatGPT
-# kommen durch, alles andere, was sich als Programm zu erkennen gibt, bekommt
-# 403. Laeuft vor jeder Antwort, siehe netlify/edge-functions/gatekeeper.ts.
-[[edge_functions]]
-  function = "gatekeeper"
-  path = "/*"
-
+# Hier stand ein "Torwaechter", der die Regel aus der robots.txt als Antwort
+# durchgesetzt hat. Er selbst hatte keine einzige Abhaengigkeit -- aber sein
+# Vorhandensein hat Netlifys Edge-Bundling ueberhaupt erst eingeschaltet, und
+# damit fiel auch die Funktion in den Build, die die Integration "User Agent
+# Blocker" erzeugt (erkennbar an USER_AGENT_BLOCKER_ANALYTICS in den
+# Umgebungsvariablen). Die importiert @netlify/blobs, und npm-Module in Edge
+# Functions sind dort experimentell: der Build brach ab.
+#
+# Also uebernimmt das Sperren die Integration, die dafuer eingerichtet ist,
+# und dieses Verzeichnis bleibt leer. Die Regel selbst steht weiterhin lesbar
+# in public/robots.txt.
 # ---------------------------------------------------------------------------
 # Renamed services
 # ---------------------------------------------------------------------------

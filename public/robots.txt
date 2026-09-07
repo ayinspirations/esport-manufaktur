@@ -6,10 +6,9 @@
 # ausgeschlossen.
 #
 # Wichtig zu wissen: robots.txt ist eine Bitte, keine Sperre. Wer sich nicht
-# daran hält, wird davon nicht aufgehalten. Das erledigt die Edge Function
-# unter netlify/edge-functions/gatekeeper.ts, die dieselbe Liste als
-# tatsächliche Antwort durchsetzt. Beide zusammen ergeben die Regel: hier steht
-# sie lesbar, dort wird sie angewandt.
+# daran hält, wird davon nicht aufgehalten. Das tatsächliche Abweisen erledigt
+# die Netlify-Integration "User Agent Blocker" auf Serverseite. Hier steht die
+# Regel lesbar, dort wird sie angewandt -- beide müssen dieselbe Liste führen.
 # ---------------------------------------------------------------------------
 
 # --- Google-Suche ----------------------------------------------------------
