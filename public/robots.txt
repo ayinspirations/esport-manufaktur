@@ -1,9 +1,14 @@
 # ---------------------------------------------------------------------------
 # Wer diese Seite lesen darf
 # ---------------------------------------------------------------------------
-# Zugelassen sind zwei: die Google-Suche und die Abrufe von ChatGPT. Alles
-# andere -- SEO-Werkzeuge, Scraper, Trainingscrawler, Archivdienste -- ist
-# ausgeschlossen.
+# Zugelassen ist die Google-Suche. Alles andere -- SEO-Werkzeuge, Scraper,
+# Trainingscrawler, Archivdienste -- ist ausgeschlossen.
+#
+# ChatGPT stand hier zunächst mit einer Bremse. Auf Netlify ist serverseitig
+# aber nur Google freigegeben: die Bitte hier hätte OAI-SearchBot eingeladen
+# und die Antwort ihn abgewiesen. Von den beiden gilt die Antwort, also sagt
+# diese Datei dasselbe. Wer ChatGPT will, gibt zuerst dort OAI-SearchBot und
+# ChatGPT-User frei -- und trägt sie dann unten wieder ein.
 #
 # Wichtig zu wissen: robots.txt ist eine Bitte, keine Sperre. Wer sich nicht
 # daran hält, wird davon nicht aufgehalten. Das tatsächliche Abweisen erledigt
@@ -25,20 +30,23 @@ User-agent: Google-Extended
 Disallow: /
 
 # --- ChatGPT ---------------------------------------------------------------
-# OAI-SearchBot baut den Suchindex von ChatGPT, ChatGPT-User holt eine Seite,
-# weil eine Person danach gefragt hat. Beide dürfen, aber langsam: eine
-# Anfrage alle zehn Sekunden reicht für eine Website dieser Größe und hält den
-# Abruf auf einem Maß, das niemandem wehtut.
-User-agent: OAI-SearchBot
-Allow: /
-Crawl-delay: 10
-
-User-agent: ChatGPT-User
-Allow: /
-Crawl-delay: 10
+# Serverseitig derzeit nicht freigegeben, deshalb hier ebenfalls nicht. Soll
+# ChatGPT die Seite in seinen Antworten zitieren dürfen, sind es zwei
+# Schritte: OAI-SearchBot und ChatGPT-User in der Netlify-Integration
+# freigeben, dann hier die vier Zeilen unter diesem Absatz einkommentieren.
+# Die Bremse gehört dazu -- eine Anfrage alle zehn Sekunden reicht für eine
+# Website dieser Größe.
+#
+# User-agent: OAI-SearchBot
+# Allow: /
+# Crawl-delay: 10
+#
+# User-agent: ChatGPT-User
+# Allow: /
+# Crawl-delay: 10
 
 # GPTBot sammelt Trainingsmaterial. Das ist etwas anderes als eine Antwort auf
-# eine Frage und deshalb nicht zugelassen.
+# eine Frage und bleibt in jedem Fall ausgeschlossen.
 User-agent: GPTBot
 Disallow: /
 
