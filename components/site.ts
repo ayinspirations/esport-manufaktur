@@ -58,3 +58,14 @@ export function asset(path?: string): string | undefined {
   if (!path || /^(https?:|data:|blob:)/.test(path) || path.includes('?')) return path;
   return `${path}?v=${ASSET_VERSION}`;
 }
+
+// ---------------------------------------------------------------------------
+// Die Terminseite
+// ---------------------------------------------------------------------------
+// Steht hier und nicht in BookingModal, obwohl sie dort gebraucht wird: App
+// braucht sie auch -- auf Telefonen wird sie direkt geoeffnet statt in einem
+// Fenster gezeigt -- und ein Import aus der Fensterdatei zoege deren ganzen
+// Code ins Startbuendel. Diese Datei kostet nichts.
+// ---------------------------------------------------------------------------
+
+export const BOOKING_URL = 'https://esport-manufaktur.com/meetings/gianluca-crepaldi/kennenlernen';
