@@ -39,14 +39,14 @@ const BlogCard: React.FC<{ post: BlogPost; onOpenPost: (slug: string) => void; c
     className={`group text-left flex flex-col rounded-surface overflow-hidden bg-white/[0.03] border border-white/10 hover:border-emerald-400/40 transition-colors duration-500 ${className}`}
   >
     <div className="relative aspect-[4/3] overflow-hidden shrink-0">
-      <motion.div ref={zoomRef} className="absolute inset-0" style={zoom}>
+      <div ref={zoomRef} className="absolute inset-0" style={zoom}>
         <img
           src={asset(post.image)}
           alt={post.imageAlt}
           loading="lazy"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-      </motion.div>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
     </div>
 

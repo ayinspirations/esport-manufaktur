@@ -317,18 +317,18 @@ export const CaseShowcase: React.FC = () => {
         Der seitliche Verlauf faellt ganz weg -- er hat nur dort eine Aufgabe,
         wo der Text seitlich neben dem Bild steht.
       */}
-      <div
-        className="sm:hidden absolute inset-x-0 bottom-0 h-[52%] pointer-events-none backdrop-blur-[3px]"
-        style={{
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 55%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 55%)'
-        }}
-      />
+      {/* Auf dem Telefon steht hier nur ein Verlauf, keine Unschaerfe mehr.
+          Eine `backdrop-filter`-Flaeche ueber der halben Schirmhoehe laeszt
+          den Browser bei jedem Bild den Grund darunter neu weichzeichnen --
+          auf einem Telefon ist das die teuerste Flaeche der ganzen Seite, und
+          man bezahlt sie mit genau dem Zittern, das man beim Scrollen sieht.
+          Der Verlauf allein traegt den Text ebenso gut; er ist dafuer eine
+          Spur tiefer gezogen. */}
       <div
         className="sm:hidden absolute inset-0 pointer-events-none"
         style={{
           background:
-            'linear-gradient(to top, rgba(2,6,23,0.78) 0%, rgba(2,6,23,0.62) 20%, rgba(2,6,23,0.34) 45%, rgba(2,6,23,0.06) 70%, rgba(2,6,23,0.32) 100%)'
+            'linear-gradient(to top, rgba(2,6,23,0.84) 0%, rgba(2,6,23,0.70) 20%, rgba(2,6,23,0.40) 45%, rgba(2,6,23,0.08) 70%, rgba(2,6,23,0.32) 100%)'
         }}
       />
 

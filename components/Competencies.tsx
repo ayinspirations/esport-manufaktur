@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowUpRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
@@ -124,9 +123,9 @@ const PillarCard: React.FC<{
       }}
       className="group relative rounded-surface overflow-hidden select-none cursor-pointer aspect-[3/4]"
     >
-      <motion.div ref={zoomRef} className="absolute inset-0" style={zoom}>
+      <div ref={zoomRef} className="absolute inset-0" style={zoom}>
         <TileArt item={item} />
-      </motion.div>
+      </div>
 
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-900/25 to-transparent" />
 
