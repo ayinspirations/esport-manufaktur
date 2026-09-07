@@ -105,9 +105,13 @@ export const BFVDetail: React.FC<CaseDetailProps> = () => {
 
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
+      {/* Die Aufnahme ist hochkant, der Aufmacher breit: mittig geschnitten
+          bliebe die Rueckenlehne stehen. Etwas hoeher angesetzt sind Spieler,
+          Bildschirme und das eFootball-Banner im Bild. */}
       <CaseHero
         image="/images/bfv/hero.jpg"
         alt="BFV eFootball – digitale Verbands- und Wettbewerbsplattform"
+        focus="50% 35%"
         title="BFV eFootball"
         accent="Vom Rasen auf den virtuellen Rasen."
       />
