@@ -53,7 +53,7 @@ const TILE_TEXT_VARIANTS = {
 // Stagger restarts on each row of the mosaic, so no tile waits on the delay of
 // one sitting above it in a different row. Die letzte Reihe traegt nur noch
 // eine Kachel und faengt deshalb wieder bei null an.
-const TILE_DELAY = [0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0];
+const TILE_DELAY = [0, STAGGER.card, 0, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card, 0, STAGGER.card];
 
 interface BestCasesProps {
   onNavigate?: (page: any) => void;
@@ -92,14 +92,12 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             The grid is six columns of a uniform row unit instead, and each tile
             claims a different rectangle of it. Because every span is whole
             units of the same cell, the shapes vary while the layout still
-            tiles exactly: rows 1-3 take the wide tile and the portrait beside
-            it, rows 4-5 the square and the panorama, rows 6-8 wieder die
-            breite Kachel und die hochkante daneben,
-            rows 9-10 zwei gleich breite Haelften, rows 11-12 das Panorama
-            und das Quadrat daneben, rows 13-15 ein Abschluss ueber die volle
-            Breite. No gaps, no
-            dense-packing heuristics, no tile left orphaned on its own row at
-            a smaller width.
+            tiles exactly: rows 1-3 die breite Kachel und die hochkante
+            daneben, rows 4-7 eine ueber die volle Breite, rows 8-9 das
+            Quadrat und das Panorama, rows 10-12 wieder breit und hochkant,
+            rows 13-14 zwei gleich breite Haelften, rows 15-17 die hochkante
+            und die breite daneben. No gaps, no dense-packing heuristics, no
+            tile left orphaned on its own row at a smaller width.
 
             Roughly, at a 1200px container: 4x3 reads 16:10, 2x3 portrait,
             2x2 square, 4x2 panorama, 6x3 ein breiter Abschluss.
@@ -125,7 +123,11 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                  clamp(26px,3.4vw,42px), halbe Baender und volle Breite
                  clamp(22px,2.8vw,34px), kleine clamp(20px,2.2vw,30px).
               5. TILE_DELAY bekommt einen Eintrag je Kachel und faengt in
-                 jedem Band wieder bei 0 an. */}
+                 jedem Band wieder bei 0 an.
+              6. Passt eine Aufnahme in keinen dieser Zuschnitte, ohne dass
+                 Wesentliches wegfaellt -- ein Quadrat etwa --, bekommt die
+                 Kachel `object-contain` und dahinter eine unscharfe,
+                 vergroeszerte Kopie desselben Bildes. Siehe DEKRA. */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 md:gap-6 lg:auto-rows-[9.5rem]">
           {/* Rows 1-3 — T-Systems 16:9, Hagebau portrait beside it */}
           <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
@@ -196,6 +198,58 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
                     </h3>
                   </div>
                 </motion.div>
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Rows 4-7 — DEKRA ueber die volle Breite, und zwar ganz.
+              Die Aufnahme ist quadratisch (1254 x 1254). In jedem der
+              ueblichen Zuschnitte -- Panorama, Querformat, halbes Band --
+              schneidet `object-cover` links und rechts ab, und bei einem
+              Quadrat heiszt das: ein Drittel des Bildes faellt weg. Diese
+              Kachel zeigt es deshalb vollstaendig und stellt es auf eine
+              unscharfe, vergroeszerte Kopie seiner selbst. Die Flaeche
+              neben dem Quadrat traegt damit dieselben Farben wie das Bild
+              und wirkt nicht wie ein Rest, der uebrig geblieben ist. */}
+          <div className="col-span-1 aspect-square lg:col-span-6 lg:row-span-4 lg:aspect-auto">
+            <motion.div
+              className="h-full w-full"
+              variants={TILE_VARIANTS}
+              custom={TILE_DELAY[2]}
+              initial="hidden"
+              whileInView="show"
+              viewport={TILE_VIEWPORT}
+            >
+              <a
+                href={`/best-cases/dekra`}
+                onClick={(e) => { e.preventDefault(); onNavigate?.('dekra'); }}
+                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
+              >
+                <img
+                  src="/images/dekra/hero.jpg"
+                  alt=""
+                  aria-hidden="true"
+                  className="absolute inset-0 w-full h-full object-cover scale-110 blur-2xl opacity-40 pointer-events-none"
+                />
+                <img
+                  src="/images/dekra/hero.jpg"
+                  alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                  className="absolute inset-0 w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105 pointer-events-none"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/25 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
+                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
+                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
+                  </div>
+                </div>
+                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
+                  <div>
+                    <h3 className="text-white text-[clamp(22px,2.8vw,34px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
+                      DEKRA Motorsport
+                    </h3>
+                  </div>
+                </div>
               </a>
             </motion.div>
           </div>
@@ -425,46 +479,8 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 11-12 — DEKRA als Panorama, INTERWETTEN quadratisch
-              daneben. */}
-          <div className="col-span-1 aspect-[16/9] lg:col-span-4 lg:row-span-2 lg:aspect-auto">
-            <motion.div
-              className="h-full w-full"
-              variants={TILE_VARIANTS}
-              custom={TILE_DELAY[8]}
-              initial="hidden"
-              whileInView="show"
-              viewport={TILE_VIEWPORT}
-            >
-              <a
-                href={`/best-cases/dekra`}
-                onClick={(e) => { e.preventDefault(); onNavigate?.('dekra'); }}
-                className="relative group block overflow-hidden rounded-shell bg-slate-900 h-full w-full cursor-pointer"
-              >
-                <img
-                  src="/images/dekra/hero.jpg"
-                  alt="Digitaler Event-Pass für DEKRA an sechs DTM-Standorten"
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 pointer-events-none"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent opacity-80 transition-opacity group-hover:opacity-90 pointer-events-none" />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-20 pointer-events-none">
-                  <div className="flex items-center gap-3 px-5 py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-black text-xs uppercase tracking-widest">
-                    Case ansehen <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-                <div className="absolute inset-0 p-8 md:p-10 flex flex-col justify-end z-10 pointer-events-none">
-                  <div>
-                    <h3 className="text-white text-[clamp(26px,3.4vw,42px)] font-black leading-[0.9] tracking-tighter uppercase mb-4 drop-shadow-2xl">
-                      DEKRA Motorsport
-                    </h3>
-                  </div>
-                </div>
-              </a>
-            </motion.div>
-          </div>
-
-          <div className="col-span-1 aspect-square lg:col-span-2 lg:row-span-2 lg:aspect-auto">
+          {/* Rows 13-14 — INTERWETTEN hochkant, Consumenta breit daneben. */}
+          <div className="col-span-1 aspect-[3/4] lg:col-span-2 lg:row-span-3 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
@@ -501,9 +517,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </motion.div>
           </div>
 
-          {/* Rows 13-15 — Consumenta ueber die volle Breite. Drei Marken in
-              einer Kachel brauchen die ganze Zeile fuer ihren Namen. */}
-          <div className="col-span-1 aspect-[4/3] lg:col-span-6 lg:row-span-3 lg:aspect-auto">
+          <div className="col-span-1 aspect-[4/3] lg:col-span-4 lg:row-span-3 lg:aspect-auto">
             <motion.div
               className="h-full w-full"
               variants={TILE_VARIANTS}
