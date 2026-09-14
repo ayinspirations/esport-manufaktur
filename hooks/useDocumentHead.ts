@@ -8,6 +8,24 @@ interface DocumentHeadConfig {
   ogDescription?: string;
   ogImage?: string;
   canonicalPath?: string;
+  /**
+   * Der Wert fuer <meta name="robots">, etwa 'noindex'.
+   *
+   * Ohne Angabe bleibt die Seite indexierbar -- das ist der Normalfall und
+   * braucht keine Angabe, weil eine fehlende Angabe dasselbe bedeutet.
+   * Gesetzt wird das nur dort, wo eine Adresse zwar ausgeliefert wird, aber
+   * nichts in einer Trefferliste zu suchen hat: die Fehlerseite.
+   */
+  robots?: string;
+  /**
+   * Der Weg von der Startseite zu dieser Seite, ohne die Startseite selbst.
+   *
+   * Google zeigt daraus in der Trefferliste den Pfad statt der nackten
+   * Adresse: "GG Manufaktur > Services > Events & Erlebniswelten" anstelle von
+   * "gg-manufaktur.de/services/events-erlebniswelten". Das kostet nichts und
+   * macht aus einem Treffer eine Angabe darueber, wo man landet.
+   */
+  breadcrumbs?: { name: string; path: string }[];
 }
 
 const setMeta = (attr: 'name' | 'property', key: string, content: string) => {
@@ -69,8 +87,41 @@ export function useDocumentHead(config: DocumentHeadConfig) {
       setCanonical(absoluteUrl(config.canonicalPath));
       setMeta('property', 'og:url', absoluteUrl(config.canonicalPath));
     }
+    // Das Element wird angelegt und wieder entfernt, statt einen Wert zu
+    // setzen und zurueckzusetzen: "kein robots-Element" ist die Aussage, die
+    // jede andere Seite treffen soll, und ein leer geraeumtes Element trifft
+    // sie nicht zuverlaessig.
+    let robotsEl: HTMLMetaElement | null = null;
+    if (config.robots) {
+      robotsEl = document.createElement('meta');
+      robotsEl.setAttribute('name', 'robots');
+      robotsEl.setAttribute('content', config.robots);
+      document.head.appendChild(robotsEl);
+    }
+
+    // Die Startseite steht immer vorn und wird deshalb nicht uebergeben --
+    // sonst haette jede Seite sie noch einmal aufzuschreiben.
+    let crumbEl: HTMLScriptElement | null = null;
+    if (config.breadcrumbs?.length) {
+      const trail = [{ name: 'Startseite', path: '/' }, ...config.breadcrumbs];
+      crumbEl = document.createElement('script');
+      crumbEl.type = 'application/ld+json';
+      crumbEl.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: trail.map((crumb, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: crumb.name,
+          item: absoluteUrl(crumb.path)
+        }))
+      });
+      document.head.appendChild(crumbEl);
+    }
 
     return () => {
+      crumbEl?.remove();
+      robotsEl?.remove();
       document.title = defaults.title;
       setMeta('name', 'description', defaults.description);
       setMeta('property', 'og:title', defaults.ogTitle);
@@ -82,5 +133,5 @@ export function useDocumentHead(config: DocumentHeadConfig) {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.title, config.description, config.canonicalPath]);
+  }, [config.title, config.description, config.canonicalPath, config.robots]);
 }

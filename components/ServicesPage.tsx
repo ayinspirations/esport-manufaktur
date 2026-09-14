@@ -420,11 +420,25 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
   const content = servicesContent[active];
   const sidebar = SERVICES_LAYOUT === 'sidebar';
 
+  // Ohne Leistung in der Adresse ist die Seite die Uebersicht -- und muss sich
+  // auch als die ausweisen. Vorher nahm sie die kanonische Adresse der ersten
+  // Leistung an: /services sagte einer Suchmaschine, es sei in Wahrheit
+  // /services/strategie-konzeption. Damit stand in der Sitemap eine Adresse,
+  // die sich selbst widerrief, und die Uebersicht wurde nie aufgenommen.
+  const isOverview = !slug;
   useDocumentHead({
-    title: content.seo.title,
-    description: content.seo.description,
+    title: isOverview ? 'Unsere Leistungen | GG Manufaktur' : content.seo.title,
+    description: isOverview
+      ? 'Von Strategie und Konzeption über Events und Gamification bis zu Produktion, Content und Recruiting: alle Leistungen der GG Manufaktur im Überblick.'
+      : content.seo.description,
     ogImage: content.seo.ogImage,
-    canonicalPath: content.path
+    canonicalPath: isOverview ? '/services' : content.path,
+    breadcrumbs: isOverview
+      ? [{ name: 'Services', path: '/services' }]
+      : [
+          { name: 'Services', path: '/services' },
+          { name: services.find((entry) => entry.slug === active)?.title ?? content.h1, path: content.path }
+        ]
   });
 
   // Erst springen, dann tauschen -- und zwar sofort, nicht animiert.
@@ -527,6 +541,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       {/* Kein Eyebrow: "Leistungen" stand hier doppelt -- einmal als Kicker,
           einmal in der Headline selbst. */}
       <PageHero
+        as="p"
         title="Unsere"
         accent="Leistungen."
         subline="Von der ersten Idee bis zur Umsetzung."

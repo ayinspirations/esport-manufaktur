@@ -73,8 +73,11 @@ export const ServiceView: React.FC<ServiceViewProps> = ({
     <div className="w-full">
       {/* ============ 1. Headline, subline, call to action ============ */}
       <section className={`${container} ${BLOCK_GAP}`}>
+        {/* Die h1 der Seite. Sie steht hier und nicht im Kopfband darueber,
+            weil dort auf allen zehn Leistungsadressen dieselbe Zeile steht --
+            siehe PageHero. Aussehen unveraendert. */}
         <RevealText
-          as="h2"
+          as="h1"
           by="word"
           stagger={0}
           text={content.hero.headline}

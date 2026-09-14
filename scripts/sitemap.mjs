@@ -32,6 +32,11 @@ const caseSlugs = [...readFileSync('components/caseMeta.ts', 'utf8').matchAll(/^
 const serviceSlugs = field('components/serviceCatalogue.ts', 'slug');
 const blogSlugs = field('components/blogPosts.ts', 'slug');
 
+// Das Erscheinungsdatum je Artikel, in derselben Reihenfolge wie die slugs --
+// beide stammen aus derselben Datei und derselben Reihenfolge von Eintraegen.
+const blogDates = field('components/blogPosts.ts', 'isoDate');
+const blogDateFor = (slug) => blogDates[blogSlugs.indexOf(slug)];
+
 // priority sagt nur, was uns wichtiger ist als anderes auf derselben Website;
 // changefreq ist ein Hinweis, keine Zusage. Beide bewusst sparsam gesetzt.
 const urls = [
@@ -42,14 +47,24 @@ const urls = [
   ['/ueber-uns/meine-geschichte', '0.5', 'yearly'],
   ['/webdesign', '0.6', 'monthly'],
   ...caseSlugs.map((s) => [`/best-cases/${s}`, '0.8', 'monthly']),
-  ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly'])
+  ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly', blogDateFor(s)])
 ];
 
+// lastmod trug bisher bei jedem Eintrag das Datum des Builds. Damit sagte die
+// Sitemap nach jeder Veroeffentlichung, alle 28 Seiten haetten sich geaendert
+// -- auch wenn nur eine Zeile Text an einer Stelle anders war. Google gleicht
+// das mit dem ab, was es tatsaechlich vorfindet, und hoert auf, der Angabe zu
+// glauben, wenn sie regelmaessig nicht stimmt.
+//
+// Ein Artikel hat ein echtes Datum, also steht es dort. Fuer die uebrigen
+// Seiten gibt es keines, das im Code stuende; sie behalten das Build-Datum,
+// weil das die ehrlichste verfuegbare Naeherung ist: ausgeliefert wurde an
+// diesem Tag.
 const today = new Date().toISOString().slice(0, 10);
 const body = urls
   .map(
-    ([path, priority, changefreq]) =>
-      `  <url>\n    <loc>${SITE}${path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
+    ([path, priority, changefreq, lastmod]) =>
+      `  <url>\n    <loc>${SITE}${path}</loc>\n    <lastmod>${lastmod ?? today}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`
   )
   .join('\n');
 
