@@ -55,7 +55,11 @@ export const MeineGeschichte: React.FC<MeineGeschichteProps> = ({ onNavigate, on
     title: 'Meine Geschichte | GG Manufaktur',
     description:
       'Von FIFA-Turnieren in einer Garage über die eSport Manufaktur zur GG Manufaktur: Gianluca Crepaldi erzählt die Gründungsgeschichte.',
-    canonicalPath: '/ueber-uns/meine-geschichte'
+    canonicalPath: '/ueber-uns/meine-geschichte',
+    breadcrumbs: [
+      { name: 'Über uns', path: '/ueber-uns' },
+      { name: 'Meine Geschichte', path: '/ueber-uns/meine-geschichte' }
+    ]
   });
 
   const turn = useCallback((to: number) => {

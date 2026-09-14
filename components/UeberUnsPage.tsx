@@ -8,6 +8,7 @@ import { BLOCK_GAP } from './spacing';
 import { STAGGER } from './motion';
 import { asset } from './site';
 import { useScrollZoom } from '../hooks/useScrollZoom';
+import { useDocumentHead } from '../hooks/useDocumentHead';
 
 interface UeberUnsPageProps {
   onNavigate: (page: any) => void;
@@ -215,6 +216,20 @@ const JoinTile: React.FC<{ onOpenContact?: (subject?: string) => void }> = ({ on
 );
 
 export const UeberUnsPage: React.FC<UeberUnsPageProps> = ({ onNavigate, onOpenContact }) => {
+  // Diese Seite war die einzige eigenstaendige Adresse ohne eigenen Kopf.
+  // Damit galt fuer sie, was in index.html steht -- also der Titel der
+  // Startseite und, schwerwiegender, deren kanonische Adresse: eine
+  // Suchmaschine bekam gesagt, /ueber-uns sei die Startseite. Eine Seite, die
+  // sich selbst als eine andere ausweist, wird nicht aufgenommen.
+  useDocumentHead({
+    title: 'Über uns | GG Manufaktur',
+    description:
+      'Das Team hinter der GG Manufaktur: Wir kommen aus Gaming und eSport und entwickeln daraus Events, Gamification-Kampagnen und Markenerlebnisse.',
+    canonicalPath: '/ueber-uns',
+    ogImage: TEAM_IMAGE,
+    breadcrumbs: [{ name: 'Über uns', path: '/ueber-uns' }]
+  });
+
   return (
     <div className="w-full">
       {/* ============ 1. HERO ============ */}

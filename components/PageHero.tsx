@@ -15,6 +15,18 @@ interface PageHeroProps {
   /** A photograph to open the page with. Omitted where none exists. */
   image?: string;
   imageAlt?: string;
+  /**
+   * Das Element, in dem die Schlagzeile steht. Voreinstellung: h1.
+   *
+   * Auf fast jeder Seite ist die Zeile in diesem Kopf zugleich die
+   * Ueberschrift der Seite, und dann ist h1 richtig. Die Leistungsseiten sind
+   * die Ausnahme: dort steht ueber allen zehn Adressen dasselbe "Unsere
+   * Leistungen.", waehrend die eigentliche Ueberschrift -- die, die die
+   * Leistung benennt -- darunter im Inhalt steht. Als h1 ausgezeichnet waren
+   * das zehn Seiten mit derselben Ueberschrift; die Auszeichnung wandert
+   * deshalb dorthin, wo der Unterschied steht. Sichtbar aendert sich nichts.
+   */
+  as?: 'h1' | 'p';
 }
 
 /** The canvas the page continues on, and what the photograph fades out into. */
@@ -41,7 +53,8 @@ const CONTAINER = 'w-full max-w-[1200px] mx-auto px-6 md:px-14';
  *   dissolving into the canvas along its bottom edge, and the type sits in
  *   that dissolve in ink rather than on top of the image in white.
  */
-export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyebrow, image, imageAlt }) => {
+export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyebrow, image, imageAlt, as = 'h1' }) => {
+  const Heading: any = as;
   if (image) {
     return (
       <section className="relative w-full bg-[#badeda]">
@@ -93,10 +106,10 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
             </Reveal>
           )}
 
-          <h1 className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-[#0b0f2a]">
+          <Heading className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-[#0b0f2a]">
             <RevealText as="span" by="word" text={title} delay={0.05} />
             {accent && <RevealText as="span" by="word" text={accent} delay={0.18} className="text-[#0e958e] italic" />}
-          </h1>
+          </Heading>
 
           {subline && (
             <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-[#0b0f2a]/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight text-balance">
@@ -125,10 +138,10 @@ export const PageHero: React.FC<PageHeroProps> = ({ title, accent, subline, eyeb
           </Reveal>
         )}
 
-        <h1 className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-white">
+        <Heading className="text-[clamp(40px,7vw,100px)] font-black leading-[0.88] tracking-tighter uppercase text-white">
           <RevealText as="span" by="word" text={title} delay={0.05} />
           {accent && <RevealText as="span" by="word" text={accent} delay={0.18} className="text-[#2dd4bf] italic" />}
-        </h1>
+        </Heading>
 
         {subline && (
           <Reveal as="p" duration={0.75} delay={0.3} className="mt-5 md:mt-7 text-white/70 text-lg md:text-xl lg:text-2xl font-medium leading-relaxed max-w-2xl tracking-tight text-balance">

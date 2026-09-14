@@ -55,7 +55,8 @@ export const WebdesignPage: React.FC<WebdesignPageProps> = ({ onNavigate, onOpen
     title: 'Website & Gamification | GG Manufaktur',
     description:
       'Du brauchst einen neuen Webauftritt? Wir bauen Websites, Landingpages und Gamification-Tools – von der ersten Idee bis zur Umsetzung.',
-    canonicalPath: '/webdesign'
+    canonicalPath: '/webdesign',
+    breadcrumbs: [{ name: 'Website & Gamification', path: '/webdesign' }]
   });
 
   const requestProject = () => onOpenContact?.('Neuer Webauftritt');

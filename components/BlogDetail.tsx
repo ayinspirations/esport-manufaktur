@@ -143,7 +143,23 @@ export const BlogDetail: React.FC<BlogDetailProps> = ({ slug, onBack, onOpenBook
     });
     document.head.appendChild(ld);
 
+    // Der Weg zum Artikel, damit in der Trefferliste "GG Manufaktur > Blog >
+    // ..." steht statt der Adresse.
+    const crumbs = document.createElement('script');
+    crumbs.type = 'application/ld+json';
+    crumbs.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Startseite', item: absoluteUrl('/') },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: absoluteUrl('/#blog') },
+        { '@type': 'ListItem', position: 3, name: post.title, item: absoluteUrl(`/blog/${post.slug}`) }
+      ]
+    });
+    document.head.appendChild(crumbs);
+
     return () => {
+      crumbs.remove();
       ld.remove();
       restoreOg.forEach((undo) => undo());
       document.title = previousTitle;

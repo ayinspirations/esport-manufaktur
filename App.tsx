@@ -105,6 +105,7 @@ const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m 
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
+const NotFoundPage = lazyRoute(() => import('./components/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 const CookiePopup = lazyRoute(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
 const ContactModal = lazyRoute(() => import('./components/ContactModal').then(m => ({ default: m.ContactModal })));
 
@@ -187,8 +188,8 @@ class RouteBoundary extends ReactComponent {
 
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
-  | 'gamification-messestand' | 'gamification-im-marketing'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign';
+  | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -223,7 +224,10 @@ const resolveRoute = (): Route => {
   if (serviceMatch) {
     // resolveServiceSlug follows a rename, so the two slugs these pages used
     // to live under still land on the right service instead of a 404.
-    return { page: 'services', service: resolveServiceSlug(serviceMatch[1]) };
+    const service = resolveServiceSlug(serviceMatch[1]);
+    // Kennt der Katalog den Namen nicht, ist es kein Service -- vorher stand
+    // dann die Uebersicht unter einer erfundenen Adresse.
+    return service ? { page: 'services', service } : { page: 'not-found' };
   }
   if (path === '/services') {
     return { page: 'services' };
@@ -261,7 +265,18 @@ const resolveRoute = (): Route => {
     const post = getBlogPost(currentHash);
     return { page: (post ? post.slug : currentHash) as Page };
   }
-  return { page: 'home' };
+
+  // Bis hierher kommt, was keiner Adresse entspricht. Bisher war das die
+  // Startseite -- unter jedem Pfad, den jemand eintippt, und mit Status 200.
+  // Eine Suchmaschine sieht darin eine vollwertige Seite und meldet
+  // "Soft 404"; ein Besucher sieht eine Seite, die seinen Tippfehler
+  // verschweigt. Nur die Wurzel bleibt die Startseite.
+  //
+  // Der Anker gehoert dazu: die Startseite wird ueber #services, #contact und
+  // andere Abschnitte angesprungen, und ein unbekannter Anker auf der Wurzel
+  // ist kein falscher Pfad, sondern hoechstens ein veralteter Sprung.
+  const isRoot = path === '' || path === '/index.html';
+  return { page: isRoot ? 'home' : 'not-found' };
 };
 
 /**
@@ -277,7 +292,14 @@ const CaseHead: React.FC<{ slug: string; children: React.ReactNode }> = ({ slug,
     title: meta.title,
     description: meta.description,
     canonicalPath: `/best-cases/${slug}`,
-    ogImage: meta.image
+    ogImage: meta.image,
+    // Der Titel ist die Zeile fuer die Trefferliste und dafuer lang; als
+    // Wegmarke steht davon der Name des Kunden, also alles vor dem ersten
+    // Doppelpunkt oder Strich.
+    breadcrumbs: [
+      { name: 'Best Cases', path: '/#best-cases' },
+      { name: meta.title.split(/[:|]/)[0].trim(), path: `/best-cases/${slug}` }
+    ]
   });
   return <>{children}</>;
 };
@@ -564,6 +586,7 @@ export default function App() {
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'meine-geschichte' && <MeineGeschichte onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
 
+        {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail
