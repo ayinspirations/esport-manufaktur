@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowUpRight, ImageIcon } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR, EASE_REVEAL_CSS } from './motion';
-import { SECTION_PADDING } from './spacing';
+import { SECTION_PADDING, SECTION_HEADING } from './spacing';
 import { useInView, useInViewContinuous } from '../hooks/useInView';
 import { pillars, type ServiceListing } from './serviceCatalogue';
 import { asset } from './site';
@@ -206,7 +206,7 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
       <div className="max-w-[1440px] mx-auto px-6 md:px-14 relative z-10">
         <div className="mb-10 md:mb-14">
           <div className="max-w-3xl">
-            <h2 className="text-[clamp(28px,4.5vw,56px)] font-black text-[#0b0f2a] leading-[0.9] tracking-tighter uppercase">
+            <h2 className={`${SECTION_HEADING} text-[#0b0f2a] uppercase`}>
               <RevealText as="span" by="word" text="Unsere" />
               <RevealText as="span" by="word" text="Services." className="text-[#0e958e] italic" delay={0.16} />
             </h2>

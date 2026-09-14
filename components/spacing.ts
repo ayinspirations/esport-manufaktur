@@ -27,3 +27,22 @@ export const SECTION_PADDING = 'py-10 md:py-16';
  * the CTA closing a service hero and the "Ausgangslage" heading under it.
  */
 export const BLOCK_GAP = 'pt-20 md:pt-32';
+
+/**
+ * Die Ueberschrift eines Abschnitts auf der Startseite.
+ *
+ * Sie stand in jedem Abschnitt einzeln, und entsprechend unterschiedlich fiel
+ * sie aus: "Unsere Services." kam auf 56 Pixel, "Best Cases." auf 100, "Lass
+ * uns sprechen." auf 96, der Rest auf 90. Beim Herunterscrollen wirkte das
+ * wie vier verschiedene Ebenen, obwohl alle vier dasselbe sind: der Anfang
+ * eines Abschnitts.
+ *
+ * Jetzt teilen sie sich diesen Wert. Groesze, Zeilenabstand und Laufweite
+ * gehoeren dazu; Farbe und Versalien bleiben beim Abschnitt, weil sie sich
+ * nach dem Grund richten, auf dem er steht.
+ *
+ * Eine Ausnahme gibt es bewusst: "Brands we level up." im Logoband ist keine
+ * Abschnittsueberschrift, sondern die Aussage der Seite ueber sich selbst.
+ * Sie steht weiterhin groeszer und bleibt davon unberuehrt.
+ */
+export const SECTION_HEADING = 'text-[clamp(38px,6.5vw,90px)] font-black leading-[0.9] tracking-tighter';

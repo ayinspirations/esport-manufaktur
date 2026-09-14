@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { SECTION_PADDING } from './spacing';
+import { SECTION_PADDING, SECTION_HEADING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { STAGGER, DUR } from './motion';
 import { asset } from './site';
@@ -101,7 +101,7 @@ export const Purpose: React.FC<PurposeProps> = ({ onNavigate }) => {
             by="word"
             text="Das ist die GG Manufaktur."
             delay={0.15}
-            className="text-[clamp(38px,6.5vw,90px)] font-black text-white leading-[0.9] tracking-tighter"
+            className={`${SECTION_HEADING} text-white`}
           />
           <Reveal
             as="p"

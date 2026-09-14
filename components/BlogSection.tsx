@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ChevronDown, ChevronUp } from 'lucide-react';
 import { blogPosts, BlogPost } from './blogPosts';
-import { SECTION_PADDING } from './spacing';
+import { SECTION_PADDING, SECTION_HEADING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, STAGGER } from './motion';
 import { useInView } from '../hooks/useInView';
@@ -112,7 +112,7 @@ export const BlogSection: React.FC<BlogSectionProps> = ({ onOpenPost }) => {
             <Reveal delay={0.12} className="text-emerald-400 font-black tracking-[0.4em] uppercase text-[10px] md:text-xs mb-6">
               Insights
             </Reveal>
-            <h2 className="text-[clamp(38px,6.5vw,90px)] font-black text-white leading-[0.9] tracking-tighter uppercase">
+            <h2 className={`${SECTION_HEADING} text-white uppercase`}>
               <RevealText as="span" by="word" text="Blog" delay={0.18} />
               <RevealText as="span" by="word" text="& Wissen." delay={0.3} className="text-[#0e958e] italic" />
             </h2>

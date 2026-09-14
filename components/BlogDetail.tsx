@@ -63,6 +63,21 @@ const Block: React.FC<{ block: BlogBlock }> = ({ block }) => {
           ))}
         </ol>
       );
+    case 'source':
+      // Klein und zurueckgenommen: die Quelle gehoert zur Zahl, soll aber
+      // nicht mit dem Text um Aufmerksamkeit ringen.
+      return (
+        <p className="mb-5 -mt-1 text-[12.5px] leading-relaxed text-slate-500">
+          <a
+            href={block.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-slate-300 underline-offset-2 hover:text-[#0e958e] hover:decoration-[#0e958e] transition-colors"
+          >
+            {block.text}
+          </a>
+        </p>
+      );
     default:
       return <p className="mb-4">{block.text}</p>;
   }

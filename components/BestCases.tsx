@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
-import { SECTION_PADDING } from './spacing';
+import { SECTION_PADDING, SECTION_HEADING } from './spacing';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, EASE_REVEAL, STAGGER } from './motion';
 import { LazyVideo } from './LazyVideo';
@@ -282,7 +282,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
       <div className="max-w-[1440px] mx-auto">
         <div className="flex flex-col lg:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
           <div className="max-w-3xl">
-            <h2 className="text-[clamp(40px,7vw,100px)] font-black text-[#0b0f2a] leading-[0.85] tracking-tighter uppercase">
+            <h2 className={`${SECTION_HEADING} text-[#0b0f2a] uppercase`}>
               <RevealText as="span" by="word" text="Best" />
               <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
             </h2>
