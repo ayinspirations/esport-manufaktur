@@ -4,16 +4,14 @@
 # Zugelassen ist die Google-Suche. Alles andere -- SEO-Werkzeuge, Scraper,
 # Trainingscrawler, Archivdienste -- ist ausgeschlossen.
 #
-# ChatGPT stand hier zunächst mit einer Bremse. Auf Netlify ist serverseitig
-# aber nur Google freigegeben: die Bitte hier hätte OAI-SearchBot eingeladen
-# und die Antwort ihn abgewiesen. Von den beiden gilt die Antwort, also sagt
-# diese Datei dasselbe. Wer ChatGPT will, gibt zuerst dort OAI-SearchBot und
-# ChatGPT-User frei -- und trägt sie dann unten wieder ein.
-#
 # Wichtig zu wissen: robots.txt ist eine Bitte, keine Sperre. Wer sich nicht
-# daran hält, wird davon nicht aufgehalten. Das tatsächliche Abweisen erledigt
-# die Netlify-Integration "User Agent Blocker" auf Serverseite. Hier steht die
-# Regel lesbar, dort wird sie angewandt -- beide müssen dieselbe Liste führen.
+# daran hält, wird davon nicht aufgehalten. Serverseitig abgewiesen wird seit
+# der Deinstallation der Netlify-Integration "User Agent Blocker" niemand mehr;
+# diese Datei ist damit die einzige Stelle, an der die Liste steht.
+#
+# Bing, DuckDuckGo und alle übrigen Suchmaschinen fallen unter die
+# Schlussregel und sind damit ausgeschlossen. Das war eine Entscheidung, keine
+# Nachlässigkeit -- wer dort gefunden werden will, trägt Bingbot oben ein.
 # ---------------------------------------------------------------------------
 
 # --- Google-Suche ----------------------------------------------------------
@@ -50,8 +48,24 @@ Disallow: /
 User-agent: GPTBot
 Disallow: /
 
+# --- Vorschaubilder in Chats und Netzwerken ---------------------------------
+# Diese Dienste crawlen nicht, sie holen genau die eine Seite, deren Adresse
+# jemand gerade teilt, und lesen daraus Titel und Bild. Ohne Freigabe bleibt
+# ein geteilter Link eine nackte Textzeile -- in WhatsApp, LinkedIn, Slack und
+# überall sonst. Das kostet Sichtbarkeit, ohne irgendetwas zu schützen.
+User-agent: LinkedInBot
+User-agent: Twitterbot
+User-agent: facebookexternalhit
+User-agent: WhatsApp
+User-agent: Slackbot
+User-agent: Slackbot-LinkExpanding
+User-agent: Discordbot
+User-agent: TelegramBot
+User-agent: SkypeUriPreview
+Allow: /
+
 # --- Alle übrigen ----------------------------------------------------------
 User-agent: *
 Disallow: /
 
-Sitemap: https://esport-manufaktur.de/sitemap.xml
+Sitemap: https://gg-manufaktur.de/sitemap.xml
