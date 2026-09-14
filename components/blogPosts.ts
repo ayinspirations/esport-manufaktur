@@ -14,7 +14,16 @@ export type BlogBlock =
   /** Wie 'list', aber die Reihenfolge ist Teil der Aussage. */
   | { type: 'steps'; items: string[] }
   /** Woertliche Rede oder eine Aussage, die fuer sich stehen soll. */
-  | { type: 'quote'; text: string };
+  | { type: 'quote'; text: string }
+  /**
+   * Woher eine Zahl stammt.
+   *
+   * Ein Artikel, der mit Erhebungen argumentiert, muss sie belegen -- und zwar
+   * dort, wo die Zahl steht, nicht in einer Liste am Ende. Der Verweis fuehrt
+   * auf die Originalquelle und oeffnet einen neuen Tab, damit der Lesefluss
+   * nicht abreiszt.
+   */
+  | { type: 'source'; text: string; href: string };
 
 export interface BlogSection {
   heading: string;
@@ -44,6 +53,159 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+  {
+    slug: 'gaming-deutschland-2026',
+    title: 'Gaming in Deutschland 2026: Zahlen & Zielgruppen',
+    cardTitle: 'Gaming in Deutschland: Längst kein Nischenthema mehr',
+    excerpt: '55 % spielen. 89 % der jungen Erwachsenen. Gaming erreicht heute Zielgruppen über Generationen hinweg.',
+    metaTitle: 'Gaming in Deutschland 2026: Zahlen & Zielgruppen',
+    metaDescription:
+      'Wie viele Menschen spielen in Deutschland? Aktuelle Gaming-Zahlen 2026 zu Alter, Reichweite, Plattformen und Markt – und was sie für Marken bedeuten.',
+    date: '14. Sep 2026',
+    isoDate: '2026-09-14',
+    readTime: '10 min',
+    image: '/images/blog/gaming-deutschland-2026.jpg',
+    imageAlt: 'Zwei junge Menschen spielen an einer Konsole auf einer Messe – Gaming-Aktivierung von GG Manufaktur',
+    intro:
+      '55 Prozent der Menschen ab 16 Jahren in Deutschland spielen zumindest gelegentlich Computer- oder Videospiele. Bei den 16- bis 29-Jährigen sind es sogar 89 Prozent, bei den 30- bis 49-Jährigen immer noch 70 Prozent. Gaming ist damit längst kein Nischenthema für Jugendliche mehr, sondern Teil der Lebensrealität von Millionen Menschen.',
+    sections: [
+      {
+        heading: 'Warum die Reichweite allein noch keine Zielgruppe ist',
+        blocks: [
+          { type: 'p', text: 'Für Unternehmen ist dabei nicht nur die enorme Reichweite interessant. Entscheidend ist die Vielfalt dahinter: unterschiedliche Generationen, Plattformen, Genres und Motivationen. Wer Gaming für Recruiting, Markenaktivierung oder Live-Kommunikation einsetzen möchte, sollte deshalb nicht fragen: „Wie erreichen wir Gamer?“, sondern: „Welche Gaming-Mechanik passt zu unserer Zielgruppe?“' },
+          { type: 'p', text: 'Ein 18-jähriger EA-SPORTS-FC-Spieler, eine 35-jährige Person mit Konsolen-Nostalgie und ein 50-jähriger Mobile-Gamer können statistisch alle zum Gaming-Markt gehören – kommunikativ brauchen sie aber völlig unterschiedliche Zugänge. Genau darin liegt das Potenzial für Marken: Gaming nicht als einzelnes Medium betrachten, sondern als Werkzeugkasten für zielgruppenspezifische Kommunikation.' },
+          { type: 'source', text: 'Quelle: Statista / Bitkom – Anteil der Computer- und Videospieler nach Altersgruppen in Deutschland, 2026', href: 'https://de.statista.com/statistik/daten/studie/315924/umfrage/anteil-der-computerspieler-in-deutschland-nach-alter/' }
+        ]
+      },
+      {
+        heading: 'Mehr als jeder Zweite in Deutschland spielt',
+        blocks: [
+          { type: 'p', text: 'Laut einer aktuellen Bitkom-Erhebung spielen 55 Prozent der Menschen in Deutschland ab 16 Jahren regelmäßig oder zumindest gelegentlich Video- und Computerspiele. Das entspricht rund 39 Millionen Menschen.' },
+          { type: 'source', text: 'Quelle: Bitkom – Deutschland spielt: Rund 39 Millionen sind Gamer, 19.08.2026', href: 'https://www.bitkom.org/Presse/Presseinformation/Rund-39-Millionen-sind-Gamer' },
+          { type: 'p', text: 'Die von Statista veröffentlichte Zeitreihe zeigt gleichzeitig, wie stark Gaming an gesellschaftlicher Relevanz gewonnen hat. 2013 lag der ausgewiesene Anteil noch bei 36 Prozent, 2026 bei 55 Prozent. Bei der Interpretation des Langzeitvergleichs ist zu beachten, dass sich die Altersgrundlage ab 2019 von Personen ab 14 auf Personen ab 16 Jahren verändert hat.' },
+          { type: 'source', text: 'Quelle: Statista / Bitkom – Anteil der Computer- und Videospieler in Deutschland 2013 bis 2026', href: 'https://de.statista.com/statistik/daten/studie/315860/umfrage/anteil-der-computerspieler-in-deutschland/' },
+          { type: 'lead', text: 'Gaming ist in der gesellschaftlichen Mitte angekommen.' },
+          { type: 'p', text: 'Es geht nicht mehr um eine kleine Subkultur, die nur über spezielle Gaming-Kanäle erreichbar ist. Games konkurrieren heute selbstverständlich mit Streaming, Social Media, Sport und anderen Entertainment-Angeboten um Aufmerksamkeit.' }
+        ]
+      },
+      {
+        heading: '89 Prozent der jungen Erwachsenen spielen',
+        blocks: [
+          { type: 'p', text: 'Besonders deutlich wird die Relevanz bei jüngeren Zielgruppen. Die aktuellen Zahlen für Deutschland zeigen:' },
+          { type: 'list', items: ['16 bis 29 Jahre: 89 %', '30 bis 49 Jahre: 70 %', '50 bis 64 Jahre: 47 %', '65 Jahre und älter: 24 %'] },
+          { type: 'source', text: 'Quelle: Statista / Bitkom – Anteil der Computer- und Videospieler nach Altersgruppen in Deutschland, 2026', href: 'https://de.statista.com/statistik/daten/studie/315924/umfrage/anteil-der-computerspieler-in-deutschland-nach-alter/' },
+          { type: 'p', text: 'Wer junge Erwachsene erreichen möchte, bewegt sich mit Gaming also in einem Umfeld, das für fast neun von zehn Menschen dieser Altersgruppe grundsätzlich relevant ist. Gerade für Recruiting und Employer Branding ist das spannend.' },
+          { type: 'p', text: 'Denn Rankings, Challenges, Multiplayer, Achievements oder Highscores müssen dieser Zielgruppe nicht mehr grundsätzlich erklärt werden. Die Mechaniken sind gelernt. Das bedeutet natürlich nicht, dass jedes Unternehmen jetzt EA SPORTS FC auf seinem Messestand anbieten sollte. Aber es bedeutet: Spielerische digitale Mechanismen können für diese Zielgruppe einen sehr natürlichen Zugang schaffen.' }
+        ]
+      },
+      {
+        heading: 'Gaming endet nicht mit 29',
+        blocks: [
+          { type: 'p', text: 'Mindestens genauso spannend ist die Zahl direkt darunter: 70 Prozent der 30- bis 49-Jährigen spielen Computer- oder Videospiele. Damit greift die häufige Gleichung „Gaming = junge Zielgruppe“ längst zu kurz.' },
+          { type: 'p', text: 'Ein heute 35- oder 40-jähriger Mensch ist möglicherweise mit PlayStation, Nintendo, PC oder Xbox aufgewachsen. FIFA, Mario Kart, Counter-Strike, Need for Speed, Pokémon, GTA, NBA oder Driver waren für viele Menschen dieser Generation bereits ein selbstverständlicher Bestandteil ihrer Jugend.' },
+          { type: 'p', text: 'Heute entsteht daraus ein zusätzlicher Aktivierungsmechanismus: Nostalgie. Ein bekanntes Spiel, eine Retro-Konsole oder eine Challenge kann Erinnerungen hervorrufen und innerhalb weniger Sekunden einen emotionalen Zugang schaffen. Genau deshalb kann Gaming beispielsweise auch auf einer klassischen B2B-Fachmesse funktionieren – sofern Spiel, Zielgruppe und Marke zusammenpassen.' }
+        ]
+      },
+      {
+        heading: 'Der durchschnittliche Gamer ist 38,3 Jahre alt',
+        blocks: [
+          { type: 'p', text: 'Auch das Durchschnittsalter widerspricht dem klassischen Gamer-Klischee. 2026 liegt es in Deutschland bei 38,3 Jahren.' },
+          { type: 'source', text: 'Quelle: Statista – Durchschnittsalter der Computerspieler in Deutschland, 2026', href: 'https://de.statista.com/statistik/daten/studie/870626/umfrage/durchschnittsalter-der-computerspieler-in-deutschland/' },
+          { type: 'p', text: 'Nach dem Jahresreport 2026 des game – Verband der deutschen Games-Branche sind 79 Prozent der Spielenden mindestens 18 Jahre alt. Die größte Altersgruppe stellen mit 18 Prozent die Spielenden ab 60 Jahren.' },
+          { type: 'source', text: 'Quelle: game – Jahresreport 2026: Spielerinnen und Spieler in Deutschland', href: 'https://www.game.de/guides/jahresreport-der-deutschen-games-branche-2026/01-spielerinnen-und-spieler-in-deutschland/' },
+          { type: 'p', text: 'Gaming ist also nicht nur erwachsen geworden. Die Menschen, die mit Games groß geworden sind, haben das Medium mitgenommen. Für Marken ist das strategisch relevant: Gaming muss heute nicht mehr ausschließlich für klassische Jugendkommunikation gedacht werden.' },
+          { type: 'p', text: 'Es kann genauso interessant sein für:' },
+          { type: 'list', items: ['Recruiting und Employer Branding', 'Consumer Marketing', 'B2B-Events', 'Sponsoring-Aktivierungen', 'Messekommunikation', 'Community Building', 'interne Mitarbeiteraktivierung'] }
+        ]
+      },
+      {
+        heading: '39 oder 41 Millionen Gamer? Beides kann richtig sein',
+        blocks: [
+          { type: 'p', text: 'Neben den rund 39 Millionen aus der Bitkom-Erhebung begegnet einem aktuell auch die Zahl von 41,2 Millionen Gamerinnen und Gamern in Deutschland. Das ist kein Widerspruch, sondern Folge unterschiedlicher Grundgesamtheiten und Methoden.' },
+          { type: 'p', text: 'Der game-Verband betrachtet auf Basis von YouGov-Daten unter anderem Menschen zwischen 6 und 69 Jahren und kommt 2026 auf 41,2 Millionen Spielende. Bitkom betrachtet für die genannten 55 Prozent dagegen die Bevölkerung ab 16 Jahren.' },
+          { type: 'source', text: 'Quelle: game – Mehr als 41 Millionen Menschen in Deutschland spielen Games, 06.05.2026', href: 'https://www.game.de/mehr-als-41-millionen-menschen-in-deutschland-spielen-games/' },
+          { type: 'source', text: 'Quelle: Bitkom – Deutschland spielt: Rund 39 Millionen sind Gamer, 19.08.2026', href: 'https://www.bitkom.org/Presse/Presseinformation/Rund-39-Millionen-sind-Gamer' },
+          { type: 'lead', text: 'Für die kommunikative Einordnung lässt sich sauber festhalten: In Deutschland spielen rund 40 Millionen Menschen Games.' }
+        ]
+      },
+      {
+        heading: 'Gaming ist auch keine Männerdomäne mehr',
+        blocks: [
+          { type: 'p', text: 'Ein weiteres hartnäckiges Klischee betrifft das Geschlecht. Nach den aktuellen Daten des game-Verbands sind 46 Prozent der Spielenden Frauen und 54 Prozent Männer. Von einer rein männlichen Gaming-Zielgruppe kann damit keine Rede sein.' },
+          { type: 'source', text: 'Quelle: game – Jahresreport 2026: Spielerinnen und Spieler in Deutschland', href: 'https://www.game.de/guides/jahresreport-der-deutschen-games-branche-2026/01-spielerinnen-und-spieler-in-deutschland/' },
+          { type: 'p', text: 'Für Marken ist auch hier entscheidend: „Gamer“ ist keine ausreichende Zielgruppendefinition. Alter, Interessen, Plattformen, Genres, Lebenssituation und Nutzungsmotive unterscheiden sich teilweise erheblich.' },
+          { type: 'p', text: 'Gaming ist ein Kultur- und Medienraum. Innerhalb dieses Raums müssen Zielgruppen genauso präzise definiert werden wie in anderen Marketingkanälen.' }
+        ]
+      },
+      {
+        heading: 'Das Smartphone ist die größte Gaming-Plattform',
+        blocks: [
+          { type: 'p', text: 'Gaming bedeutet längst nicht mehr ausschließlich PC oder Konsole. Nach dem Jahresreport 2026 des game-Verbands verteilen sich die Nutzer in Deutschland unter anderem auf:' },
+          { type: 'list', items: ['Smartphone: 23,7 Mio.', 'Konsole: 22,1 Mio.', 'PC: rund 14 Mio.', 'Tablet: 9,9 Mio.'] },
+          { type: 'p', text: 'Rund 19 Millionen Menschen spielen auf mindestens zwei unterschiedlichen Geräten.' },
+          { type: 'source', text: 'Quelle: game – Jahresreport 2026: Spielerinnen und Spieler in Deutschland', href: 'https://www.game.de/guides/jahresreport-der-deutschen-games-branche-2026/01-spielerinnen-und-spieler-in-deutschland/' },
+          { type: 'p', text: 'Das ist insbesondere für Gamification interessant. Eine Markenaktivierung muss nicht zwangsläufig mit Gaming-Hardware beginnen. Viele Mechaniken können direkt über das eigene Smartphone funktionieren: QR-Code scannen, Challenge starten, Punkte sammeln, Ranking verfolgen oder an einem digitalen Gewinnspiel teilnehmen. Das reduziert Einstiegshürden und macht Aktivierungen leichter skalierbar.' }
+        ]
+      },
+      {
+        heading: 'Ein Blick auf die Games-Charts zeigt die Vielfalt',
+        blocks: [
+          { type: 'p', text: 'Auch die aktuell erfolgreichen Spiele zeigen, wie breit das Gaming-Ökosystem inzwischen ist. Im Juli 2026 führte Assassin’s Creed Black Flag Resynced die deutschen Verkaufscharts für PC- und Konsolenspiele an. Dahinter folgten EA SPORTS FC 26 und Grand Theft Auto V. In den Top 10 fanden sich außerdem unter anderem Red Dead Redemption 2, Battlefield 6, NBA 2K26 und Hogwarts Legacy.' },
+          { type: 'source', text: 'Quelle: Statista – Meistverkaufte Videospiele (PC und Konsole) in Deutschland, Juli 2026', href: 'https://de.statista.com/statistik/daten/studie/1375896/umfrage/meistverkaufte-pc-und-konsolenspiele-in-deutschland-monatlich/' },
+          { type: 'p', text: 'Genau diese Vielfalt ist für Marketingverantwortliche entscheidend. Die Gaming-Zielgruppe interessiert sich nicht automatisch für Fußball. Und ein Fußballfan interessiert sich nicht automatisch für eSport. Ein IT-affiner Fachbesucher kann auf eine digitale Skill-Challenge ansprechen, ohne jemals kompetitives Gaming verfolgt zu haben. Ein 40-jähriger Entscheider kann über ein Game aus seiner Jugend aktiviert werden. Ein 18-jähriger Bewerber wiederum möglicherweise über einen völlig anderen Titel oder eine Social-Gaming-Mechanik.' },
+          { type: 'lead', text: 'Gaming ist kein Targeting. Gaming ist ein Umfeld, innerhalb dessen Targeting stattfinden muss.' }
+        ]
+      },
+      {
+        heading: 'Auch wirtschaftlich ist Gaming längst ein Schwergewicht',
+        blocks: [
+          { type: 'p', text: 'Die gesellschaftliche Reichweite spiegelt sich auch wirtschaftlich wider. 2025 wurden in Deutschland mit Games, Gaming-Hardware und Online-Gaming-Services rund 9,4 Milliarden Euro umgesetzt. Gegenüber dem Vorjahr entspricht das einem Wachstum von vier Prozent. Deutschland ist laut game damit der größte Games-Markt Europas und der fünftgrößte weltweit.' },
+          { type: 'p', text: 'Davon entfielen:' },
+          { type: 'list', items: ['4,9 Mrd. Euro auf Games sowie In-Game- und In-App-Käufe', '3,4 Mrd. Euro auf Hardware und Zubehör', 'mehr als 1 Mrd. Euro auf Online-Gaming-Services'] },
+          { type: 'source', text: 'Quelle: game – Jahresreport der deutschen Games-Branche 2026', href: 'https://www.game.de/publikationen/jahresreport-2026/' },
+          { type: 'p', text: 'Gaming ist damit nicht nur kulturell relevant. Es ist ein etablierter Wirtschafts- und Entertainmentmarkt.' }
+        ]
+      },
+      {
+        heading: 'Was bedeuten die Zahlen für Marken?',
+        blocks: [
+          { type: 'p', text: 'Die Zahlen sind aus unserer Sicht kein Argument dafür, dass jetzt jedes Unternehmen zwangsläufig „etwas mit Gaming“ machen muss. Sie zeigen etwas anderes: Gaming sollte als potenzieller Kommunikations- und Aktivierungsraum ernst genommen werden.' },
+          { type: 'p', text: 'Wenn 89 Prozent der 16- bis 29-Jährigen und 70 Prozent der 30- bis 49-Jährigen zumindest gelegentlich spielen, lohnt es sich bei vielen Zielgruppen zumindest zu prüfen, ob ein Gaming- oder Gamification-Ansatz sinnvoll sein könnte.' },
+          { type: 'p', text: 'Dabei sollte der Prozess immer in dieser Reihenfolge stattfinden:' },
+          { type: 'steps', items: ['Zielgruppe verstehen', 'Kommunikationsziel definieren', 'Interessen und Touchpoints analysieren', 'passende Mechanik entwickeln', 'erst danach Technologie oder Game auswählen'] },
+          { type: 'p', text: 'Nicht: „Wir wollen etwas mit Gaming machen. Welches Spiel nehmen wir?“' },
+          { type: 'lead', text: 'Sondern: „Wir wollen diese Menschen erreichen. Welche Mechanik hilft uns dabei?“' }
+        ]
+      },
+      {
+        heading: 'Gaming, eSport und Gamification sind nicht dasselbe',
+        blocks: [
+          { type: 'p', text: 'Gaming beschreibt zunächst das Spielen digitaler Games.' },
+          { type: 'p', text: 'eSport setzt auf strukturierten, kompetitiven Wettbewerb in dafür geeigneten Games.' },
+          { type: 'p', text: 'Gamification übernimmt einzelne spieltypische Mechanismen wie Punkte, Rankings, Challenges oder Belohnungen und integriert sie in einen anderen Kontext.' },
+          { type: 'p', text: 'Für einen Messestand kann deshalb ein Reaktionsspiel besser funktionieren als ein eSport-Turnier. Für eine interne Mitarbeiter-Community kann dagegen eine Corporate-eSport-Liga sinnvoll sein. Im Recruiting kann eine mobile Gamification-Journey mit Highscore und Lead-Erfassung den stärksten Hebel liefern.' },
+          { type: 'p', text: 'Die Zahlen zeigen die Reichweite des Mediums. Die Strategie entscheidet, wie diese Reichweite sinnvoll genutzt wird.' }
+        ]
+      },
+      {
+        heading: 'Fazit: Gaming ist Mainstream – die Zielgruppe bleibt individuell',
+        blocks: [
+          { type: 'list', items: ['Rund 40 Millionen Menschen spielen in Deutschland Games.', '55 Prozent der Menschen ab 16 Jahren spielen zumindest gelegentlich.', 'Bei den 16- bis 29-Jährigen sind es 89 Prozent.', 'Bei den 30- bis 49-Jährigen immer noch 70 Prozent.', 'Das Durchschnittsalter liegt bei 38,3 Jahren.', 'Und der deutsche Games-Markt ist inzwischen Milliarden schwer.'] },
+          { type: 'lead', text: 'Die wichtigste Erkenntnis lautet deshalb nicht: „Alle sind Gamer.“ Sondern: Gaming erreicht heute sehr unterschiedliche Menschen über nahezu alle Generationen hinweg.' },
+          { type: 'p', text: 'Für Unternehmen eröffnet das enorme Möglichkeiten – vorausgesetzt, Gaming wird nicht als pauschaler Trend eingesetzt, sondern passend zu Zielgruppe, Marke und Zielsetzung.' }
+        ]
+      }
+    ],
+    cta: {
+      heading: 'Passt Gaming zu deiner Zielgruppe?',
+      paragraphs: [
+        'Du möchtest wissen, ob und wie sich Gaming, eSport oder Gamification für deine Marke, dein Recruiting oder deine nächste Aktivierung einsetzen lässt?',
+        'Wir betrachten zuerst Zielgruppe und Zielsetzung und entwickeln daraus das passende Format – von der einzelnen Gamification-Mechanik bis zur digitalen Plattform oder vollständigen Live-Aktivierung.'
+      ],
+      label: 'Projekt besprechen',
+      subject: 'Gaming in Deutschland 2026'
+    }
+  },
   {
     slug: 'gamification-messestand',
     // Der Artikel lag bis eben unter 'gamification-im-marketing'. Alte Links

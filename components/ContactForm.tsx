@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { HubSpotForm } from './HubSpotForm';
 import { Reveal, RevealText } from './Reveal';
 import { DUR, EASE_REVEAL_CSS, STAGGER } from './motion';
-import { SECTION_PADDING } from './spacing';
+import { SECTION_PADDING, SECTION_HEADING } from './spacing';
 
 // The three steps between a first message and a project. Numbered because the
 // order is the point: nobody is asked to commit to anything before step three.
@@ -65,7 +65,7 @@ export const ContactForm: React.FC = () => {
               as="h2"
               by="word"
               text="Lass uns sprechen."
-              className="text-5xl md:text-8xl font-black mb-6 tracking-tighter text-[#0b0f2a] uppercase"
+              className={`${SECTION_HEADING} mb-6 text-[#0b0f2a] uppercase`}
             />
             <div
               className="max-w-3xl mx-auto"

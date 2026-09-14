@@ -6,10 +6,15 @@
 // haette man eine davon vergessen -- und eine kanonische Adresse, die auf die
 // alte Domain zeigt, weist Suchmaschinen genau dorthin zurueck.
 //
-// Steht die Umfirmierung auf gg-manufaktur.de an, ist es diese eine Zeile.
+// Seit der Umfirmierung ist das gg-manufaktur.de. Vorher stand hier
+// esport-manufaktur.de -- und damit sagten canonical, og:url, die Sitemap und
+// die JSON-LD-Bloecke einer Suchmaschine, die massgebliche Fassung dieser
+// Seite liege auf einer anderen Domain als der, unter der sie erreichbar ist.
+// Das ist der teuerste Fehler, den man an dieser Stelle machen kann: Google
+// folgt der Angabe und indexiert die genannte Adresse, nicht die aufgerufene.
 // ---------------------------------------------------------------------------
 
-export const SITE_URL = 'https://esport-manufaktur.de';
+export const SITE_URL = 'https://gg-manufaktur.de';
 
 /** Absolute Adresse aus einem Pfad -- fuer canonical, og:url und die Sitemap. */
 export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;

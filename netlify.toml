@@ -119,6 +119,34 @@
   force = true
 
 # ---------------------------------------------------------------------------
+# Die alte Domain
+# ---------------------------------------------------------------------------
+# Seit der Umfirmierung ist gg-manufaktur.de die maszgebliche Adresse. Solange
+# esport-manufaktur.de dieselben Inhalte ausliefert, konkurrieren beide um
+# dieselben Suchergebnisse -- und die Bewertung, die die alte Domain ueber
+# Jahre gesammelt hat, kommt bei der neuen nie an.
+#
+# Ein 301 fuehrt beides zusammen: die alte Adresse bleibt erreichbar, sagt aber
+# "das hier ist umgezogen" und gibt ihre Bewertung an das Ziel weiter.
+#
+# Die Regel greift nur, wenn esport-manufaktur.de auf diese Netlify-Seite
+# zeigt. Ist die Domain dort als Alias eingetragen und gg-manufaktur.de als
+# primaere Domain gesetzt, leitet Netlify ohnehin um und diese Regel ist
+# lediglich die Fassung, die im Repository nachlesbar ist. Zeigt die alte
+# Domain woanders hin, laeuft sie leer -- dann gehoert der 301 dorthin.
+[[redirects]]
+  from = "https://esport-manufaktur.de/*"
+  to = "https://gg-manufaktur.de/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.esport-manufaktur.de/*"
+  to = "https://gg-manufaktur.de/:splat"
+  status = 301
+  force = true
+
+# ---------------------------------------------------------------------------
 # Fehlende Medien sind ein Fehler, keine Seite
 # ---------------------------------------------------------------------------
 # Das hier war die teuerste Zeile der Datei -- durch das, was sie *nicht* tat.
