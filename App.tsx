@@ -352,11 +352,17 @@ export default function App() {
   // Bildlauf des Browsers. Auf jedem Geraet dasselbe, ohne Sonderweg, ohne
   // etwas von uns dazwischen.
   //
-  // Weist ein Blocker das neue Fenster ab, gehen wir eben hier hin -- besser
-  // die Seite verlassen als gar nicht buchen koennen.
+  // Ueber einen Verweis statt window.open: mit "noopener" liefert window.open
+  // immer null zurueck, auch wenn der Tab aufging -- der Ersatzweg
+  // "location.href = ..." hat deshalb jedes Mal auch die Seite selbst auf die
+  // Terminseite geschickt. Ein Klick auf einen Verweis mit target=_blank wird
+  // von keinem Blocker abgewiesen und laesst diese Seite, wo sie ist.
   const openBooking = () => {
-    const tab = window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
-    if (!tab) window.location.href = BOOKING_URL;
+    const link = document.createElement('a');
+    link.href = BOOKING_URL;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.click();
   };
 
   // Same latching as the booking modal: its chunk never loads for a visitor who
@@ -613,7 +619,7 @@ export default function App() {
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
-        {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
+        {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (

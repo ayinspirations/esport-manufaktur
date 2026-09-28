@@ -15,6 +15,7 @@ import {
   Boxes
 } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { ExpandingCTA } from './ui/expanding-cta';
 import { BLOCK_GAP } from './spacing';
 import { asset } from './site';
 import { useDocumentHead } from '../hooks/useDocumentHead';
@@ -30,6 +31,7 @@ import { headFor, serviceSchema } from './pageMeta';
 // ---------------------------------------------------------------------------
 
 interface EsportTurnierPageProps {
+  onOpenBooking?: () => void;
   onOpenContact?: (subject?: string) => void;
   scrollToSection: (id: string) => void;
   onNavigate: (page: string) => void;
@@ -106,24 +108,7 @@ const REFERENZEN: { name: string; slug?: string }[] = [
   { name: 'Hagebau', slug: 'hagebau' }
 ];
 
-/** Die weisse Pille mit Pfeil aus der Vorlage. */
-const PillCTA: React.FC<{ label: string; onClick: () => void; location: string }> = ({ label, onClick, location }) => (
-  <button
-    onClick={onClick}
-    data-track="contact_click"
-    data-track-label="turnier_projekt_besprechen"
-    data-track-location={location}
-    data-track-destination="kontaktformular"
-    className="spring group inline-flex items-center gap-4 rounded-full bg-white pl-6 pr-1.5 py-1.5 text-[#0b0f2a] text-xs md:text-sm font-black uppercase tracking-wider"
-  >
-    {label}
-    <span className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#0e958e] text-white flex items-center justify-center transition-transform duration-500 group-hover:rotate-45">
-      <ArrowUpRight className="w-4 h-4" />
-    </span>
-  </button>
-);
-
-export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenContact, scrollToSection, onNavigate }) => {
+export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBooking, onOpenContact, scrollToSection, onNavigate }) => {
   useDocumentHead(headFor(PATH));
 
   // Leistung als strukturierte Daten. Beim direkten Aufruf liegt der Block
@@ -181,7 +166,7 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenCont
             Online. Offline. Hybrid.
           </Reveal>
           <Reveal delay={0.44} className="mt-8 md:mt-10">
-            <PillCTA label="Turnier Projekt besprechen" onClick={requestProject} location="turnier_hero" />
+            <ExpandingCTA label="Turnier Projekt besprechen" tone="light" onBooking={() => onOpenBooking?.()} onContact={requestProject} />
           </Reveal>
         </div>
       </section>
@@ -352,7 +337,7 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenCont
             Format und übernehmen auf Wunsch Strategie, Plattform, Technik und Umsetzung.
           </p>
           <div className="mt-8 md:mt-10">
-            <PillCTA label="Turnier Projekt besprechen" onClick={requestProject} location="turnier_abschluss" />
+            <ExpandingCTA label="Turnier Projekt besprechen" tone="light" onBooking={() => onOpenBooking?.()} onContact={requestProject} />
           </div>
         </div>
       </section>
