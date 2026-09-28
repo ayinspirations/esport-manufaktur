@@ -73,10 +73,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                   <li><a href="#home" onClick={(e) => handleNav(e, 'home')} className="hover:text-emerald-700 transition-colors">Startseite</a></li>
                   <li><a href="/esport-turnier-organisieren" onClick={(e) => handleNav(e, 'esport-turnier-organisieren')} className="hover:text-emerald-700 transition-colors">eSport Turnier organisieren</a></li>
                   <li><a href="/white-label-turnierplattform" onClick={(e) => handleNav(e, 'white-label-turnierplattform')} className="hover:text-emerald-700 transition-colors">White-Label Turnierplattform</a></li>
-                  <li><a href="/livestreams" onClick={(e) => handleNav(e, 'livestreams')} className="hover:text-emerald-700 transition-colors">Livestreams</a></li>
-                  <li><a href="/landingpages" onClick={(e) => handleNav(e, 'landingpages')} className="hover:text-emerald-700 transition-colors">Landingpages</a></li>
-                  <li><a href="/gaming-areas" onClick={(e) => handleNav(e, 'gaming-areas')} className="hover:text-emerald-700 transition-colors">Gaming Areas</a></li>
-                  <li><a href="/eventmodule" onClick={(e) => handleNav(e, 'eventmodule')} className="hover:text-emerald-700 transition-colors">Eventmodule</a></li>
                   <li><a href="#blog" onClick={(e) => { e.preventDefault(); scrollToSection('blog'); }} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>

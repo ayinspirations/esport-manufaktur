@@ -18,7 +18,7 @@ import {
 import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { headFor, serviceSchema } from './pageMeta';
-import { Chips, ClosingCTA, DarkPanel, ImageCard, MoneyHero, Section, Tile } from './money/ui';
+import { CellGrid, CheckList, ClosingCTA, DarkPanel, HeroTile, ImageCard, InlineList, Section, Tile, TileHero } from './money/ui';
 
 // ---------------------------------------------------------------------------
 // Money Page: White-Label Turnierplattform
@@ -30,6 +30,15 @@ interface WhiteLabelPageProps {
 }
 
 const PATH = '/white-label-turnierplattform';
+
+// Die Kacheln im Kopf: wofuer die Plattform eingesetzt wird. Die gewaehlte
+// Kachel wird zum Hintergrund. Bilder folgen; bis dahin Aufnahmen aus Cases.
+const HERO_TILES: HeroTile[] = [
+  { id: 'esport', title: 'Gaming & eSport', text: 'Community Cups, Ligen, Qualifier und Live-Finals.', image: '/images/showcase/sonax-rocket-league.jpg' },
+  { id: 'sport', title: 'Sport', text: 'Dart, Golf, Padel, Fußball und weitere Competition-Formate.', image: '/images/interwetten.jpeg' },
+  { id: 'events', title: 'Events & Messen', text: 'Registrierung, Challenges und Lead-Gen direkt auf der Fläche.', image: '/images/showcase/hhn-gamingland-meetit.jpg' },
+  { id: 'recruiting', title: 'Recruiting & Markenaktivierung', text: 'Gamifizierte Candidate Journeys und Aktivierungen im Look deiner Marke.', image: '/images/Hagebau1.jpg' }
+];
 
 const BRANDING = [
   'Eigene Farben',
@@ -198,7 +207,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
 
   return (
     <div className="w-full bg-[#badeda]">
-      <MoneyHero
+      <TileHero
         eyebrow="White-Label Turnierplattform"
         title="Deine Marke. Dein Turnier."
         accent="Deine Plattform."
@@ -214,9 +223,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
             </p>
           </>
         }
-        tagline="Für Gaming. eSport. Sport. Events. Recruiting. Markenaktivierung."
-        image="/images/showcase/sonax-rocket-league.jpg"
-        imageAlt="Gebrandete Turnierplattform bei einer Rocket-League-Aktivierung"
+        tiles={HERO_TILES}
         label="Plattform Projekt besprechen"
         onBooking={booking}
         onContact={contact}
@@ -224,8 +231,9 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
 
       {/* ============ Kein Fremdtool ============ */}
       <Section
-        title="Kein Fremdtool. Kein"
-        accent="Plattform-Branding."
+        title="Kein Fremdtool."
+        accent="Kein Plattform-Branding."
+        accentBreak
         intro={
           <>
             <p>Viele Turnierlösungen funktionieren nach demselben Prinzip: Ein externer Anbieter stellt die Infrastruktur – und deine Marke wird darin integriert.</p>
@@ -234,7 +242,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         }
       >
         <Label>Die Plattform wird auf dein Projekt zugeschnitten</Label>
-        <Chips items={BRANDING} />
+        <CheckList items={BRANDING} columns={4} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold max-w-3xl">
           Kein sichtbares Drittanbieter-Branding. Keine standardisierte Turnierplattform mit aufgesetztem Logo.
         </Reveal>
@@ -244,6 +252,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
       <Section
         title="Entwickelt von uns."
         accent="Gehostet in Deutschland."
+        accentBreak
         intro="Unsere Plattform ist eigenentwickelt und wird unabhängig von klassischen Turnierplattformen betrieben."
       >
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -262,10 +271,10 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
             <DarkPanel className="h-full">
               <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter mb-3">Registrierung</h3>
               <p className="text-white/65 font-medium mb-6">Individuelle Registrierungsflows für:</p>
-              <Chips items={REG_GRUPPEN} dark />
-              <div className="mt-8">
+              <CheckList items={REG_GRUPPEN} dark />
+              <div className="mt-8 pt-6 border-t border-white/10">
                 <Label dark>Optional inklusive</Label>
-                <p className="text-white/75 text-sm md:text-base font-medium leading-relaxed">{REG_OPTIONEN.join(' · ')}</p>
+                <CheckList items={REG_OPTIONEN} dark />
               </div>
             </DarkPanel>
           </Reveal>
@@ -275,8 +284,8 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
               <p className="text-white/65 font-medium mb-6">
                 Wir können unterschiedlichste Wettbewerbslogiken projektspezifisch abbilden. Zum Beispiel:
               </p>
-              <Chips items={MODI} dark />
-              <p className="mt-8 text-white/75 text-sm md:text-base font-medium">
+              <CheckList items={MODI} dark />
+              <p className="mt-8 pt-6 border-t border-white/10 text-white/75 text-sm md:text-base font-medium">
                 Auch komplexere Kombinationen können projektbezogen umgesetzt werden.
               </p>
             </DarkPanel>
@@ -294,7 +303,8 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
             Die Plattform ist aus dem Gaming- und eSport-Umfeld entstanden. Dementsprechend eignet sie sich für praktisch
             alle gängigen Wettbewerbstitel. Beispielsweise:
           </p>
-          <Chips items={[...GAMES, 'und weitere Titel']} />
+          <InlineList items={GAMES} />
+          <p className="mt-2 text-slate-600 font-medium">und weitere Titel.</p>
           <p className="mt-6 text-[#0b0f2a] font-bold">
             Von kleinen Community Cups bis zu mehrstufigen Qualifikationen und großen Live-Finals.
           </p>
@@ -307,7 +317,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
             Die technische Logik hinter einem Turnier ist nicht an Gaming gebunden. Deshalb können wir dieselbe Plattform
             auch für klassische Sport- und Competition-Formate einsetzen. Zum Beispiel:
           </p>
-          <Chips items={SPORT} />
+          <InlineList items={SPORT} />
           <p className="mt-6 text-[#0b0f2a] font-bold">
             Ob Match, Runde, Qualifier, Score oder Ranking – die Wettbewerbslogik wird an das Projekt angepasst.
           </p>
@@ -329,14 +339,14 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
           <Reveal>
             <Tile title="Lead-Generierung" text="Registrierungsflows können gezielt für Lead-Gen aufgebaut werden. Beispielsweise:">
               <div className="mt-5">
-                <Chips items={LEADS} />
+                <CheckList items={LEADS} />
               </div>
             </Tile>
           </Reveal>
           <Reveal delay={0.08}>
             <Tile title="Gamification" text="Zusätzliche Mechaniken können direkt in die Plattform integriert werden. Zum Beispiel:">
               <div className="mt-5">
-                <Chips items={GAMIFICATION} />
+                <CheckList items={GAMIFICATION} />
               </div>
             </Tile>
           </Reveal>
@@ -375,9 +385,10 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
       <Section
         title="Ein Account."
         accent="Unterschiedliche Experiences."
+        accentBreak
         intro="Über individuelle Rollen und Berechtigungen können unterschiedliche Nutzergruppen innerhalb derselben Plattform arbeiten. Beispielsweise:"
       >
-        <Chips items={ROLLEN} />
+        <InlineList items={ROLLEN} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold">
           Damit kann die Plattform weit über eine reine Teilnehmerseite hinausgehen.
         </Reveal>
@@ -404,7 +415,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         accent="in der Plattform."
         intro="Teilnehmer müssen nicht zwischen verschiedenen Tools wechseln. Wir können projektspezifisch Kommunikationsfunktionen integrieren, zum Beispiel:"
       >
-        <Chips items={KOMMUNIKATION} />
+        <CheckList items={KOMMUNIKATION} columns={4} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold">
           Dadurch bleibt die komplette User Journey innerhalb der gebrandeten Plattform.
         </Reveal>
@@ -450,14 +461,14 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
 
       {/* ============ Daten ============ */}
       <Section title="Daten, die" accent="weiterarbeiten." intro="Je nach Projekt können unter anderem ausgewertet werden:">
-        <Chips items={KPIS} />
+        <CellGrid items={KPIS} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold max-w-3xl">
           Daten können live exportiert oder über entsprechende Schnittstellen weitergegeben werden.
         </Reveal>
       </Section>
 
       {/* ============ Einsatzmöglichkeiten ============ */}
-      <Section title="Eine Plattform." accent="Viele Einsatzmöglichkeiten.">
+      <Section title="Eine Plattform." accent="Viele Einsatzmöglichkeiten." accentBreak>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {EINSATZ.map((c, i) => (
             <Reveal key={c.title} delay={Math.min(i, 5) * 0.05}>

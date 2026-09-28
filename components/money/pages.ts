@@ -12,7 +12,14 @@ export interface MoneyPageLink {
   text: string;
 }
 
-export const MONEY_PAGES: MoneyPageLink[] = [
+/**
+ * Fertig gebaut, aber noch nicht freigegeben: nicht erreichbar, nicht
+ * verlinkt, nicht in Sitemap oder Prerender. Zum Freischalten hier entfernen
+ * und in pageMeta.json "hidden" loeschen.
+ */
+export const HIDDEN_MONEY_PAGES = ['livestreams', 'landingpages', 'gaming-areas', 'eventmodule'];
+
+const ALL_MONEY_PAGES: MoneyPageLink[] = [
   {
     page: 'esport-turnier-organisieren',
     eyebrow: 'eSport Turniere',
@@ -50,6 +57,8 @@ export const MONEY_PAGES: MoneyPageLink[] = [
     text: 'Gaming Modul, Cube, Bühne, Fotobox, Simulatoren, VR und mehr – Maßanfertigungen aus eigener Entwicklung, frei kombinierbar.'
   }
 ];
+
+export const MONEY_PAGES = ALL_MONEY_PAGES.filter((m) => !HIDDEN_MONEY_PAGES.includes(m.page));
 
 const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';

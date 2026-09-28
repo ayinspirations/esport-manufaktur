@@ -26,6 +26,8 @@ const setMeta = (html, attr, key, value) => {
 
 let count = 0;
 for (const [path, meta] of Object.entries(PAGES)) {
+  // Noch nicht freigegebene Seiten bekommen keine eigene Datei.
+  if (meta.hidden) continue;
   const url = `${SITE}${path}`;
   let html = shell.replace(/<title>[^<]*<\/title>/, `<title>${esc(meta.title)}</title>`);
   html = setMeta(html, 'name', 'description', meta.description);

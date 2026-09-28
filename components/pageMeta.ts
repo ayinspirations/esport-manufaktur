@@ -17,6 +17,7 @@ export interface PageMeta {
   ogImage?: string;
   service?: { name: string; serviceType: string; description: string };
   faq?: { q: string; a: string }[];
+  hidden?: boolean;
 }
 
 export const PAGE_META = pageMeta as Record<string, PageMeta>;

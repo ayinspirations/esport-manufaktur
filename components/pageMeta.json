@@ -58,7 +58,8 @@
         "q": "Was passiert mit dem Video-Material nach dem Event?",
         "a": "Du erhältst die Aufzeichnung des Streams. Auf Wunsch schneiden wir daraus Highlights, Clips und Social-Media-Formate, damit das Event auch nach dem Livestream weiterwirkt."
       }
-    ]
+    ],
+    "hidden": true
   },
   "/landingpages": {
     "title": "Gaming-Landingpages für Events & Turniere | GG MANUFAKTUR",
@@ -87,7 +88,8 @@
         "q": "Wie schnell ist eine solche Seite einsatzbereit?",
         "a": "Das hängt vom Umfang ab. Eine Event-Landingpage auf Basis unserer bestehenden Module ist in der Regel innerhalb weniger Wochen live – sprich uns früh an, dann planen wir den Zeitplan gemeinsam."
       }
-    ]
+    ],
+    "hidden": true
   },
   "/gaming-areas": {
     "title": "Gaming Areas für Events, Center & Messen | GG MANUFAKTUR",
@@ -120,7 +122,8 @@
         "q": "Für welche Zielgruppen eignet sich eine Gaming Area?",
         "a": "Für nahezu alle: Familien und Kinder im Center, Fans in der Fanzone, Mitarbeitende beim Firmenevent oder Fachbesucher auf der Messe. Spielauswahl und Mechaniken stimmen wir auf deine Zielgruppe ab."
       }
-    ]
+    ],
+    "hidden": true
   },
   "/eventmodule": {
     "title": "Eventmodule für Gaming & eSport Events | GG MANUFAKTUR",
@@ -131,6 +134,7 @@
       "name": "Eventmodule für Gaming & eSport Events",
       "serviceType": "Vermietung von Gaming-Eventmodulen",
       "description": "Maßgefertigte, individuell brandbare Eventmodule aus eigener Entwicklung – Gaming Modul, Gaming Cube, Gaming Bühne, interaktive Fotobox, Simulatoren, Mario Kart Live Circuit, Retro Gaming, Tresor und VR Experience – frei kombinierbar für Turniere, Messen, Gaming Areas und Fan Zones."
-    }
+    },
+    "hidden": true
   }
 }

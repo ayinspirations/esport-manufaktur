@@ -18,6 +18,7 @@ import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
 import { BOOKING_URL } from './components/site';
+import { HIDDEN_MONEY_PAGES } from './components/money/pages';
 import { startAnalytics } from './components/analytics';
 
 // ---------------------------------------------------------------------------
@@ -259,16 +260,16 @@ const resolveRoute = (): Route => {
   if (path === '/white-label-turnierplattform') {
     return { page: 'white-label-turnierplattform' };
   }
-  if (path === '/livestreams') {
+  if (path === '/livestreams' && !HIDDEN_MONEY_PAGES.includes('livestreams')) {
     return { page: 'livestreams' };
   }
-  if (path === '/landingpages') {
+  if (path === '/landingpages' && !HIDDEN_MONEY_PAGES.includes('landingpages')) {
     return { page: 'landingpages' };
   }
-  if (path === '/gaming-areas') {
+  if (path === '/gaming-areas' && !HIDDEN_MONEY_PAGES.includes('gaming-areas')) {
     return { page: 'gaming-areas' };
   }
-  if (path === '/eventmodule') {
+  if (path === '/eventmodule' && !HIDDEN_MONEY_PAGES.includes('eventmodule')) {
     return { page: 'eventmodule' };
   }
   if (path === '/blog') {
