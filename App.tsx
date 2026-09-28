@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
@@ -104,6 +104,7 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const BlogPage = lazyRoute(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const NotFoundPage = lazyRoute(() => import('./components/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
@@ -190,7 +191,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -244,6 +245,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/kontakt') {
     return { page: 'kontakt' };
+  }
+  if (path === '/blog') {
+    return { page: 'blog' };
   }
   // Auch ein Best Case lebt unter einer eigenen Adresse. Hinter einer Raute
   // ist er fuer eine Suchmaschine kein eigenes Dokument, sondern ein Anker in
@@ -424,6 +428,8 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
     } else if (page === 'webdesign') {
       window.history.pushState(null, '', '/webdesign');
+    } else if (page === 'blog') {
+      window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
       window.history.pushState(null, '', '/kontakt');
     } else if (CASE_SLUGS.includes(page)) {
@@ -435,7 +441,13 @@ export default function App() {
     }
   };
 
-  const openBlogPost = (slug: string) => navigateTo(slug);
+  // Wer einen Artikel von der Blog-Seite aus oeffnet, kommt mit "Zurueck"
+  // auch dorthin zurueck -- nicht auf die Startseite.
+  const cameFromBlogPage = useRef(false);
+  const openBlogPost = (slug: string) => {
+    cameFromBlogPage.current = activePage === 'blog';
+    navigateTo(slug);
+  };
 
   /**
    * Switching service inside the services page.
@@ -594,11 +606,12 @@ export default function App() {
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
+        {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail
             slug={activePage}
-            onBack={() => scrollToSection('blog')}
+            onBack={() => (cameFromBlogPage.current ? navigateTo('blog') : scrollToSection('blog'))}
             onOpenBooking={openBooking}
             onOpenContact={openContact}
           />
