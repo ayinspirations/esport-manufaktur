@@ -168,22 +168,14 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           <Reveal duration={0.6} className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-5 md:mb-7">
             eSport Turniere
           </Reveal>
-          <h1 className="text-[clamp(40px,7vw,96px)] font-black leading-[0.9] tracking-tighter uppercase text-white max-w-4xl">
-            <RevealText as="span" by="word" text="eSport Turnier " delay={0.05} />
-            <RevealText as="span" by="word" text="organisieren." delay={0.18} className="text-[#2dd4bf] italic" />
-            <span className="sr-only"> – von der Idee bis zum Live-Finale</span>
+          <h1 className="text-[clamp(32px,7vw,96px)] font-black leading-[0.9] tracking-tighter uppercase text-white max-w-4xl">
+            {/* Der Suchbegriff steht fuer Suchmaschinen mit in der H1. */}
+            <span className="sr-only">eSport Turnier organisieren: </span>
+            <RevealText as="span" by="word" text="Dein Partner für" delay={0.05} className="block" />
+            {' '}
+            <RevealText as="span" by="word" text="eSport Turniere." delay={0.18} className="block text-[#2dd4bf] italic" />
           </h1>
-          <Reveal as="p" delay={0.26} className="mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight">
-            Von der Idee bis zum Live-Finale.
-          </Reveal>
-          {/* Fliesstext und Formate stehen auf dem Telefon unter dem Kopf (siehe
-              unten) -- im Hero waere es dort zu voll. */}
-          <Reveal as="p" delay={0.32} className="hidden sm:block mt-3 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight">
-            Wir konzipieren und realisieren eSport Turniere für Marken, Unternehmen, Vereine und Events. Von der
-            digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale übernehmen wir alle relevanten
-            Bausteine.
-          </Reveal>
-          <Reveal as="p" delay={0.38} className="hidden sm:block mt-4 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
+          <Reveal as="p" delay={0.3} className="mt-5 md:mt-7 text-white font-black uppercase tracking-[0.2em] text-sm md:text-lg">
             Online. Offline. Hybrid.
           </Reveal>
           <Reveal delay={0.44} className="mt-8 md:mt-10">
@@ -192,14 +184,17 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         </div>
       </section>
 
-      {/* Nur Telefon: der Einleitungstext aus dem Kopf */}
-      <div className={`sm:hidden ${CONTAINER} pt-12`}>
-        <p className="text-slate-600 text-base font-medium leading-relaxed">
+      {/* ============ Einleitung: was wir machen ============ */}
+      <section className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <h2 className={H2}>
+          <span className="block">eSport Turnier organisieren.</span>
+          <span className="block text-[#0e958e] italic">Von der Idee bis zum Live-Finale.</span>
+        </h2>
+        <Reveal as="p" delay={0.08} className="mt-5 text-slate-600 text-base md:text-lg font-medium leading-relaxed max-w-3xl">
           Wir konzipieren und realisieren eSport Turniere für Marken, Unternehmen, Vereine und Events. Von der digitalen
           Anmeldung über Turniermanagement und Technik bis zum Live-Finale übernehmen wir alle relevanten Bausteine.
-        </p>
-        <p className="mt-4 text-[#0e958e] font-black uppercase tracking-[0.2em] text-xs">Online. Offline. Hybrid.</p>
-      </div>
+        </Reveal>
+      </section>
 
       {/* ============ Mehr als nur ein Turnier ============ */}
       <section className={`${CONTAINER} ${BLOCK_GAP}`}>
