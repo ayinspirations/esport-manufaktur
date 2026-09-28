@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
@@ -104,6 +104,9 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const EsportTurnierPage = lazyRoute(() => import('./components/EsportTurnierPage').then(m => ({ default: m.EsportTurnierPage })));
+const BlogPage = lazyRoute(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
+const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const NotFoundPage = lazyRoute(() => import('./components/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 const CookiePopup = lazyRoute(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
@@ -189,7 +192,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -240,6 +243,16 @@ const resolveRoute = (): Route => {
   }
   if (path === '/webdesign') {
     return { page: 'webdesign' };
+  }
+  if (path === '/kontakt') {
+    return { page: 'kontakt' };
+  }
+  // Money Pages liegen direkt unter der Wurzel, die Adresse ist der Suchbegriff.
+  if (path === '/esport-turnier-organisieren') {
+    return { page: 'esport-turnier-organisieren' };
+  }
+  if (path === '/blog') {
+    return { page: 'blog' };
   }
   // Auch ein Best Case lebt unter einer eigenen Adresse. Hinter einer Raute
   // ist er fuer eine Suchmaschine kein eigenes Dokument, sondern ein Anker in
@@ -339,11 +352,17 @@ export default function App() {
   // Bildlauf des Browsers. Auf jedem Geraet dasselbe, ohne Sonderweg, ohne
   // etwas von uns dazwischen.
   //
-  // Weist ein Blocker das neue Fenster ab, gehen wir eben hier hin -- besser
-  // die Seite verlassen als gar nicht buchen koennen.
+  // Ueber einen Verweis statt window.open: mit "noopener" liefert window.open
+  // immer null zurueck, auch wenn der Tab aufging -- der Ersatzweg
+  // "location.href = ..." hat deshalb jedes Mal auch die Seite selbst auf die
+  // Terminseite geschickt. Ein Klick auf einen Verweis mit target=_blank wird
+  // von keinem Blocker abgewiesen und laesst diese Seite, wo sie ist.
   const openBooking = () => {
-    const tab = window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
-    if (!tab) window.location.href = BOOKING_URL;
+    const link = document.createElement('a');
+    link.href = BOOKING_URL;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.click();
   };
 
   // Same latching as the booking modal: its chunk never loads for a visitor who
@@ -420,6 +439,12 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
     } else if (page === 'webdesign') {
       window.history.pushState(null, '', '/webdesign');
+    } else if (page === 'esport-turnier-organisieren') {
+      window.history.pushState(null, '', '/esport-turnier-organisieren');
+    } else if (page === 'blog') {
+      window.history.pushState(null, '', '/blog');
+    } else if (page === 'kontakt') {
+      window.history.pushState(null, '', '/kontakt');
     } else if (CASE_SLUGS.includes(page)) {
       window.history.pushState(null, '', `/best-cases/${page}`);
     } else if (blogSlugs.includes(page)) {
@@ -429,7 +454,13 @@ export default function App() {
     }
   };
 
-  const openBlogPost = (slug: string) => navigateTo(slug);
+  // Wer einen Artikel von der Blog-Seite aus oeffnet, kommt mit "Zurueck"
+  // auch dorthin zurueck -- nicht auf die Startseite.
+  const cameFromBlogPage = useRef(false);
+  const openBlogPost = (slug: string) => {
+    cameFromBlogPage.current = activePage === 'blog';
+    navigateTo(slug);
+  };
 
   /**
    * Switching service inside the services page.
@@ -587,11 +618,14 @@ export default function App() {
         {activePage === 'meine-geschichte' && <MeineGeschichte onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
+        {activePage === 'kontakt' && <KontaktPage />}
+        {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
+        {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail
             slug={activePage}
-            onBack={() => scrollToSection('blog')}
+            onBack={() => (cameFromBlogPage.current ? navigateTo('blog') : scrollToSection('blog'))}
             onOpenBooking={openBooking}
             onOpenContact={openContact}
           />
