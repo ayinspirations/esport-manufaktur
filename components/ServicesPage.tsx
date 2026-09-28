@@ -29,6 +29,22 @@ interface ServicesPageProps {
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
+
+/** Money Pages, die von hier aus verlinkt werden. */
+const MONEY_PAGES = [
+  {
+    page: 'esport-turnier-organisieren',
+    eyebrow: 'eSport Turniere',
+    title: 'eSport Turnier organisieren',
+    text: 'Von der digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale – online, offline oder hybrid.'
+  },
+  {
+    page: 'white-label-turnierplattform',
+    eyebrow: 'Plattform',
+    title: 'White-Label Turnierplattform',
+    text: 'Deine Marke. Dein Turnier. Deine Plattform. Registrierung, Brackets, Lead-Gen und Gamification im Look & Feel deiner Marke.'
+  }
+];
 /** Das Sidebar-Layout darf breiter laufen: es traegt zwei Spalten statt einer. */
 const WIDE_CONTAINER = 'max-w-[1440px] mx-auto px-6 md:px-14';
 
@@ -563,20 +579,21 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       {/* Money Pages: Leistungen mit eigener Seite je Suchbegriff. Hier
           verlinkt, damit sie nicht nur ueber die Sitemap erreichbar sind. */}
-      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
-        <a
-          href="/esport-turnier-organisieren"
-          onClick={(e) => { e.preventDefault(); onNavigate('esport-turnier-organisieren'); }}
-          className="group block tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
-        >
-          <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">eSport Turniere</span>
-          <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
-            eSport Turnier organisieren <span className="text-[#2dd4bf]">→</span>
-          </span>
-          <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">
-            Von der digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale – online, offline oder hybrid.
-          </span>
-        </a>
+      <div className={`${CONTAINER} ${BLOCK_GAP} grid md:grid-cols-2 gap-4`}>
+        {MONEY_PAGES.map((m) => (
+          <a
+            key={m.page}
+            href={`/${m.page}`}
+            onClick={(e) => { e.preventDefault(); onNavigate(m.page); }}
+            className="group block tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
+          >
+            <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">{m.eyebrow}</span>
+            <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
+              {m.title} <span className="text-[#2dd4bf]">→</span>
+            </span>
+            <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">{m.text}</span>
+          </a>
+        ))}
       </div>
 
       {/* The homepage's Blog section, at the foot of every service.

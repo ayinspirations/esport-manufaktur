@@ -49,6 +49,7 @@ const urls = [
   ['/kontakt', '0.6', 'yearly'],
   ['/blog', '0.7', 'weekly'],
   ['/esport-turnier-organisieren', '0.9', 'monthly'],
+  ['/white-label-turnierplattform', '0.9', 'monthly'],
   ...caseSlugs.map((s) => [`/best-cases/${s}`, '0.8', 'monthly']),
   ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly', blogDateFor(s)])
 ];

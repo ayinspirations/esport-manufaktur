@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren') => void;
+  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform') => void;
   scrollToSection: (id: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) => {
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren') => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform') => {
     e.preventDefault();
     onNavigate(page);
   };
@@ -72,6 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                 <ul className="space-y-4 text-slate-600 text-base font-bold tracking-tight">
                   <li><a href="#home" onClick={(e) => handleNav(e, 'home')} className="hover:text-emerald-700 transition-colors">Startseite</a></li>
                   <li><a href="/esport-turnier-organisieren" onClick={(e) => handleNav(e, 'esport-turnier-organisieren')} className="hover:text-emerald-700 transition-colors">eSport Turnier organisieren</a></li>
+                  <li><a href="/white-label-turnierplattform" onClick={(e) => handleNav(e, 'white-label-turnierplattform')} className="hover:text-emerald-700 transition-colors">White-Label Turnierplattform</a></li>
                   <li><a href="#blog" onClick={(e) => { e.preventDefault(); scrollToSection('blog'); }} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>

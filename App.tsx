@@ -104,6 +104,7 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const WhiteLabelPage = lazyRoute(() => import('./components/WhiteLabelPage').then(m => ({ default: m.WhiteLabelPage })));
 const EsportTurnierPage = lazyRoute(() => import('./components/EsportTurnierPage').then(m => ({ default: m.EsportTurnierPage })));
 const BlogPage = lazyRoute(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
@@ -192,7 +193,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -250,6 +251,9 @@ const resolveRoute = (): Route => {
   // Money Pages liegen direkt unter der Wurzel, die Adresse ist der Suchbegriff.
   if (path === '/esport-turnier-organisieren') {
     return { page: 'esport-turnier-organisieren' };
+  }
+  if (path === '/white-label-turnierplattform') {
+    return { page: 'white-label-turnierplattform' };
   }
   if (path === '/blog') {
     return { page: 'blog' };
@@ -441,6 +445,8 @@ export default function App() {
       window.history.pushState(null, '', '/webdesign');
     } else if (page === 'esport-turnier-organisieren') {
       window.history.pushState(null, '', '/esport-turnier-organisieren');
+    } else if (page === 'white-label-turnierplattform') {
+      window.history.pushState(null, '', '/white-label-turnierplattform');
     } else if (page === 'blog') {
       window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
@@ -620,6 +626,7 @@ export default function App() {
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
+        {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (

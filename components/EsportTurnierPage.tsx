@@ -275,6 +275,13 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
             <p className="mt-10 text-white/80 font-black text-[11px] md:text-xs uppercase tracking-[0.2em]">
               White-Label · DSGVO-konform · Hosting in Deutschland · CRM/API
             </p>
+            <a
+              href="/white-label-turnierplattform"
+              onClick={(e) => { e.preventDefault(); onNavigate('white-label-turnierplattform'); }}
+              className="mt-6 inline-flex items-center gap-2 text-[#2dd4bf] font-black text-sm uppercase tracking-wider hover:text-white transition-colors"
+            >
+              Mehr zur White-Label Turnierplattform <ArrowUpRight className="w-4 h-4" />
+            </a>
           </div>
         </Reveal>
       </section>
