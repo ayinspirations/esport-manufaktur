@@ -42,8 +42,12 @@ const SecondaryLink: React.FC<Secondary> = ({ label, href, onClick }) => (
 );
 
 export const MoneyHero: React.FC<
-  CtaProps & { eyebrow: string; title: string; accent: string; lead?: string; body?: React.ReactNode; tagline?: string; image: string; imageAlt: string }
-> = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact, secondary }) => (
+  CtaProps & { eyebrow: string; title: string; accent: string; lead?: string; body?: React.ReactNode; tagline?: string; image: string; imageAlt: string;
+    /** Telefon: Unterzeile und Fliesstext ausblenden (die Seite zeigt sie unter dem Kopf). */
+    compactMobile?: boolean;
+    /** Schriftgroesse der H1, falls der Titel lang ist. */
+    titleSize?: string }
+> = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact, secondary, compactMobile, titleSize = 'text-[clamp(38px,6.4vw,90px)]' }) => (
   <section
     data-nav-ground="dark"
     className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
@@ -58,19 +62,19 @@ export const MoneyHero: React.FC<
       <Reveal duration={0.6} className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-5 md:mb-7">
         {eyebrow}
       </Reveal>
-      <h1 className="text-[clamp(38px,6.4vw,90px)] font-black leading-[0.9] tracking-tighter uppercase text-white max-w-5xl">
+      <h1 className={`${titleSize} font-black leading-[0.92] tracking-tighter uppercase text-white max-w-5xl`}>
         {/* Der Suchbegriff steht im Eyebrow; fuer Suchmaschinen gehoert er auch in die H1. */}
         <span className="sr-only">{eyebrow}: </span>
         <RevealText as="span" by="word" text={title} delay={0.05} className="block" />
         <RevealText as="span" by="word" text={accent} delay={0.18} className="block text-[#2dd4bf] italic" />
       </h1>
       {lead && (
-        <Reveal as="p" delay={0.26} className="mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight">
+        <Reveal as="p" delay={0.26} className={`${compactMobile ? 'hidden sm:block' : ''} mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight max-w-3xl`}>
           {lead}
         </Reveal>
       )}
       {body && (
-        <Reveal as="div" delay={0.32} className="mt-5 md:mt-7 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
+        <Reveal as="div" delay={0.32} className={`${compactMobile ? 'hidden sm:block' : ''} mt-5 md:mt-7 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3`}>
           {body}
         </Reveal>
       )}
@@ -149,7 +153,7 @@ export const DarkPanel: React.FC<{ children: React.ReactNode; className?: string
 );
 
 /** Bildkarte mit Titel und kurzem Text. */
-export const ImageCard: React.FC<{ title: string; text: string; image: string }> = ({ title, text, image }) => (
+export const ImageCard: React.FC<{ title: string; text: string; image: string; textClass?: string }> = ({ title, text, image, textClass = 'min-h-[3.25em]' }) => (
   <div className="group relative h-full min-h-[240px] sm:min-h-[300px] rounded-card overflow-hidden bg-[#020617] flex flex-col justify-end">
     <img
       src={asset(image)}
@@ -162,7 +166,7 @@ export const ImageCard: React.FC<{ title: string; text: string; image: string }>
       <h3 className="text-white font-black text-xl uppercase tracking-tight mb-2">{title}</h3>
       {/* Feste Mindesthoehe fuer den Text: so stehen die Titel einer Reihe auf
           derselben Hoehe, auch wenn ein Text eine Zeile laenger ist. */}
-      <p className="text-white/70 text-sm leading-relaxed font-medium min-h-[3.25em]">{text}</p>
+      <p className={`text-white/70 text-sm leading-relaxed font-medium ${textClass}`}>{text}</p>
     </div>
   </div>
 );
