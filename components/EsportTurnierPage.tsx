@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ArrowUpRight,
   BarChart3,
@@ -18,6 +18,7 @@ import { Reveal, RevealText } from './Reveal';
 import { BLOCK_GAP } from './spacing';
 import { asset } from './site';
 import { useDocumentHead } from '../hooks/useDocumentHead';
+import { headFor, serviceSchema } from './pageMeta';
 
 // ---------------------------------------------------------------------------
 // Money Page: eSport Turnier organisieren
@@ -31,7 +32,10 @@ import { useDocumentHead } from '../hooks/useDocumentHead';
 interface EsportTurnierPageProps {
   onOpenContact?: (subject?: string) => void;
   scrollToSection: (id: string) => void;
+  onNavigate: (page: string) => void;
 }
+
+const PATH = '/esport-turnier-organisieren';
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 const H2 = 'text-[clamp(28px,4vw,52px)] font-black leading-[1.02] tracking-tighter uppercase text-[#0b0f2a]';
@@ -86,8 +90,21 @@ const PLATTFORM = [
 
 const GAMES = ['EA Sports FC', 'Rocket League', 'Fortnite', 'Mario Kart', 'Valorant', 'League of Legends', 'Sim Racing'];
 
-const REFERENZEN =
-  'BFV · VfB Stuttgart · 1. FC Köln · HSV · RBLZ · REWE · T-Systems · DAZN · INTERSPORT · Sparkassen · Volksbanken · Hagebau · und viele mehr';
+// Referenzen mit eigener Case-Seite sind verlinkt, die uebrigen bleiben Text.
+const REFERENZEN: { name: string; slug?: string }[] = [
+  { name: 'BFV', slug: 'bfv' },
+  { name: 'VfB Stuttgart' },
+  { name: '1. FC Köln' },
+  { name: 'HSV' },
+  { name: 'RBLZ' },
+  { name: 'REWE', slug: 'rewe' },
+  { name: 'T-Systems', slug: 'tsystems' },
+  { name: 'DAZN' },
+  { name: 'INTERSPORT', slug: 'intersport' },
+  { name: 'Sparkassen' },
+  { name: 'Volksbanken' },
+  { name: 'Hagebau', slug: 'hagebau' }
+];
 
 /** Die weisse Pille mit Pfeil aus der Vorlage. */
 const PillCTA: React.FC<{ label: string; onClick: () => void; location: string }> = ({ label, onClick, location }) => (
@@ -106,15 +123,24 @@ const PillCTA: React.FC<{ label: string; onClick: () => void; location: string }
   </button>
 );
 
-export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenContact, scrollToSection }) => {
-  useDocumentHead({
-    title: 'eSport Turnier organisieren | GG MANUFAKTUR',
-    description:
-      'Professionelle eSport Turniere für Unternehmen, Marken und Vereine. Konzept, Plattform, Technik, Teilnehmermanagement und Live-Umsetzung aus einer Hand.',
-    canonicalPath: '/esport-turnier-organisieren',
-    ogImage: '/images/rewe/hero.jpg',
-    breadcrumbs: [{ name: 'eSport Turnier organisieren', path: '/esport-turnier-organisieren' }]
-  });
+export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenContact, scrollToSection, onNavigate }) => {
+  useDocumentHead(headFor(PATH));
+
+  // Leistung als strukturierte Daten. Beim direkten Aufruf liegt der Block
+  // schon im vorgerenderten HTML (scripts/prerender.mjs); dann wird er nur
+  // uebernommen und beim Verlassen der Seite mit entfernt.
+  useEffect(() => {
+    const id = 'ld-service';
+    let el = document.getElementById(id) as HTMLScriptElement | null;
+    if (!el) {
+      el = document.createElement('script');
+      el.id = id;
+      el.type = 'application/ld+json';
+      el.textContent = JSON.stringify(serviceSchema(PATH));
+      document.head.appendChild(el);
+    }
+    return () => el?.remove();
+  }, []);
 
   const requestProject = () => onOpenContact?.(SUBJECT);
 
@@ -283,7 +309,24 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenCont
           Wir begleiten seit Jahren Gaming- und eSport-Projekte für Vereine, Verbände, Unternehmen und Marken.
         </Reveal>
         <Reveal as="p" delay={0.14} className="mt-4 text-[#0b0f2a] text-base md:text-lg font-bold max-w-4xl leading-relaxed">
-          Referenzen unter anderem: {REFERENZEN}
+          Referenzen unter anderem:{' '}
+          {REFERENZEN.map((ref, i) => (
+            <React.Fragment key={ref.name}>
+              {ref.slug ? (
+                <a
+                  href={`/best-cases/${ref.slug}`}
+                  onClick={(e) => { e.preventDefault(); onNavigate(ref.slug!); }}
+                  className="underline decoration-[#0e958e]/50 underline-offset-4 hover:text-[#0e958e] transition-colors"
+                >
+                  {ref.name}
+                </a>
+              ) : (
+                ref.name
+              )}
+              {' · '}
+            </React.Fragment>
+          ))}
+          und viele mehr
         </Reveal>
         <Reveal delay={0.2} className="mt-8">
           <button

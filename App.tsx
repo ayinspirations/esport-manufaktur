@@ -613,7 +613,7 @@ export default function App() {
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
-        {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (

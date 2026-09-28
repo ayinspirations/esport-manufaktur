@@ -1,0 +1,23 @@
+{
+  "/kontakt": {
+    "title": "Kontakt | GG Manufaktur",
+    "description": "Erzähl uns von deinem Vorhaben: kostenloses Erstgespräch, erste Ideenskizze und gemeinsame Umsetzung mit der GG Manufaktur.",
+    "breadcrumb": "Kontakt"
+  },
+  "/blog": {
+    "title": "Blog & Wissen | GG Manufaktur",
+    "description": "Artikel rund um Gamification, Gaming und eSport im Marketing, Recruiting und auf Messen – Praxiswissen von der GG Manufaktur.",
+    "breadcrumb": "Blog & Wissen"
+  },
+  "/esport-turnier-organisieren": {
+    "title": "eSport Turnier organisieren | GG MANUFAKTUR",
+    "description": "Professionelle eSport Turniere für Unternehmen, Marken und Vereine. Konzept, Plattform, Technik, Teilnehmermanagement und Live-Umsetzung aus einer Hand.",
+    "breadcrumb": "eSport Turnier organisieren",
+    "ogImage": "/images/rewe/hero.jpg",
+    "service": {
+      "name": "eSport Turnier organisieren",
+      "serviceType": "eSport Turnierorganisation",
+      "description": "Konzeption und Umsetzung von eSport Turnieren für Marken, Unternehmen, Vereine und Events – online, offline oder hybrid: Strategie, Turniermanagement, digitale Plattform, Eventtechnik, Livestream und Reporting."
+    }
+  }
+}

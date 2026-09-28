@@ -399,6 +399,7 @@ const SidebarLayout: React.FC<LayoutProps> = ({ active, select, anchorRef, menuR
  */
 export const ServicesPage: React.FC<ServicesPageProps> = ({
   slug,
+  onNavigate,
   onSelectService,
   onOpenBooking,
   onOpenContact,
@@ -559,6 +560,24 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       </div>
 
       <Layout active={active} select={select} anchorRef={anchorRef} menuRef={menuRef} panel={panel} />
+
+      {/* Money Pages: Leistungen mit eigener Seite je Suchbegriff. Hier
+          verlinkt, damit sie nicht nur ueber die Sitemap erreichbar sind. */}
+      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <a
+          href="/esport-turnier-organisieren"
+          onClick={(e) => { e.preventDefault(); onNavigate('esport-turnier-organisieren'); }}
+          className="group block tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
+        >
+          <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">eSport Turniere</span>
+          <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
+            eSport Turnier organisieren <span className="text-[#2dd4bf]">→</span>
+          </span>
+          <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">
+            Von der digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale – online, offline oder hybrid.
+          </span>
+        </a>
+      </div>
 
       {/* The homepage's Blog section, at the foot of every service.
           Outside the layout on purpose: it is identical for all ten services,
