@@ -59,5 +59,34 @@
         "a": "Du erhältst die Aufzeichnung des Streams. Auf Wunsch schneiden wir daraus Highlights, Clips und Social-Media-Formate, damit das Event auch nach dem Livestream weiterwirkt."
       }
     ]
+  },
+  "/landingpages": {
+    "title": "Gaming-Landingpages für Events & Turniere | GG MANUFAKTUR",
+    "description": "Conversion-optimierte Landingpages für Gaming- und eSport-Events: im Corporate Design, mit Anmeldung, Brackets, Live-Tabellen und Livestream – DSGVO-konform und Mobile-First.",
+    "breadcrumb": "Landingpages",
+    "ogImage": "/images/showcase/kreissparkasse-boeblingen.jpg",
+    "service": {
+      "name": "Gaming-Landingpages für Events und Turniere",
+      "serviceType": "Landingpage-Entwicklung",
+      "description": "Individuelle, conversion-optimierte Landingpages für Gaming- und eSport-Events im Corporate Design: Anmeldung, Spielpläne, Live-Tabellen, Livestreams, Sponsoren-Integration und Schnittstellen – DSGVO-konform und Mobile-First."
+    },
+    "faq": [
+      {
+        "q": "Können die Landingpages an unser Corporate Design angepasst werden?",
+        "a": "Absolut. Wir integrieren deine Logos, Farben und Schriftarten, sodass die Seite nahtlos zu deiner Marke passt."
+      },
+      {
+        "q": "Ist die Anmeldung der Teilnehmer DSGVO-konform?",
+        "a": "Ja. Anmeldeformulare, Einwilligungen und Opt-ins planen wir von Anfang an datenschutzkonform – mit Hosting in Deutschland und auf Wunsch mit Auftragsverarbeitungsvertrag."
+      },
+      {
+        "q": "Werden die Spielergebnisse automatisch aktualisiert?",
+        "a": "Ja. Spielpläne, Brackets und Tabellen sind mit unserer Turnierplattform verbunden und aktualisieren sich live, sobald Ergebnisse eingetragen werden."
+      },
+      {
+        "q": "Wie schnell ist eine solche Seite einsatzbereit?",
+        "a": "Das hängt vom Umfang ab. Eine Event-Landingpage auf Basis unserer bestehenden Module ist in der Regel innerhalb weniger Wochen live – sprich uns früh an, dann planen wir den Zeitplan gemeinsam."
+      }
+    ]
   }
 }

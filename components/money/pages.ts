@@ -30,23 +30,31 @@ export const MONEY_PAGES: MoneyPageLink[] = [
     eyebrow: 'Livestreams',
     title: 'Livestreams in TV-Qualität',
     text: 'Professionelles Livestreaming für eSport & Gaming Events – vor Ort oder online, mit eigener Technik, Regie und Moderation.'
+  },
+  {
+    page: 'landingpages',
+    eyebrow: 'Landingpages',
+    title: 'Gaming-Landingpages',
+    text: 'Conversion-optimierte Event-Landingpages im Look deiner Marke – mit Anmeldung, Brackets, Live-Tabellen und Livestream.'
   }
 ];
 
 const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';
 const STREAM = 'livestreams';
+const LANDING = 'landingpages';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
-  'strategie-konzeption': [TURNIER, PLATTFORM],
+  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING],
   'events-erlebniswelten': [TURNIER, PLATTFORM, STREAM],
-  'digitale-loesungen': [PLATTFORM, TURNIER],
+  'art-design-messebau': [LANDING],
+  'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
   'content-live-kommunikation': [STREAM, TURNIER],
   'eventtechnik-produktion': [STREAM, TURNIER],
   'creator-talent-activation': [STREAM, TURNIER],
   'scouting-talent-development': [TURNIER, PLATTFORM],
-  'recruiting-employer-branding': [PLATTFORM, TURNIER]
+  'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER]
 };
 
 export const moneyPagesFor = (serviceSlug: string) =>

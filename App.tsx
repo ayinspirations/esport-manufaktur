@@ -104,6 +104,7 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
 const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').then(m => ({ default: m.LivestreamsPage })));
 const WhiteLabelPage = lazyRoute(() => import('./components/WhiteLabelPage').then(m => ({ default: m.WhiteLabelPage })));
 const EsportTurnierPage = lazyRoute(() => import('./components/EsportTurnierPage').then(m => ({ default: m.EsportTurnierPage })));
@@ -194,7 +195,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -258,6 +259,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/livestreams') {
     return { page: 'livestreams' };
+  }
+  if (path === '/landingpages') {
+    return { page: 'landingpages' };
   }
   if (path === '/blog') {
     return { page: 'blog' };
@@ -453,6 +457,8 @@ export default function App() {
       window.history.pushState(null, '', '/white-label-turnierplattform');
     } else if (page === 'livestreams') {
       window.history.pushState(null, '', '/livestreams');
+    } else if (page === 'landingpages') {
+      window.history.pushState(null, '', '/landingpages');
     } else if (page === 'blog') {
       window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
@@ -634,6 +640,7 @@ export default function App() {
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'livestreams' && <LivestreamsPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'landingpages' && <LandingpagesPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
