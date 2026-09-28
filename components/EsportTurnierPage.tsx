@@ -8,6 +8,7 @@ import {
   Megaphone,
   Monitor,
   Settings,
+  Search,
   Trophy,
   UserPlus,
   Users,
@@ -48,7 +49,8 @@ const ZIELE = [
   { icon: Users, title: 'Community Building', text: 'Wiederkehrende Interaktion und Wettbewerb schaffen.' },
   { icon: UserPlus, title: 'Recruiting & Employer Branding', text: 'Junge Zielgruppen über Gaming erreichen.' },
   { icon: Handshake, title: 'Sponsoring', text: 'Aus Sichtbarkeit aktive Beteiligung machen.' },
-  { icon: CalendarCheck, title: 'Eventaktivierung', text: 'Besucher einbinden und Verweildauer erhöhen.' }
+  { icon: CalendarCheck, title: 'Eventaktivierung', text: 'Besucher einbinden und Verweildauer erhöhen.' },
+  { icon: Search, title: 'Scouting / Vereinsturnier', text: 'Nachwuchs im eSport-Bereich entdecken und fördern.' }
 ];
 
 const FORMATE = [
@@ -90,7 +92,21 @@ const PLATTFORM = [
   { title: 'Leadgenerierung', text: 'Auf Wunsch lassen sich Registrierung und Marketing-Opt-ins miteinander verbinden.' }
 ];
 
-const GAMES = ['EA Sports FC', 'Rocket League', 'Fortnite', 'Mario Kart', 'Valorant', 'League of Legends', 'Sim Racing'];
+const GAMES = [
+  'EA Sports FC',
+  'Rocket League',
+  'Fortnite',
+  'Mario Kart',
+  'Valorant',
+  'League of Legends',
+  'Counter-Strike',
+  'Call of Duty',
+  'Formel 1',
+  'MotoGP',
+  'GT',
+  'Brawl Stars',
+  'Clash Royale'
+];
 
 // Referenzen mit eigener Case-Seite sind verlinkt, die uebrigen bleiben Text.
 const REFERENZEN: { name: string; slug?: string }[] = [
@@ -179,7 +195,7 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <Reveal as="p" delay={0.08} className="mt-4 text-slate-600 text-base md:text-lg font-medium">
           Ein eSport Turnier kann unterschiedliche Ziele erfüllen:
         </Reveal>
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-x-4 gap-y-10">
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-10">
           {ZIELE.map(({ icon: Icon, title, text }, i) => (
             <Reveal key={title} delay={Math.min(i, 4) * 0.05} className="text-center flex flex-col items-center">
               <Icon className="w-8 h-8 text-[#0e958e] mb-4" strokeWidth={1.6} />
@@ -280,8 +296,8 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
             </Reveal>
           ))}
         </div>
-        <Reveal as="p" delay={0.1} className="mt-6 text-slate-500 text-sm font-medium">
-          Für ausgewählte Games entstehen künftig eigene Turnierformate und Leistungsseiten.
+        <Reveal as="p" delay={0.1} className="mt-6 text-[#0b0f2a] text-base md:text-lg font-bold">
+          Dein Spiel ist nicht dabei? Dann sprich uns an. Unsere Expertise geht weit über diese Spieletitel hinaus.
         </Reveal>
       </section>
 
