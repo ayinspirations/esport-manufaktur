@@ -104,6 +104,7 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const NotFoundPage = lazyRoute(() => import('./components/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 const CookiePopup = lazyRoute(() => import('./components/CookiePopup').then(m => ({ default: m.CookiePopup })));
@@ -189,7 +190,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -240,6 +241,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/webdesign') {
     return { page: 'webdesign' };
+  }
+  if (path === '/kontakt') {
+    return { page: 'kontakt' };
   }
   // Auch ein Best Case lebt unter einer eigenen Adresse. Hinter einer Raute
   // ist er fuer eine Suchmaschine kein eigenes Dokument, sondern ein Anker in
@@ -420,6 +424,8 @@ export default function App() {
       window.history.pushState(null, '', '/ueber-uns/meine-geschichte');
     } else if (page === 'webdesign') {
       window.history.pushState(null, '', '/webdesign');
+    } else if (page === 'kontakt') {
+      window.history.pushState(null, '', '/kontakt');
     } else if (CASE_SLUGS.includes(page)) {
       window.history.pushState(null, '', `/best-cases/${page}`);
     } else if (blogSlugs.includes(page)) {
@@ -587,6 +593,7 @@ export default function App() {
         {activePage === 'meine-geschichte' && <MeineGeschichte onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
+        {activePage === 'kontakt' && <KontaktPage />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
           <BlogDetail
