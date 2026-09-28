@@ -19,6 +19,7 @@ import {
 import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { headFor, serviceSchema } from './pageMeta';
+import { BLOCK_GAP } from './spacing';
 import { CONTAINER, CellGrid, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
 
 // ---------------------------------------------------------------------------
@@ -239,9 +240,6 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         title="Die White-Label-Plattform"
         accent="für eSport, Gaming & mehr."
         titleSize="text-[clamp(28px,4.6vw,66px)]"
-        lead={HERO_LEAD}
-        body={<HeroBody />}
-        compactMobile
         tagline="100 % White-Label · Eigenentwickelt · DSGVO-konform · Hosted in Germany"
         image="/images/white-label-turnierplattform/xpdays_whitelabel.jpeg"
         imageAlt="White-Label Turnierplattform im Look der XP Days"
@@ -250,11 +248,14 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         onContact={contact}
       />
 
-      {/* Nur Telefon: Unterzeile und Fliesstext aus dem Kopf */}
-      <div className={`sm:hidden ${CONTAINER} pt-12 space-y-3`}>
-        <p className="text-[#0b0f2a] font-black text-lg leading-snug">{HERO_LEAD}</p>
-        <div className="text-slate-600 text-base font-medium leading-relaxed space-y-3">
-          <HeroBody />
+      {/* Einleitung: steht auf allen Geraeten unter dem Kopf; der Hero traegt
+          nur Ueberschrift, Siegel-Zeile und CTA. */}
+      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <div className="max-w-3xl space-y-3">
+          <p className="text-[#0b0f2a] font-black text-lg md:text-2xl tracking-tight leading-snug">{HERO_LEAD}</p>
+          <div className="text-slate-600 text-base md:text-lg font-medium leading-relaxed space-y-3">
+            <HeroBody />
+          </div>
         </div>
       </div>
 

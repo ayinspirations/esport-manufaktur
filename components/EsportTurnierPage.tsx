@@ -175,21 +175,6 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
             {' '}
             <RevealText as="span" by="word" text="eSport- & Gaming‑Turniere." delay={0.18} className="block text-[#2dd4bf] italic" />
           </h1>
-          <Reveal as="p" delay={0.26} className="mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight">
-            Von der Idee bis zur professionellen Umsetzung.
-          </Reveal>
-          {/* Auf dem Telefon steht der Fliesstext direkt unter dem Kopf (siehe
-              unten) -- im Hero waere es dort zu voll. */}
-          <Reveal as="div" delay={0.32} className="hidden sm:block mt-4 text-white/75 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
-            <p>
-              Du hast bereits ein konkretes Turnierkonzept und suchst einen erfahrenen Umsetzungspartner? Oder du möchtest
-              ein eSport- oder Gaming-Turnier durchführen und brauchst noch das passende Format?
-            </p>
-            <p>
-              Wir steigen genau dort ein, wo du uns brauchst und begleiten Marken, Unternehmen, Vereine, Verbände und
-              Veranstalter von der Idee bis zur Umsetzung.
-            </p>
-          </Reveal>
           <Reveal as="p" delay={0.38} className="mt-5 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
             Online. Offline. Hybrid.
           </Reveal>
@@ -199,16 +184,22 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         </div>
       </section>
 
-      {/* Nur Telefon: der Einleitungstext aus dem Kopf */}
-      <div className={`sm:hidden ${CONTAINER} pt-12 text-slate-600 text-base font-medium leading-relaxed space-y-3`}>
-        <p>
-          Du hast bereits ein konkretes Turnierkonzept und suchst einen erfahrenen Umsetzungspartner? Oder du möchtest
-          ein eSport- oder Gaming-Turnier durchführen und brauchst noch das passende Format?
-        </p>
-        <p>
-          Wir steigen genau dort ein, wo du uns brauchst und begleiten Marken, Unternehmen, Vereine, Verbände und
-          Veranstalter von der Idee bis zur Umsetzung.
-        </p>
+      {/* Einleitung: steht auf allen Geraeten unter dem Kopf; der Hero traegt
+          nur Ueberschrift, Formate und CTA. */}
+      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
+        <div className="max-w-3xl text-slate-600 text-base md:text-lg font-medium leading-relaxed space-y-3">
+          <p className="text-[#0b0f2a] font-black text-lg md:text-2xl tracking-tight leading-snug">
+            Von der Idee bis zur professionellen Umsetzung.
+          </p>
+          <p>
+            Du hast bereits ein konkretes Turnierkonzept und suchst einen erfahrenen Umsetzungspartner? Oder du möchtest
+            ein eSport- oder Gaming-Turnier durchführen und brauchst noch das passende Format?
+          </p>
+          <p>
+            Wir steigen genau dort ein, wo du uns brauchst und begleiten Marken, Unternehmen, Vereine, Verbände und
+            Veranstalter von der Idee bis zur Umsetzung.
+          </p>
+        </div>
       </div>
 
       {/* ============ Mehr als nur ein Turnier ============ */}
