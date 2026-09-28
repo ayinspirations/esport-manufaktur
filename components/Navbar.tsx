@@ -46,7 +46,7 @@ const GLASS = {
 } as const;
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'services' | 'ueber-uns') => void;
+  onNavigate: (page: 'home' | 'services' | 'ueber-uns' | 'blog' | 'kontakt') => void;
   scrollToSection: (id: string) => void;
   activePage: 'home' | 'services';
 }
@@ -109,9 +109,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
   const handleLinkClick = (e: React.MouseEvent, target: string) => {
     e.preventDefault();
     setIsOpen(false);
-    // "ueber-uns" is a real page (own route), not an anchor on the homepage.
-    if (target === 'home' || target === 'ueber-uns') {
-      onNavigate(target as any);
+    // "ueber-uns", "blog" und "kontakt" sind eigene Seiten, keine Anker auf
+    // der Startseite. Blog und Kontakt fuehren nur im Telefon-Menue dorthin;
+    // die Desktop-Leiste springt weiterhin zum Abschnitt der Startseite.
+    if (target === 'home' || target === 'ueber-uns' || target === 'blog-page' || target === 'kontakt-page') {
+      onNavigate(target.replace('-page', '') as 'home' | 'ueber-uns' | 'blog' | 'kontakt');
     } else {
       scrollToSection(target);
     }
@@ -423,22 +425,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   Best Cases
                 </button>
                 <button
-                  onClick={(e) => handleLinkClick(e, 'blog')}
+                  onClick={(e) => handleLinkClick(e, 'blog-page')}
             data-track="navigation_click"
             data-track-label="blog"
             data-track-location="navigation"
-            data-track-destination="#blog"
+            data-track-destination="/blog"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Blog &amp; Wissen
                 </button>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
                 <button
-                  onClick={(e) => handleLinkClick(e, 'contact')}
+                  onClick={(e) => handleLinkClick(e, 'kontakt-page')}
             data-track="contact_click"
             data-track-label="kontakt"
             data-track-location="navigation"
-            data-track-destination="#contact"
+            data-track-destination="/kontakt"
                   className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen
