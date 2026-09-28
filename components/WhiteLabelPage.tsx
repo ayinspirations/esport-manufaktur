@@ -34,12 +34,12 @@ const PATH = '/white-label-turnierplattform';
 // Die Kacheln im Kopf: Plattformen, die wir im Look unserer Kunden gebaut
 // haben. Die gewaehlte Kachel wird zum Hintergrund. Reihenfolge wie vorgegeben.
 const HERO_TILES: ShowcaseTile[] = [
-  { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von REWE.', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
+  { id: 'eintracht', title: 'Eintracht Frankfurt', text: 'Die Turnierplattform im Look von Eintracht Frankfurt.', image: '/images/white-label-turnierplattform/eintracht_whitelabel.jpeg' },
   { id: 'vfb', title: 'VfB Stuttgart', text: 'Die Turnierplattform im Look von VfB Stuttgart.', image: '/images/white-label-turnierplattform/vfb_whitelabel.jpeg' },
   { id: 'xpdays', title: 'XP Days', text: 'Die Turnierplattform im Look von XP Days.', image: '/images/white-label-turnierplattform/xpdays_whitelabel.jpeg' },
+  { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von REWE.', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
   { id: 'interwetten', title: 'Interwetten', text: 'Die Turnierplattform im Look von Interwetten.', image: '/images/white-label-turnierplattform/interwetten_whitelabel.jpeg' },
   { id: 'hsv', title: 'HSV', text: 'Die Turnierplattform im Look von HSV.', image: '/images/white-label-turnierplattform/hsv_whitelabel.jpeg' },
-  { id: 'eintracht', title: 'Eintracht Frankfurt', text: 'Die Turnierplattform im Look von Eintracht Frankfurt.', image: '/images/white-label-turnierplattform/eintracht_whitelabel.jpeg' },
   { id: 'winamax', title: 'Winamax', text: 'Die Turnierplattform im Look von Winamax.', image: '/images/white-label-turnierplattform/winamax_whitelabel.jpeg' },
   { id: 'bfv', title: 'BFV', text: 'Die Turnierplattform im Look von BFV.', image: '/images/white-label-turnierplattform/bfv_whitelabel.jpeg' },
   { id: 'garnier', title: 'Garnier', text: 'Die Turnierplattform im Look von Garnier.', image: '/images/white-label-turnierplattform/garnier_whitelabel.jpeg' }
