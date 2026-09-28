@@ -227,7 +227,8 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
                 <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/75 to-[#020617]/10" />
                 <div className="relative p-6">
                   <h3 className="text-white font-black text-xl uppercase tracking-tight mb-2">{f.title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed font-medium">{f.text}</p>
+                  {/* Mindesthoehe = laengster Text der Reihe, damit alle Titel auf einer Hoehe stehen. */}
+                  <p className="text-white/70 text-sm leading-relaxed font-medium sm:min-h-[4.9em] lg:min-h-[9.8em]">{f.text}</p>
                 </div>
               </div>
             </Reveal>

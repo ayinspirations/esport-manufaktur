@@ -3,12 +3,12 @@
 ## Hero-Kacheln (in dieser Reihenfolge, die gewählte Kachel wird Hintergrund)
 
 ```
-rewe_whitelabel.jpeg
+eintracht_whitelabel.jpeg
 vfb_whitelabel.jpeg
 xpdays_whitelabel.jpeg
+rewe_whitelabel.jpeg
 interwetten_whitelabel.jpeg
 hsv_whitelabel.jpeg
-eintracht_whitelabel.jpeg
 winamax_whitelabel.jpeg
 bfv_whitelabel.jpeg
 garnier_whitelabel.jpeg
