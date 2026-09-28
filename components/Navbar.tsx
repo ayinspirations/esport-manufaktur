@@ -186,16 +186,22 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 des Glases hinein hart schneiden.
                 Weisz steht auf der hellen Leiste, der Verlauf auf der dunklen
                 -- auch im Hero. Das Weisze traegt dabei einen weichen Schatten,
-                weil helles Glas allein es nicht halten wuerde. */}
+                weil helles Glas allein es nicht halten wuerde. 
+                Vektor statt PNG: das PNG war 400px breit und wurde auf ~55px
+                verkleinert. Waehrend die Leiste beim Scrollen animiert, skaliert
+                der Browser Bilder nur grob und rechnet erst im Ruhezustand sauber
+                nach -- das Logo war solange verpixelt. Ein SVG wird in jeder
+                Groesze scharf gezeichnet. Die _nav-Dateien sind auf das Zeichen
+                zugeschnitten, damit Hoehe und Breite dem PNG entsprechen. */}
             <span className="relative block h-8">
               <img
-                src="/logos/GG_Bildmarke_neg.png"
+                src="/logos/GG_Bildmarke_neg_nav.svg"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: inkOnGlass ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
               />
               <img
-                src="/logos/GG_Bildmarke_pos.png"
+                src="/logos/GG_Bildmarke_pos_nav.svg"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
@@ -322,13 +328,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
           >
             <span className="relative block h-8">
               <img
-                src="/logos/GG_Bildmarke_neg.png"
+                src="/logos/GG_Bildmarke_neg_nav.svg"
                 alt="GG Manufaktur"
                 className="h-8 w-auto object-contain transition-opacity duration-500"
                 style={{ opacity: mobileMarkWhite ? 1 : 0, filter: 'drop-shadow(0 1px 3px rgba(11,15,42,0.35))' }}
               />
               <img
-                src="/logos/GG_Bildmarke_pos.png"
+                src="/logos/GG_Bildmarke_pos_nav.svg"
                 alt=""
                 aria-hidden="true"
                 className="absolute inset-0 h-8 w-auto object-contain transition-opacity duration-500"
