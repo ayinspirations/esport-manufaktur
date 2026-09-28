@@ -20,7 +20,7 @@ import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { headFor, serviceSchema } from './pageMeta';
 import { BLOCK_GAP } from './spacing';
-import { CONTAINER, CellGrid, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
+import { CONTAINER, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
 
 // ---------------------------------------------------------------------------
 // Money Page: White-Label Plattform
@@ -338,7 +338,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         }
       >
         <Label>Anpassbar sind unter anderem</Label>
-        <CellGrid items={ANPASSBAR} />
+        <InlineList items={ANPASSBAR} />
         <div className="mt-8 space-y-1 text-[#0b0f2a] text-base md:text-lg font-bold">
           <p>Keine sichtbare Fremdplattform.</p>
           <p>Keine Zwischenstufe zwischen deiner Marke und deinen Nutzern.</p>
