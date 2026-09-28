@@ -321,8 +321,8 @@ export const PlatformShowcase: React.FC<{ tiles: ShowcaseTile[] }> = ({ tiles })
               className="[grid-area:1/1] text-slate-600 text-sm md:text-base font-medium transition-opacity duration-500"
               style={{ opacity: i === active ? 1 : 0 }}
             >
-              <span className="text-[#0b0f2a] font-black uppercase tracking-tight mr-2">{t.title}</span>
-              {t.text}
+              {/* Satz zuerst, der Name fett am Ende -- so steht er nur einmal da. */}
+              {t.text} <strong className="text-[#0b0f2a] font-black">{t.title}</strong>.
             </p>
           ))}
         </div>
