@@ -18,7 +18,7 @@ import {
 import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { headFor, serviceSchema } from './pageMeta';
-import { CellGrid, CheckList, ClosingCTA, DarkPanel, HeroTile, ImageCard, InlineList, Section, Tile, TileHero } from './money/ui';
+import { CellGrid, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
 
 // ---------------------------------------------------------------------------
 // Money Page: White-Label Turnierplattform
@@ -33,7 +33,7 @@ const PATH = '/white-label-turnierplattform';
 
 // Die Kacheln im Kopf: Plattformen, die wir im Look unserer Kunden gebaut
 // haben. Die gewaehlte Kachel wird zum Hintergrund. Reihenfolge wie vorgegeben.
-const HERO_TILES: HeroTile[] = [
+const HERO_TILES: ShowcaseTile[] = [
   { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von REWE.', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
   { id: 'vfb', title: 'VfB Stuttgart', text: 'Die Turnierplattform im Look von VfB Stuttgart.', image: '/images/white-label-turnierplattform/vfb_whitelabel.jpeg' },
   { id: 'xpdays', title: 'XP Days', text: 'Die Turnierplattform im Look von XP Days.', image: '/images/white-label-turnierplattform/xpdays_whitelabel.jpeg' },
@@ -212,27 +212,37 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
 
   return (
     <div className="w-full bg-[#badeda]">
-      <TileHero
+      <MoneyHero
         eyebrow="White-Label Turnierplattform"
         title="Deine Marke. Dein Turnier."
         accent="Deine Plattform."
-        body={
+        image="/images/white-label-turnierplattform/rewe_whitelabel.jpeg"
+        imageAlt="White-Label Turnierplattform im Look von REWE"
+        label="Plattform Projekt besprechen"
+        onBooking={booking}
+        onContact={contact}
+      />
+
+      {/* ============ Plattformen im Look unserer Kunden ============ */}
+      <Section
+        title="Unsere Plattformen."
+        accent="Im Look unserer Kunden."
+        accentBreak
+        intro={
           <>
             <p>
               Unsere eigens entwickelte White-Label-Plattform bildet Turniere, Wettbewerbe und Aktivierungen vollständig im
               Look &amp; Feel deiner Marke ab.
             </p>
-            <p>
+            <p className="text-[#0b0f2a] font-bold">
               Von Registrierung und Teilnehmermanagement über Brackets, Rankings und Qualifier bis zu Lead-Gen,
               Gamification und automatisierter Kommunikation.
             </p>
           </>
         }
-        tiles={HERO_TILES}
-        label="Plattform Projekt besprechen"
-        onBooking={booking}
-        onContact={contact}
-      />
+      >
+        <PlatformShowcase tiles={HERO_TILES} />
+      </Section>
 
       {/* ============ Kein Fremdtool ============ */}
       <Section
@@ -247,7 +257,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         }
       >
         <Label>Die Plattform wird auf dein Projekt zugeschnitten</Label>
-        <CheckList items={BRANDING} columns={4} />
+        <Chips items={BRANDING} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold max-w-3xl">
           Kein sichtbares Drittanbieter-Branding. Keine standardisierte Turnierplattform mit aufgesetztem Logo.
         </Reveal>
@@ -263,7 +273,9 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
           {TECHNIK.map((t, i) => (
             <Reveal key={t.title} delay={i * 0.05}>
-              <Tile {...t} />
+              <TealCard title={t.title}>
+                <p>{t.text}</p>
+              </TealCard>
             </Reveal>
           ))}
         </div>
@@ -273,27 +285,22 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
       <Section title="Alles, was dein Turnier" accent="braucht.">
         <div className="grid lg:grid-cols-2 gap-4">
           <Reveal>
-            <DarkPanel className="h-full">
-              <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter mb-3">Registrierung</h3>
-              <p className="text-white/65 font-medium mb-6">Individuelle Registrierungsflows für:</p>
-              <CheckList items={REG_GRUPPEN} dark />
-              <div className="mt-8 pt-6 border-t border-white/10">
-                <Label dark>Optional inklusive</Label>
-                <CheckList items={REG_OPTIONEN} dark />
-              </div>
-            </DarkPanel>
+            <TealCard title="Registrierung">
+              <p>
+                <strong>Individuelle Registrierungsflows für:</strong> {REG_GRUPPEN.join(', ')}.
+              </p>
+              <p>
+                <strong>Optional inklusive:</strong> {REG_OPTIONEN.join(', ')}.
+              </p>
+            </TealCard>
           </Reveal>
           <Reveal delay={0.08}>
-            <DarkPanel className="h-full">
-              <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter mb-3">Turniermanagement</h3>
-              <p className="text-white/65 font-medium mb-6">
-                Wir können unterschiedlichste Wettbewerbslogiken projektspezifisch abbilden. Zum Beispiel:
+            <TealCard title="Turniermanagement">
+              <p>
+                <strong>Unterschiedlichste Wettbewerbslogiken, projektspezifisch abgebildet:</strong> {MODI.join(', ')}.
               </p>
-              <CheckList items={MODI} dark />
-              <p className="mt-8 pt-6 border-t border-white/10 text-white/75 text-sm md:text-base font-medium">
-                Auch komplexere Kombinationen können projektbezogen umgesetzt werden.
-              </p>
-            </DarkPanel>
+              <p>Auch komplexere Kombinationen können projektbezogen umgesetzt werden.</p>
+            </TealCard>
           </Reveal>
         </div>
       </Section>
@@ -344,14 +351,14 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
           <Reveal>
             <Tile title="Lead-Generierung" text="Registrierungsflows können gezielt für Lead-Gen aufgebaut werden. Beispielsweise:">
               <div className="mt-5">
-                <CheckList items={LEADS} />
+                <p className="text-[#0b0f2a] font-bold leading-relaxed">{LEADS.join(', ')}</p>
               </div>
             </Tile>
           </Reveal>
           <Reveal delay={0.08}>
             <Tile title="Gamification" text="Zusätzliche Mechaniken können direkt in die Plattform integriert werden. Zum Beispiel:">
               <div className="mt-5">
-                <CheckList items={GAMIFICATION} />
+                <Chips items={GAMIFICATION} />
               </div>
             </Tile>
           </Reveal>
@@ -420,7 +427,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         accent="in der Plattform."
         intro="Teilnehmer müssen nicht zwischen verschiedenen Tools wechseln. Wir können projektspezifisch Kommunikationsfunktionen integrieren, zum Beispiel:"
       >
-        <CheckList items={KOMMUNIKATION} columns={4} />
+        <Chips items={KOMMUNIKATION} />
         <Reveal as="p" delay={0.1} className="mt-8 text-[#0b0f2a] text-base md:text-lg font-bold">
           Dadurch bleibt die komplette User Journey innerhalb der gebrandeten Plattform.
         </Reveal>

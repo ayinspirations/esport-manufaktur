@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Check } from 'lucide-react';
 import { Reveal, RevealText } from '../Reveal';
 import { ExpandingCTA } from '../ui/expanding-cta';
 import { BLOCK_GAP } from '../spacing';
@@ -43,7 +42,7 @@ const SecondaryLink: React.FC<Secondary> = ({ label, href, onClick }) => (
 );
 
 export const MoneyHero: React.FC<
-  CtaProps & { eyebrow: string; title: string; accent: string; lead?: string; body: React.ReactNode; tagline?: string; image: string; imageAlt: string }
+  CtaProps & { eyebrow: string; title: string; accent: string; lead?: string; body?: React.ReactNode; tagline?: string; image: string; imageAlt: string }
 > = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact, secondary }) => (
   <section
     data-nav-ground="dark"
@@ -67,9 +66,11 @@ export const MoneyHero: React.FC<
           {lead}
         </Reveal>
       )}
-      <Reveal as="div" delay={0.32} className="mt-5 md:mt-7 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
-        {body}
-      </Reveal>
+      {body && (
+        <Reveal as="div" delay={0.32} className="mt-5 md:mt-7 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
+          {body}
+        </Reveal>
+      )}
       {tagline && (
         <Reveal as="p" delay={0.38} className="mt-4 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
           {tagline}
@@ -205,21 +206,6 @@ export const Faq: React.FC<{ items: { q: string; a: string }[] }> = ({ items }) 
 // Listen ohne Pillen
 // ---------------------------------------------------------------------------
 
-/** Haekchen-Liste in Spalten. */
-export const CheckList: React.FC<{ items: string[]; columns?: 1 | 2 | 3 | 4; dark?: boolean }> = ({ items, columns = 2, dark }) => {
-  const cols = { 1: '', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3', 4: 'sm:grid-cols-2 lg:grid-cols-4' }[columns];
-  return (
-    <ul className={`grid ${cols} gap-x-8 gap-y-3`}>
-      {items.map((item) => (
-        <li key={item} className={`flex items-start gap-2.5 font-bold text-sm md:text-base ${dark ? 'text-white/85' : 'text-[#0b0f2a]'}`}>
-          <Check className={`w-4 h-4 mt-1 shrink-0 ${dark ? 'text-[#2dd4bf]' : 'text-[#0e958e]'}`} strokeWidth={3} />
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
 /** Begriffe als fliessende Zeile in grosser Schrift, getrennt durch Punkte. */
 export const InlineList: React.FC<{ items: string[] }> = ({ items }) => (
   <p className="text-[#0b0f2a] font-black uppercase tracking-tight text-base md:text-xl leading-relaxed">
@@ -249,127 +235,90 @@ export const CellGrid: React.FC<{ items: string[] }> = ({ items }) => (
 );
 
 // ---------------------------------------------------------------------------
-// Kopf mit Kacheln -- wie die Buehne auf der Startseite
-// ---------------------------------------------------------------------------
-// Unten eine Reihe Kacheln; die gewaehlte Kachel wird zum Hintergrund. Ohne
-// Bild laeuft die Kachel auf der dunklen Flaeche.
+// Teal-Karte -- wie im Flyer: gefuellte Flaeche, weisse Schrift
 // ---------------------------------------------------------------------------
 
-export interface HeroTile {
+export const TealCard: React.FC<{ title: string; children: React.ReactNode; className?: string }> = ({ title, children, className = '' }) => (
+  <div className={`h-full rounded-card p-6 md:p-8 text-white bg-gradient-to-br from-[#12a39a] to-[#0a6f6a] shadow-[0_24px_50px_-30px_rgba(10,111,106,0.8)] ${className}`}>
+    <h3 className="font-black uppercase tracking-tight text-base md:text-lg mb-2">{title}</h3>
+    <div className="text-white/90 text-sm md:text-base leading-relaxed font-medium space-y-3">{children}</div>
+  </div>
+);
+
+// ---------------------------------------------------------------------------
+// Plattform-Buehne: grosses Bild, darunter die Kacheln
+// ---------------------------------------------------------------------------
+// Die gewaehlte Kachel erscheint gross. Kacheln bleiben immer voll sichtbar --
+// keine Abdunkelung; die gewaehlte bekommt einen Rahmen.
+// ---------------------------------------------------------------------------
+
+export interface ShowcaseTile {
   id: string;
   title: string;
   text: string;
-  image?: string;
+  image: string;
 }
 
-export const TileHero: React.FC<
-  CtaProps & { eyebrow: string; title: string; accent: string; body: React.ReactNode; tiles: HeroTile[] }
-> = ({ eyebrow, title, accent, body, tiles, label, onBooking, onContact, secondary }) => {
+export const PlatformShowcase: React.FC<{ tiles: ShowcaseTile[] }> = ({ tiles }) => {
   const [active, setActive] = useState(0);
   const current = tiles[active];
 
   return (
-    <section
-      data-nav-ground="dark"
-      className="relative w-full min-h-screen-dyn overflow-hidden bg-[#020617] flex flex-col justify-end"
-    >
-      <AnimatePresence initial={false}>
-        <motion.div
+    <div>
+      <div className="relative aspect-[16/9] rounded-card overflow-hidden bg-[#020617] shadow-[0_40px_80px_-40px_rgba(2,6,23,0.7)]">
+        <AnimatePresence initial={false}>
+          <motion.img
+            key={current.id}
+            src={asset(current.image)}
+            alt={`Turnierplattform im Look von ${current.title}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6 }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </AnimatePresence>
+      </div>
+
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.p
           key={current.id}
-          initial={{ opacity: 0, scale: 1.04 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ opacity: { duration: 0.9 }, scale: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }}
-          className="absolute inset-0"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.35 }}
+          className="mt-5 text-slate-600 text-sm md:text-base font-medium"
         >
-          {current.image && (
-            <img
-              src={asset(current.image)}
-              alt={current.title}
-              fetchPriority={active === 0 ? 'high' : undefined}
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: '50% 55%' }}
-            />
-          )}
-        </motion.div>
+          <span className="text-[#0b0f2a] font-black uppercase tracking-tight mr-2">{current.title}</span>
+          {current.text}
+        </motion.p>
       </AnimatePresence>
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.88) 28%, rgba(2,6,23,0.45) 58%, rgba(2,6,23,0.35) 100%)' }}
-      />
-      {/* Die Hintergruende sind detailreiche Mockups: auf der Textseite braucht
-          es deutlich mehr Abdunkelung, auf dem Telefon liegt der Text ganz
-          auf dem Bild. */}
-      <div className="sm:hidden absolute inset-0 pointer-events-none bg-[#020617]/70" />
-      <div
-        className="hidden sm:block absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.94) 0%, rgba(2,6,23,0.82) 38%, rgba(2,6,23,0.35) 62%, rgba(2,6,23,0.1) 80%)' }}
-      />
 
-      <div className={`${CONTAINER} relative z-10 w-full pt-28 md:pt-32`}>
-        <Reveal duration={0.6} className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-5 md:mb-6">
-          {eyebrow}
-        </Reveal>
-        <h1 className="text-[clamp(36px,5.2vw,72px)] font-black leading-[0.92] tracking-tighter uppercase text-white max-w-4xl">
-          <span className="sr-only">{eyebrow}: </span>
-          <RevealText as="span" by="word" text={title} delay={0.05} className="block" />
-          <RevealText as="span" by="word" text={accent} delay={0.18} className="block text-[#2dd4bf] italic" />
-        </h1>
-        <Reveal as="div" delay={0.28} className="mt-5 md:mt-7 text-white/75 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
-          {body}
-        </Reveal>
-        <Reveal delay={0.36} className="mt-7 md:mt-9 flex flex-wrap items-center gap-4 md:gap-6">
-          <ExpandingCTA label={label} tone="light" onBooking={onBooking} onContact={onContact} />
-          {secondary && <SecondaryLink {...secondary} />}
-        </Reveal>
-      </div>
-
-      {/* Kachelreihe mit der Beschreibung der gewaehlten Kachel */}
-      <div className={`${CONTAINER} relative z-10 w-full pt-6 md:pt-8 pb-6 md:pb-10`}>
-        <div className="flex flex-col-reverse gap-3">
-          <div
-            className="flex gap-3 md:gap-4 overflow-x-auto overscroll-x-contain -mx-6 px-6 md:mx-0 md:px-0 pt-3 pb-2 min-w-0"
-            style={{ scrollbarWidth: 'none' }}
-          >
-            {tiles.map((t, i) => {
-              const isActive = i === active;
-              return (
-                <button
-                  key={t.id}
-                  onClick={() => setActive(i)}
-                  aria-current={isActive ? 'true' : undefined}
-                  aria-label={`${t.title} anzeigen`}
-                  className={`group relative shrink-0 w-[96px] sm:w-[110px] md:w-[124px] aspect-[3/4] rounded-[20px] overflow-hidden bg-[#0b1530] transition-[transform,box-shadow] duration-500 ${
-                    isActive
-                      ? '-translate-y-2 scale-[1.04] ring-2 ring-[#2dd4bf] shadow-[0_28px_54px_-20px_rgba(0,0,0,0.9)]'
-                      : 'shadow-[0_18px_40px_-22px_rgba(0,0,0,0.8)] hover:-translate-y-1'
-                  }`}
-                >
-                  {t.image && <img src={asset(t.image)} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />}
-                  <div className={`absolute inset-0 transition-colors duration-500 ${isActive ? 'bg-transparent' : 'bg-[#020617]/55 group-hover:bg-[#020617]/25'}`} />
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent" />
-                  <span className="absolute inset-x-0 bottom-0 p-2.5 text-left text-[10px] md:text-[11px] font-black uppercase tracking-tight leading-tight text-white hyphens-auto break-words" lang="de">
-                    {t.title}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.p
-              key={current.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.4 }}
-              className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-xl"
+      <div className="mt-5 flex gap-3 overflow-x-auto overscroll-x-contain -mx-6 px-6 md:mx-0 md:px-0 py-2" style={{ scrollbarWidth: 'none' }}>
+        {tiles.map((t, i) => {
+          const isActive = i === active;
+          return (
+            <button
+              key={t.id}
+              onClick={() => setActive(i)}
+              aria-current={isActive ? 'true' : undefined}
+              aria-label={`${t.title} anzeigen`}
+              className={`shrink-0 w-[132px] md:w-[150px] text-left transition-transform duration-500 ${isActive ? '' : 'hover:-translate-y-1'}`}
             >
-              <span className="block text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1.5">{current.title}</span>
-              {current.text}
-            </motion.p>
-          </AnimatePresence>
-        </div>
+              <span
+                className={`block aspect-[16/10] rounded-2xl overflow-hidden border-2 transition-colors duration-300 ${
+                  isActive ? 'border-[#0e958e]' : 'border-transparent'
+                }`}
+              >
+                <img src={asset(t.image)} alt="" loading="lazy" className="w-full h-full object-cover" />
+              </span>
+              <span className={`block mt-2 text-[11px] md:text-xs font-black uppercase tracking-tight ${isActive ? 'text-[#0e958e]' : 'text-[#0b0f2a]'}`}>
+                {t.title}
+              </span>
+            </button>
+          );
+        })}
       </div>
-    </section>
+    </div>
   );
 };
