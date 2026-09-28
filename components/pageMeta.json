@@ -121,5 +121,16 @@
         "a": "Für nahezu alle: Familien und Kinder im Center, Fans in der Fanzone, Mitarbeitende beim Firmenevent oder Fachbesucher auf der Messe. Spielauswahl und Mechaniken stimmen wir auf deine Zielgruppe ab."
       }
     ]
+  },
+  "/eventmodule": {
+    "title": "Eventmodule für Gaming & eSport Events | GG MANUFAKTUR",
+    "description": "Individuell gebrandete Eventmodule aus eigener Entwicklung: Gaming Modul, Gaming Cube, Bühne, interaktive Fotobox, Simulatoren, VR, Retro Gaming und mehr – frei kombinierbar für Turniere, Messen und Aktivierungen.",
+    "breadcrumb": "Eventmodule",
+    "ogImage": "/images/showcase/erazer-expert.jpg",
+    "service": {
+      "name": "Eventmodule für Gaming & eSport Events",
+      "serviceType": "Vermietung von Gaming-Eventmodulen",
+      "description": "Maßgefertigte, individuell brandbare Eventmodule aus eigener Entwicklung – Gaming Modul, Gaming Cube, Gaming Bühne, interaktive Fotobox, Simulatoren, Mario Kart Live Circuit, Retro Gaming, Tresor und VR Experience – frei kombinierbar für Turniere, Messen, Gaming Areas und Fan Zones."
+    }
   }
 }

@@ -42,6 +42,12 @@ export const MONEY_PAGES: MoneyPageLink[] = [
     eyebrow: 'Gaming Areas',
     title: 'Gaming Areas',
     text: 'Das interaktive Highlight für Center, Fanzonen, Firmenevents und Messen – Full-Service von der Planung bis zur Betreuung.'
+  },
+  {
+    page: 'eventmodule',
+    eyebrow: 'Eventmodule',
+    title: 'Eventmodule',
+    text: 'Gaming Modul, Cube, Bühne, Fotobox, Simulatoren, VR und mehr – Maßanfertigungen aus eigener Entwicklung, frei kombinierbar.'
   }
 ];
 
@@ -50,15 +56,16 @@ const PLATTFORM = 'white-label-turnierplattform';
 const STREAM = 'livestreams';
 const LANDING = 'landingpages';
 const AREAS = 'gaming-areas';
+const MODULE = 'eventmodule';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
   'strategie-konzeption': [TURNIER, PLATTFORM, LANDING],
-  'events-erlebniswelten': [AREAS, TURNIER, STREAM, PLATTFORM],
-  'art-design-messebau': [AREAS, LANDING],
+  'events-erlebniswelten': [AREAS, MODULE, TURNIER, STREAM, PLATTFORM],
+  'art-design-messebau': [MODULE, AREAS, LANDING],
   'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
   'content-live-kommunikation': [STREAM, TURNIER],
-  'eventtechnik-produktion': [AREAS, STREAM, TURNIER],
+  'eventtechnik-produktion': [MODULE, AREAS, STREAM, TURNIER],
   'creator-talent-activation': [STREAM, TURNIER],
   'scouting-talent-development': [TURNIER, PLATTFORM],
   'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER, AREAS]

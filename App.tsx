@@ -104,6 +104,7 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const EventmodulePage = lazyRoute(() => import('./components/EventmodulePage').then(m => ({ default: m.EventmodulePage })));
 const GamingAreasPage = lazyRoute(() => import('./components/GamingAreasPage').then(m => ({ default: m.GamingAreasPage })));
 const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
 const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').then(m => ({ default: m.LivestreamsPage })));
@@ -196,7 +197,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -266,6 +267,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/gaming-areas') {
     return { page: 'gaming-areas' };
+  }
+  if (path === '/eventmodule') {
+    return { page: 'eventmodule' };
   }
   if (path === '/blog') {
     return { page: 'blog' };
@@ -465,6 +469,8 @@ export default function App() {
       window.history.pushState(null, '', '/landingpages');
     } else if (page === 'gaming-areas') {
       window.history.pushState(null, '', '/gaming-areas');
+    } else if (page === 'eventmodule') {
+      window.history.pushState(null, '', '/eventmodule');
     } else if (page === 'blog') {
       window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
@@ -648,6 +654,7 @@ export default function App() {
         {activePage === 'livestreams' && <LivestreamsPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'landingpages' && <LandingpagesPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'gaming-areas' && <GamingAreasPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'eventmodule' && <EventmodulePage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (

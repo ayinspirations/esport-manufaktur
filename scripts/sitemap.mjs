@@ -53,6 +53,7 @@ const urls = [
   ['/livestreams', '0.9', 'monthly'],
   ['/landingpages', '0.9', 'monthly'],
   ['/gaming-areas', '0.9', 'monthly'],
+  ['/eventmodule', '0.9', 'monthly'],
   ...caseSlugs.map((s) => [`/best-cases/${s}`, '0.8', 'monthly']),
   ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly', blogDateFor(s)])
 ];

@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas') => void;
+  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => void;
   scrollToSection: (id: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) => {
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas') => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => {
     e.preventDefault();
     onNavigate(page);
   };
@@ -76,6 +76,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                   <li><a href="/livestreams" onClick={(e) => handleNav(e, 'livestreams')} className="hover:text-emerald-700 transition-colors">Livestreams</a></li>
                   <li><a href="/landingpages" onClick={(e) => handleNav(e, 'landingpages')} className="hover:text-emerald-700 transition-colors">Landingpages</a></li>
                   <li><a href="/gaming-areas" onClick={(e) => handleNav(e, 'gaming-areas')} className="hover:text-emerald-700 transition-colors">Gaming Areas</a></li>
+                  <li><a href="/eventmodule" onClick={(e) => handleNav(e, 'eventmodule')} className="hover:text-emerald-700 transition-colors">Eventmodule</a></li>
                   <li><a href="#blog" onClick={(e) => { e.preventDefault(); scrollToSection('blog'); }} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="#contact" onClick={(e) => { e.preventDefault(); scrollToSection('contact'); }} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>
