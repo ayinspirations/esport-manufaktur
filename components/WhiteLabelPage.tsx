@@ -31,13 +31,18 @@ interface WhiteLabelPageProps {
 
 const PATH = '/white-label-turnierplattform';
 
-// Die Kacheln im Kopf: wofuer die Plattform eingesetzt wird. Die gewaehlte
-// Kachel wird zum Hintergrund. Bilder folgen; bis dahin Aufnahmen aus Cases.
+// Die Kacheln im Kopf: Plattformen, die wir im Look unserer Kunden gebaut
+// haben. Die gewaehlte Kachel wird zum Hintergrund. Reihenfolge wie vorgegeben.
 const HERO_TILES: HeroTile[] = [
-  { id: 'esport', title: 'Gaming & eSport', text: 'Community Cups, Ligen, Qualifier und Live-Finals.', image: '/images/showcase/sonax-rocket-league.jpg' },
-  { id: 'sport', title: 'Sport', text: 'Dart, Golf, Padel, Fußball und weitere Competition-Formate.', image: '/images/interwetten.jpeg' },
-  { id: 'events', title: 'Events & Messen', text: 'Registrierung, Challenges und Lead-Gen direkt auf der Fläche.', image: '/images/showcase/hhn-gamingland-meetit.jpg' },
-  { id: 'recruiting', title: 'Recruiting & Markenaktivierung', text: 'Gamifizierte Candidate Journeys und Aktivierungen im Look deiner Marke.', image: '/images/Hagebau1.jpg' }
+  { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von REWE.', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
+  { id: 'vfb', title: 'VfB Stuttgart', text: 'Die Turnierplattform im Look von VfB Stuttgart.', image: '/images/white-label-turnierplattform/vfb_whitelabel.jpeg' },
+  { id: 'xpdays', title: 'XP Days', text: 'Die Turnierplattform im Look von XP Days.', image: '/images/white-label-turnierplattform/xpdays_whitelabel.jpeg' },
+  { id: 'interwetten', title: 'Interwetten', text: 'Die Turnierplattform im Look von Interwetten.', image: '/images/white-label-turnierplattform/interwetten_whitelabel.jpeg' },
+  { id: 'hsv', title: 'HSV', text: 'Die Turnierplattform im Look von HSV.', image: '/images/white-label-turnierplattform/hsv_whitelabel.jpeg' },
+  { id: 'eintracht', title: 'Eintracht Frankfurt', text: 'Die Turnierplattform im Look von Eintracht Frankfurt.', image: '/images/white-label-turnierplattform/eintracht_whitelabel.jpeg' },
+  { id: 'winamax', title: 'Winamax', text: 'Die Turnierplattform im Look von Winamax.', image: '/images/white-label-turnierplattform/winamax_whitelabel.jpeg' },
+  { id: 'bfv', title: 'BFV', text: 'Die Turnierplattform im Look von BFV.', image: '/images/white-label-turnierplattform/bfv_whitelabel.jpeg' },
+  { id: 'garnier', title: 'Garnier', text: 'Die Turnierplattform im Look von Garnier.', image: '/images/white-label-turnierplattform/garnier_whitelabel.jpeg' }
 ];
 
 const BRANDING = [
