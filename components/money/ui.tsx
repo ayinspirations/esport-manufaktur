@@ -297,9 +297,13 @@ export const TileHero: React.FC<
         className="absolute inset-0 pointer-events-none"
         style={{ background: 'linear-gradient(to top, #020617 0%, rgba(2,6,23,0.88) 28%, rgba(2,6,23,0.45) 58%, rgba(2,6,23,0.35) 100%)' }}
       />
+      {/* Die Hintergruende sind detailreiche Mockups: auf der Textseite braucht
+          es deutlich mehr Abdunkelung, auf dem Telefon liegt der Text ganz
+          auf dem Bild. */}
+      <div className="sm:hidden absolute inset-0 pointer-events-none bg-[#020617]/70" />
       <div
         className="hidden sm:block absolute inset-0 pointer-events-none"
-        style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.8) 0%, rgba(2,6,23,0.3) 45%, rgba(2,6,23,0) 70%)' }}
+        style={{ background: 'linear-gradient(to right, rgba(2,6,23,0.94) 0%, rgba(2,6,23,0.82) 38%, rgba(2,6,23,0.35) 62%, rgba(2,6,23,0.1) 80%)' }}
       />
 
       <div className={`${CONTAINER} relative z-10 w-full pt-28 md:pt-32`}>
@@ -322,9 +326,9 @@ export const TileHero: React.FC<
 
       {/* Kachelreihe mit der Beschreibung der gewaehlten Kachel */}
       <div className={`${CONTAINER} relative z-10 w-full pt-6 md:pt-8 pb-6 md:pb-10`}>
-        <div className="flex flex-col lg:flex-row lg:items-end gap-5 lg:gap-10">
+        <div className="flex flex-col-reverse gap-3">
           <div
-            className="flex gap-3 md:gap-4 overflow-x-auto -mx-6 px-6 md:mx-0 md:px-0 pt-3 pb-2"
+            className="flex gap-3 md:gap-4 overflow-x-auto overscroll-x-contain -mx-6 px-6 md:mx-0 md:px-0 pt-3 pb-2 min-w-0"
             style={{ scrollbarWidth: 'none' }}
           >
             {tiles.map((t, i) => {
@@ -358,7 +362,7 @@ export const TileHero: React.FC<
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.4 }}
-              className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-sm lg:pb-3"
+              className="text-white/80 text-sm md:text-base font-medium leading-relaxed max-w-xl"
             >
               <span className="block text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-[10px] md:text-xs mb-1.5">{current.title}</span>
               {current.text}
