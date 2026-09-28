@@ -8,6 +8,7 @@ import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
+import { MONEY_PAGES, moneyPagesFor } from './money/pages';
 import { servicesContent } from './servicesContent';
 import { services, pillars, serviceSlugs } from './serviceCatalogue';
 import { SERVICES_LAYOUT } from './servicesLayout';
@@ -29,22 +30,6 @@ interface ServicesPageProps {
 }
 
 const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
-
-/** Money Pages, die von hier aus verlinkt werden. */
-const MONEY_PAGES = [
-  {
-    page: 'esport-turnier-organisieren',
-    eyebrow: 'eSport Turniere',
-    title: 'eSport Turnier organisieren',
-    text: 'Von der digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale – online, offline oder hybrid.'
-  },
-  {
-    page: 'white-label-turnierplattform',
-    eyebrow: 'Plattform',
-    title: 'White-Label Turnierplattform',
-    text: 'Deine Marke. Dein Turnier. Deine Plattform. Registrierung, Brackets, Lead-Gen und Gamification im Look & Feel deiner Marke.'
-  }
-];
 /** Das Sidebar-Layout darf breiter laufen: es traegt zwei Spalten statt einer. */
 const WIDE_CONTAINER = 'max-w-[1440px] mx-auto px-6 md:px-14';
 
@@ -543,6 +528,29 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           onOpenBooking={onOpenBooking}
           onOpenContact={onOpenContact}
         />
+        {/* Passende Money Pages zum gewaehlten Service -- interne Links auf
+            die Seiten, die fuer den Suchbegriff gebaut sind. */}
+        {moneyPagesFor(active).length > 0 && (
+          <div className={`${sidebar ? 'w-full' : CONTAINER} mt-12 md:mt-16`}>
+            <p className="text-[#0e958e] font-black text-[11px] md:text-xs uppercase tracking-[0.2em] mb-4">Mehr dazu</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {moneyPagesFor(active).map((m) => (
+                <a
+                  key={m.page}
+                  href={`/${m.page}`}
+                  onClick={(e) => { e.preventDefault(); onNavigate(m.page); }}
+                  className="group flex items-center justify-between gap-4 rounded-card bg-white/55 border border-white/70 p-5 md:p-6 hover:bg-white/80 transition-colors duration-500"
+                >
+                  <span>
+                    <span className="block text-[#0b0f2a] font-black uppercase tracking-tight text-base md:text-lg">{m.title}</span>
+                    <span className="block mt-1 text-slate-600 text-sm font-medium">{m.text}</span>
+                  </span>
+                  <span className="shrink-0 text-[#0e958e] text-xl transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
