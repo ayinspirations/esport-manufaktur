@@ -18,6 +18,7 @@ import { Purpose } from './components/Purpose';
 import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
 import { BOOKING_URL } from './components/site';
+import { HIDDEN_MONEY_PAGES } from './components/money/pages';
 import { startAnalytics } from './components/analytics';
 
 // ---------------------------------------------------------------------------
@@ -104,6 +105,11 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const EventmodulePage = lazyRoute(() => import('./components/EventmodulePage').then(m => ({ default: m.EventmodulePage })));
+const GamingAreasPage = lazyRoute(() => import('./components/GamingAreasPage').then(m => ({ default: m.GamingAreasPage })));
+const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
+const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').then(m => ({ default: m.LivestreamsPage })));
+const WhiteLabelPage = lazyRoute(() => import('./components/WhiteLabelPage').then(m => ({ default: m.WhiteLabelPage })));
 const EsportTurnierPage = lazyRoute(() => import('./components/EsportTurnierPage').then(m => ({ default: m.EsportTurnierPage })));
 const BlogPage = lazyRoute(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
 const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
@@ -192,7 +198,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -250,6 +256,21 @@ const resolveRoute = (): Route => {
   // Money Pages liegen direkt unter der Wurzel, die Adresse ist der Suchbegriff.
   if (path === '/esport-turnier-organisieren') {
     return { page: 'esport-turnier-organisieren' };
+  }
+  if (path === '/white-label-turnierplattform') {
+    return { page: 'white-label-turnierplattform' };
+  }
+  if (path === '/livestreams' && !HIDDEN_MONEY_PAGES.includes('livestreams')) {
+    return { page: 'livestreams' };
+  }
+  if (path === '/landingpages' && !HIDDEN_MONEY_PAGES.includes('landingpages')) {
+    return { page: 'landingpages' };
+  }
+  if (path === '/gaming-areas' && !HIDDEN_MONEY_PAGES.includes('gaming-areas')) {
+    return { page: 'gaming-areas' };
+  }
+  if (path === '/eventmodule' && !HIDDEN_MONEY_PAGES.includes('eventmodule')) {
+    return { page: 'eventmodule' };
   }
   if (path === '/blog') {
     return { page: 'blog' };
@@ -441,6 +462,16 @@ export default function App() {
       window.history.pushState(null, '', '/webdesign');
     } else if (page === 'esport-turnier-organisieren') {
       window.history.pushState(null, '', '/esport-turnier-organisieren');
+    } else if (page === 'white-label-turnierplattform') {
+      window.history.pushState(null, '', '/white-label-turnierplattform');
+    } else if (page === 'livestreams') {
+      window.history.pushState(null, '', '/livestreams');
+    } else if (page === 'landingpages') {
+      window.history.pushState(null, '', '/landingpages');
+    } else if (page === 'gaming-areas') {
+      window.history.pushState(null, '', '/gaming-areas');
+    } else if (page === 'eventmodule') {
+      window.history.pushState(null, '', '/eventmodule');
     } else if (page === 'blog') {
       window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
@@ -620,6 +651,11 @@ export default function App() {
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
+        {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
+        {activePage === 'livestreams' && <LivestreamsPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'landingpages' && <LandingpagesPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'gaming-areas' && <GamingAreasPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'eventmodule' && <EventmodulePage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (

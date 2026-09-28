@@ -16,6 +16,8 @@ export interface PageMeta {
   breadcrumb: string;
   ogImage?: string;
   service?: { name: string; serviceType: string; description: string };
+  faq?: { q: string; a: string }[];
+  hidden?: boolean;
 }
 
 export const PAGE_META = pageMeta as Record<string, PageMeta>;
@@ -45,5 +47,16 @@ export const serviceSchema = (path: string) => {
     url: absoluteUrl(path),
     areaServed: { '@type': 'Country', name: 'Deutschland' },
     provider: { '@type': 'Organization', name: 'GG Manufaktur', url: SITE_URL }
+  };
+};
+
+/** Schema.org-FAQPage fuer eine Seite mit FAQ, sonst null. */
+export const faqSchema = (path: string) => {
+  const faq = PAGE_META[path]?.faq;
+  if (!faq?.length) return null;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }))
   };
 };

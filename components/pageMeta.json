@@ -19,5 +19,122 @@
       "serviceType": "eSport Turnierorganisation",
       "description": "Konzeption und Umsetzung von eSport Turnieren für Marken, Unternehmen, Vereine und Events – online, offline oder hybrid: Strategie, Turniermanagement, digitale Plattform, Eventtechnik, Livestream und Reporting."
     }
+  },
+  "/white-label-turnierplattform": {
+    "title": "White-Label Turnierplattform | GG MANUFAKTUR",
+    "description": "Eigenentwickelte White-Label Turnierplattform im Look & Feel deiner Marke: Registrierung, Brackets, Rankings, Lead-Gen, Gamification und Kommunikation. DSGVO-konform, Hosting in Deutschland.",
+    "breadcrumb": "White-Label Turnierplattform",
+    "ogImage": "/images/showcase/sonax-rocket-league.jpg",
+    "service": {
+      "name": "White-Label Turnierplattform",
+      "serviceType": "White-Label Turnier- und Aktivierungsplattform",
+      "description": "Eigenentwickelte, vollständig gebrandete Plattform für Turniere, Wettbewerbe und Aktivierungen: Registrierung, Turniermanagement, Lead-Generierung, Gamification, Integrationen und Kommunikation – DSGVO-konform, gehostet in Deutschland."
+    }
+  },
+  "/livestreams": {
+    "title": "Livestreams für eSport & Gaming Events | GG MANUFAKTUR",
+    "description": "Professionelles Livestreaming für eSport- und Gaming-Events in TV-Qualität: vor Ort oder online, mit eigener Technik, Regie, Moderation und Grafiken aus einer Hand.",
+    "breadcrumb": "Livestreams",
+    "ogImage": "/images/showcase/allianz-vfb-stuttgart.jpg",
+    "service": {
+      "name": "Livestream-Produktion für eSport & Gaming Events",
+      "serviceType": "Livestream-Produktion",
+      "description": "Komplette Livestream-Produktion für eSport- und Gaming-Events vor Ort und online: eigene Technik, Regie, Moderation, Grafiken und Spielstände, Streaming auf Twitch, YouTube, TikTok oder per Multistreaming."
+    },
+    "faq": [
+      {
+        "q": "Auf welchen Plattformen wird das Event gestreamt?",
+        "a": "Da Twitch als meistgenutzte Livestreaming-Plattform im Gaming-Bereich gilt, streamen wir primär dort, um die Zielgruppe in ihrem natürlichen Umfeld zu erreichen. Je nach deiner Strategie übertragen wir aber auch problemlos auf YouTube, TikTok oder nutzen Multistreaming, um auf mehreren Plattformen gleichzeitig live zu sein."
+      },
+      {
+        "q": "Können wir unsere eigenen Werbevideos und Brandings einbinden?",
+        "a": "Ja. Logos, Overlays, Bauchbinden, Sponsorenelemente sowie eigene Werbe- und Imagevideos binden wir direkt in das Streamdesign ein – abgestimmt auf dein Corporate Design und im Ablauf fest eingeplant."
+      },
+      {
+        "q": "Wie binden wir die Zuschauer im Stream aktiv ein?",
+        "a": "Über Chat-Interaktion, Umfragen, Predictions, Gewinnspiele und Community-Aktionen. Die Moderation greift den Chat live auf – und auf Wunsch verbinden wir den Stream mit Registrierung, Rankings oder Gamification auf einer eigenen Plattform."
+      },
+      {
+        "q": "Was passiert mit dem Video-Material nach dem Event?",
+        "a": "Du erhältst die Aufzeichnung des Streams. Auf Wunsch schneiden wir daraus Highlights, Clips und Social-Media-Formate, damit das Event auch nach dem Livestream weiterwirkt."
+      }
+    ],
+    "hidden": true
+  },
+  "/landingpages": {
+    "title": "Gaming-Landingpages für Events & Turniere | GG MANUFAKTUR",
+    "description": "Conversion-optimierte Landingpages für Gaming- und eSport-Events: im Corporate Design, mit Anmeldung, Brackets, Live-Tabellen und Livestream – DSGVO-konform und Mobile-First.",
+    "breadcrumb": "Landingpages",
+    "ogImage": "/images/showcase/kreissparkasse-boeblingen.jpg",
+    "service": {
+      "name": "Gaming-Landingpages für Events und Turniere",
+      "serviceType": "Landingpage-Entwicklung",
+      "description": "Individuelle, conversion-optimierte Landingpages für Gaming- und eSport-Events im Corporate Design: Anmeldung, Spielpläne, Live-Tabellen, Livestreams, Sponsoren-Integration und Schnittstellen – DSGVO-konform und Mobile-First."
+    },
+    "faq": [
+      {
+        "q": "Können die Landingpages an unser Corporate Design angepasst werden?",
+        "a": "Absolut. Wir integrieren deine Logos, Farben und Schriftarten, sodass die Seite nahtlos zu deiner Marke passt."
+      },
+      {
+        "q": "Ist die Anmeldung der Teilnehmer DSGVO-konform?",
+        "a": "Ja. Anmeldeformulare, Einwilligungen und Opt-ins planen wir von Anfang an datenschutzkonform – mit Hosting in Deutschland und auf Wunsch mit Auftragsverarbeitungsvertrag."
+      },
+      {
+        "q": "Werden die Spielergebnisse automatisch aktualisiert?",
+        "a": "Ja. Spielpläne, Brackets und Tabellen sind mit unserer Turnierplattform verbunden und aktualisieren sich live, sobald Ergebnisse eingetragen werden."
+      },
+      {
+        "q": "Wie schnell ist eine solche Seite einsatzbereit?",
+        "a": "Das hängt vom Umfang ab. Eine Event-Landingpage auf Basis unserer bestehenden Module ist in der Regel innerhalb weniger Wochen live – sprich uns früh an, dann planen wir den Zeitplan gemeinsam."
+      }
+    ],
+    "hidden": true
+  },
+  "/gaming-areas": {
+    "title": "Gaming Areas für Events, Center & Messen | GG MANUFAKTUR",
+    "description": "Maßgeschneiderte Gaming Areas für Einkaufscenter, Sportevents, Firmenfeiern und Messen: mehr Frequenz, Verweildauer und Interaktion – Full-Service von der Planung bis zur Betreuung vor Ort.",
+    "breadcrumb": "Gaming Areas",
+    "ogImage": "/images/showcase/aok-fortuna-duesseldorf.jpg",
+    "service": {
+      "name": "Gaming Areas für Events",
+      "serviceType": "Gaming-Area-Vermietung und Eventaktivierung",
+      "description": "Planung, Aufbau und Betreuung von Gaming Areas für Einkaufscenter, Sportevents und Fanzonen, Firmenanlässe und Messen – inklusive Technik, Branding und Personal vor Ort."
+    },
+    "faq": [
+      {
+        "q": "Wie viel Platz wird für eine Gaming Area benötigt?",
+        "a": "Das ist völlig flexibel! Ein einzelnes Modul (z. B. ein Simulator oder ein Gaming Cube) benötigt oft nur wenige Quadratmeter. Für größere Gaming Areas skalieren wir den Platz entsprechend und passen das Setup an deine Fläche an."
+      },
+      {
+        "q": "Können die Gaming-Stationen mit unserem Firmenlogo gebrandet werden?",
+        "a": "Ja. Stationen, Rückwände, Screens und Spielinhalte lassen sich mit deinem Logo und in deinem Corporate Design gestalten – bis hin zu eigenen Highscore-Grafiken und Sponsorenflächen."
+      },
+      {
+        "q": "Gibt es Personal zur Betreuung der Stationen?",
+        "a": "Ja. Unser Team betreut die Gaming Area vor Ort, erklärt die Spiele, leitet Challenges an und sorgt für einen reibungslosen Ablauf – auf Wunsch mit Moderation."
+      },
+      {
+        "q": "Müssen wir uns um den Aufbau und die Technik kümmern?",
+        "a": "Nein. Wir liefern die komplette Technik, bauen auf, testen alles vor Eventbeginn und bauen danach wieder ab. Du brauchst nur Fläche und Strom."
+      },
+      {
+        "q": "Für welche Zielgruppen eignet sich eine Gaming Area?",
+        "a": "Für nahezu alle: Familien und Kinder im Center, Fans in der Fanzone, Mitarbeitende beim Firmenevent oder Fachbesucher auf der Messe. Spielauswahl und Mechaniken stimmen wir auf deine Zielgruppe ab."
+      }
+    ],
+    "hidden": true
+  },
+  "/eventmodule": {
+    "title": "Eventmodule für Gaming & eSport Events | GG MANUFAKTUR",
+    "description": "Individuell gebrandete Eventmodule aus eigener Entwicklung: Gaming Modul, Gaming Cube, Bühne, interaktive Fotobox, Simulatoren, VR, Retro Gaming und mehr – frei kombinierbar für Turniere, Messen und Aktivierungen.",
+    "breadcrumb": "Eventmodule",
+    "ogImage": "/images/showcase/erazer-expert.jpg",
+    "service": {
+      "name": "Eventmodule für Gaming & eSport Events",
+      "serviceType": "Vermietung von Gaming-Eventmodulen",
+      "description": "Maßgefertigte, individuell brandbare Eventmodule aus eigener Entwicklung – Gaming Modul, Gaming Cube, Gaming Bühne, interaktive Fotobox, Simulatoren, Mario Kart Live Circuit, Retro Gaming, Tresor und VR Experience – frei kombinierbar für Turniere, Messen, Gaming Areas und Fan Zones."
+    },
+    "hidden": true
   }
 }

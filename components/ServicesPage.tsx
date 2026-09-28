@@ -8,6 +8,7 @@ import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
+import { MONEY_PAGES, moneyPagesFor } from './money/pages';
 import { servicesContent } from './servicesContent';
 import { services, pillars, serviceSlugs } from './serviceCatalogue';
 import { SERVICES_LAYOUT } from './servicesLayout';
@@ -527,6 +528,29 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
           onOpenBooking={onOpenBooking}
           onOpenContact={onOpenContact}
         />
+        {/* Passende Money Pages zum gewaehlten Service -- interne Links auf
+            die Seiten, die fuer den Suchbegriff gebaut sind. */}
+        {moneyPagesFor(active).length > 0 && (
+          <div className={`${sidebar ? 'w-full' : CONTAINER} mt-12 md:mt-16`}>
+            <p className="text-[#0e958e] font-black text-[11px] md:text-xs uppercase tracking-[0.2em] mb-4">Mehr dazu</p>
+            <div className="grid md:grid-cols-2 gap-4">
+              {moneyPagesFor(active).map((m) => (
+                <a
+                  key={m.page}
+                  href={`/${m.page}`}
+                  onClick={(e) => { e.preventDefault(); onNavigate(m.page); }}
+                  className="group flex items-center justify-between gap-4 rounded-card bg-white/55 border border-white/70 p-5 md:p-6 hover:bg-white/80 transition-colors duration-500"
+                >
+                  <span>
+                    <span className="block text-[#0b0f2a] font-black uppercase tracking-tight text-base md:text-lg">{m.title}</span>
+                    <span className="block mt-1 text-slate-600 text-sm font-medium">{m.text}</span>
+                  </span>
+                  <span className="shrink-0 text-[#0e958e] text-xl transition-transform duration-500 group-hover:translate-x-1">→</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );
@@ -563,20 +587,21 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       {/* Money Pages: Leistungen mit eigener Seite je Suchbegriff. Hier
           verlinkt, damit sie nicht nur ueber die Sitemap erreichbar sind. */}
-      <div className={`${CONTAINER} ${BLOCK_GAP}`}>
-        <a
-          href="/esport-turnier-organisieren"
-          onClick={(e) => { e.preventDefault(); onNavigate('esport-turnier-organisieren'); }}
-          className="group block tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
-        >
-          <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">eSport Turniere</span>
-          <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
-            eSport Turnier organisieren <span className="text-[#2dd4bf]">→</span>
-          </span>
-          <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">
-            Von der digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale – online, offline oder hybrid.
-          </span>
-        </a>
+      <div className={`${CONTAINER} ${BLOCK_GAP} grid md:grid-cols-2 gap-4`}>
+        {MONEY_PAGES.map((m) => (
+          <a
+            key={m.page}
+            href={`/${m.page}`}
+            onClick={(e) => { e.preventDefault(); onNavigate(m.page); }}
+            className="group block tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
+          >
+            <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">{m.eyebrow}</span>
+            <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
+              {m.title} <span className="text-[#2dd4bf]">→</span>
+            </span>
+            <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">{m.text}</span>
+          </a>
+        ))}
       </div>
 
       {/* The homepage's Blog section, at the foot of every service.
