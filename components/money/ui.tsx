@@ -49,8 +49,11 @@ export const MoneyHero: React.FC<
     className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
   >
     <img src={asset(image)} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" />
-    <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/75 to-[#020617]/25" />
-    <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-transparent to-transparent" />
+    {/* Telefon: gleichmaessig abgedunkelt, damit das Bild bis zur Unterkante sichtbar
+        bleibt. Breite Schirme: Verlauf hinter dem Text, Bild rechts frei. */}
+    <div className="sm:hidden absolute inset-0 bg-[#020617]/60" />
+    <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/75 to-[#020617]/25" />
+    <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-transparent to-transparent" />
     <div className={`${CONTAINER} relative z-10 w-full`}>
       <Reveal duration={0.6} className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-5 md:mb-7">
         {eyebrow}
