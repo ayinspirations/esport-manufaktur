@@ -157,7 +157,9 @@ export const ImageCard: React.FC<{ title: string; text: string; image: string }>
     <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/70 to-[#020617]/10" />
     <div className="relative p-6">
       <h3 className="text-white font-black text-xl uppercase tracking-tight mb-2">{title}</h3>
-      <p className="text-white/70 text-sm leading-relaxed font-medium">{text}</p>
+      {/* Feste Mindesthoehe fuer den Text: so stehen die Titel einer Reihe auf
+          derselben Hoehe, auch wenn ein Text eine Zeile laenger ist. */}
+      <p className="text-white/70 text-sm leading-relaxed font-medium min-h-[3.25em]">{text}</p>
     </div>
   </div>
 );
@@ -303,17 +305,12 @@ export const PlatformShowcase: React.FC<{ tiles: ShowcaseTile[] }> = ({ tiles })
               onClick={() => setActive(i)}
               aria-current={isActive ? 'true' : undefined}
               aria-label={`${t.title} anzeigen`}
-              className={`shrink-0 w-[132px] md:w-[150px] text-left transition-transform duration-500 ${isActive ? '' : 'hover:-translate-y-1'}`}
+              className={`shrink-0 w-[132px] md:w-[150px] transition-transform duration-500 ${isActive ? '-translate-y-1' : 'hover:-translate-y-1'}`}
             >
-              <span
-                className={`block aspect-[16/10] rounded-2xl overflow-hidden border-2 transition-colors duration-300 ${
-                  isActive ? 'border-[#0e958e]' : 'border-transparent'
-                }`}
-              >
+              {/* Kein Rahmen, keine Abdunkelung: die Kacheln stehen immer voll
+                  im Vordergrund. Die gewaehlte ist die, die oben gross steht. */}
+              <span className="block aspect-[16/10] rounded-2xl overflow-hidden">
                 <img src={asset(t.image)} alt="" loading="lazy" className="w-full h-full object-cover" />
-              </span>
-              <span className={`block mt-2 text-[11px] md:text-xs font-black uppercase tracking-tight ${isActive ? 'text-[#0e958e]' : 'text-[#0b0f2a]'}`}>
-                {t.title}
               </span>
             </button>
           );
