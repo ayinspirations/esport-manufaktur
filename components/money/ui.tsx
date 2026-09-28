@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Reveal, RevealText } from '../Reveal';
 import { ExpandingCTA } from '../ui/expanding-cta';
 import { BLOCK_GAP } from '../spacing';
@@ -271,57 +271,91 @@ export interface ShowcaseTile {
 export const PlatformShowcase: React.FC<{ tiles: ShowcaseTile[] }> = ({ tiles }) => {
   const [active, setActive] = useState(0);
   const current = tiles[active];
+  const railRef = useRef<HTMLDivElement>(null);
+  const tileRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // Waehlen scrollt nur die Kachelreihe, nie die Seite: die gewaehlte Kachel
+  // rueckt in den sichtbaren Bereich der Reihe.
+  const select = (i: number) => {
+    const next = (i + tiles.length) % tiles.length;
+    setActive(next);
+    const rail = railRef.current;
+    const tile = tileRefs.current[next];
+    if (rail && tile) {
+      const left = tile.offsetLeft - rail.offsetLeft - (rail.clientWidth - tile.clientWidth) / 2;
+      rail.scrollTo({ left, behavior: 'smooth' });
+    }
+  };
+
+  const arrow =
+    'w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-white/70 backdrop-blur-md border border-white/80 text-[#0b0f2a] shadow-[0_8px_24px_-12px_rgba(11,15,42,0.45)] transition-[transform,background-color] duration-300 hover:bg-white active:scale-95';
 
   return (
     <div>
+      {/* Alle Bilder liegen uebereinander und sind von Anfang an geladen; beim
+          Wechsel wird nur die Deckkraft ueberblendet -- nichts laedt nach,
+          nichts springt. */}
       <div className="relative aspect-[16/9] rounded-card overflow-hidden bg-[#020617] shadow-[0_40px_80px_-40px_rgba(2,6,23,0.7)]">
-        <AnimatePresence initial={false}>
-          <motion.img
-            key={current.id}
-            src={asset(current.image)}
-            alt={`Turnierplattform im Look von ${current.title}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6 }}
-            className="absolute inset-0 w-full h-full object-cover"
+        {tiles.map((t, i) => (
+          <img
+            key={t.id}
+            src={asset(t.image)}
+            alt={i === active ? `Turnierplattform im Look von ${t.title}` : ''}
+            aria-hidden={i !== active}
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out"
+            style={{ opacity: i === active ? 1 : 0 }}
           />
-        </AnimatePresence>
+        ))}
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.p
-          key={current.id}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.35 }}
-          className="mt-5 text-slate-600 text-sm md:text-base font-medium"
-        >
-          <span className="text-[#0b0f2a] font-black uppercase tracking-tight mr-2">{current.title}</span>
-          {current.text}
-        </motion.p>
-      </AnimatePresence>
-
-      <div className="mt-5 flex gap-3 overflow-x-auto overscroll-x-contain -mx-6 px-6 md:mx-0 md:px-0 py-2" style={{ scrollbarWidth: 'none' }}>
-        {tiles.map((t, i) => {
-          const isActive = i === active;
-          return (
-            <button
+      {/* Beschreibung und Pfeile. Alle Beschreibungen stehen im selben
+          Rasterfeld uebereinander; die Hoehe richtet sich nach der laengsten,
+          also verschiebt ein zweizeiliger Text nichts darunter. */}
+      <div className="mt-5 flex items-start justify-between gap-4">
+        <div className="grid flex-1 min-w-0">
+          {tiles.map((t, i) => (
+            <p
               key={t.id}
-              onClick={() => setActive(i)}
-              aria-current={isActive ? 'true' : undefined}
-              aria-label={`${t.title} anzeigen`}
-              className={`shrink-0 w-[132px] md:w-[150px] transition-transform duration-500 ${isActive ? '-translate-y-1' : 'hover:-translate-y-1'}`}
+              aria-hidden={i !== active}
+              className="[grid-area:1/1] text-slate-600 text-sm md:text-base font-medium transition-opacity duration-500"
+              style={{ opacity: i === active ? 1 : 0 }}
             >
-              {/* Kein Rahmen, keine Abdunkelung: die Kacheln stehen immer voll
-                  im Vordergrund. Die gewaehlte ist die, die oben gross steht. */}
-              <span className="block aspect-[16/10] rounded-2xl overflow-hidden">
-                <img src={asset(t.image)} alt="" loading="lazy" className="w-full h-full object-cover" />
-              </span>
-            </button>
-          );
-        })}
+              <span className="text-[#0b0f2a] font-black uppercase tracking-tight mr-2">{t.title}</span>
+              {t.text}
+            </p>
+          ))}
+        </div>
+        <div className="flex shrink-0 gap-2.5">
+          <button type="button" onClick={() => select(active - 1)} aria-label="Vorherige Plattform" className={arrow}>
+            <ChevronLeft className="w-5 h-5" strokeWidth={2.5} />
+          </button>
+          <button type="button" onClick={() => select(active + 1)} aria-label="Nächste Plattform" className={arrow}>
+            <ChevronRight className="w-5 h-5" strokeWidth={2.5} />
+          </button>
+        </div>
+      </div>
+
+      <div
+        ref={railRef}
+        className="mt-5 flex gap-3 overflow-x-auto overscroll-x-contain -mx-6 px-6 md:mx-0 md:px-0 py-2"
+        style={{ scrollbarWidth: 'none' }}
+      >
+        {tiles.map((t, i) => (
+          <button
+            key={t.id}
+            ref={(el) => { tileRefs.current[i] = el; }}
+            onClick={() => select(i)}
+            aria-current={i === active ? 'true' : undefined}
+            aria-label={`${t.title} anzeigen`}
+            // Keine Bewegung bei der Auswahl: die Reihe bleibt, wo sie ist.
+            className="shrink-0 w-[132px] md:w-[150px]"
+          >
+            <span className="block aspect-[16/10] rounded-2xl overflow-hidden">
+              <img src={asset(t.image)} alt="" decoding="async" className="w-full h-full object-cover" />
+            </span>
+          </button>
+        ))}
       </div>
     </div>
   );
