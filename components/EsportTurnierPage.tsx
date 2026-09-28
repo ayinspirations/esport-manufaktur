@@ -176,12 +176,14 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           <Reveal as="p" delay={0.26} className="mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight">
             Von der Idee bis zum Live-Finale.
           </Reveal>
-          <Reveal as="p" delay={0.32} className="mt-3 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight">
+          {/* Fliesstext und Formate stehen auf dem Telefon unter dem Kopf (siehe
+              unten) -- im Hero waere es dort zu voll. */}
+          <Reveal as="p" delay={0.32} className="hidden sm:block mt-3 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight">
             Wir konzipieren und realisieren eSport Turniere für Marken, Unternehmen, Vereine und Events. Von der
             digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale übernehmen wir alle relevanten
             Bausteine.
           </Reveal>
-          <Reveal as="p" delay={0.38} className="mt-4 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
+          <Reveal as="p" delay={0.38} className="hidden sm:block mt-4 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
             Online. Offline. Hybrid.
           </Reveal>
           <Reveal delay={0.44} className="mt-8 md:mt-10">
@@ -189,6 +191,15 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           </Reveal>
         </div>
       </section>
+
+      {/* Nur Telefon: der Einleitungstext aus dem Kopf */}
+      <div className={`sm:hidden ${CONTAINER} pt-12`}>
+        <p className="text-slate-600 text-base font-medium leading-relaxed">
+          Wir konzipieren und realisieren eSport Turniere für Marken, Unternehmen, Vereine und Events. Von der digitalen
+          Anmeldung über Turniermanagement und Technik bis zum Live-Finale übernehmen wir alle relevanten Bausteine.
+        </p>
+        <p className="mt-4 text-[#0e958e] font-black uppercase tracking-[0.2em] text-xs">Online. Offline. Hybrid.</p>
+      </div>
 
       {/* ============ Mehr als nur ein Turnier ============ */}
       <section className={`${CONTAINER} ${BLOCK_GAP}`}>
