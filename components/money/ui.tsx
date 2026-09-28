@@ -231,18 +231,6 @@ export const InlineList: React.FC<{ items: string[] }> = ({ items }) => (
   </p>
 );
 
-/** Raster aus Zellen mit feinen Linien -- fuer Kennzahlen und kurze Begriffe. */
-export const CellGrid: React.FC<{ items: string[] }> = ({ items }) => (
-  <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 border-t border-l border-[#0b0f2a]/12">
-    {items.map((item, i) => (
-      <li key={item} className="border-b border-r border-[#0b0f2a]/12 px-4 py-5 md:px-6 md:py-7">
-        <span className="block text-[#0e958e] font-black text-xs tabular-nums mb-2">{String(i + 1).padStart(2, '0')}</span>
-        <span className="block text-[#0b0f2a] font-black uppercase tracking-tight text-sm md:text-base">{item}</span>
-      </li>
-    ))}
-  </ul>
-);
-
 // ---------------------------------------------------------------------------
 // Teal-Karte -- wie im Flyer: gefuellte Flaeche, weisse Schrift
 // ---------------------------------------------------------------------------
@@ -321,8 +309,8 @@ export const PlatformShowcase: React.FC<{ tiles: ShowcaseTile[] }> = ({ tiles })
               className="[grid-area:1/1] text-slate-600 text-sm md:text-base font-medium transition-opacity duration-500"
               style={{ opacity: i === active ? 1 : 0 }}
             >
-              <span className="text-[#0b0f2a] font-black uppercase tracking-tight mr-2">{t.title}</span>
-              {t.text}
+              {/* Satz zuerst, der Name fett am Ende -- so steht er nur einmal da. */}
+              {t.text} <strong className="text-[#0b0f2a] font-black">{t.title}</strong>.
             </p>
           ))}
         </div>

@@ -20,7 +20,7 @@ import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { headFor, serviceSchema } from './pageMeta';
 import { BLOCK_GAP } from './spacing';
-import { CONTAINER, CellGrid, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
+import { CONTAINER, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
 
 // ---------------------------------------------------------------------------
 // Money Page: White-Label Plattform
@@ -39,15 +39,15 @@ const PATH = '/white-label-turnierplattform';
 // Plattformen, die wir im Look unserer Kunden gebaut haben. Die gewaehlte
 // Kachel erscheint gross. Reihenfolge wie vorgegeben.
 const HERO_TILES: ShowcaseTile[] = [
-  { id: 'eintracht', title: 'Eintracht Frankfurt', text: 'Die Turnierplattform im Look von Eintracht Frankfurt.', image: '/images/white-label-turnierplattform/eintracht_whitelabel.jpeg' },
-  { id: 'vfb', title: 'VfB Stuttgart', text: 'Die Turnierplattform im Look von VfB Stuttgart.', image: '/images/white-label-turnierplattform/vfb_whitelabel.jpeg' },
-  { id: 'xpdays', title: 'XP Days', text: 'Die Turnierplattform im Look von XP Days.', image: '/images/white-label-turnierplattform/xpdays_whitelabel.jpeg' },
-  { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von REWE.', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
-  { id: 'interwetten', title: 'Interwetten', text: 'Die Turnierplattform im Look von Interwetten.', image: '/images/white-label-turnierplattform/interwetten_whitelabel.jpeg' },
-  { id: 'hsv', title: 'HSV', text: 'Die Turnierplattform im Look von HSV.', image: '/images/white-label-turnierplattform/hsv_whitelabel.jpeg' },
-  { id: 'winamax', title: 'Winamax', text: 'Die Turnierplattform im Look von Winamax.', image: '/images/white-label-turnierplattform/winamax_whitelabel.jpeg' },
-  { id: 'bfv', title: 'BFV', text: 'Die Turnierplattform im Look von BFV.', image: '/images/white-label-turnierplattform/bfv_whitelabel.jpeg' },
-  { id: 'garnier', title: 'Garnier', text: 'Die Turnierplattform im Look von Garnier.', image: '/images/white-label-turnierplattform/garnier_whitelabel.jpeg' }
+  { id: 'eintracht', title: 'Eintracht Frankfurt', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/eintracht_whitelabel.jpeg' },
+  { id: 'vfb', title: 'VfB Stuttgart', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/vfb_whitelabel.jpeg' },
+  { id: 'xpdays', title: 'XP Days', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/xpdays_whitelabel.jpeg' },
+  { id: 'rewe', title: 'REWE', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/rewe_whitelabel.jpeg' },
+  { id: 'interwetten', title: 'Interwetten', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/interwetten_whitelabel.jpeg' },
+  { id: 'hsv', title: 'HSV', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/hsv_whitelabel.jpeg' },
+  { id: 'winamax', title: 'Winamax', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/winamax_whitelabel.jpeg' },
+  { id: 'bfv', title: 'BFV', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/bfv_whitelabel.jpeg' },
+  { id: 'garnier', title: 'Garnier', text: 'Die Turnierplattform im Look von', image: '/images/white-label-turnierplattform/garnier_whitelabel.jpeg' }
 ];
 
 const HERO_LEAD =
@@ -338,7 +338,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         }
       >
         <Label>Anpassbar sind unter anderem</Label>
-        <CellGrid items={ANPASSBAR} />
+        <InlineList items={ANPASSBAR} />
         <div className="mt-8 space-y-1 text-[#0b0f2a] text-base md:text-lg font-bold">
           <p>Keine sichtbare Fremdplattform.</p>
           <p>Keine Zwischenstufe zwischen deiner Marke und deinen Nutzern.</p>
