@@ -587,7 +587,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       {/* Money Pages: Leistungen mit eigener Seite je Suchbegriff. Hier
           verlinkt, damit sie nicht nur ueber die Sitemap erreichbar sind. */}
-      <div className={`${CONTAINER} ${BLOCK_GAP} grid md:grid-cols-2 gap-4`}>
+      <div className={`${CONTAINER} ${BLOCK_GAP} grid md:grid-cols-2 lg:grid-cols-3 gap-4`}>
         {MONEY_PAGES.map((m) => (
           <a
             key={m.page}

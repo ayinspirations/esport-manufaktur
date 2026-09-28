@@ -66,6 +66,14 @@ for (const [path, meta] of Object.entries(PAGES)) {
     // Dieselbe id wie im Browser, damit die Seite den Block uebernimmt statt ihn zu verdoppeln.
     extra += `\n    <script id="ld-service" type="application/ld+json">${JSON.stringify(service)}</script>`;
   }
+  if (meta.faq?.length) {
+    const faq = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: meta.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }))
+    };
+    extra += `\n    <script id="ld-faq" type="application/ld+json">${JSON.stringify(faq)}</script>`;
+  }
   html = html.replace('</head>', `    ${extra}\n  </head>`);
 
   mkdirSync(`dist${path}`, { recursive: true });

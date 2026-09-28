@@ -30,5 +30,34 @@
       "serviceType": "White-Label Turnier- und Aktivierungsplattform",
       "description": "Eigenentwickelte, vollständig gebrandete Plattform für Turniere, Wettbewerbe und Aktivierungen: Registrierung, Turniermanagement, Lead-Generierung, Gamification, Integrationen und Kommunikation – DSGVO-konform, gehostet in Deutschland."
     }
+  },
+  "/livestreams": {
+    "title": "Livestreams für eSport & Gaming Events | GG MANUFAKTUR",
+    "description": "Professionelles Livestreaming für eSport- und Gaming-Events in TV-Qualität: vor Ort oder online, mit eigener Technik, Regie, Moderation und Grafiken aus einer Hand.",
+    "breadcrumb": "Livestreams",
+    "ogImage": "/images/showcase/allianz-vfb-stuttgart.jpg",
+    "service": {
+      "name": "Livestream-Produktion für eSport & Gaming Events",
+      "serviceType": "Livestream-Produktion",
+      "description": "Komplette Livestream-Produktion für eSport- und Gaming-Events vor Ort und online: eigene Technik, Regie, Moderation, Grafiken und Spielstände, Streaming auf Twitch, YouTube, TikTok oder per Multistreaming."
+    },
+    "faq": [
+      {
+        "q": "Auf welchen Plattformen wird das Event gestreamt?",
+        "a": "Da Twitch als meistgenutzte Livestreaming-Plattform im Gaming-Bereich gilt, streamen wir primär dort, um die Zielgruppe in ihrem natürlichen Umfeld zu erreichen. Je nach deiner Strategie übertragen wir aber auch problemlos auf YouTube, TikTok oder nutzen Multistreaming, um auf mehreren Plattformen gleichzeitig live zu sein."
+      },
+      {
+        "q": "Können wir unsere eigenen Werbevideos und Brandings einbinden?",
+        "a": "Ja. Logos, Overlays, Bauchbinden, Sponsorenelemente sowie eigene Werbe- und Imagevideos binden wir direkt in das Streamdesign ein – abgestimmt auf dein Corporate Design und im Ablauf fest eingeplant."
+      },
+      {
+        "q": "Wie binden wir die Zuschauer im Stream aktiv ein?",
+        "a": "Über Chat-Interaktion, Umfragen, Predictions, Gewinnspiele und Community-Aktionen. Die Moderation greift den Chat live auf – und auf Wunsch verbinden wir den Stream mit Registrierung, Rankings oder Gamification auf einer eigenen Plattform."
+      },
+      {
+        "q": "Was passiert mit dem Video-Material nach dem Event?",
+        "a": "Du erhältst die Aufzeichnung des Streams. Auf Wunsch schneiden wir daraus Highlights, Clips und Social-Media-Formate, damit das Event auch nach dem Livestream weiterwirkt."
+      }
+    ]
   }
 }

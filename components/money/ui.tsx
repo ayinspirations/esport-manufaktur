@@ -15,15 +15,34 @@ export const CONTAINER = 'max-w-[1200px] mx-auto px-6 md:px-14';
 export const H2 = 'text-[clamp(28px,4vw,52px)] font-black leading-[1.02] tracking-tighter uppercase text-[#0b0f2a]';
 export const ACCENT = 'text-[#0e958e] italic';
 
+interface Secondary {
+  label: string;
+  href: string;
+  onClick: () => void;
+}
+
 interface CtaProps {
   label: string;
   onBooking: () => void;
   onContact: () => void;
+  /** Zweiter, stillerer Weg neben der CTA (z. B. "Modi entdecken"). */
+  secondary?: Secondary;
 }
+
+/** Heller Umriss-Link fuer dunkle Flaechen. */
+const SecondaryLink: React.FC<Secondary> = ({ label, href, onClick }) => (
+  <a
+    href={href}
+    onClick={(e) => { e.preventDefault(); onClick(); }}
+    className="inline-flex items-center rounded-full border border-white/30 px-6 min-h-[50px] sm:min-h-[54px] text-white text-[12px] sm:text-[13.5px] font-black tracking-tight hover:bg-white/10 transition-colors duration-500"
+  >
+    {label}
+  </a>
+);
 
 export const MoneyHero: React.FC<
   CtaProps & { eyebrow: string; title: string; accent: string; lead?: string; body: React.ReactNode; tagline?: string; image: string; imageAlt: string }
-> = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact }) => (
+> = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact, secondary }) => (
   <section
     data-nav-ground="dark"
     className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
@@ -54,8 +73,9 @@ export const MoneyHero: React.FC<
           {tagline}
         </Reveal>
       )}
-      <Reveal delay={0.44} className="mt-8 md:mt-10">
+      <Reveal delay={0.44} className="mt-8 md:mt-10 flex flex-wrap items-center gap-4 md:gap-6">
         <ExpandingCTA label={label} tone="light" onBooking={onBooking} onContact={onContact} />
+        {secondary && <SecondaryLink {...secondary} />}
       </Reveal>
     </div>
   </section>
@@ -68,8 +88,9 @@ export const Section: React.FC<{
   intro?: React.ReactNode;
   children?: React.ReactNode;
   className?: string;
-}> = ({ title, accent, intro, children, className = '' }) => (
-  <section className={`${CONTAINER} ${BLOCK_GAP} ${className}`}>
+  id?: string;
+}> = ({ title, accent, intro, children, className = '', id }) => (
+  <section id={id} className={`${CONTAINER} ${BLOCK_GAP} scroll-mt-28 ${className}`}>
     <h2 className={H2}>
       {title} {accent && <span className={ACCENT}>{accent}</span>}
     </h2>
@@ -142,7 +163,8 @@ export const ClosingCTA: React.FC<CtaProps & { title: string; accent: string; ch
   children,
   label,
   onBooking,
-  onContact
+  onContact,
+  secondary
 }) => (
   <section className={`${CONTAINER} ${BLOCK_GAP} pb-20 md:pb-28`}>
     <div data-nav-ground="dark" className="tile-gradient rounded-card border border-white/10 p-8 md:p-14 text-white">
@@ -151,9 +173,25 @@ export const ClosingCTA: React.FC<CtaProps & { title: string; accent: string; ch
         {title} <span className="text-[#2dd4bf] italic">{accent}</span>
       </h2>
       <div className="mt-5 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl space-y-3">{children}</div>
-      <div className="mt-8 md:mt-10">
+      <div className="mt-8 md:mt-10 flex flex-wrap items-center gap-4 md:gap-6">
         <ExpandingCTA label={label} tone="light" onBooking={onBooking} onContact={onContact} />
+        {secondary && <SecondaryLink {...secondary} />}
       </div>
     </div>
   </section>
+);
+
+/** FAQ als aufklappbare Liste; die Antworten stehen im HTML (details), also auch fuer Crawler. */
+export const Faq: React.FC<{ items: { q: string; a: string }[] }> = ({ items }) => (
+  <div className="divide-y divide-[#0b0f2a]/10 border-y border-[#0b0f2a]/10">
+    {items.map((f) => (
+      <details key={f.q} className="group py-5 md:py-6">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[#0b0f2a] font-black text-base md:text-lg tracking-tight">
+          {f.q}
+          <span className="shrink-0 text-[#0e958e] text-2xl leading-none transition-transform duration-300 group-open:rotate-45">+</span>
+        </summary>
+        <p className="mt-3 text-slate-600 text-base leading-relaxed font-medium max-w-3xl">{f.a}</p>
+      </details>
+    ))}
+  </div>
 );

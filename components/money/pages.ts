@@ -24,20 +24,27 @@ export const MONEY_PAGES: MoneyPageLink[] = [
     eyebrow: 'Plattform',
     title: 'White-Label Turnierplattform',
     text: 'Deine Marke. Dein Turnier. Deine Plattform. Registrierung, Brackets, Lead-Gen und Gamification im Look & Feel deiner Marke.'
+  },
+  {
+    page: 'livestreams',
+    eyebrow: 'Livestreams',
+    title: 'Livestreams in TV-Qualität',
+    text: 'Professionelles Livestreaming für eSport & Gaming Events – vor Ort oder online, mit eigener Technik, Regie und Moderation.'
   }
 ];
 
 const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';
+const STREAM = 'livestreams';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
   'strategie-konzeption': [TURNIER, PLATTFORM],
-  'events-erlebniswelten': [TURNIER, PLATTFORM],
+  'events-erlebniswelten': [TURNIER, PLATTFORM, STREAM],
   'digitale-loesungen': [PLATTFORM, TURNIER],
-  'content-live-kommunikation': [TURNIER],
-  'eventtechnik-produktion': [TURNIER],
-  'creator-talent-activation': [TURNIER],
+  'content-live-kommunikation': [STREAM, TURNIER],
+  'eventtechnik-produktion': [STREAM, TURNIER],
+  'creator-talent-activation': [STREAM, TURNIER],
   'scouting-talent-development': [TURNIER, PLATTFORM],
   'recruiting-employer-branding': [PLATTFORM, TURNIER]
 };
