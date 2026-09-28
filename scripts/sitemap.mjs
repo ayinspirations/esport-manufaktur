@@ -52,6 +52,7 @@ const urls = [
   ['/white-label-turnierplattform', '0.9', 'monthly'],
   ['/livestreams', '0.9', 'monthly'],
   ['/landingpages', '0.9', 'monthly'],
+  ['/gaming-areas', '0.9', 'monthly'],
   ...caseSlugs.map((s) => [`/best-cases/${s}`, '0.8', 'monthly']),
   ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly', blogDateFor(s)])
 ];

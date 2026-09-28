@@ -36,6 +36,12 @@ export const MONEY_PAGES: MoneyPageLink[] = [
     eyebrow: 'Landingpages',
     title: 'Gaming-Landingpages',
     text: 'Conversion-optimierte Event-Landingpages im Look deiner Marke – mit Anmeldung, Brackets, Live-Tabellen und Livestream.'
+  },
+  {
+    page: 'gaming-areas',
+    eyebrow: 'Gaming Areas',
+    title: 'Gaming Areas',
+    text: 'Das interaktive Highlight für Center, Fanzonen, Firmenevents und Messen – Full-Service von der Planung bis zur Betreuung.'
   }
 ];
 
@@ -43,18 +49,19 @@ const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';
 const STREAM = 'livestreams';
 const LANDING = 'landingpages';
+const AREAS = 'gaming-areas';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
   'strategie-konzeption': [TURNIER, PLATTFORM, LANDING],
-  'events-erlebniswelten': [TURNIER, PLATTFORM, STREAM],
-  'art-design-messebau': [LANDING],
+  'events-erlebniswelten': [AREAS, TURNIER, STREAM, PLATTFORM],
+  'art-design-messebau': [AREAS, LANDING],
   'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
   'content-live-kommunikation': [STREAM, TURNIER],
-  'eventtechnik-produktion': [STREAM, TURNIER],
+  'eventtechnik-produktion': [AREAS, STREAM, TURNIER],
   'creator-talent-activation': [STREAM, TURNIER],
   'scouting-talent-development': [TURNIER, PLATTFORM],
-  'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER]
+  'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER, AREAS]
 };
 
 export const moneyPagesFor = (serviceSlug: string) =>

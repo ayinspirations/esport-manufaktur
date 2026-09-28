@@ -88,5 +88,38 @@
         "a": "Das hängt vom Umfang ab. Eine Event-Landingpage auf Basis unserer bestehenden Module ist in der Regel innerhalb weniger Wochen live – sprich uns früh an, dann planen wir den Zeitplan gemeinsam."
       }
     ]
+  },
+  "/gaming-areas": {
+    "title": "Gaming Areas für Events, Center & Messen | GG MANUFAKTUR",
+    "description": "Maßgeschneiderte Gaming Areas für Einkaufscenter, Sportevents, Firmenfeiern und Messen: mehr Frequenz, Verweildauer und Interaktion – Full-Service von der Planung bis zur Betreuung vor Ort.",
+    "breadcrumb": "Gaming Areas",
+    "ogImage": "/images/showcase/aok-fortuna-duesseldorf.jpg",
+    "service": {
+      "name": "Gaming Areas für Events",
+      "serviceType": "Gaming-Area-Vermietung und Eventaktivierung",
+      "description": "Planung, Aufbau und Betreuung von Gaming Areas für Einkaufscenter, Sportevents und Fanzonen, Firmenanlässe und Messen – inklusive Technik, Branding und Personal vor Ort."
+    },
+    "faq": [
+      {
+        "q": "Wie viel Platz wird für eine Gaming Area benötigt?",
+        "a": "Das ist völlig flexibel! Ein einzelnes Modul (z. B. ein Simulator oder ein Gaming Cube) benötigt oft nur wenige Quadratmeter. Für größere Gaming Areas skalieren wir den Platz entsprechend und passen das Setup an deine Fläche an."
+      },
+      {
+        "q": "Können die Gaming-Stationen mit unserem Firmenlogo gebrandet werden?",
+        "a": "Ja. Stationen, Rückwände, Screens und Spielinhalte lassen sich mit deinem Logo und in deinem Corporate Design gestalten – bis hin zu eigenen Highscore-Grafiken und Sponsorenflächen."
+      },
+      {
+        "q": "Gibt es Personal zur Betreuung der Stationen?",
+        "a": "Ja. Unser Team betreut die Gaming Area vor Ort, erklärt die Spiele, leitet Challenges an und sorgt für einen reibungslosen Ablauf – auf Wunsch mit Moderation."
+      },
+      {
+        "q": "Müssen wir uns um den Aufbau und die Technik kümmern?",
+        "a": "Nein. Wir liefern die komplette Technik, bauen auf, testen alles vor Eventbeginn und bauen danach wieder ab. Du brauchst nur Fläche und Strom."
+      },
+      {
+        "q": "Für welche Zielgruppen eignet sich eine Gaming Area?",
+        "a": "Für nahezu alle: Familien und Kinder im Center, Fans in der Fanzone, Mitarbeitende beim Firmenevent oder Fachbesucher auf der Messe. Spielauswahl und Mechaniken stimmen wir auf deine Zielgruppe ab."
+      }
+    ]
   }
 }
