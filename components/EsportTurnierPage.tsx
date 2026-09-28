@@ -57,7 +57,7 @@ const FORMATE = [
   {
     title: 'Offline',
     image: '/images/REWE1.jpeg',
-    text: 'Turnier direkt vor Ort – zum Beispiel auf Messen, Sportevents, Fanzonen, Firmenveranstaltungen oder im Retail.'
+    text: 'Turnier direkt vor Ort, zum Beispiel auf Messen, Sportevents, Fanzonen, Firmenveranstaltungen oder im Retail.'
   },
   {
     title: 'Online',
@@ -67,7 +67,7 @@ const FORMATE = [
   {
     title: 'Hybrid',
     image: '/images/rewe/gallery-2.jpg',
-    text: 'Online qualifizieren und anschließend vor Ort das Finale spielen – als eigenständiges Event oder als Modul in einem bestehenden Event.'
+    text: 'Online qualifizieren und anschließend vor Ort das Finale spielen, als eigenständiges Event oder als Modul in einem bestehenden Event.'
   },
   {
     title: 'Turnierserie',
@@ -158,27 +158,39 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/70 to-[#020617]/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-transparent to-transparent" />
+        {/* Telefon: gleichmaessig abgedunkelt, damit das Bild bis zur Unterkante sichtbar
+            bleibt. Breite Schirme: Verlauf hinter dem Text, Bild rechts frei. */}
+        <div className="sm:hidden absolute inset-0 bg-[#020617]/60" />
+        <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-[#020617]/95 via-[#020617]/70 to-[#020617]/20" />
+        <div className="hidden sm:block absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-transparent to-transparent" />
 
         <div className={`${CONTAINER} relative z-10 w-full`}>
           <Reveal duration={0.6} className="text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-5 md:mb-7">
-            eSport Turniere
+            eSport &amp; Gaming Turniere
           </Reveal>
-          <h1 className="text-[clamp(40px,7vw,96px)] font-black leading-[0.9] tracking-tighter uppercase text-white max-w-4xl">
-            <RevealText as="span" by="word" text="eSport Turnier " delay={0.05} />
-            <RevealText as="span" by="word" text="organisieren." delay={0.18} className="text-[#2dd4bf] italic" />
-            <span className="sr-only"> – von der Idee bis zum Live-Finale</span>
+          <h1 className="text-[clamp(30px,5vw,68px)] font-black leading-[0.92] tracking-tighter uppercase text-white max-w-5xl">
+            {/* Der Suchbegriff steht fuer Suchmaschinen mit in der H1. */}
+            <span className="sr-only">eSport Turnier organisieren: </span>
+            <RevealText as="span" by="word" text="Dein Partner für" delay={0.05} className="block" />
+            {' '}
+            <RevealText as="span" by="word" text="eSport- & Gaming‑Turniere." delay={0.18} className="block text-[#2dd4bf] italic" />
           </h1>
           <Reveal as="p" delay={0.26} className="mt-5 md:mt-7 text-white font-black text-lg md:text-2xl tracking-tight">
-            Von der Idee bis zum Live-Finale.
+            Von der Idee bis zur professionellen Umsetzung.
           </Reveal>
-          <Reveal as="p" delay={0.32} className="mt-3 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight">
-            Wir konzipieren und realisieren eSport Turniere für Marken, Unternehmen, Vereine und Events. Von der
-            digitalen Anmeldung über Turniermanagement und Technik bis zum Live-Finale übernehmen wir alle relevanten
-            Bausteine.
+          {/* Auf dem Telefon steht der Fliesstext direkt unter dem Kopf (siehe
+              unten) -- im Hero waere es dort zu voll. */}
+          <Reveal as="div" delay={0.32} className="hidden sm:block mt-4 text-white/75 text-base md:text-lg font-medium leading-relaxed max-w-2xl tracking-tight space-y-3">
+            <p>
+              Du hast bereits ein konkretes Turnierkonzept und suchst einen erfahrenen Umsetzungspartner? Oder du möchtest
+              ein eSport- oder Gaming-Turnier durchführen und brauchst noch das passende Format?
+            </p>
+            <p>
+              Wir steigen genau dort ein, wo du uns brauchst und begleiten Marken, Unternehmen, Vereine, Verbände und
+              Veranstalter von der Idee bis zur Umsetzung.
+            </p>
           </Reveal>
-          <Reveal as="p" delay={0.38} className="mt-4 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
+          <Reveal as="p" delay={0.38} className="mt-5 text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">
             Online. Offline. Hybrid.
           </Reveal>
           <Reveal delay={0.44} className="mt-8 md:mt-10">
@@ -186,6 +198,18 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           </Reveal>
         </div>
       </section>
+
+      {/* Nur Telefon: der Einleitungstext aus dem Kopf */}
+      <div className={`sm:hidden ${CONTAINER} pt-12 text-slate-600 text-base font-medium leading-relaxed space-y-3`}>
+        <p>
+          Du hast bereits ein konkretes Turnierkonzept und suchst einen erfahrenen Umsetzungspartner? Oder du möchtest
+          ein eSport- oder Gaming-Turnier durchführen und brauchst noch das passende Format?
+        </p>
+        <p>
+          Wir steigen genau dort ein, wo du uns brauchst und begleiten Marken, Unternehmen, Vereine, Verbände und
+          Veranstalter von der Idee bis zur Umsetzung.
+        </p>
+      </div>
 
       {/* ============ Mehr als nur ein Turnier ============ */}
       <section className={`${CONTAINER} ${BLOCK_GAP}`}>
@@ -357,8 +381,8 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
             Dein nächstes Turnier beginnt <span className="text-[#2dd4bf] italic">mit einem Ziel.</span>
           </h2>
           <p className="mt-5 text-white/70 text-base md:text-lg font-medium leading-relaxed max-w-2xl">
-            Ob Community Cup, Recruiting-Turnier, Sponsoring-Aktivierung oder Live-Finale: Wir entwickeln das passende
-            Format und übernehmen auf Wunsch Strategie, Plattform, Technik und Umsetzung.
+            Ob Community Cup, Recruiting-Turnier, Sponsoring-Aktivierung, Scouting-Format oder Live-Finale: Gemeinsam
+            entwickeln wir das Format, das zu deiner Zielgruppe und deinem Projekt passt.
           </p>
           <div className="mt-8 md:mt-10">
             <ExpandingCTA label="Turnier Projekt besprechen" tone="light" onBooking={() => onOpenBooking?.()} onContact={requestProject} />
