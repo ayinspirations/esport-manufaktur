@@ -31,6 +31,17 @@
       "description": "Eigenentwickelte, vollständig gebrandete Plattform für Turniere, Wettbewerbe und Aktivierungen: Registrierung, Turniermanagement, Lead-Generierung, Gamification, Integrationen und Kommunikation – DSGVO-konform, gehostet in Deutschland."
     }
   },
+  "/gaming-esport-dienstleister": {
+    "title": "Gaming & eSport Dienstleister | GG MANUFAKTUR",
+    "description": "Dein Dienstleister für Gaming & eSport: Hardware, Gaming Areas, Personal, Turnierdurchführung, Eventtechnik und digitale Plattformen – vom einzelnen Modul bis zur kompletten Umsetzung.",
+    "breadcrumb": "Gaming & eSport Dienstleister",
+    "ogImage": "/images/showcase/hhn-gamingland-meetit.jpg",
+    "service": {
+      "name": "Gaming & eSport Dienstleistungen",
+      "serviceType": "Gaming- und eSport-Dienstleistung",
+      "description": "Operative Gaming- und eSport-Dienstleistungen für Events, Messen und Aktivierungen: Gaming-Hardware, Gaming Areas, Personal, Turnierdurchführung, Eventtechnik, Software, Gamification und Produktion."
+    }
+  },
   "/gaming-dienstleister-fuer-agenturen": {
     "title": "Gaming Dienstleister für Agenturen | GG MANUFAKTUR",
     "description": "Gaming- und eSport-Spezialist für Agenturen: Strategie, Konzepte, Events, Gamification, Plattformen und Umsetzung für eure Brand-Kunden. White-Label und partnerschaftlich.",

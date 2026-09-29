@@ -111,6 +111,7 @@ const EditMode = lazyRoute(() => import('./components/admin/EditMode').then(m =>
 const EventmodulePage = lazyRoute(() => import('./components/EventmodulePage').then(m => ({ default: m.EventmodulePage })));
 const GamingAreasPage = lazyRoute(() => import('./components/GamingAreasPage').then(m => ({ default: m.GamingAreasPage })));
 const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
+const DienstleisterPage = lazyRoute(() => import('./components/DienstleisterPage').then(m => ({ default: m.DienstleisterPage })));
 const AgenturenPage = lazyRoute(() => import('./components/AgenturenPage').then(m => ({ default: m.AgenturenPage })));
 const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').then(m => ({ default: m.LivestreamsPage })));
 const WhiteLabelPage = lazyRoute(() => import('./components/WhiteLabelPage').then(m => ({ default: m.WhiteLabelPage })));
@@ -202,7 +203,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -263,6 +264,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/white-label-turnierplattform') {
     return { page: 'white-label-turnierplattform' };
+  }
+  if (path === '/gaming-esport-dienstleister') {
+    return { page: 'gaming-esport-dienstleister' };
   }
   if (path === '/gaming-dienstleister-fuer-agenturen') {
     return { page: 'gaming-dienstleister-fuer-agenturen' };
@@ -485,6 +489,8 @@ export default function App() {
       window.history.pushState(null, '', '/esport-turnier-organisieren');
     } else if (page === 'white-label-turnierplattform') {
       window.history.pushState(null, '', '/white-label-turnierplattform');
+    } else if (page === 'gaming-esport-dienstleister') {
+      window.history.pushState(null, '', '/gaming-esport-dienstleister');
     } else if (page === 'gaming-dienstleister-fuer-agenturen') {
       window.history.pushState(null, '', '/gaming-dienstleister-fuer-agenturen');
     } else if (page === 'livestreams') {
@@ -675,6 +681,7 @@ export default function App() {
         {activePage === 'kontakt' && <KontaktPage />}
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
+        {activePage === 'gaming-esport-dienstleister' && <DienstleisterPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'gaming-dienstleister-fuer-agenturen' && <AgenturenPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'livestreams' && <LivestreamsPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'landingpages' && <LandingpagesPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
