@@ -133,7 +133,7 @@ export const Hero: React.FC<HeroProps> = ({ scrollToSection, onOpenBooking }) =>
   });
 
   return (
-    <section
+    <section data-admin-lock
       ref={heroRef}
       data-nav-ground="dark"
       // Der Inhalt sitzt mittig in der Flaeche, und die Flaeche traegt unten

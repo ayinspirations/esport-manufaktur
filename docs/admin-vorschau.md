@@ -23,8 +23,14 @@ Danach einmal neu deployen. Solange die Variablen fehlen, meldet `/admin`
 - **Ansehen** – normale Seite, Navigation funktioniert.
 - **Texte** – Text anklicken und direkt tippen. Links und Buttons sind in
   diesem Modus stillgelegt.
-- **Bilder** – Bild anklicken, Datei vom Gerät wählen. Dieselbe Bilddatei wird
-  überall auf der Website ersetzt und bleibt beim Seitenwechsel erhalten.
+- **Bilder** – Bild oder Video-Kachel anklicken, Datei vom Gerät wählen.
+  Dieselbe Bilddatei wird überall ersetzt und bleibt beim Seitenwechsel
+  erhalten. Video-Kacheln zeigen das Foto als Standbild. Ausgenommen ist der
+  Kopf der Startseite.
+- **Verschieben** – Bild gedrückt halten und ziehen, um den Ausschnitt
+  anzupassen (funktioniert mit Maus und Finger).
+- **Snapshot** – erstellt ein Bild der ganzen Seite (inkl. aller Änderungen)
+  zum Speichern oder – auf dem Handy – direkt Teilen.
 - **Zurücksetzen** – lädt die Seite neu, alle Änderungen sind weg.
 - **Abmelden** – beendet die Sitzung (sonst nach 8 Stunden automatisch).
 
