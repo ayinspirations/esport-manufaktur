@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { useInView } from '../hooks/useInView';
 import { EASE_REVEAL_CSS, DUR } from './motion';
 
@@ -15,6 +15,9 @@ import { EASE_REVEAL_CSS, DUR } from './motion';
 // resolve instantly to their final state under prefers-reduced-motion --
 // handled inside useInView, which reports inView immediately in that case.
 // ---------------------------------------------------------------------------
+
+/** true: <Reveal> rendert ohne eigene Animation (die Seite animiert selbst, siehe money/AutoReveal). */
+export const RevealOff = createContext(false);
 
 interface RevealProps {
   children: React.ReactNode;
@@ -44,6 +47,8 @@ export const Reveal: React.FC<RevealProps> = ({
   ...rest
 }) => {
   const { ref, inView } = useInView<HTMLElement>();
+  const off = useContext(RevealOff);
+  if (off) return React.createElement(as, { ...rest, className }, children);
 
   return React.createElement(
     as,

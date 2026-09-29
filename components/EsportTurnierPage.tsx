@@ -16,6 +16,7 @@ import {
   Boxes
 } from 'lucide-react';
 import { Reveal, RevealText } from './Reveal';
+import { MoneyPage, OwnReveal } from './money/AutoReveal';
 import { ExpandingCTA } from './ui/expanding-cta';
 import { BLOCK_GAP } from './spacing';
 import { asset } from './site';
@@ -151,10 +152,12 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
   const requestProject = () => onOpenContact?.(SUBJECT);
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       {/* ============ Kopf ============ */}
+      <OwnReveal>
       <section
         data-nav-ground="dark"
+        data-reveal-skip
         className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
       >
         <img
@@ -189,6 +192,7 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           </Reveal>
         </div>
       </section>
+      </OwnReveal>
 
       {/* Einleitung: steht auf allen Geraeten unter dem Kopf; der Hero traegt
           nur Ueberschrift, Formate und CTA. */}
@@ -397,6 +401,6 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           </div>
         </div>
       </section>
-    </div>
+    </MoneyPage>
   );
 };

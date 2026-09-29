@@ -17,6 +17,7 @@ import {
   FileSignature
 } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { PAGE_META, headFor, serviceSchema } from './pageMeta';
 import { BLOCK_GAP } from './spacing';
@@ -233,7 +234,7 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
   const contact = () => onOpenContact?.('White-Label Plattform');
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       {/* ============ 1. Kopf ============ */}
       <MoneyHero
         eyebrow="White-Label Plattform"
@@ -499,6 +500,6 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         </p>
         <p className="text-[#2dd4bf] font-black uppercase tracking-[0.15em] text-sm">100 % White-Label. Eigenentwickelt. Skalierbar.</p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };

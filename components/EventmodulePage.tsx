@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, Camera, Car, Gamepad2, Glasses, Joystick, Lock, Mic2, Monitor, Box } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { headFor } from './pageMeta';
@@ -78,7 +79,7 @@ export const EventmodulePage: React.FC<EventmodulePageProps> = ({ onOpenBooking,
   const toModule = () => document.getElementById('module')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Eventmodule · Maßanfertigung"
         title="Eventmodule für"
@@ -147,6 +148,6 @@ export const EventmodulePage: React.FC<EventmodulePageProps> = ({ onOpenBooking,
         <p className="text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">Lust auf dein eigenes Setup?</p>
         <p>Wir beraten dich, welche Module zu deiner Fläche, deiner Zielgruppe und deinem Budget passen.</p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };

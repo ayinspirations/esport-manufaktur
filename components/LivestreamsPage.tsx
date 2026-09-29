@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { PAGE_META, headFor } from './pageMeta';
@@ -44,7 +45,7 @@ export const LivestreamsPage: React.FC<LivestreamsPageProps> = ({ onOpenBooking,
   const toModi = () => document.getElementById('modi')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Livestreams · TV-Qualität"
         title="Professionelles Livestreaming für deine"
@@ -154,6 +155,6 @@ export const LivestreamsPage: React.FC<LivestreamsPageProps> = ({ onOpenBooking,
         <p className="text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">Bereit für deinen Stream?</p>
         <p>Eigene Technik, eigene Regie, eigene Moderation. Du fokussierst dich auf dein Event.</p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };

@@ -4,6 +4,7 @@ import { Reveal, RevealText } from '../Reveal';
 import { ExpandingCTA } from '../ui/expanding-cta';
 import { BLOCK_GAP } from '../spacing';
 import { asset } from '../site';
+import { OwnReveal } from './AutoReveal';
 
 // ---------------------------------------------------------------------------
 // Bausteine der Money Pages
@@ -48,8 +49,10 @@ export const MoneyHero: React.FC<
     /** Schriftgroesse der H1, falls der Titel lang ist. */
     titleSize?: string }
 > = ({ eyebrow, title, accent, lead, body, tagline, image, imageAlt, label, onBooking, onContact, secondary, compactMobile, titleSize = 'text-[clamp(38px,6.4vw,90px)]' }) => (
+  <OwnReveal>
   <section
     data-nav-ground="dark"
+    data-reveal-skip
     className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
   >
     <img src={asset(image)} alt={imageAlt} className="absolute inset-0 w-full h-full object-cover" fetchPriority="high" />
@@ -89,6 +92,7 @@ export const MoneyHero: React.FC<
       </Reveal>
     </div>
   </section>
+  </OwnReveal>
 );
 
 /** Ein Abschnitt mit Ueberschrift (Teil + Akzent) und optionalem Einleitungstext. */

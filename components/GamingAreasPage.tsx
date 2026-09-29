@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { PAGE_META, headFor } from './pageMeta';
@@ -82,7 +83,7 @@ export const GamingAreasPage: React.FC<GamingAreasPageProps> = ({ onOpenBooking,
   const toReferenzen = () => document.getElementById('referenzen')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Gaming Areas · Interaktives Highlight"
         title="Gaming Areas: das interaktive Highlight"
@@ -176,6 +177,6 @@ export const GamingAreasPage: React.FC<GamingAreasPageProps> = ({ onOpenBooking,
         <p className="text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">Lust auf deine Gaming Area?</p>
         <p>Wir liefern Technik, Aufbau und Betreuung. Du kümmerst dich um deine Gäste.</p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };
