@@ -53,6 +53,17 @@
       "description": "Gaming-, eSport- und Gamification-Know-how für Agenturen und ihre Brand-Kunden: Strategie, Pitch-Support, Konzeption, Events, Plattformen, Branded Games und technische Umsetzung – als White-Label-, Sub- oder Umsetzungspartner."
     }
   },
+  "/teambuilding-gaming-esport": {
+    "title": "Teambuilding mit Gaming & eSport | GG MANUFAKTUR",
+    "description": "Gaming-Teambuildings für Unternehmen: von Rocket League und League of Legends bis EA SPORTS FC, hybriden Challenges und Gaming-Abenden. Individuell konzipiert und moderiert.",
+    "breadcrumb": "Teambuilding mit Gaming & eSport",
+    "ogImage": "/images/showcase/hhn-techday.jpg",
+    "service": {
+      "name": "Teambuilding mit Gaming & eSport",
+      "serviceType": "Gaming-Teambuilding",
+      "description": "Moderierte Gaming- und eSport-Teambuildings für Unternehmen: Konzept, Gaming-Technik, Moderation und Coaching, Turniermanagement sowie Kombinationen mit analogen Challenges, Cooking und Gaming Nights."
+    }
+  },
   "/livestreams": {
     "title": "Livestreams für eSport & Gaming Events | GG MANUFAKTUR",
     "description": "Professionelles Livestreaming für eSport- und Gaming-Events in TV-Qualität: vor Ort oder online, mit eigener Technik, Regie, Moderation und Grafiken aus einer Hand.",

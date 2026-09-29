@@ -45,6 +45,12 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
     text: 'Gaming-Know-how für eure Brand-Kunden: Strategie, Pitch-Support, Events, Gamification und Technologie – partnerschaftlich und White-Label-fähig.'
   },
   {
+    page: 'teambuilding-gaming-esport',
+    eyebrow: 'Teambuilding',
+    title: 'Teambuilding mit Gaming & eSport',
+    text: 'Moderierte Gaming-Teambuildings für Unternehmen – von Rocket League und EA SPORTS FC bis Gaming Night und Hybrid Challenge.'
+  },
+  {
     page: 'livestreams',
     eyebrow: 'Livestreams',
     title: 'Livestreams in TV-Qualität',
