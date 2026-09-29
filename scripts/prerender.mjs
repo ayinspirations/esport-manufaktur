@@ -22,6 +22,17 @@ import { build } from 'esbuild';
 
 const SITE = readFileSync('components/site.ts', 'utf8').match(/SITE_URL = '([^']+)'/)[1];
 const PAGE_META = JSON.parse(readFileSync('components/pageMeta.json', 'utf8'));
+
+// Woher Chats das Vorschaubild holen. Die kanonische Adresse bleibt immer
+// SITE; das Bild muss aber von der Domain kommen, auf der dieser Build
+// tatsaechlich liegt -- sonst zeigt ein geteilter Vorschau-Link (oder eine
+// Domain, die noch auf einen aelteren Stand zeigt) Titel und Text, aber kein
+// Bild. Vercel stellt die Domains als Umgebungsvariablen bereit.
+const host = (h) => (h ? `https://${h.replace(/^https?:\/\//, '')}` : '');
+const IMAGE_BASE =
+  process.env.VERCEL_ENV === 'preview'
+    ? host(process.env.VERCEL_BRANCH_URL || process.env.VERCEL_URL)
+    : host(process.env.VERCEL_PROJECT_PRODUCTION_URL) || SITE;
 const shell = readFileSync('dist/index.html', 'utf8');
 
 // Die TypeScript-Daten einmal buendeln und laden.
@@ -129,7 +140,7 @@ for (const page of pages) {
     page.image = undefined;
   }
   if (page.image) {
-    const image = encodeURI(`${SITE}${page.image}`);
+    const image = encodeURI(`${IMAGE_BASE || SITE}${page.image}`);
     html = setMeta(html, 'property', 'og:image', image);
     html = setMeta(html, 'name', 'twitter:image', image);
     html = setMeta(html, 'property', 'og:image:alt', page.imageAlt || page.title);
