@@ -2,7 +2,7 @@
 // Die Money Pages und wo sie verlinkt werden
 // ---------------------------------------------------------------------------
 // Eine neue Money Page kommt hier einmal dazu; die Leistungsseite zeigt sie
-// dann in der Uebersicht und unter jedem Service, zu dem sie passt.
+// dann als dunkle Kachel unter den Services.
 // ---------------------------------------------------------------------------
 
 export interface MoneyPageLink {
@@ -71,30 +71,3 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
 ];
 
 export const MONEY_PAGES = ALL_MONEY_PAGES.filter((m) => !HIDDEN_MONEY_PAGES.includes(m.page));
-
-const TURNIER = 'esport-turnier-organisieren';
-const PLATTFORM = 'white-label-turnierplattform';
-const DIENST = 'gaming-esport-dienstleister';
-const AGENTUR = 'gaming-dienstleister-fuer-agenturen';
-const STREAM = 'livestreams';
-const LANDING = 'landingpages';
-const AREAS = 'gaming-areas';
-const MODULE = 'eventmodule';
-
-/** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
-export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
-  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING, AGENTUR],
-  'events-erlebniswelten': [AREAS, MODULE, TURNIER, STREAM, PLATTFORM, DIENST],
-  'art-design-messebau': [MODULE, AREAS, LANDING],
-  'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
-  'content-live-kommunikation': [STREAM, TURNIER],
-  'eventtechnik-produktion': [MODULE, AREAS, STREAM, TURNIER, DIENST],
-  'creator-talent-activation': [STREAM, TURNIER],
-  'scouting-talent-development': [TURNIER, PLATTFORM],
-  'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER, AREAS]
-};
-
-export const moneyPagesFor = (serviceSlug: string) =>
-  (SERVICE_MONEY_PAGES[serviceSlug] ?? [])
-    .map((page) => MONEY_PAGES.find((m) => m.page === page))
-    .filter((m): m is MoneyPageLink => Boolean(m));

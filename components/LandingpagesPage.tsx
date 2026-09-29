@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpRight, Building2, Check, Landmark, Trophy, Users } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { PAGE_META, headFor } from './pageMeta';
@@ -93,7 +94,7 @@ export const LandingpagesPage: React.FC<LandingpagesPageProps> = ({ onOpenBookin
   const toBeispiele = () => document.getElementById('beispiele')?.scrollIntoView({ behavior: 'smooth' });
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Landingpages · Conversion-optimiert"
         title="Maximale Sichtbarkeit, reibungslose Abläufe und deine"
@@ -196,6 +197,6 @@ export const LandingpagesPage: React.FC<LandingpagesPageProps> = ({ onOpenBookin
         <p className="text-[#2dd4bf] font-black uppercase tracking-[0.2em] text-xs md:text-sm">Bereit für deine Landingpage?</p>
         <p>Conversion-optimiert. DSGVO-konform. Mobile-First. Im Look deiner Marke.</p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };

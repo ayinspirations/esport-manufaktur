@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cpu, Gamepad2, LayoutGrid, MonitorSpeaker, Puzzle, Code2, Trophy, Truck, Users, Workflow } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { PAGE_META, headFor } from './pageMeta';
@@ -106,7 +107,7 @@ export const DienstleisterPage: React.FC<DienstleisterPageProps> = ({ onOpenBook
   const contact = () => onOpenContact?.('Gaming-Dienstleistung');
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Gaming & eSport Dienstleistung"
         title="Dein Dienstleister für"
@@ -265,6 +266,6 @@ export const DienstleisterPage: React.FC<DienstleisterPageProps> = ({ onOpenBook
           Genau so viel Dienstleistung, wie dein Projekt braucht.
         </p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };

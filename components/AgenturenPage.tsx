@@ -13,6 +13,7 @@ import {
   Trophy
 } from 'lucide-react';
 import { Reveal } from './Reveal';
+import { MoneyPage } from './money/AutoReveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
 import { useStructuredData } from '../hooks/useStructuredData';
 import { PAGE_META, headFor } from './pageMeta';
@@ -145,7 +146,7 @@ export const AgenturenPage: React.FC<AgenturenPageProps> = ({ onOpenBooking, onO
   const contact = () => onOpenContact?.('Agentur-Projekt');
 
   return (
-    <div className="w-full bg-[#badeda]">
+    <MoneyPage>
       <MoneyHero
         eyebrow="Gaming Expertise for Agencies"
         title="Dein Gaming-Partner"
@@ -380,6 +381,6 @@ export const AgenturenPage: React.FC<AgenturenPageProps> = ({ onOpenBooking, onO
           Partnerschaftlich. White-Label-fähig. Ohne eure Kundenbeziehung infrage zu stellen.
         </p>
       </ClosingCTA>
-    </div>
+    </MoneyPage>
   );
 };
