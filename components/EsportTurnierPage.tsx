@@ -56,7 +56,7 @@ const ZIELE = [
 const FORMATE = [
   {
     title: 'Offline',
-    image: '/images/REWE1.jpeg',
+    image: '/images/esport-turnier-organisieren/260131_eSportmanufaktur_REWE_38.jpg',
     text: 'Turnier direkt vor Ort, zum Beispiel auf Messen, Sportevents, Fanzonen, Firmenveranstaltungen oder im Retail.'
   },
   {
@@ -66,12 +66,12 @@ const FORMATE = [
   },
   {
     title: 'Hybrid',
-    image: '/images/rewe/gallery-2.jpg',
+    image: '/images/esport-turnier-organisieren/rewe.jpeg',
     text: 'Online qualifizieren und anschließend vor Ort das Finale spielen, als eigenständiges Event oder als Modul in einem bestehenden Event.'
   },
   {
     title: 'Turnierserie',
-    image: '/images/intersport.jpg',
+    image: '/images/esport-turnier-organisieren/act3-intersport-clubhouse-piahenkel-129.jpg',
     text: 'Mehrere Standorte, Qualifier oder Spieltage mit gemeinsamem Finale.'
   }
 ];
@@ -91,6 +91,11 @@ const PLATTFORM = [
   { title: 'Kommunikation', text: 'Teilnehmer erhalten relevante Informationen automatisiert.' },
   { title: 'Leadgenerierung', text: 'Auf Wunsch lassen sich Registrierung und Marketing-Opt-ins miteinander verbinden.' }
 ];
+
+// Kacheln mit Bild zeigen es als Hintergrund, die uebrigen bleiben Verlauf.
+const GAME_IMAGES: Record<string, string> = {
+  'EA Sports FC': '/logos/fc-27-standard-key-art-4x3.avif'
+};
 
 const GAMES = [
   'EA Sports FC',
@@ -314,8 +319,19 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
           {GAMES.map((g, i) => (
             <Reveal key={g} delay={Math.min(i, 6) * 0.04}>
-              <div className="tile-gradient h-28 md:h-36 rounded-card border border-white/10 flex items-end p-4">
-                <span className="text-white font-black text-xs md:text-sm uppercase tracking-tight leading-tight">{g}</span>
+              <div className="tile-gradient relative overflow-hidden h-28 md:h-36 rounded-card border border-white/10 flex items-end p-4">
+                {GAME_IMAGES[g] && (
+                  <>
+                    <img
+                      src={asset(GAME_IMAGES[g])}
+                      alt=""
+                      loading="lazy"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/30 to-transparent" />
+                  </>
+                )}
+                <span className="relative text-white font-black text-xs md:text-sm uppercase tracking-tight leading-tight">{g}</span>
               </div>
             </Reveal>
           ))}

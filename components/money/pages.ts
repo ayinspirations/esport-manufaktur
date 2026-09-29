@@ -33,6 +33,18 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
     text: 'Deine Marke. Dein Turnier. Deine Plattform. Registrierung, Brackets, Lead-Gen und Gamification im Look & Feel deiner Marke.'
   },
   {
+    page: 'gaming-esport-dienstleister',
+    eyebrow: 'Dienstleistung',
+    title: 'Gaming & eSport Dienstleister',
+    text: 'Hardware, Gaming-Flächen, Personal, Turnierdurchführung, Technik und Plattform – vom einzelnen Modul bis zur kompletten Umsetzung.'
+  },
+  {
+    page: 'gaming-dienstleister-fuer-agenturen',
+    eyebrow: 'Agenturen',
+    title: 'Gaming Dienstleister für Agenturen',
+    text: 'Gaming-Know-how für eure Brand-Kunden: Strategie, Pitch-Support, Events, Gamification und Technologie – partnerschaftlich und White-Label-fähig.'
+  },
+  {
     page: 'livestreams',
     eyebrow: 'Livestreams',
     title: 'Livestreams in TV-Qualität',
@@ -62,6 +74,8 @@ export const MONEY_PAGES = ALL_MONEY_PAGES.filter((m) => !HIDDEN_MONEY_PAGES.inc
 
 const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';
+const DIENST = 'gaming-esport-dienstleister';
+const AGENTUR = 'gaming-dienstleister-fuer-agenturen';
 const STREAM = 'livestreams';
 const LANDING = 'landingpages';
 const AREAS = 'gaming-areas';
@@ -69,12 +83,12 @@ const MODULE = 'eventmodule';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
-  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING],
-  'events-erlebniswelten': [AREAS, MODULE, TURNIER, STREAM, PLATTFORM],
+  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING, AGENTUR],
+  'events-erlebniswelten': [AREAS, MODULE, TURNIER, STREAM, PLATTFORM, DIENST],
   'art-design-messebau': [MODULE, AREAS, LANDING],
   'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
   'content-live-kommunikation': [STREAM, TURNIER],
-  'eventtechnik-produktion': [MODULE, AREAS, STREAM, TURNIER],
+  'eventtechnik-produktion': [MODULE, AREAS, STREAM, TURNIER, DIENST],
   'creator-talent-activation': [STREAM, TURNIER],
   'scouting-talent-development': [TURNIER, PLATTFORM],
   'recruiting-employer-branding': [PLATTFORM, LANDING, TURNIER, AREAS]
