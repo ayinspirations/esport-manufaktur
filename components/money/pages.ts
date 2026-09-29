@@ -33,6 +33,12 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
     text: 'Deine Marke. Dein Turnier. Deine Plattform. Registrierung, Brackets, Lead-Gen und Gamification im Look & Feel deiner Marke.'
   },
   {
+    page: 'gaming-dienstleister-fuer-agenturen',
+    eyebrow: 'Agenturen',
+    title: 'Gaming Dienstleister für Agenturen',
+    text: 'Gaming-Know-how für eure Brand-Kunden: Strategie, Pitch-Support, Events, Gamification und Technologie – partnerschaftlich und White-Label-fähig.'
+  },
+  {
     page: 'livestreams',
     eyebrow: 'Livestreams',
     title: 'Livestreams in TV-Qualität',
@@ -62,6 +68,7 @@ export const MONEY_PAGES = ALL_MONEY_PAGES.filter((m) => !HIDDEN_MONEY_PAGES.inc
 
 const TURNIER = 'esport-turnier-organisieren';
 const PLATTFORM = 'white-label-turnierplattform';
+const AGENTUR = 'gaming-dienstleister-fuer-agenturen';
 const STREAM = 'livestreams';
 const LANDING = 'landingpages';
 const AREAS = 'gaming-areas';
@@ -69,7 +76,7 @@ const MODULE = 'eventmodule';
 
 /** Service-Slug -> passende Money Pages. Services ohne Eintrag zeigen keinen Block. */
 export const SERVICE_MONEY_PAGES: Record<string, string[]> = {
-  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING],
+  'strategie-konzeption': [TURNIER, PLATTFORM, LANDING, AGENTUR],
   'events-erlebniswelten': [AREAS, MODULE, TURNIER, STREAM, PLATTFORM],
   'art-design-messebau': [MODULE, AREAS, LANDING],
   'digitale-loesungen': [PLATTFORM, LANDING, TURNIER],
