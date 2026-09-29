@@ -19,6 +19,7 @@ import { SocialStack } from './components/ui/social-stack';
 import { smoothScrollToElement } from './components/motion';
 import { BOOKING_URL } from './components/site';
 import { HIDDEN_MONEY_PAGES } from './components/money/pages';
+import { checkServerSession, clearEditSession, hasEditSession } from './components/admin/editSession';
 import { startAnalytics } from './components/analytics';
 
 // ---------------------------------------------------------------------------
@@ -105,6 +106,8 @@ const NiveaEffectCrackzDetail = lazyRoute(() => import('./components/NiveaEffect
 const ServicesPage = lazyRoute(() => import('./components/ServicesPage').then(m => ({ default: m.ServicesPage })));
 const UeberUnsPage = lazyRoute(() => import('./components/UeberUnsPage').then(m => ({ default: m.UeberUnsPage })));
 const MeineGeschichte = lazyRoute(() => import('./components/MeineGeschichte').then(m => ({ default: m.MeineGeschichte })));
+const AdminPage = lazyRoute(() => import('./components/admin/AdminPage').then(m => ({ default: m.AdminPage })));
+const EditMode = lazyRoute(() => import('./components/admin/EditMode').then(m => ({ default: m.EditMode })));
 const EventmodulePage = lazyRoute(() => import('./components/EventmodulePage').then(m => ({ default: m.EventmodulePage })));
 const GamingAreasPage = lazyRoute(() => import('./components/GamingAreasPage').then(m => ({ default: m.GamingAreasPage })));
 const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
@@ -198,7 +201,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -271,6 +274,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/eventmodule' && !HIDDEN_MONEY_PAGES.includes('eventmodule')) {
     return { page: 'eventmodule' };
+  }
+  if (path === '/admin') {
+    return { page: 'admin' };
   }
   if (path === '/blog') {
     return { page: 'blog' };
@@ -355,6 +361,17 @@ export default function App() {
   // initialiser makes the first commit the correct page, so the hero (or
   // whichever route was linked) is in the very first paint.
   const [route, setRoute] = useState<Route>(resolveRoute);
+
+  // Vorschau-Modus: nur, wenn sich jemand unter /admin angemeldet hat und der
+  // Server die Sitzung bestaetigt. Fuer alle anderen passiert hier nichts.
+  const [editMode, setEditMode] = useState(false);
+  useEffect(() => {
+    if (!hasEditSession()) return;
+    checkServerSession().then((ok) => {
+      if (ok) setEditMode(true);
+      else clearEditSession();
+    });
+  }, []);
   const { page: activePage } = route;
   // ---------------------------------------------------------------------------
   // Termin buchen: ein neuer Tab, kein Fenster
@@ -656,6 +673,7 @@ export default function App() {
         {activePage === 'landingpages' && <LandingpagesPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'gaming-areas' && <GamingAreasPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
         {activePage === 'eventmodule' && <EventmodulePage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}
+        {activePage === 'admin' && <AdminPage onNavigate={navigateTo} />}
         {activePage === 'blog' && <BlogPage onOpenPost={openBlogPost} />}
         {activePage === 'webdesign' && <WebdesignPage onNavigate={navigateTo} onOpenBooking={openBooking} onOpenContact={openContact} />}
         {blogSlugs.includes(activePage) && (
@@ -674,6 +692,7 @@ export default function App() {
       {activePage === 'home' && <SocialStack />}
       <Suspense fallback={null}>
         <CookiePopup />
+        {editMode && <EditMode />}
         {hasOpenedContact && (
           <ContactModal
             isOpen={isContactOpen}
