@@ -112,6 +112,7 @@ const EventmodulePage = lazyRoute(() => import('./components/EventmodulePage').t
 const GamingAreasPage = lazyRoute(() => import('./components/GamingAreasPage').then(m => ({ default: m.GamingAreasPage })));
 const LandingpagesPage = lazyRoute(() => import('./components/LandingpagesPage').then(m => ({ default: m.LandingpagesPage })));
 const DienstleisterPage = lazyRoute(() => import('./components/DienstleisterPage').then(m => ({ default: m.DienstleisterPage })));
+const BetriebssportPage = lazyRoute(() => import('./components/BetriebssportPage').then(m => ({ default: m.BetriebssportPage })));
 const TeambuildingPage = lazyRoute(() => import('./components/TeambuildingPage').then(m => ({ default: m.TeambuildingPage })));
 const AgenturenPage = lazyRoute(() => import('./components/AgenturenPage').then(m => ({ default: m.AgenturenPage })));
 const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').then(m => ({ default: m.LivestreamsPage })));
@@ -204,7 +205,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -268,6 +269,9 @@ const resolveRoute = (): Route => {
   }
   if (path === '/gaming-esport-dienstleister') {
     return { page: 'gaming-esport-dienstleister' };
+  }
+  if (path === '/gaming-esport-betriebssport') {
+    return { page: 'gaming-esport-betriebssport' };
   }
   if (path === '/teambuilding-gaming-esport') {
     return { page: 'teambuilding-gaming-esport' };
@@ -495,6 +499,8 @@ export default function App() {
       window.history.pushState(null, '', '/white-label-turnierplattform');
     } else if (page === 'gaming-esport-dienstleister') {
       window.history.pushState(null, '', '/gaming-esport-dienstleister');
+    } else if (page === 'gaming-esport-betriebssport') {
+      window.history.pushState(null, '', '/gaming-esport-betriebssport');
     } else if (page === 'teambuilding-gaming-esport') {
       window.history.pushState(null, '', '/teambuilding-gaming-esport');
     } else if (page === 'gaming-dienstleister-fuer-agenturen') {
@@ -688,6 +694,7 @@ export default function App() {
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'gaming-esport-dienstleister' && <DienstleisterPage onOpenBooking={openBooking} onOpenContact={openContact} />}
+        {activePage === 'gaming-esport-betriebssport' && <BetriebssportPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'teambuilding-gaming-esport' && <TeambuildingPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'gaming-dienstleister-fuer-agenturen' && <AgenturenPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'livestreams' && <LivestreamsPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} />}

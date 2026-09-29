@@ -51,6 +51,12 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
     text: 'Moderierte Gaming-Teambuildings für Unternehmen – von Rocket League und EA SPORTS FC bis Gaming Night und Hybrid Challenge.'
   },
   {
+    page: 'gaming-esport-betriebssport',
+    eyebrow: 'Corporate Gaming',
+    title: 'Gaming & eSport als Betriebssport',
+    text: 'Gaming-Community, interne Liga oder Corporate eSport Team – wir entwickeln mit dir das passende Corporate-Gaming-Konzept.'
+  },
+  {
     page: 'livestreams',
     eyebrow: 'Livestreams',
     title: 'Livestreams in TV-Qualität',

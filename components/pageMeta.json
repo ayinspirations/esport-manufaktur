@@ -64,6 +64,17 @@
       "description": "Moderierte Gaming- und eSport-Teambuildings für Unternehmen: Konzept, Gaming-Technik, Moderation und Coaching, Turniermanagement sowie Kombinationen mit analogen Challenges, Cooking und Gaming Nights."
     }
   },
+  "/gaming-esport-betriebssport": {
+    "title": "Gaming & eSport als Betriebssport | GG MANUFAKTUR",
+    "description": "Gaming und eSport als Betriebssport, Employer-Branding- oder Recruiting-Instrument. Wir entwickeln gemeinsam das passende Corporate-Gaming-Konzept für dein Unternehmen.",
+    "breadcrumb": "Gaming & eSport als Betriebssport",
+    "ogImage": "/images/showcase/kreissparkasse-boeblingen.jpg",
+    "service": {
+      "name": "Gaming & eSport als Betriebssport",
+      "serviceType": "Corporate Gaming Beratung und Umsetzung",
+      "description": "Beratung und Umsetzung von Corporate Gaming: Strategie-Workshop, Gaming-Know-how für Stakeholder, Formatwahl von Gaming Community bis Corporate eSport Team, Spieleauswahl, Plattform, Turnier- und Ligamanagement, Events und Kommunikation."
+    }
+  },
   "/livestreams": {
     "title": "Livestreams für eSport & Gaming Events | GG MANUFAKTUR",
     "description": "Professionelles Livestreaming für eSport- und Gaming-Events in TV-Qualität: vor Ort oder online, mit eigener Technik, Regie, Moderation und Grafiken aus einer Hand.",

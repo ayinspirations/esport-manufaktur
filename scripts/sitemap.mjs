@@ -53,6 +53,7 @@ const urls = [
   ['/gaming-esport-dienstleister', '0.9', 'monthly'],
   ['/gaming-dienstleister-fuer-agenturen', '0.9', 'monthly'],
   ['/teambuilding-gaming-esport', '0.9', 'monthly'],
+  ['/gaming-esport-betriebssport', '0.9', 'monthly'],
   ...caseSlugs.map((s) => [`/best-cases/${s}`, '0.8', 'monthly']),
   ...blogSlugs.map((s) => [`/blog/${s}`, '0.7', 'monthly', blogDateFor(s)])
 ];
