@@ -29,6 +29,11 @@ Danach einmal neu deployen. Solange die Variablen fehlen, meldet `/admin`
   Kopf der Startseite.
 - **Verschieben** – Bild gedrückt halten und ziehen, um den Ausschnitt
   anzupassen (funktioniert mit Maus und Finger).
+- **Änderungen** – Liste aller Änderungen, nach Seite: Texte (alt
+  durchgestrichen, neu markiert), ersetzte Bilder mit Vorschau und neuem
+  Dateinamen, verschobene Bildausschnitte mit Position. Per Knopf kopieren
+  oder als Textdatei speichern. Geänderte Texte sind auf der Seite gelb
+  markiert (abschaltbar in der Liste).
 - **Snapshot** – erstellt ein Bild der ganzen Seite (inkl. aller Änderungen)
   zum Speichern oder – auf dem Handy – direkt Teilen.
 - **Zurücksetzen** – lädt die Seite neu, alle Änderungen sind weg.

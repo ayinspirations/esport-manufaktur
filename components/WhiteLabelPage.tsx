@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Reveal } from './Reveal';
 import { useDocumentHead } from '../hooks/useDocumentHead';
-import { headFor, serviceSchema } from './pageMeta';
+import { PAGE_META, headFor, serviceSchema } from './pageMeta';
 import { BLOCK_GAP } from './spacing';
 import { CONTAINER, Chips, ClosingCTA, DarkPanel, ImageCard, InlineList, MoneyHero, PlatformShowcase, Section, ShowcaseTile, TealCard, Tile } from './money/ui';
 
@@ -241,7 +241,8 @@ export const WhiteLabelPage: React.FC<WhiteLabelPageProps> = ({ onOpenBooking, o
         accent="für eSport, Gaming & mehr."
         titleSize="text-[clamp(28px,4.6vw,66px)]"
         tagline="100 % White-Label · Eigenentwickelt · DSGVO-konform · Hosted in Germany"
-        image="/images/white-label-turnierplattform/xpdays_whitelabel.jpeg"
+        // Kopfbild = Vorschaubild beim Teilen; beides steht in pageMeta.json.
+        image={PAGE_META[PATH].ogImage!}
         imageAlt="White-Label Turnierplattform im Look der XP Days"
         label="Plattform Projekt besprechen"
         onBooking={booking}

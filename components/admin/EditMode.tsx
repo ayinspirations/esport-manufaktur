@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Camera, Download, Eye, Image as ImageIcon, LogOut, Move, RotateCcw, Share2, Type, X } from 'lucide-react';
+import { Camera, ClipboardList, Copy, Download, Eye, FileText, Image as ImageIcon, LogOut, Move, RotateCcw, Share2, Type, X } from 'lucide-react';
 import { clearEditSession } from './editSession';
 
 // ---------------------------------------------------------------------------
@@ -26,6 +26,8 @@ const TOOLBAR_ID = 'gg-edit-toolbar';
 const OVERLAY_ID = 'gg-edit-overlay';
 
 const STYLE = `
+.gg-changed { background: rgba(250, 204, 21, 0.55) !important; box-decoration-break: clone; -webkit-box-decoration-break: clone; border-radius: 3px; }
+body.gg-hide-marks .gg-changed { background: transparent !important; }
 body.gg-edit-text main [contenteditable="true"] :is(h1,h2,h3,h4,p,li,span,a,button):hover {
   outline: 2px dashed #0e958e; outline-offset: 3px; cursor: text;
 }
@@ -36,7 +38,8 @@ body.gg-edit-move.gg-dragging, body.gg-edit-move.gg-dragging * { cursor: grabbin
 .gg-media-target { outline: 4px solid #2dd4bf !important; outline-offset: -4px; }
 `;
 
-const isOurs = (el: Element | null) => Boolean(el?.closest(`#${TOOLBAR_ID}, #${OVERLAY_ID}`));
+const CHANGES_ID = 'gg-edit-changes';
+const isOurs = (el: Element | null) => Boolean(el?.closest(`#${TOOLBAR_ID}, #${OVERLAY_ID}, #${CHANGES_ID}`));
 
 const isMedia = (el: Element): el is Media => el instanceof HTMLImageElement || el instanceof HTMLVideoElement;
 
@@ -86,11 +89,89 @@ const parsePos = (value: string): [number, number] => {
 
 const clamp = (n: number) => Math.min(100, Math.max(0, n));
 
+// ---------------------------------------------------------------------------
+// Aenderungsliste
+// ---------------------------------------------------------------------------
+type Change =
+  | { kind: 'text'; id: string; page: string; before: string; after: string }
+  | { kind: 'image'; id: string; page: string; source: string; label: string; file: string; preview: string }
+  | { kind: 'position'; id: string; page: string; source: string; label: string; position: string };
+
+const pageName = () => window.location.pathname || '/';
+
+/** Lesbarer Pfad einer Bild- oder Videoquelle. */
+const sourceOf = (m: Media) => {
+  const raw =
+    m instanceof HTMLImageElement
+      ? m.dataset.ggOrig || m.src
+      : m.dataset.ggSrc || m.currentSrc || m.getAttribute('src') || m.querySelector('source')?.getAttribute('src') || 'Video';
+  try {
+    const u = new URL(raw, window.location.href);
+    return decodeURIComponent(u.pathname);
+  } catch {
+    return raw;
+  }
+};
+
+/** Beschreibung fuer die Liste: Alt-Text, sonst die naechste Ueberschrift. */
+const labelOf = (m: Media) => {
+  const alt = m instanceof HTMLImageElement ? m.alt.trim() : '';
+  if (alt) return alt;
+  const heading = m.closest('section, article, a, div')?.querySelector('h1,h2,h3,h4');
+  return heading?.textContent?.trim().slice(0, 80) || (m instanceof HTMLVideoElement ? 'Video-Kachel' : 'Bild');
+};
+
+/** Der Textblock, in dem gerade geschrieben wird. */
+const TEXT_BLOCK = 'h1,h2,h3,h4,h5,h6,p,li,dt,dd,blockquote,figcaption,button,a,label';
+const blockAtCaret = (): HTMLElement | null => {
+  const node = window.getSelection()?.anchorNode;
+  const el = node instanceof Element ? node : node?.parentElement;
+  const block = (el?.closest(TEXT_BLOCK) || el?.closest('span,div')) as HTMLElement | null;
+  return block && block.closest('main') ? block : null;
+};
+
+const clean = (t: string) => t.replace(/\s+/g, ' ').trim();
+
+const changesAsText = (changes: Change[]) => {
+  const pages = [...new Set(changes.map((c) => c.page))];
+  const lines = ['Änderungswünsche Website', `Erstellt: ${new Date().toLocaleString('de-DE')}`, ''];
+  for (const page of pages) {
+    lines.push(`Seite: ${page}`);
+    for (const c of changes.filter((x) => x.page === page)) {
+      if (c.kind === 'text') lines.push(`- Text\n    alt: ${c.before}\n    neu: ${c.after}`);
+      if (c.kind === 'image') lines.push(`- Bild ersetzt (${c.label})\n    bisher: ${c.source}\n    neue Datei: ${c.file}`);
+      if (c.kind === 'position') lines.push(`- Bildausschnitt verschoben (${c.label})\n    Bild: ${c.source}\n    Position: ${c.position}`);
+    }
+    lines.push('');
+  }
+  return lines.join('\n');
+};
+
 export const EditMode: React.FC = () => {
   const [mode, setMode] = useState<Mode>('view');
   const [count, setCount] = useState(0);
   const [snapshot, setSnapshot] = useState<{ url: string; blob: Blob; name: string } | null>(null);
   const [busy, setBusy] = useState(false);
+  const [changes, setChanges] = useState<Change[]>([]);
+  const [showChanges, setShowChanges] = useState(false);
+  const [marks, setMarks] = useState(true);
+  const [copied, setCopied] = useState(false);
+
+  // Eintrag anlegen oder aktualisieren (gleiche id = gleiche Stelle).
+  const upsert = useCallback((c: Change) => {
+    setChanges((list) => {
+      const i = list.findIndex((x) => x.id === c.id);
+      if (i === -1) return [...list, c];
+      const next = list.slice();
+      next[i] = c;
+      return next;
+    });
+  }, []);
+  const remove = useCallback((id: string) => setChanges((list) => list.filter((x) => x.id !== id)), []);
+
+  useEffect(() => {
+    document.body.classList.toggle('gg-hide-marks', !marks);
+  }, [marks]);
 
   const replacements = useRef(new Map<string, string>());
   const positions = useRef(new Map<string, string>());
@@ -132,12 +213,49 @@ export const EditMode: React.FC = () => {
       else main.removeAttribute('contenteditable');
       main.setAttribute('spellcheck', 'false');
     }
+    // Textaenderungen mitschreiben: Originaltext vor der ersten Aenderung
+    // merken, danach den neuen Stand. Geaenderte Bloecke bekommen den gelben
+    // Textmarker.
+    const originals = new WeakMap<HTMLElement, { id: string; before: string }>();
+    const onBeforeInput = () => {
+      const block = blockAtCaret();
+      if (!block || originals.has(block)) return;
+      const id = block.dataset.ggEditId || `t-${Math.random().toString(36).slice(2)}`;
+      block.dataset.ggEditId = id;
+      const before = block.dataset.ggBefore ?? clean(block.textContent || '');
+      block.dataset.ggBefore = before;
+      originals.set(block, { id, before });
+    };
+    const onInput = () => {
+      const block = blockAtCaret();
+      if (!block) return;
+      const id = block.dataset.ggEditId;
+      const before = block.dataset.ggBefore;
+      if (!id || before === undefined) return;
+      const after = clean(block.textContent || '');
+      if (after === before) {
+        block.classList.remove('gg-changed');
+        remove(id);
+      } else {
+        block.classList.add('gg-changed');
+        upsert({ kind: 'text', id, page: pageName(), before, after });
+      }
+    };
+    if (mode === 'text' && main) {
+      main.addEventListener('beforeinput', onBeforeInput);
+      main.addEventListener('input', onInput);
+    }
+    const detachText = () => {
+      main?.removeEventListener('beforeinput', onBeforeInput);
+      main?.removeEventListener('input', onInput);
+    };
+
     const clearHover = () => {
       hover.current?.classList.remove('gg-media-target');
       hover.current = null;
     };
     clearHover();
-    if (mode === 'view') return;
+    if (mode === 'view') return detachText;
 
     let drag: { media: Media; key: string; x: number; y: number; start: [number, number]; moved: boolean } | null = null;
     let suppressClick = false;
@@ -193,6 +311,7 @@ export const EditMode: React.FC = () => {
         const pos = `${clamp(drag.start[0] - (dx / r.width) * 100).toFixed(1)}% ${clamp(drag.start[1] - (dy / r.height) * 100).toFixed(1)}%`;
         drag.media.style.objectPosition = pos;
         positions.current.set(drag.key, pos);
+        upsert({ kind: 'position', id: `p-${drag.key}`, page: pageName(), source: sourceOf(drag.media), label: labelOf(drag.media), position: pos });
         applyAll();
         return;
       }
@@ -224,8 +343,9 @@ export const EditMode: React.FC = () => {
       window.removeEventListener('pointercancel', onUp);
       document.body.classList.remove('gg-dragging');
       clearHover();
+      detachText();
     };
-  }, [mode, applyAll]);
+  }, [mode, applyAll, upsert, remove]);
 
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -234,6 +354,8 @@ export const EditMode: React.FC = () => {
     if (!file || !m) return;
     const url = URL.createObjectURL(file);
     const key = keyOf(m);
+    if (m instanceof HTMLVideoElement && !m.dataset.ggSrc) m.dataset.ggSrc = m.currentSrc || m.getAttribute('src') || '';
+    upsert({ kind: 'image', id: `i-${key}`, page: pageName(), source: sourceOf(m), label: labelOf(m), file: file.name, preview: url });
     replacements.current.set(key, url);
     if (m instanceof HTMLVideoElement) {
       // Video-Kachel: Video anhalten, das Foto erscheint als Standbild.
@@ -286,7 +408,7 @@ export const EditMode: React.FC = () => {
         style: { overflow: 'visible' },
         filter: (node) => {
           if (!(node instanceof Element)) return true;
-          return !(node.id === TOOLBAR_ID || node.id === OVERLAY_ID || node.getAttribute('aria-labelledby') === 'cookie-title');
+          return !(node.id === TOOLBAR_ID || node.id === OVERLAY_ID || node.id === CHANGES_ID || node.getAttribute('aria-labelledby') === 'cookie-title');
         }
       });
       if (!blob) throw new Error('leer');
@@ -372,6 +494,9 @@ export const EditMode: React.FC = () => {
             {modeBtn('move', 'Verschieben', Move)}
           </div>
           <div className="flex flex-wrap items-center gap-0.5">
+            <button type="button" onClick={() => setShowChanges(true)} className={`${pill} text-white/80 hover:bg-white/10`}>
+              <ClipboardList className="w-4 h-4" /> Änderungen{changes.length > 0 && ` (${changes.length})`}
+            </button>
             <button type="button" onClick={takeSnapshot} disabled={busy} className={`${pill} text-white/80 hover:bg-white/10 disabled:opacity-50`}>
               <Camera className="w-4 h-4" /> Snapshot
             </button>
@@ -388,6 +513,100 @@ export const EditMode: React.FC = () => {
           {count > 0 && ` ${count} Bild${count > 1 ? 'er' : ''} ersetzt.`}
         </p>
       </div>
+
+      {showChanges && (
+        <div id={CHANGES_ID} className="fixed inset-0 z-[10001] bg-[#020617]/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="w-full max-w-2xl max-h-full flex flex-col rounded-3xl bg-white text-[#0b0f2a] p-5 md:p-6">
+            <div className="flex items-center justify-between mb-4">
+              <p className="font-black text-lg tracking-tight">Änderungen ({changes.length})</p>
+              <button type="button" aria-label="Schließen" onClick={() => setShowChanges(false)} className="p-2 rounded-full hover:bg-black/5">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-5 pr-1">
+              {changes.length === 0 && <p className="text-slate-500 text-sm">Noch keine Änderungen.</p>}
+              {[...new Set(changes.map((c) => c.page))].map((page) => (
+                <div key={page}>
+                  <p className="text-[#0e958e] font-black uppercase tracking-[0.15em] text-[11px] mb-2">Seite {page}</p>
+                  <ul className="space-y-3">
+                    {changes
+                      .filter((c) => c.page === page)
+                      .map((c) => (
+                        <li key={c.id} className="rounded-2xl border border-black/10 p-3 text-sm">
+                          {c.kind === 'text' && (
+                            <>
+                              <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-1">Text</p>
+                              <p className="text-slate-500 line-through decoration-red-400">{c.before}</p>
+                              <p className="mt-1 font-bold bg-yellow-200/70 rounded px-1 inline">{c.after}</p>
+                            </>
+                          )}
+                          {c.kind === 'image' && (
+                            <div className="flex gap-3 items-center">
+                              <img src={c.preview} alt="" className="w-20 h-14 object-cover rounded-lg shrink-0" />
+                              <div className="min-w-0">
+                                <p className="text-[11px] font-black uppercase tracking-wider text-slate-400">Bild ersetzt</p>
+                                <p className="font-bold truncate">{c.label}</p>
+                                <p className="text-slate-500 text-xs truncate">bisher: {c.source}</p>
+                                <p className="text-slate-500 text-xs truncate">neue Datei: {c.file}</p>
+                              </div>
+                            </div>
+                          )}
+                          {c.kind === 'position' && (
+                            <>
+                              <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-1">Bildausschnitt verschoben</p>
+                              <p className="font-bold">{c.label}</p>
+                              <p className="text-slate-500 text-xs">
+                                {c.source} → Position {c.position}
+                              </p>
+                            </>
+                          )}
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+              <label className="flex items-center gap-2 text-sm font-bold cursor-pointer">
+                <input type="checkbox" checked={marks} onChange={(e) => setMarks(e.target.checked)} className="accent-[#0e958e] w-4 h-4" />
+                Gelbe Markierung auf der Seite anzeigen
+              </label>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  disabled={!changes.length}
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(changesAsText(changes));
+                      setCopied(true);
+                      setTimeout(() => setCopied(false), 1800);
+                    } catch {
+                      alert('Kopieren nicht möglich – bitte „Als Textdatei“ nutzen.');
+                    }
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-black bg-black/5 hover:bg-black/10 disabled:opacity-40"
+                >
+                  <Copy className="w-4 h-4" /> {copied ? 'Kopiert' : 'Kopieren'}
+                </button>
+                <button
+                  type="button"
+                  disabled={!changes.length}
+                  onClick={() => {
+                    const blob = new Blob([changesAsText(changes)], { type: 'text/plain;charset=utf-8' });
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = `gg-aenderungen-${new Date().toISOString().slice(0, 10)}.txt`;
+                    a.click();
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-black bg-[#0b0f2a] text-white hover:bg-[#0e958e] disabled:opacity-40"
+                >
+                  <FileText className="w-4 h-4" /> Als Textdatei
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {(busy || snapshot) && (
         <div id={OVERLAY_ID} className="fixed inset-0 z-[10001] bg-[#020617]/80 backdrop-blur-sm flex items-center justify-center p-4">

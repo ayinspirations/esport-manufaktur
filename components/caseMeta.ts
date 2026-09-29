@@ -27,7 +27,7 @@ export const CASE_META: Record<string, CaseMeta> = {
     title: 'hagebau Bolay: Recruiting-Game & Gaming Days | GG Manufaktur',
     description:
       'Recruiting-Game, Messeaktivierung und eigene Gaming Days im Markt: ein mehrjähriger Kreislauf, der bei Ausbildungsmessen beginnt und zur Bewerbung führt.',
-    image: '/images/hagebau/gallery-1.jpg'
+    image: '/images/hagebau/hero-hagebau.jpg'
   },
   'showdown-0711': {
     title: '0711 Showdown: Gamifiziertes Recruiting-Event | GG Manufaktur',
