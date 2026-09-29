@@ -20,7 +20,7 @@ import { ExpandingCTA } from './ui/expanding-cta';
 import { BLOCK_GAP } from './spacing';
 import { asset } from './site';
 import { useDocumentHead } from '../hooks/useDocumentHead';
-import { headFor, serviceSchema } from './pageMeta';
+import { PAGE_META, headFor, serviceSchema } from './pageMeta';
 
 // ---------------------------------------------------------------------------
 // Money Page: eSport Turnier organisieren
@@ -153,7 +153,8 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         className="relative w-full overflow-hidden bg-[#020617] flex items-end min-h-[78vh] md:min-h-[86vh] pt-40 md:pt-52 pb-14 md:pb-24"
       >
         <img
-          src={asset('/images/rewe/hero.jpg')}
+          // Kopfbild = Vorschaubild beim Teilen; beides steht in pageMeta.json.
+          src={asset(PAGE_META[PATH].ogImage!)}
           alt="eSport Turnier mit Publikum und Gaming-Setups"
           className="absolute inset-0 w-full h-full object-cover"
           fetchPriority="high"
