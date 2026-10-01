@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { SocialProof } from './components/SocialProof';
@@ -526,13 +526,8 @@ export default function App() {
     }
   };
 
-  // Wer einen Artikel von der Blog-Seite aus oeffnet, kommt mit "Zurueck"
-  // auch dorthin zurueck -- nicht auf die Startseite.
-  const cameFromBlogPage = useRef(false);
-  const openBlogPost = (slug: string) => {
-    cameFromBlogPage.current = activePage === 'blog';
-    navigateTo(slug);
-  };
+  // "Zurueck" aus einem Artikel fuehrt immer auf die Blog-Seite.
+  const openBlogPost = (slug: string) => navigateTo(slug);
 
   /**
    * Switching service inside the services page.
@@ -707,7 +702,7 @@ export default function App() {
         {blogSlugs.includes(activePage) && (
           <BlogDetail
             slug={activePage}
-            onBack={() => (cameFromBlogPage.current ? navigateTo('blog') : scrollToSection('blog'))}
+            onBack={() => navigateTo('blog')}
             onOpenBooking={openBooking}
             onOpenContact={openContact}
           />
