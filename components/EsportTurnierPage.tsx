@@ -93,7 +93,7 @@ const PLATTFORM = [
   { title: 'Leadgenerierung', text: 'Auf Wunsch lassen sich Registrierung und Marketing-Opt-ins miteinander verbinden.' }
 ];
 
-// Kacheln mit Bild zeigen es als Hintergrund, die uebrigen bleiben Verlauf.
+// Kacheln mit Bild zeigen das Cover, die uebrigen bleiben Verlauf.
 const GAME_IMAGES: Record<string, string> = {
   'EA Sports FC': '/logos/fc-27-standard-key-art-4x3.avif',
   'Rocket League': '/logos/rocket_league.jpg',
@@ -311,25 +311,31 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <Reveal as="p" delay={0.08} className="mt-4 text-slate-600 text-base md:text-lg font-medium">
           Wir entwickeln Turniere unter anderem für:
         </Reveal>
-        <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
-          {GAMES.map((g, i) => (
-            <Reveal key={g} delay={Math.min(i, 6) * 0.04}>
-              <div className="tile-gradient relative overflow-hidden h-28 md:h-36 rounded-card border border-white/10 flex items-end p-4">
-                {GAME_IMAGES[g] && (
-                  <>
-                    <img
-                      src={asset(GAME_IMAGES[g])}
-                      alt=""
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/90 via-[#020617]/30 to-transparent" />
-                  </>
+        {/* Mosaik: Cover im Hochformat (3:4) voll sichtbar, das breite FC-Motiv
+            ueber zwei Spalten (Hoehe = die der Reihe); Spiele mit Bild zuerst, danach
+            die ohne Bild als Verlaufskachel gleicher Groesse.
+            14 Felder = 2 Reihen a 7 (Desktop) bzw. 7 Reihen a 2 (Telefon). */}
+        <div className="mt-10 grid grid-cols-2 md:grid-cols-7 gap-3">
+          {[...GAMES.filter((g) => GAME_IMAGES[g]), ...GAMES.filter((g) => !GAME_IMAGES[g])].map((g, i) => {
+            const image = GAME_IMAGES[g];
+            const wide = g === 'EA Sports FC';
+            return (
+              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative aspect-[3/2] md:aspect-auto' : ''}>
+                {image ? (
+                  <img
+                    src={asset(image)}
+                    alt={g}
+                    loading="lazy"
+                    className={`rounded-card object-cover ${wide ? 'absolute inset-0 w-full h-full' : 'w-full aspect-[3/4]'}`}
+                  />
+                ) : (
+                  <div className="tile-gradient aspect-[3/4] rounded-card flex items-end p-4">
+                    <span className="text-white font-black text-xs md:text-sm uppercase tracking-tight leading-tight">{g}</span>
+                  </div>
                 )}
-                <span className="relative text-white font-black text-xs md:text-sm uppercase tracking-tight leading-tight">{g}</span>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            );
+          })}
         </div>
         <Reveal as="p" delay={0.1} className="mt-6 text-[#0b0f2a] text-base md:text-lg font-bold">
           Dein Spiel ist nicht dabei? Dann sprich uns an. Unsere Expertise geht weit über diese Spieletitel hinaus.
