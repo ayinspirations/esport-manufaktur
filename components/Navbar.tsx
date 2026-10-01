@@ -269,7 +269,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             data-track-label="kontakt"
             data-track-location="navigation"
             data-track-destination="/kontakt"
-            className={`spring px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
+            className={`spring inline-flex items-center justify-center px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
             style={{ textShadow: 'none' }}
           >
             Kontakt
@@ -452,7 +452,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             data-track-label="kontakt"
             data-track-location="navigation"
             data-track-destination="/kontakt"
-                  className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
+                  className="spring flex w-fit items-center justify-center mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen
                 </a>
