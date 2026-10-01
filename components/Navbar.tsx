@@ -172,7 +172,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         }}
       >
         <div className="flex items-center gap-3 shrink-0">
-          <button
+          <a
+            href="/"
             onClick={(e) => handleLinkClick(e, 'home')}
             data-track="navigation_click"
             data-track-label="logo"
@@ -209,12 +210,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 style={{ opacity: inkOnGlass ? 0 : 1 }}
               />
             </span>
-          </button>
+          </a>
         </div>
 
         {/* Desktop Navigation -- absolutely centered so logo/Kontakt width never skews it */}
         <div className="flex items-center flex-nowrap whitespace-nowrap gap-10 lg:gap-14 px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <button
+          <a
+            href="/services"
             onClick={(e) => handleLinkClick(e, 'competencies')}
             data-track="navigation_click"
             data-track-label="services"
@@ -223,8 +225,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Services
-          </button>
-          <button
+          </a>
+          <a
+            href="/ueber-uns"
             onClick={(e) => handleLinkClick(e, 'ueber-uns')}
             data-track="navigation_click"
             data-track-label="ueber_uns"
@@ -233,8 +236,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Über uns
-          </button>
-          <button
+          </a>
+          <a
+            href="/#best-cases"
             onClick={(e) => handleLinkClick(e, 'best-cases')}
             data-track="navigation_click"
             data-track-label="best_cases"
@@ -243,8 +247,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Best Cases
-          </button>
-          <button
+          </a>
+          <a
+            href="/blog"
             onClick={(e) => handleLinkClick(e, 'blog-page')}
             data-track="navigation_click"
             data-track-label="blog"
@@ -253,11 +258,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Blog &amp; Wissen
-          </button>
+          </a>
         </div>
 
         <div className="flex items-center shrink-0">
-          <button
+          <a
+            href="/kontakt"
             onClick={(e) => handleLinkClick(e, 'kontakt-page')}
             data-track="contact_click"
             data-track-label="kontakt"
@@ -267,7 +273,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             style={{ textShadow: 'none' }}
           >
             Kontakt
-          </button>
+          </a>
         </div>
       </div>
 
@@ -322,7 +328,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
         }
       >
         <div className="relative flex items-center justify-between pl-5 pr-3 py-2.5">
-          <button
+          <a
+            href="/"
             onClick={(e) => handleLinkClick(e, 'home')}
             className="flex items-center"
             aria-label="GG Manufaktur"
@@ -342,7 +349,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                 style={{ opacity: mobileMarkWhite ? 0 : 1 }}
               />
             </span>
-          </button>
+          </a>
 
           {/* Der Claim, nur auf dem Telefon.
               Er liegt als eigenes Feld zwischen Marke und Burger, nicht
@@ -393,7 +400,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
               className="overflow-hidden"
             >
               <div className="flex flex-col gap-7 text-lg font-bold text-[#0b0f2a] text-center px-8 pt-2 pb-8">
-                <button
+                <a
+                  href="/services"
                   onClick={(e) => handleLinkClick(e, 'competencies')}
             data-track="navigation_click"
             data-track-label="services"
@@ -402,8 +410,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Services
-                </button>
-                <button
+                </a>
+                <a
+                  href="/ueber-uns"
                   onClick={(e) => handleLinkClick(e, 'ueber-uns')}
             data-track="navigation_click"
             data-track-label="ueber_uns"
@@ -412,8 +421,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Über uns
-                </button>
-                <button
+                </a>
+                <a
+                  href="/#best-cases"
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
             data-track="navigation_click"
             data-track-label="best_cases"
@@ -422,8 +432,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
-                </button>
-                <button
+                </a>
+                <a
+                  href="/blog"
                   onClick={(e) => handleLinkClick(e, 'blog-page')}
             data-track="navigation_click"
             data-track-label="blog"
@@ -432,9 +443,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Blog &amp; Wissen
-                </button>
+                </a>
                 <div className="h-px bg-[#0b0f2a]/15 w-1/3 mx-auto" />
-                <button
+                <a
+                  href="/kontakt"
                   onClick={(e) => handleLinkClick(e, 'kontakt-page')}
             data-track="contact_click"
             data-track-label="kontakt"
@@ -443,7 +455,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   className="spring mx-auto bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-5 py-3 sm:px-7 sm:py-3.5 rounded-full font-black text-sm sm:text-base tracking-tighter"
                 >
                   Kontakt aufnehmen
-                </button>
+                </a>
               </div>
             </motion.div>
           )}
