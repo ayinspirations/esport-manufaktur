@@ -124,6 +124,22 @@ for (const content of Object.values(servicesContent)) {
 // ---------------------------------------------------------------------------
 // Schreiben
 // ---------------------------------------------------------------------------
+// Linkliste fuer Suchmaschinen. Das ausgelieferte HTML hat sonst einen leeren
+// #root und damit keinen einzigen Link; Google faende die Unterseiten erst
+// nach dem Ausfuehren des JavaScripts (verzoegert, bei junger Domain selten).
+// Die Liste ist unsichtbar und verschwindet, sobald React den #root fuellt
+// (createRoot ersetzt dessen Inhalt) -- fuer Besucher aendert sich nichts.
+const HIDDEN = 'position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
+const linkNav = [{ path: '/', name: 'Startseite' }, { path: '/services', name: 'Services' }, { path: '/ueber-uns', name: 'Über uns' }, { path: '/ueber-uns/meine-geschichte', name: 'Meine Geschichte' }, { path: '/webdesign', name: 'Webdesign' }, ...pages.map((p) => ({ path: p.path, name: p.crumbs.at(-1).name }))]
+  .filter((l, i, all) => all.findIndex((x) => x.path === l.path) === i)
+  .map((l) => `<li><a href="${l.path}">${esc(l.name)}</a></li>`)
+  .join('');
+const withNav = (html) => {
+  if (!html.includes('<div id="root"></div>')) throw new Error('prerender: <div id="root"></div> fehlt in index.html');
+  return html.replace('<div id="root"></div>', `<div id="root"><nav aria-label="Seiten" style="${HIDDEN}"><ul>${linkNav}</ul></nav></div>`);
+};
+writeFileSync('dist/index.html', withNav(shell));
+
 for (const page of pages) {
   const url = `${SITE}${page.path}`;
   let html = shell.replace(/<title>[^<]*<\/title>/, `<title>${esc(page.title)}</title>`);
@@ -179,7 +195,7 @@ for (const page of pages) {
   html = html.replace('</head>', `    ${extra}\n  </head>`);
 
   mkdirSync(`dist${page.path}`, { recursive: true });
-  writeFileSync(`dist${page.path}/index.html`, html);
+  writeFileSync(`dist${page.path}/index.html`, withNav(html));
 }
 
 console.log(`prerender: ${pages.length} Seiten mit eigenem Kopf und Vorschaubild`);

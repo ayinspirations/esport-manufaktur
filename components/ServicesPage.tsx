@@ -80,9 +80,10 @@ const FilterPill: React.FC<{
   active: boolean;
   onSelect: () => void;
 }> = ({ label, slug, active, onSelect }) => (
-  <button
+  <a
     data-pill
-    onClick={onSelect}
+    href={`/services/${slug}`}
+    onClick={(e) => { e.preventDefault(); onSelect(); }}
     data-track="service_click"
     data-track-service={slug}
     data-track-label={slug}
@@ -97,7 +98,7 @@ const FilterPill: React.FC<{
     }`}
   >
     {label}
-  </button>
+  </a>
 );
 
 // ---------------------------------------------------------------------------
@@ -164,19 +165,20 @@ const SidebarItem: React.FC<{
     : 'text-white/70 hover:bg-white/10 hover:text-white';
 
   return (
-    <button
-      onClick={onSelect}
+    <a
+      href={`/services/${slug}`}
+      onClick={(e) => { e.preventDefault(); onSelect(); }}
       aria-current={active ? 'true' : undefined}
       data-track="service_click"
       data-track-service={slug}
       data-track-label={slug}
       data-track-destination={`/services/${slug}`}
-      className={`w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
+      className={`block w-full text-left rounded-card px-4 py-3 text-[13.5px] font-black tracking-tight transition-colors duration-500 ${
         tone === 'light' ? light : ink
       }`}
     >
       {label}
-    </button>
+    </a>
   );
 };
 

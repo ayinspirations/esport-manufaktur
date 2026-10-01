@@ -337,18 +337,12 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <Reveal as="p" delay={0.08} className="mt-5 text-slate-600 text-base md:text-lg font-medium max-w-3xl leading-relaxed">
           Wir begleiten seit Jahren Gaming- und eSport-Projekte für Vereine, Verbände, Unternehmen und Marken.
         </Reveal>
-        <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3">
+        <Reveal delay={0.2} className="mt-8">
           <button
-            onClick={() => scrollToSection('referenzen')}
+            onClick={() => scrollToSection('best-cases')}
             className="spring inline-flex items-center gap-2 rounded-full bg-[#0b0f2a] px-6 py-3 text-white text-xs font-black uppercase tracking-widest hover:bg-[#0e958e] transition-colors duration-500"
           >
             Referenzen ansehen <ArrowUpRight className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => scrollToSection('best-cases')}
-            className="spring inline-flex items-center gap-2 rounded-full border border-[#0b0f2a]/25 px-6 py-3 text-[#0b0f2a] text-xs font-black uppercase tracking-widest hover:bg-[#0b0f2a] hover:text-white transition-colors duration-500"
-          >
-            Cases entdecken <ArrowUpRight className="w-4 h-4" />
           </button>
         </Reveal>
       </section>

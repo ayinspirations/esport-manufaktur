@@ -92,7 +92,7 @@ export const SocialProof: React.FC<SocialProofProps> = ({ scrollToSection }) => 
   });
 
   return (
-    <section id="referenzen" className={`scroll-mt-24 relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#badeda] overflow-hidden ${SECTION_PADDING}`}>
+    <section className={`relative w-full flex flex-col items-center gap-16 md:gap-20 select-none bg-[#badeda] overflow-hidden ${SECTION_PADDING}`}>
       <style>{`
         .marquee-track {
           --marquee-start: -236px;
