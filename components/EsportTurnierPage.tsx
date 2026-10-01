@@ -95,7 +95,14 @@ const PLATTFORM = [
 
 // Kacheln mit Bild zeigen es als Hintergrund, die uebrigen bleiben Verlauf.
 const GAME_IMAGES: Record<string, string> = {
-  'EA Sports FC': '/logos/fc-27-standard-key-art-4x3.avif'
+  'EA Sports FC': '/logos/fc-27-standard-key-art-4x3.avif',
+  'Rocket League': '/logos/rocket_league.jpg',
+  Fortnite: '/logos/fortnite.jpg',
+  'Mario Kart': '/logos/mario_kart.jpg',
+  Valorant: '/logos/valorant.jpg',
+  'League of Legends': '/logos/league_of_legends.jpg',
+  'Call of Duty': '/logos/call_of_duty.jpg',
+  'Brawl Stars': '/logos/brawl_stars.jpg'
 };
 
 const GAMES = [
