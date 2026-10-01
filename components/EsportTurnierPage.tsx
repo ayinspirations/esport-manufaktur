@@ -93,7 +93,7 @@ const PLATTFORM = [
   { title: 'Leadgenerierung', text: 'Auf Wunsch lassen sich Registrierung und Marketing-Opt-ins miteinander verbinden.' }
 ];
 
-// Kacheln mit Bild zeigen das Cover, die uebrigen bleiben Verlauf.
+// Nur Spiele mit Bild erscheinen als Kachel; Bild nachlegen = Kachel erscheint.
 const GAME_IMAGES: Record<string, string> = {
   'EA Sports FC': '/logos/fc-27-standard-key-art-4x3.avif',
   'Rocket League': '/logos/rocket_league.jpg',
@@ -312,27 +312,19 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           Wir entwickeln Turniere unter anderem für:
         </Reveal>
         {/* Mosaik: Cover im Hochformat (3:4) voll sichtbar, das breite FC-Motiv
-            ueber zwei Spalten (Hoehe = die der Reihe); Spiele mit Bild zuerst, danach
-            die ohne Bild als Verlaufskachel gleicher Groesse.
-            14 Felder = 2 Reihen a 7 (Desktop) bzw. 7 Reihen a 2 (Telefon). */}
-        <div className="mt-10 grid grid-cols-2 md:grid-cols-7 gap-3">
-          {[...GAMES.filter((g) => GAME_IMAGES[g]), ...GAMES.filter((g) => !GAME_IMAGES[g])].map((g, i) => {
-            const image = GAME_IMAGES[g];
+            ueber zwei Spalten (Hoehe = die der Reihe). Nur Spiele mit Bild.
+            9 Felder = 1 Reihe (Desktop) bzw. 3 Reihen a 3 (Telefon, Tablet). */}
+        <div className="mt-10 grid grid-cols-3 lg:grid-cols-9 gap-3">
+          {GAMES.filter((g) => GAME_IMAGES[g]).map((g, i) => {
             const wide = g === 'EA Sports FC';
             return (
-              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative aspect-[3/2] md:aspect-auto' : ''}>
-                {image ? (
-                  <img
-                    src={asset(image)}
-                    alt={g}
-                    loading="lazy"
-                    className={`rounded-card object-cover ${wide ? 'absolute inset-0 w-full h-full' : 'w-full aspect-[3/4]'}`}
-                  />
-                ) : (
-                  <div className="tile-gradient aspect-[3/4] rounded-card flex items-end p-4">
-                    <span className="text-white font-black text-xs md:text-sm uppercase tracking-tight leading-tight">{g}</span>
-                  </div>
-                )}
+              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative' : ''}>
+                <img
+                  src={asset(GAME_IMAGES[g])}
+                  alt={g}
+                  loading="lazy"
+                  className={`rounded-card object-cover ${wide ? 'absolute inset-0 w-full h-full' : 'w-full aspect-[3/4]'}`}
+                />
               </Reveal>
             );
           })}
