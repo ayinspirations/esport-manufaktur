@@ -110,8 +110,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
     e.preventDefault();
     setIsOpen(false);
     // "ueber-uns", "blog" und "kontakt" sind eigene Seiten, keine Anker auf
-    // der Startseite. Blog und Kontakt fuehren nur im Telefon-Menue dorthin;
-    // die Desktop-Leiste springt weiterhin zum Abschnitt der Startseite.
+    // der Startseite -- in der Desktop-Leiste wie im Telefon-Menue.
     if (target === 'home' || target === 'ueber-uns' || target === 'blog-page' || target === 'kontakt-page') {
       onNavigate(target.replace('-page', '') as 'home' | 'ueber-uns' | 'blog' | 'kontakt');
     } else {
@@ -246,11 +245,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             Best Cases
           </button>
           <button
-            onClick={(e) => handleLinkClick(e, 'blog')}
+            onClick={(e) => handleLinkClick(e, 'blog-page')}
             data-track="navigation_click"
             data-track-label="blog"
             data-track-location="navigation"
-            data-track-destination="#blog"
+            data-track-destination="/blog"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Blog &amp; Wissen
@@ -259,11 +258,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
 
         <div className="flex items-center shrink-0">
           <button
-            onClick={(e) => handleLinkClick(e, 'contact')}
+            onClick={(e) => handleLinkClick(e, 'kontakt-page')}
             data-track="contact_click"
             data-track-label="kontakt"
             data-track-location="navigation"
-            data-track-destination="#contact"
+            data-track-destination="/kontakt"
             className={`spring px-5 h-9 rounded-full text-xs font-semibold tracking-tight ${ctaTone}`}
             style={{ textShadow: 'none' }}
           >

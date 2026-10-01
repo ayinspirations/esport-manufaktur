@@ -114,22 +114,6 @@ const GAMES = [
   'Clash Royale'
 ];
 
-// Referenzen mit eigener Case-Seite sind verlinkt, die uebrigen bleiben Text.
-const REFERENZEN: { name: string; slug?: string }[] = [
-  { name: 'BFV', slug: 'bfv' },
-  { name: 'VfB Stuttgart' },
-  { name: '1. FC Köln' },
-  { name: 'HSV' },
-  { name: 'RBLZ' },
-  { name: 'REWE', slug: 'rewe' },
-  { name: 'T-Systems', slug: 'tsystems' },
-  { name: 'DAZN' },
-  { name: 'INTERSPORT', slug: 'intersport' },
-  { name: 'Sparkassen' },
-  { name: 'Volksbanken' },
-  { name: 'Hagebau', slug: 'hagebau' }
-];
-
 export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBooking, onOpenContact, scrollToSection, onNavigate }) => {
   useDocumentHead(headFor(PATH));
 
@@ -353,27 +337,13 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <Reveal as="p" delay={0.08} className="mt-5 text-slate-600 text-base md:text-lg font-medium max-w-3xl leading-relaxed">
           Wir begleiten seit Jahren Gaming- und eSport-Projekte für Vereine, Verbände, Unternehmen und Marken.
         </Reveal>
-        <Reveal as="p" delay={0.14} className="mt-4 text-[#0b0f2a] text-base md:text-lg font-bold max-w-4xl leading-relaxed">
-          Referenzen unter anderem:{' '}
-          {REFERENZEN.map((ref, i) => (
-            <React.Fragment key={ref.name}>
-              {ref.slug ? (
-                <a
-                  href={`/best-cases/${ref.slug}`}
-                  onClick={(e) => { e.preventDefault(); onNavigate(ref.slug!); }}
-                  className="underline decoration-[#0e958e]/50 underline-offset-4 hover:text-[#0e958e] transition-colors"
-                >
-                  {ref.name}
-                </a>
-              ) : (
-                ref.name
-              )}
-              {' · '}
-            </React.Fragment>
-          ))}
-          und viele mehr
-        </Reveal>
-        <Reveal delay={0.2} className="mt-8">
+        <Reveal delay={0.2} className="mt-8 flex flex-wrap gap-3">
+          <button
+            onClick={() => scrollToSection('referenzen')}
+            className="spring inline-flex items-center gap-2 rounded-full bg-[#0b0f2a] px-6 py-3 text-white text-xs font-black uppercase tracking-widest hover:bg-[#0e958e] transition-colors duration-500"
+          >
+            Referenzen ansehen <ArrowUpRight className="w-4 h-4" />
+          </button>
           <button
             onClick={() => scrollToSection('best-cases')}
             className="spring inline-flex items-center gap-2 rounded-full border border-[#0b0f2a]/25 px-6 py-3 text-[#0b0f2a] text-xs font-black uppercase tracking-widest hover:bg-[#0b0f2a] hover:text-white transition-colors duration-500"
