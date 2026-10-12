@@ -708,9 +708,6 @@ export default function App() {
             <VfbDetail onBack={() => scrollToSection('best-cases')} />
           </CaseHead>
         )}
-        {/* "Passend dazu" unter Best Cases und Money Pages -- die Verlinkung
-            der Money Pages aus dem Inhalt heraus (siehe money/pages.ts). */}
-        {activePage in RELATED_SOLUTIONS && <RelatedSolutions from={activePage} onNavigate={navigateTo} />}
         {activePage === 'impressum' && <LegalPage type="impressum" />}
         {activePage === 'privacy' && <LegalPage type="privacy" />}
         {activePage === 'ueber-uns' && <UeberUnsPage onNavigate={navigateTo} scrollToSection={scrollToSection} onOpenBooking={openBooking} onOpenContact={openContact} />}
@@ -741,6 +738,10 @@ export default function App() {
             onOpenContact={openContact}
           />
         )}
+        {/* "Passend dazu" unter Best Cases und Money Pages -- die Verlinkung
+            der Money Pages aus dem Inhalt heraus (siehe money/pages.ts). Steht als letztes,
+            damit er unter der Seite erscheint und nicht ueber ihr. */}
+        {activePage in RELATED_SOLUTIONS && <RelatedSolutions from={activePage} onNavigate={navigateTo} />}
         </Suspense>
         </RouteBoundary>
       </main>
