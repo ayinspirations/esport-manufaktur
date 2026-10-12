@@ -12,6 +12,9 @@ import { Footer } from './components/Footer';
 import { BlogSection } from './components/BlogSection';
 import { blogPosts, blogRoutes, getBlogPost } from './components/blogPosts';
 import { CASE_META, CASE_SLUGS } from './components/caseMeta';
+import { RELATED_SOLUTIONS } from './components/money/pages';
+import { headFor } from './components/pageMeta';
+import { RelatedSolutions } from './components/money/RelatedSolutions';
 import { useDocumentHead } from './hooks/useDocumentHead';
 import { resolveServiceSlug } from './components/serviceCatalogue';
 import { Purpose } from './components/Purpose';
@@ -120,6 +123,7 @@ const LivestreamsPage = lazyRoute(() => import('./components/LivestreamsPage').t
 const WhiteLabelPage = lazyRoute(() => import('./components/WhiteLabelPage').then(m => ({ default: m.WhiteLabelPage })));
 const EsportTurnierPage = lazyRoute(() => import('./components/EsportTurnierPage').then(m => ({ default: m.EsportTurnierPage })));
 const BlogPage = lazyRoute(() => import('./components/BlogPage').then(m => ({ default: m.BlogPage })));
+const LoesungenPage = lazyRoute(() => import('./components/LoesungenPage').then(m => ({ default: m.LoesungenPage })));
 const KontaktPage = lazyRoute(() => import('./components/KontaktPage').then(m => ({ default: m.KontaktPage })));
 const WebdesignPage = lazyRoute(() => import('./components/WebdesignPage').then(m => ({ default: m.WebdesignPage })));
 const NotFoundPage = lazyRoute(() => import('./components/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
@@ -206,7 +210,7 @@ class RouteBoundary extends ReactComponent {
 type Page =
   | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta' | 'vfb-stuttgart'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
-  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
+  | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'loesungen' | 'best-cases' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
 
 /**
  * A resolved location: which page, and -- on the services page -- which
@@ -260,6 +264,12 @@ const resolveRoute = (): Route => {
   }
   if (path === '/kontakt') {
     return { page: 'kontakt' };
+  }
+  if (path === '/loesungen') {
+    return { page: 'loesungen' };
+  }
+  if (path === '/best-cases') {
+    return { page: 'best-cases' };
   }
   // Money Pages liegen direkt unter der Wurzel, die Adresse ist der Suchbegriff.
   if (path === '/esport-turnier-organisieren') {
@@ -343,6 +353,15 @@ const resolveRoute = (): Route => {
  * bedingt aufgerufen werden darf -- hier haengt er an der Lebensdauer genau
  * der Seite, um die es geht, und raeumt beim Verlassen selbst auf.
  */
+/** /best-cases -- alle Cases; die Startseite zeigt nur eine Auswahl. */
+const BestCasesPage: React.FC<{ onNavigate: (page: any) => void }> = ({ onNavigate }) => {
+  useDocumentHead(headFor('/best-cases'));
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+  return <BestCases variant="page" onNavigate={onNavigate} />;
+};
+
 const CaseHead: React.FC<{ slug: string; children: React.ReactNode }> = ({ slug, children }) => {
   const meta = CASE_META[slug];
   useDocumentHead({
@@ -354,7 +373,7 @@ const CaseHead: React.FC<{ slug: string; children: React.ReactNode }> = ({ slug,
     // Wegmarke steht davon der Name des Kunden, also alles vor dem ersten
     // Doppelpunkt oder Strich.
     breadcrumbs: [
-      { name: 'Best Cases', path: '/#best-cases' },
+      { name: 'Best Cases', path: '/best-cases' },
       { name: meta.title.split(/[:|]/)[0].trim(), path: `/best-cases/${slug}` }
     ]
   });
@@ -518,6 +537,10 @@ export default function App() {
       window.history.pushState(null, '', '/blog');
     } else if (page === 'kontakt') {
       window.history.pushState(null, '', '/kontakt');
+    } else if (page === 'loesungen') {
+      window.history.pushState(null, '', '/loesungen');
+    } else if (page === 'best-cases') {
+      window.history.pushState(null, '', '/best-cases');
     } else if (CASE_SLUGS.includes(page)) {
       window.history.pushState(null, '', `/best-cases/${page}`);
     } else if (blogSlugs.includes(page)) {
@@ -692,6 +715,8 @@ export default function App() {
 
         {activePage === 'not-found' && <NotFoundPage onNavigate={navigateTo} />}
         {activePage === 'kontakt' && <KontaktPage />}
+        {activePage === 'loesungen' && <LoesungenPage onNavigate={navigateTo} />}
+        {activePage === 'best-cases' && <BestCasesPage onNavigate={navigateTo} />}
         {activePage === 'esport-turnier-organisieren' && <EsportTurnierPage onOpenBooking={openBooking} onOpenContact={openContact} scrollToSection={scrollToSection} onNavigate={navigateTo} />}
         {activePage === 'white-label-turnierplattform' && <WhiteLabelPage onOpenBooking={openBooking} onOpenContact={openContact} />}
         {activePage === 'gaming-esport-dienstleister' && <DienstleisterPage onOpenBooking={openBooking} onOpenContact={openContact} />}
@@ -713,6 +738,10 @@ export default function App() {
             onOpenContact={openContact}
           />
         )}
+        {/* "Passend dazu" unter Best Cases und Money Pages -- die Verlinkung
+            der Money Pages aus dem Inhalt heraus (siehe money/pages.ts). Steht als letztes,
+            damit er unter der Seite erscheint und nicht ueber ihr. */}
+        {activePage in RELATED_SOLUTIONS && <RelatedSolutions from={activePage} onNavigate={navigateTo} />}
         </Suspense>
         </RouteBoundary>
       </main>

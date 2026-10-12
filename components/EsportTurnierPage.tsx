@@ -350,7 +350,7 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         </Reveal>
         <Reveal delay={0.2} className="mt-8">
           <button
-            onClick={() => scrollToSection('best-cases')}
+            onClick={() => onNavigate?.('best-cases')}
             className="spring inline-flex items-center gap-2 rounded-full bg-[#0b0f2a] px-6 py-3 text-white text-xs font-black uppercase tracking-widest hover:bg-[#0e958e] transition-colors duration-500"
           >
             Referenzen ansehen <ArrowUpRight className="w-4 h-4" />

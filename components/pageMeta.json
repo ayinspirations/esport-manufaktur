@@ -68,7 +68,7 @@
     "title": "Gaming & eSport als Betriebssport | GG MANUFAKTUR",
     "description": "Gaming und eSport als Betriebssport, Employer-Branding- oder Recruiting-Instrument. Wir entwickeln gemeinsam das passende Corporate-Gaming-Konzept für dein Unternehmen.",
     "breadcrumb": "Gaming & eSport als Betriebssport",
-    "ogImage": "/images/showcase/kreissparkasse-boeblingen.jpg",
+    "ogImage": "/images/260327_XP_Days_Event-39.jpg",
     "service": {
       "name": "Gaming & eSport als Betriebssport",
       "serviceType": "Corporate Gaming Beratung und Umsetzung",
@@ -180,5 +180,17 @@
       "description": "Maßgefertigte, individuell brandbare Eventmodule aus eigener Entwicklung – Gaming Modul, Gaming Cube, Gaming Bühne, interaktive Fotobox, Simulatoren, Mario Kart Live Circuit, Retro Gaming, Tresor und VR Experience – frei kombinierbar für Turniere, Messen, Gaming Areas und Fan Zones."
     },
     "hidden": true
+  },
+  "/loesungen": {
+    "title": "Lösungen: Gaming, eSport & Gamification | GG Manufaktur",
+    "description": "eSport-Turniere, White-Label-Plattform, Teambuilding, Betriebssport und Gaming-Aktivierungen für Marken und Agenturen – alle Lösungen der GG Manufaktur im Überblick.",
+    "breadcrumb": "Lösungen",
+    "ogImage": "/images/260327_XP_Days_Event-39.jpg"
+  },
+  "/best-cases": {
+    "title": "Best Cases: Gaming, eSport & Markenaktivierung | GG Manufaktur",
+    "description": "Projekte mit T-Systems, VfB Stuttgart, REWE, DEKRA, BFV, Intersport und weiteren Kunden: Turniere, Gaming-Aktivierungen, Recruiting-Games und Messeauftritte.",
+    "breadcrumb": "Best Cases",
+    "ogImage": "/images/vfb/hero.jpeg"
   }
 }

@@ -239,6 +239,13 @@ export const Competencies: React.FC<CompetenciesProps> = ({ onNavigate }) => (
             Alle Leistungen entdecken
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-500" />
           </button>
+          <a
+            href="/loesungen"
+            onClick={(e) => { e.preventDefault(); onNavigate?.('loesungen'); }}
+            className="ml-6 inline-flex items-center gap-1.5 font-black text-sm sm:text-base text-[#0b0f2a] hover:text-[#0e958e] transition-colors"
+          >
+            Alle Lösungen ansehen →
+          </a>
         </Reveal>
       </div>
     </section>

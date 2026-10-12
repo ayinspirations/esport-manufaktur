@@ -86,7 +86,7 @@ for (const [slug, meta] of Object.entries(CASE_META)) {
     description: meta.description,
     image: meta.image,
     crumbs: [
-      { name: 'Best Cases', path: '/#best-cases' },
+      { name: 'Best Cases', path: '/best-cases' },
       { name: meta.title.split(/[:|]/)[0].trim(), path }
     ]
   });

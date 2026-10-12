@@ -87,7 +87,7 @@ export const CASE_META: Record<string, CaseMeta> = {
     title: 'VfB Stuttgart: Gaming, E-Sport & KI beim Season Opening | GG Manufaktur',
     description:
       'Gaming Wall, vierseitiger Gaming Tower, Beat the Pro in EA SPORTS FC und KI-Fotoaktivierung: ein stark frequentierter Fan-Touchpoint vor der MHP Arena.',
-    image: '/images/vfb/hero.jpg'
+    image: '/images/vfb/hero.jpeg'
   }
 };
 

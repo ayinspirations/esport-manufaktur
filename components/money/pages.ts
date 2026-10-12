@@ -83,3 +83,49 @@ const ALL_MONEY_PAGES: MoneyPageLink[] = [
 ];
 
 export const MONEY_PAGES = ALL_MONEY_PAGES.filter((m) => !HIDDEN_MONEY_PAGES.includes(m.page));
+
+/** Gruppen der Uebersichtsseite /loesungen -- nach Zielgruppe, nicht nach Technik. */
+export const SOLUTION_GROUPS: { title: string; pages: string[] }[] = [
+  { title: 'Für Unternehmen & HR', pages: ['teambuilding-gaming-esport', 'gaming-esport-betriebssport'] },
+  { title: 'Für Marken & Agenturen', pages: ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'] },
+  { title: 'eSport-Turniere', pages: ['esport-turnier-organisieren', 'white-label-turnierplattform'] }
+];
+
+/**
+ * "Passend dazu": welche Money Pages unter einer Seite verlinkt werden.
+ * Schluessel sind Money Pages, Best-Case-Slugs und Service-Slugs. Die Links
+ * aus dem Inhalt ersetzen die lange Liste im Footer.
+ */
+export const RELATED_SOLUTIONS: Record<string, string[]> = {
+  // Money Pages untereinander
+  'esport-turnier-organisieren': ['white-label-turnierplattform', 'gaming-esport-dienstleister'],
+  'white-label-turnierplattform': ['esport-turnier-organisieren', 'gaming-dienstleister-fuer-agenturen'],
+  'gaming-esport-dienstleister': ['gaming-dienstleister-fuer-agenturen', 'esport-turnier-organisieren'],
+  'gaming-dienstleister-fuer-agenturen': ['gaming-esport-dienstleister', 'white-label-turnierplattform'],
+  'teambuilding-gaming-esport': ['gaming-esport-betriebssport', 'esport-turnier-organisieren'],
+  'gaming-esport-betriebssport': ['teambuilding-gaming-esport', 'esport-turnier-organisieren'],
+  // Best Cases
+  tsystems: ['esport-turnier-organisieren', 'white-label-turnierplattform'],
+  hagebau: ['gaming-esport-dienstleister', 'teambuilding-gaming-esport'],
+  'showdown-0711': ['esport-turnier-organisieren', 'white-label-turnierplattform'],
+  'bayern-zockt': ['white-label-turnierplattform', 'esport-turnier-organisieren'],
+  bfv: ['white-label-turnierplattform', 'esport-turnier-organisieren'],
+  intersport: ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'],
+  rewe: ['esport-turnier-organisieren', 'gaming-esport-dienstleister'],
+  'xp-days': ['teambuilding-gaming-esport', 'gaming-esport-betriebssport'],
+  dekra: ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'],
+  interwetten: ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'],
+  consumenta: ['gaming-dienstleister-fuer-agenturen', 'gaming-esport-dienstleister'],
+  'vfb-stuttgart': ['gaming-esport-dienstleister', 'esport-turnier-organisieren'],
+  // Leistungen (/services/<slug>)
+  'strategie-konzeption': ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'],
+  'events-erlebniswelten': ['esport-turnier-organisieren', 'teambuilding-gaming-esport'],
+  'digitale-loesungen': ['white-label-turnierplattform', 'esport-turnier-organisieren'],
+  'content-live-kommunikation': ['gaming-dienstleister-fuer-agenturen', 'esport-turnier-organisieren'],
+  'eventtechnik-produktion': ['esport-turnier-organisieren', 'gaming-esport-dienstleister'],
+  'art-design-messebau': ['gaming-esport-dienstleister', 'gaming-dienstleister-fuer-agenturen'],
+  'foto-video': ['gaming-dienstleister-fuer-agenturen', 'gaming-esport-dienstleister'],
+  'creator-talent-activation': ['gaming-dienstleister-fuer-agenturen', 'esport-turnier-organisieren'],
+  'scouting-talent-development': ['gaming-esport-betriebssport', 'esport-turnier-organisieren'],
+  'recruiting-employer-branding': ['teambuilding-gaming-esport', 'gaming-esport-betriebssport']
+};
