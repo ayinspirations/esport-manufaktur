@@ -186,5 +186,11 @@
     "description": "eSport-Turniere, White-Label-Plattform, Teambuilding, Betriebssport und Gaming-Aktivierungen für Marken und Agenturen – alle Lösungen der GG Manufaktur im Überblick.",
     "breadcrumb": "Lösungen",
     "ogImage": "/images/260327_XP_Days_Event-39.jpg"
+  },
+  "/best-cases": {
+    "title": "Best Cases: Gaming, eSport & Markenaktivierung | GG Manufaktur",
+    "description": "Projekte mit T-Systems, VfB Stuttgart, REWE, DEKRA, BFV, Intersport und weiteren Kunden: Turniere, Gaming-Aktivierungen, Recruiting-Games und Messeauftritte.",
+    "breadcrumb": "Best Cases",
+    "ogImage": "/images/vfb/hero.jpeg"
   }
 }

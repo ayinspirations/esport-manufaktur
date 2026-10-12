@@ -209,7 +209,15 @@ const BANDS: Tile[][] = [
 
 interface BestCasesProps {
   onNavigate?: (page: any) => void;
+  /**
+   * 'home': nur die ersten HOME_BANDS Baender und darunter der Weg zu allen.
+   * 'page': die Uebersicht /best-cases mit allen Cases, Ueberschrift als h1.
+   */
+  variant?: 'home' | 'page';
 }
+
+/** So viele Baender zeigt die Startseite; der Rest steht unter /best-cases. */
+const HOME_BANDS = 3;
 
 // Die Kacheln sind Verweise, keine anklickbaren Kaesten.
 //
@@ -286,19 +294,22 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
   );
 };
 
-export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
+export const BestCases: React.FC<BestCasesProps> = ({ onNavigate, variant = 'home' }) => {
+  const isPage = variant === 'page';
+  const Heading: any = isPage ? 'h1' : 'h2';
+  const bands = isPage ? BANDS : BANDS.slice(0, HOME_BANDS);
   return (
-    <section id="best-cases" className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24`}>
+    <section id={isPage ? undefined : 'best-cases'} className={`w-full bg-[#badeda] ${SECTION_PADDING} px-6 md:px-14 scroll-mt-24 ${isPage ? 'pt-36 md:pt-44' : ''}`}>
       {/* The section wrapper no longer animates: it used to fade the whole
           block in while every tile inside was independently fading in too, so
           the two passes ran over each other and muddied both. */}
       <div className="max-w-[1440px] mx-auto">
         <div className="flex flex-col lg:flex-row items-end justify-between mb-16 md:mb-24 gap-8">
           <div className="max-w-3xl">
-            <h2 className={`${SECTION_HEADING} text-[#0b0f2a] uppercase`}>
+            <Heading className={`${SECTION_HEADING} text-[#0b0f2a] uppercase`}>
               <RevealText as="span" by="word" text="Best" />
               <RevealText as="span" by="word" text="Cases." className="text-[#0e958e] italic" delay={0.14} />
-            </h2>
+            </Heading>
             <Reveal as="p" delay={0.32} className="text-slate-900 font-bold text-lg md:text-xl mt-6 max-w-xl leading-snug tracking-tight">
               Projekte, die wir gemeinsam mit unseren Kunden realisieren durften.
             </Reveal>
@@ -315,7 +326,7 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             an -- keine Kachel wartet auf eine, die zwei Baender weiter oben
             steht. */}
         <div className="flex flex-col gap-4 md:gap-6">
-          {BANDS.map((band, bi) => (
+          {bands.map((band, bi) => (
             <div key={bi} className="flex flex-col lg:flex-row items-start gap-4 md:gap-6">
               {band.map((tile, ti) => (
                 <MosaicTile key={tile.slug} tile={tile} delay={ti * STAGGER.card} onNavigate={onNavigate} />
@@ -323,6 +334,21 @@ export const BestCases: React.FC<BestCasesProps> = ({ onNavigate }) => {
             </div>
           ))}
         </div>
+
+        {!isPage && (
+          <Reveal delay={0.1} className="mt-12 md:mt-16">
+            <a
+              href="/best-cases"
+              onClick={(e) => { e.preventDefault(); onNavigate?.('best-cases'); }}
+              data-track="cta_click"
+              data-track-label="alle_best_cases"
+              data-track-destination="/best-cases"
+              className="inline-flex items-center gap-2.5 bg-[#0b0f2a] hover:bg-[#0e958e] text-white px-7 py-4 rounded-full font-black text-sm sm:text-base tracking-tight transition-all duration-500 hover:scale-[1.02] active:scale-[0.98]"
+            >
+              Alle Best Cases ansehen →
+            </a>
+          </Reveal>
+        )}
       </div>
     </section>
   );

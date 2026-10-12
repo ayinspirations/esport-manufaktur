@@ -48,6 +48,7 @@ const urls = [
   ['/webdesign', '0.6', 'monthly'],
   ['/kontakt', '0.6', 'yearly'],
   ['/loesungen', '0.8', 'monthly'],
+  ['/best-cases', '0.8', 'monthly'],
   ['/blog', '0.7', 'weekly'],
   ['/esport-turnier-organisieren', '0.9', 'monthly'],
   ['/white-label-turnierplattform', '0.9', 'monthly'],

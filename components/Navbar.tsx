@@ -46,7 +46,7 @@ const GLASS = {
 } as const;
 
 interface NavbarProps {
-  onNavigate: (page: 'home' | 'services' | 'ueber-uns' | 'blog' | 'kontakt') => void;
+  onNavigate: (page: 'home' | 'services' | 'ueber-uns' | 'blog' | 'kontakt' | 'best-cases') => void;
   scrollToSection: (id: string) => void;
   activePage: 'home' | 'services';
 }
@@ -111,8 +111,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
     setIsOpen(false);
     // "ueber-uns", "blog" und "kontakt" sind eigene Seiten, keine Anker auf
     // der Startseite -- in der Desktop-Leiste wie im Telefon-Menue.
-    if (target === 'home' || target === 'ueber-uns' || target === 'blog-page' || target === 'kontakt-page') {
-      onNavigate(target.replace('-page', '') as 'home' | 'ueber-uns' | 'blog' | 'kontakt');
+    if (target === 'home' || target === 'ueber-uns' || target === 'blog-page' || target === 'kontakt-page' || target === 'best-cases') {
+      onNavigate(target.replace('-page', '') as 'home' | 'ueber-uns' | 'blog' | 'kontakt' | 'best-cases');
     } else {
       scrollToSection(target);
     }
@@ -238,12 +238,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
             Über uns
           </a>
           <a
-            href="/#best-cases"
+            href="/best-cases"
             onClick={(e) => handleLinkClick(e, 'best-cases')}
             data-track="navigation_click"
             data-track-label="best_cases"
             data-track-location="navigation"
-            data-track-destination="#best-cases"
+            data-track-destination="/best-cases"
             className={`nav-link shrink-0 text-sm font-medium tracking-tight transition-colors duration-500 ${navLinkTone}`}
           >
             Best Cases
@@ -423,12 +423,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onNavigate, scrollToSection, act
                   Über uns
                 </a>
                 <a
-                  href="/#best-cases"
+                  href="/best-cases"
                   onClick={(e) => handleLinkClick(e, 'best-cases')}
             data-track="navigation_click"
             data-track-label="best_cases"
             data-track-location="navigation"
-            data-track-destination="#best-cases"
+            data-track-destination="/best-cases"
                   className="transition-all tracking-tighter text-[#0b0f2a] hover:text-[#0e958e]"
                 >
                   Best Cases
