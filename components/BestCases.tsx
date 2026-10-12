@@ -178,8 +178,9 @@ const BANDS: Tile[][] = [
     {
       slug: 'xp-days',
       title: 'XP Days',
-      // 4000 x 2667, auf 2000 gerechnet.
-      ar: 3 / 2,
+      // 4000 x 2667, auf 2000 gerechnet. Etwas schmaler als das Material,
+      // damit NIVEA daneben Platz fuer zwei Zeilen hat.
+      ar: 1.25,
       image: '/images/xp-days/hero.jpg',
       alt: 'XP Days – gamifizierte Karrieremesse der GG Manufaktur in Stuttgart',
       head: 'clamp(22px,2.8vw,34px)'
@@ -187,18 +188,20 @@ const BANDS: Tile[][] = [
     {
       slug: 'consumenta',
       title: 'NIVEA MEN // EFFECT // CRACKZ',
-      // 1080 x 1920 -- hochkant, also eine schmale Kachel neben den XP Days.
-      ar: 9 / 16,
+      // 1080 x 1920 -- hochkant; die Kachel ist bewusst breiter als das
+      // Material (Bildausschnitt), damit der lange Titel in zwei Zeilen passt.
+      ar: 1.25,
+      arMobile: 3 / 4,
       image: '/images/consumenta/hero.jpg',
       alt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg',
-      head: 'clamp(22px,2.8vw,34px)'
+      head: 'clamp(20px,2.4vw,32px)'
     },
     {
       slug: 'vfb-stuttgart',
       title: 'VfB STUTTGART',
       keepCase: true,
-      // 1600 x 1066 -- Querformat, schliesst das Band neben dem hochkanten NIVEA-Motiv.
-      ar: 3 / 2,
+      // 1600 x 1066 -- Querformat, etwas schmaler gesetzt (siehe XP Days).
+      ar: 1.25,
       arMobile: 4 / 3,
       image: '/images/vfb/hero.jpeg',
       alt: 'Gaming-Aktivierung des VfB Stuttgart beim Season Opening 2026/27',
