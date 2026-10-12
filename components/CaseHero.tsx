@@ -18,6 +18,8 @@ interface CaseHeroProps {
    * Mitte stehen. Wo das die Sache verfehlt, sagt die Seite es hier.
    */
   focus?: string;
+  /** Titel so setzen, wie er geschrieben ist (etwa "VfB STUTTGART"), statt in Versalien. */
+  keepCase?: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -51,7 +53,7 @@ interface CaseHeroProps {
 // traegt, ohne selbst als Dunst ueber dem Bild zu liegen.
 // ---------------------------------------------------------------------------
 
-export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent, focus }) => {
+export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent, focus, keepCase }) => {
   // Fehlt das Bild, bleibt die dunkle Flaeche darunter stehen. Ohne das
   // stuende hier ein zerbrochenes Bildsymbol ueber dem Alternativtext --
   // fuer eine Seite, deren erster Eindruck der Aufmacher ist, der schlechtere
@@ -90,7 +92,7 @@ export const CaseHero: React.FC<CaseHeroProps> = ({ image, alt, title, accent, f
         className="text-[clamp(28px,5vw,64px)] font-black leading-[0.92] tracking-tighter uppercase text-[#0b0f2a]"
         style={{ filter: 'drop-shadow(0 1px 6px rgba(186,222,218,0.7)) drop-shadow(0 1px 2px rgba(186,222,218,0.55))' }}
       >
-        <RevealText as="span" by="word" text={title} delay={0.1} />
+        <RevealText as="span" by="word" text={title} delay={0.1} className={keepCase ? 'normal-case' : undefined} />
         <RevealText as="span" by="word" text={accent} delay={0.24} className="text-[#0e958e] italic" />
       </h1>
     </div>
