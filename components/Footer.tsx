@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => void;
+  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => void;
   scrollToSection: (id: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) => {
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => {
     e.preventDefault();
     onNavigate(page);
   };
@@ -71,12 +71,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                 <h4 className="font-black text-slate-900 mb-8 uppercase text-[10px] tracking-[0.3em]">Links</h4>
                 <ul className="space-y-4 text-slate-600 text-base font-bold tracking-tight">
                   <li><a href="#home" onClick={(e) => handleNav(e, 'home')} className="hover:text-emerald-700 transition-colors">Startseite</a></li>
-                  <li><a href="/esport-turnier-organisieren" onClick={(e) => handleNav(e, 'esport-turnier-organisieren')} className="hover:text-emerald-700 transition-colors">eSport Turnier organisieren</a></li>
-                  <li><a href="/white-label-turnierplattform" onClick={(e) => handleNav(e, 'white-label-turnierplattform')} className="hover:text-emerald-700 transition-colors">White-Label Turnierplattform</a></li>
-                  <li><a href="/gaming-esport-dienstleister" onClick={(e) => handleNav(e, 'gaming-esport-dienstleister')} className="hover:text-emerald-700 transition-colors">Gaming & eSport Dienstleister</a></li>
-                  <li><a href="/gaming-dienstleister-fuer-agenturen" onClick={(e) => handleNav(e, 'gaming-dienstleister-fuer-agenturen')} className="hover:text-emerald-700 transition-colors">Gaming für Agenturen</a></li>
-                  <li><a href="/teambuilding-gaming-esport" onClick={(e) => handleNav(e, 'teambuilding-gaming-esport')} className="hover:text-emerald-700 transition-colors">Teambuilding mit Gaming</a></li>
-                  <li><a href="/gaming-esport-betriebssport" onClick={(e) => handleNav(e, 'gaming-esport-betriebssport')} className="hover:text-emerald-700 transition-colors">Gaming als Betriebssport</a></li>
+                  <li><a href="/loesungen" onClick={(e) => handleNav(e, 'loesungen')} className="hover:text-emerald-700 transition-colors">Lösungen</a></li>
                   <li><a href="/blog" onClick={(e) => handleNav(e, 'blog')} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="/kontakt" onClick={(e) => handleNav(e, 'kontakt')} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>

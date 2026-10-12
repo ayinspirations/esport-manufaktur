@@ -8,7 +8,7 @@ import { HeroGround } from './HeroGround';
 import { BLOCK_GAP } from './spacing';
 import { ServiceView } from './ServiceView';
 import { BlogSection } from './BlogSection';
-import { MONEY_PAGES } from './money/pages';
+import { RelatedSolutions } from './money/RelatedSolutions';
 import { servicesContent } from './servicesContent';
 import { services, pillars, serviceSlugs } from './serviceCatalogue';
 import { SERVICES_LAYOUT } from './servicesLayout';
@@ -565,25 +565,9 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
 
       <Layout active={active} select={select} anchorRef={anchorRef} menuRef={menuRef} panel={panel} />
 
-      {/* Money Pages: Leistungen mit eigener Seite je Suchbegriff. Hier
-          verlinkt, damit sie nicht nur ueber die Sitemap erreichbar sind. */}
-      <div className={`${CONTAINER} ${BLOCK_GAP} grid md:grid-cols-2 gap-4`}>
-        {MONEY_PAGES.map((m, i) => (
-          <Reveal key={m.page} delay={(i % 2) * 0.08}>
-          <a
-            href={`/${m.page}`}
-            onClick={(e) => { e.preventDefault(); onNavigate(m.page); }}
-            className="group block h-full tile-gradient text-white rounded-card border border-white/10 p-7 md:p-10 transition-transform duration-500 hover:scale-[1.01]"
-          >
-            <span className="block text-[#2dd4bf] font-black tracking-[0.3em] uppercase text-[10px] md:text-xs mb-3">{m.eyebrow}</span>
-            <span className="block text-[clamp(22px,2.6vw,34px)] font-black uppercase tracking-tighter leading-tight">
-              {m.title} <span className="text-[#2dd4bf]">→</span>
-            </span>
-            <span className="block mt-3 text-white/65 text-sm md:text-base font-medium max-w-2xl">{m.text}</span>
-          </a>
-          </Reveal>
-        ))}
-      </div>
+      {/* Money Pages: zwei passende unter der gewaehlten Leistung, der Rest
+          ueber /loesungen (siehe money/pages.ts). */}
+      <RelatedSolutions from={active} onNavigate={onNavigate} className={`${CONTAINER} ${BLOCK_GAP}`} />
 
       {/* The homepage's Blog section, at the foot of every service.
           Outside the layout on purpose: it is identical for all ten services,

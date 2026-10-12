@@ -180,5 +180,11 @@
       "description": "Maßgefertigte, individuell brandbare Eventmodule aus eigener Entwicklung – Gaming Modul, Gaming Cube, Gaming Bühne, interaktive Fotobox, Simulatoren, Mario Kart Live Circuit, Retro Gaming, Tresor und VR Experience – frei kombinierbar für Turniere, Messen, Gaming Areas und Fan Zones."
     },
     "hidden": true
+  },
+  "/loesungen": {
+    "title": "Lösungen: Gaming, eSport & Gamification | GG Manufaktur",
+    "description": "eSport-Turniere, White-Label-Plattform, Teambuilding, Betriebssport und Gaming-Aktivierungen für Marken und Agenturen – alle Lösungen der GG Manufaktur im Überblick.",
+    "breadcrumb": "Lösungen",
+    "ogImage": "/images/260327_XP_Days_Event-39.jpg"
   }
 }
