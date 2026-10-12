@@ -197,10 +197,10 @@ const BANDS: Tile[][] = [
       slug: 'vfb-stuttgart',
       title: 'VfB STUTTGART',
       keepCase: true,
-      // 780 x 470 -- breit, schliesst das Band neben dem hochkanten NIVEA-Motiv.
-      ar: 780 / 470,
+      // 1600 x 1066 -- Querformat, schliesst das Band neben dem hochkanten NIVEA-Motiv.
+      ar: 3 / 2,
       arMobile: 4 / 3,
-      image: '/images/vfb/hero.jpg',
+      image: '/images/vfb/hero.jpeg',
       alt: 'Gaming-Aktivierung des VfB Stuttgart beim Season Opening 2026/27',
       head: 'clamp(22px,2.8vw,34px)'
     }

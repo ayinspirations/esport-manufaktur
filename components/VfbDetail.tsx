@@ -11,11 +11,12 @@ interface VfbDetailProps {
 
 // Fehlt eines, faellt es aus der Reihe (siehe CaseSlider).
 const images = [
-  '/images/vfb/slide-1.jpg',
-  '/images/vfb/slide-2.jpg',
-  '/images/vfb/slide-3.jpg',
-  '/images/vfb/slide-4.jpg',
-  '/images/vfb/slide-5.jpg',
+  '/images/vfb/slide-1.jpeg',
+  '/images/vfb/slide-2.jpeg',
+  '/images/vfb/slide-3.jpeg',
+  '/images/vfb/slide-4.jpeg',
+  '/images/vfb/slide-5.jpeg',
+  '/images/vfb/slide-6.jpeg',
 ];
 
 // ---------------------------------------------------------------------------
@@ -118,7 +119,7 @@ export const VfbDetail: React.FC<VfbDetailProps> = () => {
   return (
     <div className="min-h-screen bg-[#badeda] text-slate-900">
       <CaseHero
-        image="/images/vfb/hero.jpg"
+        image="/images/vfb/hero.jpeg"
         alt="Gaming-Aktivierung des VfB Stuttgart beim Season Opening 2026/27 vor der MHP Arena"
         title="VfB STUTTGART"
         keepCase
