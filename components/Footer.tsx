@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 import { resetConsent } from './cookieConsent';
 
 interface FooterProps {
-  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => void;
+  onNavigate: (page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'best-cases' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => void;
   scrollToSection: (id: string) => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) => {
-  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => {
+  const handleNav = (e: React.MouseEvent, page: 'home' | 'services' | 'impressum' | 'privacy' | 'webdesign' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'blog' | 'kontakt' | 'loesungen' | 'best-cases' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule') => {
     e.preventDefault();
     onNavigate(page);
   };
@@ -72,6 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, scrollToSection }) =
                 <ul className="space-y-4 text-slate-600 text-base font-bold tracking-tight">
                   <li><a href="#home" onClick={(e) => handleNav(e, 'home')} className="hover:text-emerald-700 transition-colors">Startseite</a></li>
                   <li><a href="/loesungen" onClick={(e) => handleNav(e, 'loesungen')} className="hover:text-emerald-700 transition-colors">Lösungen</a></li>
+                  <li><a href="/best-cases" onClick={(e) => handleNav(e, 'best-cases')} className="hover:text-emerald-700 transition-colors">Best Cases</a></li>
                   <li><a href="/blog" onClick={(e) => handleNav(e, 'blog')} className="hover:text-emerald-700 transition-colors">Blog</a></li>
                   <li><a href="/kontakt" onClick={(e) => handleNav(e, 'kontakt')} className="hover:text-emerald-700 transition-colors">Kontakt</a></li>
                 </ul>
