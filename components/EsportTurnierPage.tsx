@@ -311,25 +311,25 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
         <Reveal as="p" delay={0.08} className="mt-4 text-slate-600 text-base md:text-lg font-medium">
           Wir entwickeln Turniere unter anderem für:
         </Reveal>
-        {/* Mosaik: Cover im Hochformat (3:4) voll sichtbar, das breite FC-Motiv
-            ueber zwei Spalten (Hoehe = die der Reihe). Nur Spiele mit Bild.
-            9 Felder = 1 Reihe (Desktop) bzw. 3 Reihen a 3 (Telefon, Tablet). */}
-        <div className="mt-10 grid grid-cols-3 lg:grid-cols-9 gap-3">
+        {/* Cover (3:4) und das FC-Motiv (4:3) stehen jeweils in ihrem eigenen
+            Seitenverhaeltnis, nichts wird beschnitten. Am Desktop eine Reihe:
+            flex-grow im Verhaeltnis der Breiten (3/4 : 4/3 = 9 : 16), damit
+            alle Kacheln gleich hoch sind. Am Telefon FC ueber die volle
+            Breite, darunter die Cover zu viert, die letzte Reihe mittig. */}
+        <div className="mt-10 flex flex-wrap justify-center lg:flex-nowrap gap-3">
           {GAMES.filter((g) => GAME_IMAGES[g]).map((g, i) => {
             const wide = g === 'EA Sports FC';
             return (
-              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative overflow-hidden rounded-card' : ''}>
-                {/* Das FC-Motiv ist 4:3, das Feld breiter -- es steht deshalb
-                    vollstaendig (contain) vor einer unscharfen Kopie seiner
-                    selbst, statt oben und unten beschnitten zu werden. */}
-                {wide && (
-                  <img src={asset(GAME_IMAGES[g])} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover blur-xl scale-110" />
-                )}
+              <Reveal
+                key={g}
+                delay={Math.min(i, 6) * 0.04}
+                className={`min-w-0 lg:basis-0 ${wide ? 'basis-full aspect-[4/3] lg:grow-[16]' : 'basis-[calc(25%-9px)] aspect-[3/4] lg:grow-[9]'}`}
+              >
                 <img
                   src={asset(GAME_IMAGES[g])}
                   alt={g}
                   loading="lazy"
-                  className={wide ? 'absolute inset-0 w-full h-full object-contain' : 'rounded-card object-cover w-full aspect-[3/4]'}
+                  className="rounded-card object-cover w-full h-full"
                 />
               </Reveal>
             );
