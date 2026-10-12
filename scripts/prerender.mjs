@@ -107,6 +107,17 @@ for (const post of blogPosts) {
   });
 }
 
+// Die Uebersicht hat keine eigene Fotografie im Kopf -- ihr Vorschaubild ist
+// eine Aufnahme ihres Heros (public/images/og/services.jpg).
+pages.push({
+  path: '/services',
+  title: 'Unsere Leistungen | GG Manufaktur',
+  description: 'Von Strategie und Konzeption über Events und Gamification bis zu Produktion, Content und Recruiting: alle Leistungen der GG Manufaktur im Überblick.',
+  image: '/images/og/services.jpg',
+  imageAlt: 'Unsere Leistungen – GG Manufaktur',
+  crumbs: [{ name: 'Services', path: '/services' }]
+});
+
 for (const content of Object.values(servicesContent)) {
   pages.push({
     path: content.path,
@@ -138,7 +149,10 @@ const withNav = (html) => {
   if (!html.includes('<div id="root"></div>')) throw new Error('prerender: <div id="root"></div> fehlt in index.html');
   return html.replace('<div id="root"></div>', `<div id="root"><nav aria-label="Seiten" style="${HIDDEN}"><ul>${linkNav}</ul></nav></div>`);
 };
-writeFileSync('dist/index.html', withNav(shell));
+// Auch die Startseite zeigt beim Teilen ihren Hero, und zwar von der Domain
+// dieses Builds (siehe IMAGE_BASE).
+const homeImage = encodeURI(`${IMAGE_BASE || SITE}/images/og/home.jpg`);
+writeFileSync('dist/index.html', withNav(setMeta(setMeta(shell, 'property', 'og:image', homeImage), 'name', 'twitter:image', homeImage)));
 
 for (const page of pages) {
   const url = `${SITE}${page.path}`;
@@ -194,8 +208,13 @@ for (const page of pages) {
   }
   html = html.replace('</head>', `    ${extra}\n  </head>`);
 
-  mkdirSync(`dist${page.path}`, { recursive: true });
-  writeFileSync(`dist${page.path}/index.html`, withNav(html));
+  // Als dist/<pfad>.html, nicht dist/<pfad>/index.html: ein Verzeichnis
+  // beantwortet der Server mit einer Weiterleitung auf /<pfad>/, waehrend
+  // kanonische Adresse und Sitemap /<pfad> nennen -- Google meldete das als
+  // Umleitungsfehler. Mit "cleanUrls" (vercel.json) kommt die Datei direkt
+  // unter /<pfad>, ohne Umweg.
+  mkdirSync(`dist${page.path.replace(/\/[^/]+$/, '')}`, { recursive: true });
+  writeFileSync(`dist${page.path}.html`, withNav(html));
 }
 
 console.log(`prerender: ${pages.length} Seiten mit eigenem Kopf und Vorschaubild`);

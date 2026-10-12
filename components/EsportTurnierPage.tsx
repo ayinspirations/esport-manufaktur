@@ -318,12 +318,18 @@ export const EsportTurnierPage: React.FC<EsportTurnierPageProps> = ({ onOpenBook
           {GAMES.filter((g) => GAME_IMAGES[g]).map((g, i) => {
             const wide = g === 'EA Sports FC';
             return (
-              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative' : ''}>
+              <Reveal key={g} delay={Math.min(i, 6) * 0.04} className={wide ? 'col-span-2 relative overflow-hidden rounded-card' : ''}>
+                {/* Das FC-Motiv ist 4:3, das Feld breiter -- es steht deshalb
+                    vollstaendig (contain) vor einer unscharfen Kopie seiner
+                    selbst, statt oben und unten beschnitten zu werden. */}
+                {wide && (
+                  <img src={asset(GAME_IMAGES[g])} alt="" aria-hidden loading="lazy" className="absolute inset-0 w-full h-full object-cover blur-xl scale-110" />
+                )}
                 <img
                   src={asset(GAME_IMAGES[g])}
                   alt={g}
                   loading="lazy"
-                  className={`rounded-card object-cover ${wide ? 'absolute inset-0 w-full h-full' : 'w-full aspect-[3/4]'}`}
+                  className={wide ? 'absolute inset-0 w-full h-full object-contain' : 'rounded-card object-cover w-full aspect-[3/4]'}
                 />
               </Reveal>
             );
