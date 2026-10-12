@@ -82,6 +82,8 @@ interface Tile {
   head: string;
   /** Zusatz fuers Medium, etwa ein Bildausschnitt. */
   media?: string;
+  /** Titel wie geschrieben statt in Versalien (z. B. "VfB STUTTGART"). */
+  keepCase?: boolean;
 }
 
 const BANDS: Tile[][] = [
@@ -190,6 +192,17 @@ const BANDS: Tile[][] = [
       image: '/images/consumenta/hero.jpg',
       alt: 'Markenaktivierungen für NIVEA MEN, EFFECT und CRACKZ auf der Consumenta in Nürnberg',
       head: 'clamp(22px,2.8vw,34px)'
+    },
+    {
+      slug: 'vfb-stuttgart',
+      title: 'VfB STUTTGART',
+      keepCase: true,
+      // 780 x 470 -- breit, schliesst das Band neben dem hochkanten NIVEA-Motiv.
+      ar: 780 / 470,
+      arMobile: 4 / 3,
+      image: '/images/vfb/hero.jpg',
+      alt: 'Gaming-Aktivierung des VfB Stuttgart beim Season Opening 2026/27',
+      head: 'clamp(22px,2.8vw,34px)'
     }
   ]
 ];
@@ -260,7 +273,7 @@ const MosaicTile: React.FC<{ tile: Tile; delay: number; onNavigate?: (page: any)
         <motion.div variants={TILE_TEXT_VARIANTS} className="absolute inset-0 p-6 md:p-8 flex flex-col justify-end z-10 pointer-events-none">
           <div>
             <h3
-              className="text-white font-black leading-[0.9] tracking-tighter uppercase mb-3 drop-shadow-2xl text-balance"
+              className={`text-white font-black leading-[0.9] tracking-tighter mb-3 drop-shadow-2xl text-balance ${tile.keepCase ? '' : 'uppercase'}`}
               style={{ fontSize: tile.head }}
             >
               {tile.title}

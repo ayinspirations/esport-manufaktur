@@ -99,6 +99,7 @@ const Showdown0711Detail = lazyRoute(() => import('./components/Showdown0711Deta
 const BFVDetail = lazyRoute(() => import('./components/BFVDetail').then(m => ({ default: m.BFVDetail })));
 const IntersportDetail = lazyRoute(() => import('./components/IntersportDetail').then(m => ({ default: m.IntersportDetail })));
 const ReweDetail = lazyRoute(() => import('./components/ReweDetail').then(m => ({ default: m.ReweDetail })));
+const VfbDetail = lazyRoute(() => import('./components/VfbDetail').then(m => ({ default: m.VfbDetail })));
 const XpDaysDetail = lazyRoute(() => import('./components/XpDaysDetail').then(m => ({ default: m.XpDaysDetail })));
 const DekraDetail = lazyRoute(() => import('./components/DekraDetail').then(m => ({ default: m.DekraDetail })));
 const InterwettenDetail = lazyRoute(() => import('./components/InterwettenDetail').then(m => ({ default: m.InterwettenDetail })));
@@ -203,7 +204,7 @@ class RouteBoundary extends ReactComponent {
 }
 
 type Page =
-  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta'
+  | 'home' | 'services' | 'impressum' | 'privacy' | 'hagebau' | 'tsystems' | 'bayern-zockt' | 'showdown-0711' | 'bfv' | 'intersport' | 'rewe' | 'xp-days' | 'dekra' | 'interwetten' | 'consumenta' | 'vfb-stuttgart'
   | 'gamification-messestand' | 'gamification-im-marketing' | 'gaming-deutschland-2026'
   | 'ueber-uns' | 'meine-geschichte' | 'webdesign' | 'kontakt' | 'blog' | 'esport-turnier-organisieren' | 'white-label-turnierplattform' | 'gaming-dienstleister-fuer-agenturen' | 'teambuilding-gaming-esport' | 'gaming-esport-betriebssport' | 'gaming-esport-dienstleister' | 'livestreams' | 'landingpages' | 'gaming-areas' | 'eventmodule' | 'admin' | 'not-found';
 
@@ -315,7 +316,7 @@ const resolveRoute = (): Route => {
   }
 
   const currentHash = window.location.hash.replace('#', '');
-  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', 'dekra', 'interwetten', 'consumenta', ...blogRoutes];
+  const validPages: string[] = ['home', 'services', 'impressum', 'privacy', 'hagebau', 'tsystems', 'bayern-zockt', 'showdown-0711', 'bfv', 'intersport', 'rewe', 'xp-days', 'dekra', 'interwetten', 'consumenta', 'vfb-stuttgart', ...blogRoutes];
   if (validPages.includes(currentHash)) {
     // Auch hinter der Raute kann eine alte Artikeladresse stehen.
     const post = getBlogPost(currentHash);
@@ -677,6 +678,11 @@ export default function App() {
         {activePage === 'consumenta' && (
           <CaseHead slug="consumenta">
             <NiveaEffectCrackzDetail onBack={() => scrollToSection('best-cases')} />
+          </CaseHead>
+        )}
+        {activePage === 'vfb-stuttgart' && (
+          <CaseHead slug="vfb-stuttgart">
+            <VfbDetail onBack={() => scrollToSection('best-cases')} />
           </CaseHead>
         )}
         {activePage === 'impressum' && <LegalPage type="impressum" />}

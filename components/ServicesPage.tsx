@@ -436,7 +436,7 @@ export const ServicesPage: React.FC<ServicesPageProps> = ({
       ? 'Von Strategie und Konzeption über Events und Gamification bis zu Produktion, Content und Recruiting: alle Leistungen der GG Manufaktur im Überblick.'
       : content.seo.description,
     // Vorschaubild = Kopfbild der Leistung (wie im vorgerenderten HTML).
-    ogImage: content.hero.image || content.seo.ogImage,
+    ogImage: isOverview ? '/images/og/services.jpg' : content.hero.image || content.seo.ogImage,
     canonicalPath: isOverview ? '/services' : content.path,
     breadcrumbs: isOverview
       ? [{ name: 'Services', path: '/services' }]

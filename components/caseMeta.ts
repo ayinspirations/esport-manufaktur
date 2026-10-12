@@ -82,6 +82,12 @@ export const CASE_META: Record<string, CaseMeta> = {
     description:
       'Drei Marken, drei Mechaniken, eine Messefläche: Sponsorship Activation, Product Sampling, Highscore-Challenge und Twitch-Livestream.',
     image: '/images/consumenta/hero.jpg'
+  },
+  'vfb-stuttgart': {
+    title: 'VfB Stuttgart: Gaming, E-Sport & KI beim Season Opening | GG Manufaktur',
+    description:
+      'Gaming Wall, vierseitiger Gaming Tower, Beat the Pro in EA SPORTS FC und KI-Fotoaktivierung: ein stark frequentierter Fan-Touchpoint vor der MHP Arena.',
+    image: '/images/vfb/hero.jpg'
   }
 };
 
