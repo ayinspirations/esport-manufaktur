@@ -34,7 +34,7 @@ const ABSCHNITTE: { title: string; paras: string[] }[] = [
   {
     title: 'Die Herausforderung: viele Erlebnisse auf kleiner Fläche',
     paras: [
-      'Die begrenzte Fläche des Pagodenzeltes sollte gleich mehrere Aktivierungen ermöglichen: Jugendliche und Fans sollten gegen die VfB-E-Sportler und Content Creator Niklas Luginsland und Fabian antreten, miteinander spielen und zusätzlich die KI-Fotoaktivierung des VfB erleben können.',
+      'Die begrenzte Fläche des Pagodenzeltes sollte gleich mehrere Aktivierungen ermöglichen: Jugendliche und Fans sollten gegen die VfB-E-Sportler und Content Creator Niklas Luginsland und Fabienne antreten, miteinander spielen und zusätzlich die KI-Fotoaktivierung des VfB erleben können.',
       'Gleichzeitig musste die Fläche offen, hochwertig und aufmerksamkeitsstark wirken – trotz der schmalen räumlichen Gegebenheiten.'
     ]
   },
@@ -49,7 +49,7 @@ const ABSCHNITTE: { title: string; paras: string[] }[] = [
   {
     title: 'Beat the Pro und freies Gaming',
     paras: [
-      'Bei der Beat-the-Pro-Challenge konnten Fans in EA SPORTS FC gegen Niklas Luginsland und Fabian vom VfB Stuttgart antreten und ihr Können direkt unter Beweis stellen.',
+      'Bei der Beat-the-Pro-Challenge konnten Fans in EA SPORTS FC gegen Niklas Luginsland und Fabienne vom VfB Stuttgart antreten und ihr Können direkt unter Beweis stellen.',
       'Abseits der Challenges standen die Gaming-Stationen für freie Matches zur Verfügung. Besuchende konnten gegeneinander oder miteinander spielen und so ohne Zugangshürden Teil der Aktivierung werden.',
       'Aus Zuschauenden wurden aktive Teilnehmende – und aus einem klassischen Eventstand wurde ein lebendiger Treffpunkt für die VfB-Community.'
     ]
